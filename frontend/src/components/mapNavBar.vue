@@ -2,7 +2,9 @@
   <div>
     <!-- Navigation Drawer -->
     <v-navigation-drawer absolute permanent left height="100vh">
+      <!-- Example v-card: estate information to sell -->
       <v-card>
+        <!-- Detail information of person who sell the estate -->
         <v-list-item>
           <v-list-item-avatar>
             <img src="https://randomuser.me/api/portraits/women/81.jpg" />
@@ -16,6 +18,7 @@
 
         <v-divider></v-divider>
 
+        <!-- Detail information of estate such as price or area -->
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>매매 100억</v-list-item-title>
