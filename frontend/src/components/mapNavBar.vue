@@ -2,6 +2,8 @@
   <div>
     <!-- Navigation Drawer -->
     <v-navigation-drawer absolute permanent left height="100vh">
+      <MapSearch />
+
       <!-- Example v-card: estate information to sell -->
       <v-card>
         <!-- Detail information of person who sell the estate -->
@@ -31,7 +33,11 @@
 </template>
 
 <script>
+import MapSearch from "./mapNavBarSearch.vue";
+
 export default {
-  components: {},
+  components: {
+    MapSearch,
+  },
 };
 </script>

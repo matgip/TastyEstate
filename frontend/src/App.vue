@@ -2,10 +2,10 @@
   <div>
     <!-- NavBar -->
     <v-app-bar app color="white">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon />
       <v-toolbar-title>Tasty Estate</v-toolbar-title>
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <!-- Goto Home -->
       <v-btn icon @click="gotoHome">

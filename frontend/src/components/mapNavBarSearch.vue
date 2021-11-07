@@ -1,9 +1,11 @@
 <template>
   <div>
-    <!-- Search Bar -->
+    <!-- Search Text Field -->
     <v-text-field
       filled
       dense
+      outlined
+      style="padding:10px"
       placeholder="Search"
       v-model="search"
       :append-icon="'mdi-magnify'"
@@ -25,3 +27,6 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+</style>
