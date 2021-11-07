@@ -1,7 +1,7 @@
 <template>
   <div>
-    <MapSearchBar/>
-    <MapNavBar/>
+    <MapSearchBar />
+    <MapNavBar />
   </div>
 </template>
 
