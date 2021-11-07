@@ -14,6 +14,7 @@
       </v-btn>
     </v-app-bar>
 
+    <!-- Vue Router -->
     <v-main>
       <router-view :key="$route.fullPath"></router-view>
     </v-main>

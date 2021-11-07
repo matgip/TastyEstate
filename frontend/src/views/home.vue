@@ -1,10 +1,16 @@
 <template>
-  <div>Home page</div>
+  <div>
+    <Map></Map>
+  </div>
 </template>
 
 <script>
+import Map from "../components/map.vue";
+
 export default {
   name: "Home",
-  components: {},
+  components: {
+    Map,
+  },
 };
 </script>
