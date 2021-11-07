@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="navbar">
     <!-- Navigation Drawer -->
     <v-navigation-drawer absolute permanent left height="100vh" width="40vh">
       <MapSearch />
@@ -19,3 +19,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#navbar {
+  z-index: 1;
+}
+</style>
