@@ -34,13 +34,16 @@ export default {
       };
       // Create map with HTML element and options
       this.map = new kakao.maps.Map(container, options);
-      
+
+      // Add a map type to display terrain information on the map
+      this.map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
+
       // Creates a map type control that can switch map types between normal maps and skyview
       const mapTypeControl = new kakao.maps.MapTypeControl();
-      
+
       // kakao.maps.ControlPosition defines where the control will be displayed, TOPRIGHT means top right
       this.map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-      
+
       // Creates a zoom control to control the zoom in and out of the map
       const zoomControl = new kakao.maps.ZoomControl();
       this.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
