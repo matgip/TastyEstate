@@ -4,7 +4,6 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 const INIT_MAP = (map) => {
-  // Create map with HTML element and options
   const container = document.getElementById("map");
   const options = {
     center: new kakao.maps.LatLng(33.450701, 126.570667),
@@ -29,6 +28,7 @@ const LOAD_KAKAO_MAP = (map) => {
     INIT_MAP(map);
   } else {
     const script = document.createElement("script");
+    /* global kakao */
     script.onload = () => {
       kakao.maps.load(INIT_MAP(map));
     };
