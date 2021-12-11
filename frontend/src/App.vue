@@ -1,20 +1,16 @@
 <template>
   <div>
-    <!-- NavBar -->
     <v-app-bar app color="white">
-      <v-app-bar-nav-icon />
-      <v-toolbar-title>Tasty Estate</v-toolbar-title>
+      <v-toolbar-title>Tasty estate</v-toolbar-title>
 
       <v-spacer />
 
-      <!-- Goto Home -->
-      <v-btn icon @click="gotoHome">
-        Home
-        <v-icon>mdi-home</v-icon>
+      <v-btn class="ma-2" outlined small @click="gotoHome">
+        HOME
+        <v-icon right>fas fa-home</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <!-- Vue Router -->
     <v-main>
       <router-view :key="$route.fullPath"></router-view>
     </v-main>

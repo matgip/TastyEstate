@@ -31,12 +31,10 @@ export default {
     items: [],
     search: null,
   }),
-
   watch: {
     search(val) {
       console.log(val);
       this.isLoading = true;
-
       // Lazily load input items
       fetch("https://api.coingecko.com/api/v3/coins/list")
         .then((res) => res.clone().json())
