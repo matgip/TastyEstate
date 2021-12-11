@@ -1,7 +1,7 @@
 <template>
   <div id="navbar">
     <!-- Navigation Drawer -->
-    <v-navigation-drawer absolute permanent left height="100vh" width="30vh">
+    <v-navigation-drawer absolute permanent left height="100vh" width="40vh">
       <MapSearch />
       <MapFeedCards />
     </v-navigation-drawer>
