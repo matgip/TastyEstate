@@ -1,17 +1,17 @@
 <template>
   <div id="mapcontainer">
-    <MapNavBar />
+    <MapSideBar />
     <MapKakao />
   </div>
 </template>
 
 <script>
-import MapNavBar from "./mapNavBar.vue";
-import MapKakao from "./mapKakao.vue";
+import MapSideBar from "./MapSideBar.vue";
+import MapKakao from "./MapKakao.vue";
 
 export default {
   components: {
-    MapNavBar,
+    MapSideBar,
     MapKakao,
   },
 };

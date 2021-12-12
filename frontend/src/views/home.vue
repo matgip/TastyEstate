@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Map from "../components/map.vue";
+import Map from "../components/Map/Map.vue";
 
 export default {
   name: "Home",

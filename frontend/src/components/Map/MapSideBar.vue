@@ -1,27 +1,26 @@
 <template>
-  <div id="navbar">
-    <!-- Navigation Drawer -->
+  <div id="sidebar">
     <v-navigation-drawer absolute permanent left height="100vh" width="40vh">
-      <MapSearch />
-      <MapFeedCards />
+      <MapSideBarSearch />
+      <MapSideBarFeeds />
     </v-navigation-drawer>
   </div>
 </template>
 
 <script>
-import MapSearch from "./mapNavBarSearch.vue";
-import MapFeedCards from "./mapNavBarFeedCards.vue";
+import MapSideBarSearch from "./MapSideBarSearch.vue";
+import MapSideBarFeeds from "./MapSideBarFeeds.vue";
 
 export default {
   components: {
-    MapSearch,
-    MapFeedCards,
+    MapSideBarSearch,
+    MapSideBarFeeds,
   },
 };
 </script>
 
 <style scoped>
-#navbar {
+#sidebar {
   z-index: 1;
 }
 </style>
