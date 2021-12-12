@@ -2,10 +2,11 @@
   <div data-app>
     <v-autocomplete
       v-model="select"
-      :items="items"
-      item-text="address_name"
       :loading="isLoading"
       :search-input.sync="search"
+      :items="items"
+      item-text="address_name"
+      return-object
       no-filter
       clearable
       solo
