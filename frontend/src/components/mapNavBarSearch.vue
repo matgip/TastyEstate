@@ -47,6 +47,13 @@ export default {
     select: null,
   }),
   watch: {
+    select(selcted) {
+      // TODO: We need to push this selected area 
+      // to vuex store to find the nearest estates 
+      // and print the estates to map
+      // Currently we can get (langtitude, latitude) from the selected object
+      console.log(selcted);
+    },
     search(keyWord) {
       if (!keyWord) return;
       if (keyWord === this.select) return;
