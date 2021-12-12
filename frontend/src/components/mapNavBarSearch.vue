@@ -5,7 +5,7 @@
       :loading="isLoading"
       :search-input.sync="search"
       :items="items"
-      item-text="address_name"
+      item-text="place_name"
       return-object
       no-filter
       clearable
@@ -25,13 +25,14 @@
           <v-icon left>
             fas fa-map-marked-alt
           </v-icon>
-          <span v-text="item.address_name"></span>
+          <span v-text="item.place_name"></span>
         </v-chip>
       </template>
-      <!-- Display search results -->
+      <!-- Display searched results -->
       <template v-slot:item="{ item }">
         <v-list-item-content>
-          <v-list-item-title v-text="item.address_name"></v-list-item-title>
+          <v-list-item-title v-text="item.place_name"></v-list-item-title>
+          <v-list-item-subtitle v-text="item.address_name"></v-list-item-subtitle>
         </v-list-item-content>
       </template>
     </v-autocomplete>
@@ -48,10 +49,6 @@ export default {
   }),
   watch: {
     select(selcted) {
-      // TODO: We need to push this selected area 
-      // to vuex store to find the nearest estates 
-      // and print the estates to map
-      // Currently we can get (langtitude, latitude) from the selected object
       console.log(selcted);
     },
     search(keyWord) {
@@ -69,7 +66,7 @@ export default {
         Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
       };
       fetch(
-        `https://dapi.kakao.com/v2/local/search/address.json?query=${keyWord}`,
+        `https://dapi.kakao.com/v2/local/search/keyword.json?query=${keyWord}&category_group_code=AG2&radius=20000`,
         { headers }
       )
         .then((res) => res.clone().json())
