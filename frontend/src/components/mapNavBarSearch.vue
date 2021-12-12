@@ -32,7 +32,9 @@
       <template v-slot:item="{ item }">
         <v-list-item-content>
           <v-list-item-title v-text="item.place_name"></v-list-item-title>
-          <v-list-item-subtitle v-text="item.address_name"></v-list-item-subtitle>
+          <v-list-item-subtitle
+            v-text="item.address_name"
+          ></v-list-item-subtitle>
         </v-list-item-content>
       </template>
     </v-autocomplete>
