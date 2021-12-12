@@ -1,23 +1,27 @@
 <template>
   <div data-app>
-    <!-- Search Estate -->
     <v-autocomplete
+      v-model="select"
       :items="items"
       :loading="isLoading"
       :search-input.sync="search"
-      chips
-      clearable
+      no-filter
+      class="mx-4"
+      flat
+      hide-no-data
       hide-details
-      hide-selected
-      item-text="name"
-      item-value="symbol"
       label="지역 또는 단지명을 입력하세요."
       solo
     >
+      <!-- Display search results -->
       <template v-slot:item="{ item }">
         <v-list-item-content>
-          <v-list-item-title v-text="item.address_name"></v-list-item-title>
-          <v-list-item-subtitle v-text="item.address_name"></v-list-item-subtitle>
+          <v-list-item-title 
+            v-text="item.address_name"
+          ></v-list-item-title>
+          <v-list-item-subtitle
+            v-text="item.address_name"
+          ></v-list-item-subtitle>
         </v-list-item-content>
       </template>
     </v-autocomplete>
@@ -30,11 +34,17 @@ export default {
     isLoading: false,
     items: [],
     search: null,
+    select: null,
   }),
   watch: {
     search(keyWord) {
+      keyWord && keyWord !== this.select && this.querySelection(keyWord);
+    },
+  },
+  methods: {
+    querySelection(keyWord) {
       this.isLoading = true;
-      // Lazily load input items
+
       const headers = {
         Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
       };
