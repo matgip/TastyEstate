@@ -3,6 +3,7 @@
     <v-autocomplete
       v-model="select"
       :items="items"
+      item-text="address_name"
       :loading="isLoading"
       :search-input.sync="search"
       no-filter
