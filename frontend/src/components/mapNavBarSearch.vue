@@ -6,22 +6,30 @@
       :loading="isLoading"
       :search-input.sync="search"
       no-filter
-      class="mx-4"
-      flat
-      hide-no-data
-      hide-details
-      label="지역 또는 단지명을 입력하세요."
+      clearable
       solo
+      class="mx-4"
+      label="지역 또는 단지명을 입력하세요."
     >
+      <!-- Selected region -->
+      <template v-slot:selection="{ attr, on, item, selected }">
+        <v-chip
+          v-bind="attr"
+          :input-value="selected"
+          color="blue-grey"
+          class="white--text"
+          v-on="on"
+        >
+          <v-icon left>
+            fas fa-map-marked-alt
+          </v-icon>
+          <span v-text="item.address_name"></span>
+        </v-chip>
+      </template>
       <!-- Display search results -->
       <template v-slot:item="{ item }">
         <v-list-item-content>
-          <v-list-item-title 
-            v-text="item.address_name"
-          ></v-list-item-title>
-          <v-list-item-subtitle
-            v-text="item.address_name"
-          ></v-list-item-subtitle>
+          <v-list-item-title v-text="item.address_name"></v-list-item-title>
         </v-list-item-content>
       </template>
     </v-autocomplete>
@@ -38,7 +46,10 @@ export default {
   }),
   watch: {
     search(keyWord) {
-      keyWord && keyWord !== this.select && this.querySelection(keyWord);
+      if (!keyWord) return;
+      if (keyWord === this.select) return;
+
+      this.querySelection(keyWord);
     },
   },
   methods: {
