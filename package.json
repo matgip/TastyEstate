@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4"
+  },
+  "dependencies": {
+    "vuex": "^3.6.2"
   }
 }

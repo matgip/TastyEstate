@@ -32,14 +32,20 @@ export default {
     search: null,
   }),
   watch: {
-    search(val) {
-      console.log(val);
+    search(keyWord) {
+      console.log(keyWord);
       this.isLoading = true;
       // Lazily load input items
-      fetch("https://api.coingecko.com/api/v3/coins/list")
+      const headers = {
+        Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
+      };
+      fetch(
+        `https://dapi.kakao.com/v2/local/search/address.json?query=${keyWord}`,
+        { headers }
+      )
         .then((res) => res.clone().json())
         .then((res) => {
-          this.items = res;
+          this.items.push(res);
         })
         .catch((err) => {
           console.log(err);

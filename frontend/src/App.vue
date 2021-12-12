@@ -7,7 +7,9 @@
 
       <v-btn class="ma-2" outlined small @click="gotoHome">
         HOME
-        <v-icon right>fas fa-home</v-icon>
+        <v-icon right>
+          fas fa-home
+        </v-icon>
       </v-btn>
     </v-app-bar>
 
