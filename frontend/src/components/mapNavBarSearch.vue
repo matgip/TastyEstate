@@ -16,8 +16,8 @@
     >
       <template v-slot:item="{ item }">
         <v-list-item-content>
-          <v-list-item-title v-text="item.name"></v-list-item-title>
-          <v-list-item-subtitle v-text="item.symbol"></v-list-item-subtitle>
+          <v-list-item-title v-text="item.address_name"></v-list-item-title>
+          <v-list-item-subtitle v-text="item.address_name"></v-list-item-subtitle>
         </v-list-item-content>
       </template>
     </v-autocomplete>
@@ -33,7 +33,6 @@ export default {
   }),
   watch: {
     search(keyWord) {
-      console.log(keyWord);
       this.isLoading = true;
       // Lazily load input items
       const headers = {
@@ -45,7 +44,7 @@ export default {
       )
         .then((res) => res.clone().json())
         .then((res) => {
-          this.items.push(res);
+          this.items = res.documents;
         })
         .catch((err) => {
           console.log(err);
