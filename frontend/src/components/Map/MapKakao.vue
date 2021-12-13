@@ -24,9 +24,15 @@ export default {
     this.$store.commit("updateKakaoMap", this.map);
     this.$store.subscribe((mutation) => {
       if (mutation.type == "updateEstateZoom") {
-        const zommer = this.$store.getters.estateZoom;
+        const estate = this.$store.getters.estateZoom;
+        const position = new kakao.maps.LatLng(estate.y, estate.x);
         this.map.setLevel(3);
-        this.map.setCenter(new kakao.maps.LatLng(zommer.y, zommer.x));
+        this.map.setCenter(position);
+
+        const marker = new kakao.maps.Marker({
+          position: position,
+        });
+        marker.setMap(this.map);
       }
     });
   },
