@@ -13,7 +13,7 @@
       class="mx-4"
       label="지역 또는 단지명을 입력하세요."
     >
-      <!-- Selected region -->
+      <!-- Selected Real Estate -->
       <template v-slot:selection="{ attr, on, item, selected }">
         <v-chip
           v-bind="attr"
@@ -22,20 +22,15 @@
           class="white--text"
           v-on="on"
         >
-          <v-icon left>
-            fas fa-map-marked-alt
-          </v-icon>
-          <span v-text="item.place_name"></span>
+          <v-icon left>fas fa-map-marked-alt</v-icon>
+          <span v-text="item.place_name" />
         </v-chip>
       </template>
-
-      <!-- Display searched results -->
+      <!-- Real Estates Near Search Keyword -->
       <template v-slot:item="{ item }">
         <v-list-item-content>
-          <v-list-item-title v-text="item.place_name"></v-list-item-title>
-          <v-list-item-subtitle
-            v-text="item.address_name"
-          ></v-list-item-subtitle>
+          <v-list-item-title v-text="item.place_name" />
+          <v-list-item-subtitle v-text="item.address_name" />
         </v-list-item-content>
       </template>
     </v-autocomplete>
