@@ -26,6 +26,7 @@
           <span v-text="item.place_name" />
         </v-chip>
       </template>
+
       <!-- Real Estates Near Search Keyword -->
       <template v-slot:item="{ item }">
         <v-list-item-content>
@@ -48,7 +49,6 @@ export default {
   watch: {
     select(selected) {
       if (!selected) return;
-      console.log(selected);
       this.$store.commit("updateSelectedEstate", selected);
     },
     search(keyWord) {

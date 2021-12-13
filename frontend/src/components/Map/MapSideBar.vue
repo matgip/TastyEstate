@@ -1,20 +1,20 @@
 <template>
   <div id="sidebar">
     <v-navigation-drawer absolute permanent left height="100vh" width="40vh">
-      <MapSideBarSearch />
-      <MapSideBarFeeds />
+      <Search />
+      <Card />
     </v-navigation-drawer>
   </div>
 </template>
 
 <script>
-import MapSideBarSearch from "./MapSideBarSearch.vue";
-import MapSideBarFeeds from "./MapSideBarFeeds.vue";
+import Search from "../Search/Search.vue";
+import Card from "../Card/Card.vue";
 
 export default {
   components: {
-    MapSideBarSearch,
-    MapSideBarFeeds,
+    Search,
+    Card,
   },
 };
 </script>
