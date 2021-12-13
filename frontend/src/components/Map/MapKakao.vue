@@ -4,8 +4,52 @@
 
 <script>
 export default {
+  data: () => ({
+    map: null,
+  }),
   mounted() {
-    this.$store.dispatch("loadKakaoMap");
+    if (window.kakao && window.kakao.maps) {
+      this.initMap();
+    } else {
+      const script = document.createElement("script");
+      /* global kakao */
+      script.onload = () => {
+        kakao.maps.load(this.initMap);
+      };
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
+        process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY;
+      document.head.appendChild(script);
+    }
+    this.$store.commit("updateKakaoMap", this.map);
+    this.$store.subscribe((mutation) => {
+      if (mutation.type == "updateEstateZoom") {
+        const zommer = this.$store.getters.estateZoom;
+        this.map.setLevel(3);
+        this.map.setCenter(new kakao.maps.LatLng(zommer.y, zommer.x));
+      }
+    });
+  },
+  methods: {
+    initMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(37.2579324408187, 127.059981890576),
+        level: 5,
+      };
+      this.map = new kakao.maps.Map(container, options);
+
+      // Display terrain information on the map
+      this.map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
+
+      // Switch map types between normal maps and skyview
+      const mapTypeControl = new kakao.maps.MapTypeControl();
+      this.map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+      // Control the zoom in and out of the map
+      const zoomControl = new kakao.maps.ZoomControl();
+      this.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+    },
   },
 };
 </script>

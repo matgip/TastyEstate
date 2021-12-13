@@ -28,6 +28,7 @@
           <span v-text="item.place_name"></span>
         </v-chip>
       </template>
+
       <!-- Display searched results -->
       <template v-slot:item="{ item }">
         <v-list-item-content>
@@ -50,13 +51,13 @@ export default {
     select: null,
   }),
   watch: {
-    select(selcted) {
-      console.log(selcted);
+    select(selected) {
+      if (!selected) return;
+      this.$store.commit("updateEstateZoom", selected);
     },
     search(keyWord) {
       if (!keyWord) return;
       if (keyWord === this.select) return;
-
       this.querySelection(keyWord);
     },
   },
