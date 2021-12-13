@@ -6,16 +6,16 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     map: null,
-    estateZoom: {},
+    etate: {},
   },
   getters: {
-    estateZoom(state) {
-      return state.estateZoom;
+    getSelectedEstate(state) {
+      return state.etate;
     },
   },
   mutations: {
-    updateEstateZoom(state, estateZoom) {
-      state.estateZoom = estateZoom;
+    updateSelectedEstate(state, etate) {
+      state.etate = etate;
     },
     updateKakaoMap(state, map) {
       state.map = map;

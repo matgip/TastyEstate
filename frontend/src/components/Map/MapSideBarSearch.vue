@@ -48,7 +48,8 @@ export default {
   watch: {
     select(selected) {
       if (!selected) return;
-      this.$store.commit("updateEstateZoom", selected);
+      console.log(selected);
+      this.$store.commit("updateSelectedEstate", selected);
     },
     search(keyWord) {
       if (!keyWord) return;

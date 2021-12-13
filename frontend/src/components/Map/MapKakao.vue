@@ -23,8 +23,8 @@ export default {
     }
     this.$store.commit("updateKakaoMap", this.map);
     this.$store.subscribe((mutation) => {
-      if (mutation.type == "updateEstateZoom") {
-        const estate = this.$store.getters.estateZoom;
+      if (mutation.type == "updateSelectedEstate") {
+        const estate = this.$store.getters.getSelectedEstate;
         const position = new kakao.maps.LatLng(estate.y, estate.x);
         this.map.setLevel(3);
         this.map.setCenter(position);
