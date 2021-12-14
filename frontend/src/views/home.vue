@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-app>
     <Map />
-  </div>
+  </v-app>
 </template>
 
 <script>
