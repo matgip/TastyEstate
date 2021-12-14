@@ -1,6 +1,6 @@
 <template>
   <div id="sidebar">
-    <v-navigation-drawer absolute permanent left height="100vh" width="40vh">
+    <v-navigation-drawer height="100vh" width="40vh" left absolute permanent>
       <Search />
       <Card />
     </v-navigation-drawer>

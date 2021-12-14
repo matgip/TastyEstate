@@ -1,34 +1,38 @@
 <template>
   <div data-app>
+    <!-- Search Bar -->
     <v-autocomplete
-      v-model="select"
+      :items="items"
       :loading="isLoading"
       :search-input.sync="search"
-      :items="items"
-      item-text="place_name"
-      return-object
-      no-filter
-      clearable
-      solo
       class="mx-4"
+      color="orange"
+      v-model="select"
+      item-text="place_name"
       label="지역 또는 단지명을 입력하세요."
+      solo
+      clearable
+      no-filter
+      return-object
     >
-      <!-- Selected Real Estate -->
+      <!-- Selected real estate -->
       <template v-slot:selection="{ attr, on, item, selected }">
+        <!-- Selected real estate v-chip  -->
         <v-chip
-          v-bind="attr"
           :input-value="selected"
-          color="blue-grey"
-          class="white--text"
           v-on="on"
+          v-bind="attr"
+          color="orange"
+          class="white--text"
         >
-          <v-icon left>fas fa-map-marked-alt</v-icon>
+          <v-icon left small>fas fa-map-marked-alt</v-icon>
           <span v-text="item.place_name" />
         </v-chip>
       </template>
 
-      <!-- Real Estates Near Search Keyword -->
+      <!-- Real Estates near search keyword -->
       <template v-slot:item="{ item }">
+        <!-- List of searched real estate results -->
         <v-list-item-content>
           <v-list-item-title v-text="item.place_name" />
           <v-list-item-subtitle v-text="item.address_name" />
