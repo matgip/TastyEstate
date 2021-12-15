@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card v-if="Object.keys(estate).length !== 0">
       <!-- image -->
       <v-img height="250" src=""></v-img>
 
@@ -53,13 +53,11 @@
       <!-- Detail real estate informations -->
       <v-card-text>
         <div>
-          <v-icon v-if="estate.address_name" x-small
-            >fas fa-map-marker-alt</v-icon
-          >
+          <v-icon x-small>fas fa-map-marker-alt</v-icon>
           {{ estate.address_name }}
         </div>
         <div>
-          <v-icon v-if="estate.phone" x-small>fas fa-book</v-icon>
+          <v-icon x-small>fas fa-book</v-icon>
           {{ estate.phone }}
         </div>
       </v-card-text>

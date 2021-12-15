@@ -31,6 +31,7 @@ export default {
 
         const marker = new kakao.maps.Marker({
           position: position,
+          title: estate.place_name
         });
         marker.setMap(this.map);
       }
