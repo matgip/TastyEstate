@@ -6,7 +6,7 @@
       :loading="isLoading"
       :search-input.sync="search"
       class="mx-4"
-      color="orange"
+      color="deep-orange"
       v-model="select"
       item-text="place_name"
       label="지역 또는 단지명을 입력하세요."
@@ -19,10 +19,11 @@
       <template v-slot:selection="{ attr, on, item, selected }">
         <!-- Selected real estate v-chip  -->
         <v-chip
+          small
           :input-value="selected"
           v-on="on"
           v-bind="attr"
-          color="orange"
+          color="deep-orange"
           class="white--text"
         >
           <v-icon left small>fas fa-map-marked-alt</v-icon>
