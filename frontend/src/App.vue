@@ -4,12 +4,11 @@
       <v-toolbar-title>Tasty estate</v-toolbar-title>
 
       <v-spacer />
-
-      <v-btn depressed>
+      <v-btn x-small depressed>
         로그인
         <v-icon right>fas fa-user-lock</v-icon>
       </v-btn>
-      <v-btn depressed @click="gotoHome">
+      <v-btn x-small depressed @click="gotoHome">
         HOME
         <v-icon right>fas fa-home</v-icon>
       </v-btn>
