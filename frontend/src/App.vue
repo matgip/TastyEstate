@@ -5,7 +5,11 @@
 
       <v-spacer />
 
-      <v-btn @click="gotoHome">
+      <v-btn depressed>
+        로그인
+        <v-icon right>fas fa-user-lock</v-icon>
+      </v-btn>
+      <v-btn depressed @click="gotoHome">
         HOME
         <v-icon right>fas fa-home</v-icon>
       </v-btn>
