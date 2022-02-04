@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app>
-      <v-toolbar-title>Tasty estate</v-toolbar-title>
+      <div id="title">Tasty estate</div>
 
       <v-spacer />
       <v-btn x-small depressed @click="loginWithKakao">
@@ -37,9 +37,32 @@ export default {
         },
       });
     },
+    KakaoLogout() {
+      if (window.Kakao.Auth.getAccessToken()) {
+        window.Kakao.API.request({
+          url: "/v1/user/unlink",
+          success: function(response) {
+            console.log(response);
+          },
+          fail: function(error) {
+            console.log(error);
+          },
+        });
+        window.Kakao.Auth.setAccessToken(undefined);
+      }
+    },
     gotoHome() {
       this.$router.push({ name: "home" });
     },
   },
 };
 </script>
+
+<style scoped>
+#title {
+  color: orange;
+  font-style: oblique;
+  font-size: 26px;
+  font-weight: 600;
+}
+</style>
