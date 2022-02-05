@@ -32,7 +32,7 @@
       <!-- Buttons -->
       <v-card-text>
         <!--  Like button -->
-        <v-btn class="ma-2" color="orange" x-small outlined rounded>
+        <v-btn class="ma-2" color="deep-orange" x-small outlined rounded>
           <v-icon left x-small>
             fas fa-heart
           </v-icon>
@@ -40,7 +40,7 @@
         </v-btn>
 
         <!-- Edit button -->
-        <v-btn class="ma-2" color="orange" x-small outlined rounded>
+        <v-btn class="ma-2" color="deep-orange" x-small outlined rounded>
           <v-icon left x-small>
             fas fa-edit
           </v-icon>

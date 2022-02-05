@@ -1,23 +1,25 @@
 <template>
   <div>
-    <v-app-bar app>
-      <v-toolbar-title>Tasty estate</v-toolbar-title>
+    <v-app>
+      <v-app-bar app rounded elevate-on-scroll class="wrapper">
+        <div id="title">Tasty estate</div>
 
-      <v-spacer />
+        <v-spacer />
 
-      <v-btn depressed>
-        로그인
-        <v-icon right>fas fa-user-lock</v-icon>
-      </v-btn>
-      <v-btn depressed @click="gotoHome">
-        HOME
-        <v-icon right>fas fa-home</v-icon>
-      </v-btn>
-    </v-app-bar>
+        <v-btn x-small plain depressed color="deep-orange" @click="gotoLogin">
+          로그인
+          <v-icon right>fas fa-user-lock</v-icon>
+        </v-btn>
+        <v-btn x-small plain depressed color="deep-orange" @click="gotoHome">
+          홈
+          <v-icon right>fas fa-home</v-icon>
+        </v-btn>
+      </v-app-bar>
 
-    <v-main>
-      <router-view :key="$route.fullPath"></router-view>
-    </v-main>
+      <v-main>
+        <router-view :key="$route.fullPath"></router-view>
+      </v-main>
+    </v-app>
   </div>
 </template>
 
@@ -28,9 +30,21 @@ export default {
     //
   }),
   methods: {
+    gotoLogin() {
+      this.$router.push({ name: "login" });
+    },
     gotoHome() {
       this.$router.push({ name: "home" });
     },
   },
 };
 </script>
+
+<style scoped>
+#title {
+  color: #ff5722;
+  font-style: oblique;
+  font-size: 26px;
+  font-weight: 600;
+}
+</style>

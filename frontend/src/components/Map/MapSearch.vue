@@ -6,23 +6,26 @@
       :loading="isLoading"
       :search-input.sync="search"
       class="mx-4"
-      color="orange"
+      color="deep-orange"
       v-model="select"
       item-text="place_name"
+      prepend-icon="fas fa-search"
       label="지역 또는 단지명을 입력하세요."
-      solo
+      dense
       clearable
       no-filter
+      solo-inverted
       return-object
     >
       <!-- Selected real estate -->
       <template v-slot:selection="{ attr, on, item, selected }">
         <!-- Selected real estate v-chip  -->
         <v-chip
+          small
           :input-value="selected"
           v-on="on"
           v-bind="attr"
-          color="orange"
+          color="deep-orange"
           class="white--text"
         >
           <v-icon left small>fas fa-map-marked-alt</v-icon>
