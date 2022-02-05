@@ -1,7 +1,5 @@
 <template>
   <div>
-    <div class="seperator"></div>
-
     <v-container fluid>
       <v-layout column align-center justify-center>
         <v-flex>
