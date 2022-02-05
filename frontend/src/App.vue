@@ -5,13 +5,7 @@
         <div id="title">Tasty estate</div>
 
         <v-spacer />
-        <v-btn
-          small
-          plain
-          depressed
-          color="deep-orange"
-          @click="loginWithKakao"
-        >
+        <v-btn small plain depressed color="deep-orange" @click="gotoLogin">
           로그인
           <v-icon right>fas fa-user-lock</v-icon>
         </v-btn>
@@ -35,29 +29,8 @@ export default {
     //
   }),
   methods: {
-    loginWithKakao() {
-      window.Kakao.Auth.login({
-        success: function(authObj) {
-          alert(JSON.stringify(authObj));
-        },
-        fail: function(err) {
-          alert(JSON.stringify(err));
-        },
-      });
-    },
-    KakaoLogout() {
-      if (window.Kakao.Auth.getAccessToken()) {
-        window.Kakao.API.request({
-          url: "/v1/user/unlink",
-          success: function(response) {
-            console.log(response);
-          },
-          fail: function(error) {
-            console.log(error);
-          },
-        });
-        window.Kakao.Auth.setAccessToken(undefined);
-      }
+    gotoLogin() {
+      this.$router.push({ name: "login" });
     },
     gotoHome() {
       this.$router.push({ name: "home" });

@@ -2,3 +2,9 @@ body {
   font-family: "Open Sans", sans-serif;
   cursor: default;
 }
+
+.seperator {
+  width: 400px;
+  margin: 40px auto;
+  border-bottom: solid 1px #dcdcdc;
+}

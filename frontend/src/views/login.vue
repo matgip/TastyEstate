@@ -1,15 +1,14 @@
 <template>
   <v-app>
-    <Map />
+    <Login />
   </v-app>
 </template>
 
 <script>
-import Map from "../components/Map/Map.vue";
-
+import Login from "../components/Login/Login.vue";
 export default {
   components: {
-    Map,
+    Login,
   },
 };
 </script>
