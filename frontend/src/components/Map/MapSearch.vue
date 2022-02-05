@@ -9,10 +9,12 @@
       color="deep-orange"
       v-model="select"
       item-text="place_name"
+      prepend-icon="fas fa-search"
       label="지역 또는 단지명을 입력하세요."
-      solo
+      dense
       clearable
       no-filter
+      solo-inverted
       return-object
     >
       <!-- Selected real estate -->

@@ -1,16 +1,16 @@
 <template>
   <div>
     <v-app>
-      <v-app-bar app class="wrapper">
+      <v-app-bar app rounded elevate-on-scroll class="wrapper">
         <div id="title">Tasty estate</div>
 
         <v-spacer />
 
-        <v-btn small plain depressed color="deep-orange" @click="gotoLogin">
+        <v-btn x-small plain depressed color="deep-orange" @click="gotoLogin">
           로그인
           <v-icon right>fas fa-user-lock</v-icon>
         </v-btn>
-        <v-btn small plain depressed color="deep-orange" @click="gotoHome">
+        <v-btn x-small plain depressed color="deep-orange" @click="gotoHome">
           홈
           <v-icon right>fas fa-home</v-icon>
         </v-btn>
