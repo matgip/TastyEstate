@@ -1,5 +1,7 @@
 <template>
-  <div id="mapcontainer">
+  <div id="mapcontainer" class="wrapper">
+    <div class="space" />
+
     <MapSearch />
     <MapCard />
     <MapKakao />
@@ -25,5 +27,9 @@ export default {
   position: relative;
   width: 100%;
   height: calc(100vh - 64px);
+}
+
+.space {
+  margin: 20px auto;
 }
 </style>
