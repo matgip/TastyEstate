@@ -18,11 +18,18 @@ export default {
   methods: {
     loginWithKakao() {
       window.Kakao.Auth.login({
-        success: function(authObj) {
-          alert(JSON.stringify(authObj));
-        },
-        fail: function(err) {
-          alert(JSON.stringify(err));
+        scope: "profile_nickname, profile_image, account_email, gender",
+        success: this.getProfile,
+      });
+    },
+    getProfile(authObj) {
+      console.log(authObj);
+      window.Kakao.API.request({
+        url: "/v2/user/me",
+        success: (res) => {
+          console.log(res);
+
+          alert("로그인 성공");
         },
       });
     },
