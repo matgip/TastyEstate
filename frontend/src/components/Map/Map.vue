@@ -1,17 +1,20 @@
 <template>
   <div id="mapcontainer">
-    <MapSideBar />
+    <MapSearch />
+    <MapCard />
     <MapKakao />
   </div>
 </template>
 
 <script>
-import MapSideBar from "./MapSideBar.vue";
+import MapSearch from "./MapSearch.vue";
+import MapCard from "./MapCard.vue";
 import MapKakao from "./MapKakao.vue";
 
 export default {
   components: {
-    MapSideBar,
+    MapSearch,
+    MapCard,
     MapKakao,
   },
 };

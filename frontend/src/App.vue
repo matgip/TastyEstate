@@ -5,6 +5,7 @@
         <div id="title">Tasty estate</div>
 
         <v-spacer />
+
         <v-btn small plain depressed color="deep-orange" @click="gotoLogin">
           로그인
           <v-icon right>fas fa-user-lock</v-icon>
