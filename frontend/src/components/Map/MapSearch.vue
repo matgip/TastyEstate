@@ -5,17 +5,17 @@
       :items="items"
       :loading="isLoading"
       :search-input.sync="search"
+      dense
+      clearable
+      no-filter
+      solo-inverted
+      return-object
       class="mx-4"
       color="deep-orange"
       v-model="select"
       item-text="place_name"
       prepend-icon="fas fa-search"
       label="지역 또는 단지명을 입력하세요."
-      dense
-      clearable
-      no-filter
-      solo-inverted
-      return-object
     >
       <!-- Selected real estate -->
       <template v-slot:selection="{ attr, on, item, selected }">

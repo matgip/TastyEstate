@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-layout column align-center justify-center>
         <v-flex>
-          <v-btn color="yellow lighten-1" @click="loginWithKakao">
+          <v-btn color="yellow lighten-1" @click="KakaoLogin">
             <v-icon left>fas fa-comment</v-icon>
             카카오 로그인
           </v-btn>
@@ -14,31 +14,59 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   methods: {
-    loginWithKakao() {
+    KakaoLogin() {
       window.Kakao.Auth.login({
-        success: function(authObj) {
-          alert(JSON.stringify(authObj));
-        },
-        fail: function(err) {
-          alert(JSON.stringify(err));
+        scope: "profile_nickname, profile_image, account_email, gender",
+        success: this.getProfile,
+        fail: (err) => {
+          console.log(err);
         },
       });
     },
+    getProfile(authObj) {
+      console.log(authObj);
+
+      window.Kakao.API.request({
+        url: "/v2/user/me",
+        success: (profile) => {
+          this.updateDb(profile);
+        },
+        fail: (err) => {
+          console.log(err);
+        },
+      });
+    },
+    updateDb(profile) {
+      axios
+        .post("/api/users", {
+          email: profile.kakao_account.email,
+          nickname: profile.kakao_account.profile.nickname,
+        })
+        .then(({ data }) => {
+          console.log(data);
+        })
+        .catch((err) => console.log(err));
+    },
     KakaoLogout() {
-      if (window.Kakao.Auth.getAccessToken()) {
-        window.Kakao.API.request({
-          url: "/v1/user/unlink",
-          success: function(response) {
-            console.log(response);
-          },
-          fail: function(error) {
-            console.log(error);
-          },
-        });
-        window.Kakao.Auth.setAccessToken(undefined);
+      if (!window.Kakao.Auth.getAccessToken()) {
+        console.log("Not logged in");
+        return;
       }
+
+      window.Kakao.API.request({
+        url: "/v2/user/unlink",
+        success: (response) => {
+          console.log(response);
+        },
+        fail: (error) => {
+          console.log(error);
+        },
+      });
+      window.Kakao.Auth.setAccessToken(undefined);
     },
   },
 };
