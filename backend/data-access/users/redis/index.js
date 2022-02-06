@@ -7,7 +7,7 @@ let addUser = async (profile) => {
     await client.HSET(profile.email, "nickname", profile.nickname);
     await client.disconnect();
   } catch (err) {
-    console.error(err);
+    throw err;
   }
 };
 

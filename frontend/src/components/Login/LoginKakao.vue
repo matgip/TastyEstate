@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-layout column align-center justify-center>
         <v-flex>
-          <v-btn color="yellow lighten-1" @click="KakaoLogin">
+          <v-btn color="yellow lighten-1" @click="login">
             <v-icon left>fas fa-comment</v-icon>
             카카오 로그인
           </v-btn>
@@ -18,18 +18,19 @@ import axios from "axios";
 
 export default {
   methods: {
-    KakaoLogin() {
+    login() {
       window.Kakao.Auth.login({
         scope: "profile_nickname, profile_image, account_email, gender",
-        success: this.getProfile,
+        success: (authObj) => {
+          console.log(authObj);
+          this.getProfile();
+        },
         fail: (err) => {
           console.log(err);
         },
       });
     },
-    getProfile(authObj) {
-      console.log(authObj);
-
+    getProfile() {
       window.Kakao.API.request({
         url: "/v2/user/me",
         success: (profile) => {
@@ -49,9 +50,11 @@ export default {
         .then(({ data }) => {
           console.log(data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    KakaoLogout() {
+    logOut() {
       if (!window.Kakao.Auth.getAccessToken()) {
         console.log("Not logged in");
         return;

@@ -7,13 +7,15 @@ let users = (module.exports = {});
 users.getUser = (req, res, next) => {
   res.send("respond with a resource");
 };
-users.addUser = (req, res, next) => {
+users.addUser = (req, res) => {
   usersDb
     .addUser(req.body)
     .then((data) => {
       res.send(data);
     })
-    .catch(next);
+    .catch((err) => {
+      res.send(err);
+    });
 };
 
 router.get("/", users.getUser);
