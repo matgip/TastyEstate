@@ -44,7 +44,7 @@ export default {
 #title {
   color: #ff5722;
   font-style: oblique;
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 30px;
+  font-weight: 500;
 }
 </style>
