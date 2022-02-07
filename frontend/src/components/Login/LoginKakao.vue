@@ -17,9 +17,6 @@
 import axios from "axios";
 
 export default {
-  data: () => ({
-    isLoggedIn: false,
-  }),
   methods: {
     login() {
       window.Kakao.Auth.login({
@@ -28,21 +25,19 @@ export default {
           console.log(authObj);
           this.getProfile();
         },
-        fail: (err) => {
-          console.log(err);
-        },
+        fail: (err) => console.log(err),
       });
     },
     getProfile() {
       window.Kakao.API.request({
         url: "/v2/user/me",
         success: (profile) => {
-          this.isLoggedIn = true;
           this.updateDb(profile);
+          this.$store.commit("updateUser", profile.kakao_account);
+          // If successfully logged in, then redirect to home
+          this.$router.push({ path: "/" });
         },
-        fail: (err) => {
-          console.log(err);
-        },
+        fail: (err) => console.log(err),
       });
     },
     updateDb(profile) {
@@ -51,30 +46,8 @@ export default {
           email: profile.kakao_account.email,
           nickname: profile.kakao_account.profile.nickname,
         })
-        .then(({ data }) => {
-          console.log(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    logOut() {
-      if (!window.Kakao.Auth.getAccessToken()) {
-        console.log("Not logged in");
-        return;
-      }
-
-      window.Kakao.API.request({
-        url: "/v2/user/unlink",
-        success: (response) => {
-          this.isLoggedIn = false;
-          console.log(response);
-        },
-        fail: (error) => {
-          console.log(error);
-        },
-      });
-      window.Kakao.Auth.setAccessToken(undefined);
+        .then(({ data }) => console.log(data))
+        .catch((err) => console.log(err));
     },
   },
 };
