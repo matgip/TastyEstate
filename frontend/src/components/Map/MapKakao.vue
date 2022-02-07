@@ -63,6 +63,20 @@ export default {
       kakao.maps.event.addListener(window.map, "dragend", scan);
       kakao.maps.event.addListener(window.map, "zoom_changed", scan);
 
+      function scan() {
+        let level = window.map.getLevel();
+        let latlng = window.map.getCenter();
+        let lat = Math.round(latlng.getLat() * 100) / 100;
+        let lng = Math.round(latlng.getLng() * 100) / 100;
+        if (level < 7) {
+          for (let i = -1; i < 2; i++) {
+            for (let j = -1; j < 2; j++) {
+              searchAgency((lat + i / 100).toFixed(2), (lng + j / 100).toFixed(2));
+            }
+          }
+        }
+      }
+
       function searchAgency(lat, lng) {
         if (window.scannedLatlng[lat] == null) {
           window.scannedLatlng[lat] = new Array();
@@ -70,8 +84,6 @@ export default {
 
         if (window.scannedLatlng[lat][lng] == null) {
           window.scannedLatlng[lat][lng] = 1;
-
-          // console.log("search 위도 " + lat + ", 경도 " + lng);
 
           ps.categorySearch("AG2", placesSearchCallback, { x: lng, y: lat, radius: 710 });
           // 지도에 표시할 원을 생성합니다
@@ -88,24 +100,9 @@ export default {
 
           // 지도에 원을 표시합니다
           circle.setMap(window.map);
-        } else {
-          // console.log("not search 위도 " + lat + ", 경도 " + lng);
         }
       }
 
-      function scan() {
-        let level = window.map.getLevel();
-        let latlng = window.map.getCenter();
-        let lat = Math.round(latlng.getLat() * 100) / 100;
-        let lng = Math.round(latlng.getLng() * 100) / 100;
-        if (level < 7) {
-          for (let i = -1; i < 2; i++) {
-            for (let j = -1; j < 2; j++) {
-              searchAgency((lat + i / 100).toFixed(2), (lng + j / 100).toFixed(2));
-            }
-          }
-        }
-      }
       // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
       function placesSearchCallback(data, status, pagination) {
         if (status === kakao.maps.services.Status.OK) {

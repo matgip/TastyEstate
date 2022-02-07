@@ -7,16 +7,16 @@
         <v-spacer />
 
         <v-btn v-if="user.email == undefined" x-small plain depressed color="deep-orange" @click="gotoLogin">
+          <v-icon left>fas fa-user-lock</v-icon>
           로그인
-          <v-icon right>fas fa-user-lock</v-icon>
         </v-btn>
-        <v-btn v-else x-small plain depressed color="deep-orange" @click="logOut">
+        <v-btn v-else x-small plain depressed color="deep-orange" @click="logOutAndClearUserState">
+          <v-icon left>fas fa-sign-out-alt</v-icon>
           로그아웃
-          <v-icon right>fas fa-sign-out-alt</v-icon>
         </v-btn>
         <v-btn x-small plain depressed color="deep-orange" @click="gotoHome">
+          <v-icon left>fas fa-home</v-icon>
           홈
-          <v-icon right>fas fa-home</v-icon>
         </v-btn>
       </v-app-bar>
 
@@ -30,9 +30,7 @@
 <script>
 export default {
   name: "App",
-  data: () => ({
-    //
-  }),
+  data: () => ({}),
   computed: {
     user() {
       return this.$store.getters.getUser;
@@ -40,35 +38,40 @@ export default {
   },
   mounted() {
     if (!this.isLoggedIn()) {
-      this.$router.push({ path: "/login" });
+      this.gotoLogin();
     }
   },
   methods: {
     gotoLogin() {
-      this.$router.push({ name: "login" });
+      this.$router.push({ path: "/login" });
     },
     gotoHome() {
       if (!this.isLoggedIn()) {
-        alert("로그인 후, 사용가능합니다.");
-        this.$router.push({ path: "/login" });
-      } else {
-        this.$router.push({ name: "home" });
+        alert("로그인 후, 사용 가능합니다.");
+        return;
       }
+      this.$router.push({ path: "/" });
     },
-    logOut() {
+    logOutAndClearUserState() {
       this.kakaoLogout();
-      alert("로그아웃");
+      this.clearUserState();
+      // If logout was successful, go back to login
+      this.gotoLogin();
     },
     kakaoLogout() {
       if (!this.isLoggedIn()) {
         return;
       }
-
       window.Kakao.Auth.logout((response) => {
-        console.log(response);
-        this.$store.commit("updateUser", {});
-        this.$router.push({ path: "/login" });
+        if (response == true) {
+          alert("정상적으로 로그아웃 하였습니다.");
+        } else {
+          alert("로그아웃 실패.");
+        }
       });
+    },
+    clearUserState() {
+      this.$store.commit("updateUser", {});
     },
     isLoggedIn() {
       return this.user.email != undefined;

@@ -23,19 +23,19 @@ export default {
         scope: "profile_nickname, profile_image, account_email, gender",
         success: (authObj) => {
           console.log(authObj);
-          this.getProfile();
+          this.getUserProfile();
+          // If login was successful, goto home
+          this.$router.push({ path: "/" });
         },
         fail: (err) => console.log(err),
       });
     },
-    getProfile() {
+    getUserProfile() {
       window.Kakao.API.request({
         url: "/v2/user/me",
         success: (profile) => {
           this.updateDb(profile);
-          this.$store.commit("updateUser", profile.kakao_account);
-          // If successfully logged in, then redirect to home
-          this.$router.push({ path: "/" });
+          this.updateUserState(profile);
         },
         fail: (err) => console.log(err),
       });
@@ -48,6 +48,9 @@ export default {
         })
         .then(({ data }) => console.log(data))
         .catch((err) => console.log(err));
+    },
+    updateUserState(profile) {
+      this.$store.commit("updateUser", profile.kakao_account);
     },
   },
 };
