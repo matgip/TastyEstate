@@ -17,6 +17,9 @@
 import axios from "axios";
 
 export default {
+  data: () => ({
+    isLoggedIn: false,
+  }),
   methods: {
     login() {
       window.Kakao.Auth.login({
@@ -34,6 +37,7 @@ export default {
       window.Kakao.API.request({
         url: "/v2/user/me",
         success: (profile) => {
+          this.isLoggedIn = true;
           this.updateDb(profile);
         },
         fail: (err) => {
@@ -63,6 +67,7 @@ export default {
       window.Kakao.API.request({
         url: "/v2/user/unlink",
         success: (response) => {
+          this.isLoggedIn = false;
           console.log(response);
         },
         fail: (error) => {

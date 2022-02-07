@@ -5,6 +5,7 @@
       :items="items"
       :loading="isLoading"
       :search-input.sync="search"
+      :menu-props="{ maxHeight: 500 }"
       dense
       clearable
       no-filter
@@ -76,12 +77,8 @@ export default {
         { headers }
       )
         .then((res) => res.clone().json())
-        .then((res) => {
-          this.items = res.documents;
-        })
-        .catch((err) => {
-          console.log(err);
-        })
+        .then((res) => (this.items = res.documents))
+        .catch((err) => console.log(err))
         .finally(() => (this.isLoading = false));
     },
   },
