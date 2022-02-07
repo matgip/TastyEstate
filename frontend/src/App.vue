@@ -6,9 +6,27 @@
 
         <v-spacer />
 
-        <v-btn x-small plain depressed color="deep-orange" @click="gotoLogin">
+        <v-btn
+          v-if="user.email == undefined"
+          x-small
+          plain
+          depressed
+          color="deep-orange"
+          @click="gotoLogin"
+        >
           로그인
           <v-icon right>fas fa-user-lock</v-icon>
+        </v-btn>
+        <v-btn
+          v-else
+          x-small
+          plain
+          depressed
+          color="deep-orange"
+          @click="logOut"
+        >
+          로그아웃
+          <v-icon right>fas fa-sign-out-alt</v-icon>
         </v-btn>
         <v-btn x-small plain depressed color="deep-orange" @click="gotoHome">
           홈
@@ -29,12 +47,43 @@ export default {
   data: () => ({
     //
   }),
+  computed: {
+    user() {
+      return this.$store.getters.getUser;
+    },
+  },
+  mounted() {
+    if (this.user.email == undefined) {
+      this.$router.push({ path: "/login" });
+    }
+  },
   methods: {
     gotoLogin() {
       this.$router.push({ name: "login" });
     },
     gotoHome() {
-      this.$router.push({ name: "home" });
+      if (this.user.email == undefined) {
+        alert("로그인 후, 사용가능합니다.");
+        this.$router.push({ path: "/login" });
+      } else {
+        this.$router.push({ name: "home" });
+      }
+    },
+    logOut() {
+      this.kakaoLogout();
+      alert("로그아웃");
+    },
+    kakaoLogout() {
+      if (!window.Kakao.Auth.getAccessToken()) {
+        console.log("Not logged in");
+        return;
+      }
+
+      window.Kakao.Auth.logout((response) => {
+        console.log(response);
+        this.$store.commit("updateUser", {});
+        this.$router.push({ path: "/login" });
+      });
     },
   },
 };

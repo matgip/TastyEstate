@@ -4,11 +4,11 @@
     <v-autocomplete
       :items="items"
       :loading="isLoading"
-      :search-input.sync="search"
       :menu-props="{ maxHeight: 500 }"
+      :search-input.sync="search"
       dense
-      clearable
       no-filter
+      clearable
       solo-inverted
       return-object
       class="mx-4"
@@ -22,21 +22,20 @@
       <template v-slot:selection="{ attr, on, item, selected }">
         <!-- Selected real estate v-chip  -->
         <v-chip
-          small
           :input-value="selected"
+          small
           v-on="on"
           v-bind="attr"
-          color="deep-orange"
           class="white--text"
+          color="deep-orange"
         >
           <v-icon left small>fas fa-map-marked-alt</v-icon>
           <span v-text="item.place_name" />
         </v-chip>
       </template>
 
-      <!-- Real Estates near search keyword -->
+      <!-- Results of searching keyword -->
       <template v-slot:item="{ item }">
-        <!-- List of searched real estate results -->
         <v-list-item-content>
           <v-list-item-title v-text="item.place_name" />
           <v-list-item-subtitle v-text="item.address_name" />

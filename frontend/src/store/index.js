@@ -7,10 +7,14 @@ export default new Vuex.Store({
   state: {
     map: null,
     etate: {},
+    user: {},
   },
   getters: {
     getSelectedEstate(state) {
       return state.etate;
+    },
+    getUser(state) {
+      return state.user;
     },
   },
   mutations: {
@@ -19,6 +23,9 @@ export default new Vuex.Store({
     },
     updateKakaoMap(state, map) {
       state.map = map;
+    },
+    updateUser(state, user) {
+      state.user = user;
     },
   },
   actions: {},
