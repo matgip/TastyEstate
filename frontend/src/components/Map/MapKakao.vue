@@ -110,7 +110,7 @@ export default {
         if (level < 7) {
           for (var i = -1; i < 2; i++) {
             for (var j = -1; j < 2; j++) {
-              searchAgency(lat + i / 100, lng + j / 100);
+              searchAgency((lat + i / 100).toFixed(2), (lng + j / 100).toFixed(2));
             }
           }
         }
