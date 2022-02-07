@@ -25,9 +25,6 @@ export default new Vuex.Store({
     updateSelectedEstate(state, etate) {
       state.etate = etate;
     },
-    updateKakaoMap(state, map) {
-      state.map = map;
-    },
     updateUser(state, user) {
       state.user = user;
     },

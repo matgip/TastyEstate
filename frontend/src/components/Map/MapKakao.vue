@@ -131,9 +131,7 @@ export default {
         }
       }
 
-      this.$store.commit("updateKakaoMap", window.map);
-
-      // TODO : need fix : view 전화될때마다 updateSelectedEstate listener가 add 됨.
+      // TODO : need fix : view 전환될 때마다 updateSelectedEstate listener가 add 됨.
       this.$store.subscribe((mutation) => {
         if (mutation.type == "updateSelectedEstate") {
           console.log("updateSelectedEstate");
