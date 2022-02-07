@@ -2,16 +2,13 @@
 
 <template>
   <div id="map_container">
-    <div id="map_test_container"></div>
     <div id="mapview"></div>
   </div>
 </template>
 
 <script>
 export default {
-  data: () => ({
-    map: null,
-  }),
+  data: () => ({}),
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -26,7 +23,7 @@ export default {
   methods: {
     initMap() {
       // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
-      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+      let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
       // 마커들의 정보를 담고 있는 place (중복 방지)
       window.places = new Array();
@@ -53,7 +50,7 @@ export default {
       window.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
       // Marker cluster
-      var clusterer = new kakao.maps.MarkerClusterer({
+      let clusterer = new kakao.maps.MarkerClusterer({
         map: window.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
         averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
         minLevel: 5, // 클러스터 할 최소 지도 레벨
@@ -61,7 +58,7 @@ export default {
 
       // 장소검색 참고 : https://apis.map.kakao.com/web/sample/categoryFromBounds/
       // 장소 검색 객체를 생성합니다
-      var ps = new kakao.maps.services.Places(window.map);
+      let ps = new kakao.maps.services.Places(window.map);
 
       kakao.maps.event.addListener(window.map, "dragend", scan);
       kakao.maps.event.addListener(window.map, "zoom_changed", scan);
@@ -74,11 +71,11 @@ export default {
         if (window.scannedLatlng[lat][lng] == null) {
           window.scannedLatlng[lat][lng] = 1;
 
-          console.log("search 위도 " + lat + ", 경도 " + lng);
+          // console.log("search 위도 " + lat + ", 경도 " + lng);
 
           ps.categorySearch("AG2", placesSearchCallback, { x: lng, y: lat, radius: 710 });
           // 지도에 표시할 원을 생성합니다
-          var circle = new kakao.maps.Circle({
+          let circle = new kakao.maps.Circle({
             center: new kakao.maps.LatLng(lat, lng), // 원의 중심좌표 입니다
             radius: 710, // 미터 단위의 원의 반지름입니다
             strokeWeight: 1, // 선의 두께입니다
@@ -92,24 +89,18 @@ export default {
           // 지도에 원을 표시합니다
           circle.setMap(window.map);
         } else {
-          console.log("not search 위도 " + lat + ", 경도 " + lng);
+          // console.log("not search 위도 " + lat + ", 경도 " + lng);
         }
       }
 
       function scan() {
-        console.log("scan agency");
-        var level = window.map.getLevel();
-        var latlng = window.map.getCenter();
-        var lat = Math.round(latlng.getLat() * 100) / 100;
-        var lng = Math.round(latlng.getLng() * 100) / 100;
-        var message = "<p>레벨" + level + "</p><br />";
-        message += "<p>중심 좌표 : 위도 " + latlng.getLat() + ", 경도 " + latlng.getLng();
-        message += "<p>변환 좌표 : 위도 " + lat + ", 경도 " + lng;
-        var resultDiv = document.getElementById("map_test_container");
-        resultDiv.innerHTML = message;
+        let level = window.map.getLevel();
+        let latlng = window.map.getCenter();
+        let lat = Math.round(latlng.getLat() * 100) / 100;
+        let lng = Math.round(latlng.getLng() * 100) / 100;
         if (level < 7) {
-          for (var i = -1; i < 2; i++) {
-            for (var j = -1; j < 2; j++) {
+          for (let i = -1; i < 2; i++) {
+            for (let j = -1; j < 2; j++) {
               searchAgency((lat + i / 100).toFixed(2), (lng + j / 100).toFixed(2));
             }
           }
@@ -125,7 +116,7 @@ export default {
 
       function displayMarker(place) {
         if (window.places[place.id] == null) {
-          var marker = new kakao.maps.Marker({
+          let marker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(place.y, place.x),
           });
           window.places[place.id] = place;
@@ -142,7 +133,6 @@ export default {
 
       this.$store.commit("updateKakaoMap", window.map);
 
-      
       // TODO : need fix : view 전화될때마다 updateSelectedEstate listener가 add 됨.
       this.$store.subscribe((mutation) => {
         if (mutation.type == "updateSelectedEstate") {
