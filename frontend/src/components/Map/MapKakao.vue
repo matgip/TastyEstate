@@ -22,21 +22,6 @@ export default {
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY;
       document.head.appendChild(script);
     }
-    // this.$store.commit("updateKakaoMap", window.map);
-    // this.$store.subscribe((mutation) => {
-    //   if (mutation.type == "updateSelectedEstate") {
-    //     const estate = this.$store.getters.getSelectedEstate;
-    //     const position = new kakao.maps.LatLng(estate.y, estate.x);
-    //     window.map.setLevel(3);
-    //     window.map.setCenter(position);
-
-    //     const marker = new kakao.maps.Marker({
-    //       position: position,
-    //       title: estate.place_name,
-    //     });
-    //     marker.setMap(window.map);
-    //   }
-    // });
   },
   methods: {
     initMap() {
@@ -89,7 +74,6 @@ export default {
         if (window.centerLatlngList[lat][lng] == null) {
           window.centerLatlngList[lat][lng] = 1;
 
-          
           console.log("search 위도 " + lat + ", 경도 " + lng);
 
           ps.categorySearch("AG2", placesSearchCallback, { x: lng, y: lat, radius: 710 });
@@ -98,11 +82,11 @@ export default {
             center: new kakao.maps.LatLng(lat, lng), // 원의 중심좌표 입니다
             radius: 710, // 미터 단위의 원의 반지름입니다
             strokeWeight: 1, // 선의 두께입니다
-            strokeColor: "#75B8FA", // 선의 색깔입니다
-            strokeOpacity: 0.2, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeColor: "#FFFFFF", // 선의 색깔입니다
+            strokeOpacity: 0.1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
             strokeStyle: "dashed", // 선의 스타일 입니다
-            fillColor: "#CFE7FF", // 채우기 색깔입니다
-            fillOpacity: 0.7, // 채우기 불투명도 입니다
+            fillColor: "#FFFFFF", // 채우기 색깔입니다
+            fillOpacity: 0.5, // 채우기 불투명도 입니다
           });
 
           // 지도에 원을 표시합니다
@@ -126,7 +110,7 @@ export default {
         if (level < 7) {
           for (var i = -1; i < 2; i++) {
             for (var j = -1; j < 2; j++) {
-              searchAgency(lat + i/100, lng + j/100);
+              searchAgency(lat + i / 100, lng + j / 100);
             }
           }
         }
@@ -155,6 +139,26 @@ export default {
           });
         }
       }
+
+      this.$store.commit("updateKakaoMap", window.map);
+
+      
+      // TODO : need fix : view 전화될때마다 updateSelectedEstate listener가 add 됨.
+      this.$store.subscribe((mutation) => {
+        if (mutation.type == "updateSelectedEstate") {
+          console.log("updateSelectedEstate");
+          const estate = this.$store.getters.getSelectedEstate;
+          const position = new kakao.maps.LatLng(estate.y, estate.x);
+          window.map.setLevel(3);
+          window.map.setCenter(position);
+
+          const marker = new kakao.maps.Marker({
+            position: position,
+            title: estate.place_name,
+          });
+          marker.setMap(window.map);
+        }
+      });
     },
   },
 };
