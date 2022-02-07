@@ -40,12 +40,14 @@ export default {
   },
   methods: {
     initMap() {
-      
       // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
       var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-      
+
       // 마커들의 정보를 담고 있는 place (중복 방지)
       window.places = new Array();
+
+      // 중복 요청 방지
+      window.centerLatlngList = new Array();
 
       const container = document.getElementById("mapview");
       const options = {
@@ -76,31 +78,69 @@ export default {
       // 장소 검색 객체를 생성합니다
       var ps = new kakao.maps.services.Places(window.map);
 
-      kakao.maps.event.addListener(window.map, "dragend", scanAgency);
-      kakao.maps.event.addListener(window.map, "zoom_changed", scanAgency);
-      
-      function scanAgency() {
+      kakao.maps.event.addListener(window.map, "dragend", scan);
+      kakao.maps.event.addListener(window.map, "zoom_changed", scan);
+
+      function searchAgency(lat, lng) {
+        if (window.centerLatlngList[lat] == null) {
+          window.centerLatlngList[lat] = new Array();
+        }
+
+        if (window.centerLatlngList[lat][lng] == null) {
+          window.centerLatlngList[lat][lng] = 1;
+
+          
+          console.log("search 위도 " + lat + ", 경도 " + lng);
+
+          ps.categorySearch("AG2", placesSearchCallback, { x: lng, y: lat, radius: 710 });
+          // 지도에 표시할 원을 생성합니다
+          var circle = new kakao.maps.Circle({
+            center: new kakao.maps.LatLng(lat, lng), // 원의 중심좌표 입니다
+            radius: 710, // 미터 단위의 원의 반지름입니다
+            strokeWeight: 1, // 선의 두께입니다
+            strokeColor: "#75B8FA", // 선의 색깔입니다
+            strokeOpacity: 0.2, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle: "dashed", // 선의 스타일 입니다
+            fillColor: "#CFE7FF", // 채우기 색깔입니다
+            fillOpacity: 0.7, // 채우기 불투명도 입니다
+          });
+
+          // 지도에 원을 표시합니다
+          circle.setMap(window.map);
+        } else {
+          console.log("not search 위도 " + lat + ", 경도 " + lng);
+        }
+      }
+
+      function scan() {
         console.log("scan agency");
         var level = window.map.getLevel();
         var latlng = window.map.getCenter();
+        var lat = Math.round(latlng.getLat() * 100) / 100;
+        var lng = Math.round(latlng.getLng() * 100) / 100;
         var message = "<p>레벨" + level + "</p><br />";
         message += "<p>중심 좌표 : 위도 " + latlng.getLat() + ", 경도 " + latlng.getLng();
+        message += "<p>변환 좌표 : 위도 " + lat + ", 경도 " + lng;
         var resultDiv = document.getElementById("map_test_container");
         resultDiv.innerHTML = message;
-        if (level < 5) {
-          ps.categorySearch("AG2", placesSearchCallback, { useMapBounds: true });
+        if (level < 7) {
+          for (var i = -1; i < 2; i++) {
+            for (var j = -1; j < 2; j++) {
+              searchAgency(lat + i/100, lng + j/100);
+            }
+          }
         }
       }
       // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
       function placesSearchCallback(data, status, pagination) {
         if (status === kakao.maps.services.Status.OK) {
-          data.forEach(d => displayMarker(d));
+          data.forEach((d) => displayMarker(d));
           if (pagination.hasNextPage) pagination.nextPage();
         }
       }
 
       function displayMarker(place) {
-        if( window.places[place.id] == null) {
+        if (window.places[place.id] == null) {
           var marker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(place.y, place.x),
           });
@@ -110,22 +150,15 @@ export default {
           // 마커에 클릭이벤트를 등록합니다
           kakao.maps.event.addListener(marker, "click", () => {
             // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-            infowindow.setContent(
-              '<div style="padding:5px;font-size:12px;">' +
-                place.place_name +
-                "</div>"
-            );
+            infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>");
             infowindow.open(window.map, marker);
           });
         }
-
       }
     },
-    
   },
 };
 </script>
-
 
 <style scoped>
 #map_container {
@@ -137,4 +170,3 @@ export default {
   height: 100%;
 }
 </style>
-
