@@ -11,14 +11,7 @@
       <v-card-text>
         <v-row align="center" class="mx-0">
           <!-- Rating stars -->
-          <v-rating
-            :value="4.5"
-            size="18"
-            color="amber"
-            dense
-            readonly
-            half-increments
-          ></v-rating>
+          <v-rating :value="4.5" size="18" color="amber" dense readonly half-increments></v-rating>
 
           <!--  Rating points -->
           <div class="grey--text ms-4">

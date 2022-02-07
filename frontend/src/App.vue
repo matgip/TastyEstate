@@ -6,25 +6,11 @@
 
         <v-spacer />
 
-        <v-btn
-          v-if="user.email == undefined"
-          x-small
-          plain
-          depressed
-          color="deep-orange"
-          @click="gotoLogin"
-        >
+        <v-btn v-if="user.email == undefined" x-small plain depressed color="deep-orange" @click="gotoLogin">
           로그인
           <v-icon right>fas fa-user-lock</v-icon>
         </v-btn>
-        <v-btn
-          v-else
-          x-small
-          plain
-          depressed
-          color="deep-orange"
-          @click="logOut"
-        >
+        <v-btn v-else x-small plain depressed color="deep-orange" @click="logOut">
           로그아웃
           <v-icon right>fas fa-sign-out-alt</v-icon>
         </v-btn>

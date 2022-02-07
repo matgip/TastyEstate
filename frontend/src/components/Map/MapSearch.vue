@@ -21,14 +21,7 @@
       <!-- Selected real estate -->
       <template v-slot:selection="{ attr, on, item, selected }">
         <!-- Selected real estate v-chip  -->
-        <v-chip
-          :input-value="selected"
-          small
-          v-on="on"
-          v-bind="attr"
-          class="white--text"
-          color="deep-orange"
-        >
+        <v-chip :input-value="selected" small v-on="on" v-bind="attr" class="white--text" color="deep-orange">
           <v-icon left small>fas fa-map-marked-alt</v-icon>
           <span v-text="item.place_name" />
         </v-chip>
