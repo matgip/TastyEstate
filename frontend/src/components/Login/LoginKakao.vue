@@ -35,7 +35,7 @@ export default {
         url: "/v2/user/me",
         success: (profile) => {
           this.updateDb(profile);
-          this.updateUserState(profile);
+          this.vuexUpdateUser(profile);
         },
         fail: (err) => console.log(err),
       });
@@ -49,7 +49,7 @@ export default {
         .then(({ data }) => console.log(data))
         .catch((err) => console.log(err));
     },
-    updateUserState(profile) {
+    vuexUpdateUser(profile) {
       this.$store.commit("updateUser", profile.kakao_account);
     },
   },

@@ -10,7 +10,7 @@
           <v-icon left>fas fa-user-lock</v-icon>
           로그인
         </v-btn>
-        <v-btn v-else x-small plain depressed color="deep-orange" @click="logOutAndClearUserState">
+        <v-btn v-else x-small plain depressed color="deep-orange" @click="logOutAndClearUser">
           <v-icon left>fas fa-sign-out-alt</v-icon>
           로그아웃
         </v-btn>
@@ -52,9 +52,9 @@ export default {
       }
       this.$router.push({ path: "/" });
     },
-    logOutAndClearUserState() {
+    logOutAndClearUser() {
       this.kakaoLogout();
-      this.clearUserState();
+      this.vuexClearUser();
       // If logout was successful, go back to login
       this.gotoLogin();
     },
@@ -70,7 +70,7 @@ export default {
         }
       });
     },
-    clearUserState() {
+    vuexClearUser() {
       this.$store.commit("updateUser", {});
     },
     isLoggedIn() {

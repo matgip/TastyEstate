@@ -49,16 +49,19 @@ export default {
   watch: {
     select(selected) {
       if (!selected) return;
-      this.$store.commit("updateSelectedEstate", selected);
+      this.vuexUpdateEstate(selected);
     },
     search(keyWord) {
       if (!keyWord) return;
       if (keyWord === this.select) return;
-      this.querySelection(keyWord);
+      this.keywordSearch(keyWord);
     },
   },
   methods: {
-    querySelection(keyWord) {
+    vuexUpdateEstate(selected) {
+      this.$store.commit("updateSelectedEstate", selected);
+    },
+    keywordSearch(keyWord) {
       this.isLoading = true;
 
       const headers = {
