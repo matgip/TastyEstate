@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-layout column align-center justify-center>
         <v-flex>
-          <v-btn color="yellow lighten-1" @click="login">
+          <v-btn color="yellow lighten-1" @click="onLogin">
             <v-icon left>fas fa-comment</v-icon>
             카카오 로그인
           </v-btn>
@@ -18,7 +18,7 @@ import axios from "axios";
 
 export default {
   methods: {
-    login() {
+    onLogin() {
       window.Kakao.Auth.login({
         scope: "profile_nickname, profile_image, account_email, gender",
         success: (authObj) => {

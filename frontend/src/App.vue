@@ -6,15 +6,15 @@
 
         <v-spacer />
 
-        <v-btn v-if="user.email == undefined" x-small plain depressed color="deep-orange" @click="gotoLogin">
+        <v-btn v-if="user.email == undefined" x-small plain depressed color="deep-orange" @click="onGotoLogin">
           <v-icon left>fas fa-user-lock</v-icon>
           로그인
         </v-btn>
-        <v-btn v-else x-small plain depressed color="deep-orange" @click="logOutAndClearUser">
+        <v-btn v-else x-small plain depressed color="deep-orange" @click="onLogOutAndClearUser">
           <v-icon left>fas fa-sign-out-alt</v-icon>
           로그아웃
         </v-btn>
-        <v-btn x-small plain depressed color="deep-orange" @click="gotoHome">
+        <v-btn x-small plain depressed color="deep-orange" @click="onGotoHome">
           <v-icon left>fas fa-home</v-icon>
           홈
         </v-btn>
@@ -42,17 +42,17 @@ export default {
     }
   },
   methods: {
-    gotoLogin() {
+    onGotoLogin() {
       this.$router.push({ path: "/login" });
     },
-    gotoHome() {
+    onGotoHome() {
       if (!this.isLoggedIn()) {
         alert("로그인 후, 사용 가능합니다.");
         return;
       }
       this.$router.push({ path: "/" });
     },
-    logOutAndClearUser() {
+    onLogOutAndClearUser() {
       const self = this;
       kakaoLogout();
       vuexClearUser();
