@@ -53,7 +53,7 @@ export default {
     },
   },
   mounted() {
-    if (this.user.email == undefined) {
+    if (!this.isLoggedIn()) {
       this.$router.push({ path: "/login" });
     }
   },
@@ -62,12 +62,15 @@ export default {
       this.$router.push({ name: "login" });
     },
     gotoHome() {
-      if (this.user.email == undefined) {
+      if (!this.isLoggedIn()) {
         alert("로그인 후, 사용가능합니다.");
         this.$router.push({ path: "/login" });
       } else {
         this.$router.push({ name: "home" });
       }
+    },
+    isLoggedIn() {
+      return this.user.email != undefined;
     },
     logOut() {
       this.kakaoLogout();
