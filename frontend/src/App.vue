@@ -38,7 +38,7 @@ export default {
   },
   mounted() {
     if (!this.isLoggedIn()) {
-      this.gotoLogin();
+      this.onGotoLogin();
     }
   },
   methods: {
@@ -57,7 +57,7 @@ export default {
       kakaoLogout();
       vuexClearUser();
       // If logout was successful, go back to login
-      this.gotoLogin();
+      this.onGotoLogin();
 
       function kakaoLogout() {
         if (!self.isLoggedIn()) {
