@@ -32,7 +32,7 @@ export default {
       window.places = new Array();
 
       // 중복 요청 방지
-      window.centerLatlngList = new Array();
+      window.scannedLatlng = new Array();
 
       const container = document.getElementById("mapview");
       const options = {
@@ -67,12 +67,12 @@ export default {
       kakao.maps.event.addListener(window.map, "zoom_changed", scan);
 
       function searchAgency(lat, lng) {
-        if (window.centerLatlngList[lat] == null) {
-          window.centerLatlngList[lat] = new Array();
+        if (window.scannedLatlng[lat] == null) {
+          window.scannedLatlng[lat] = new Array();
         }
 
-        if (window.centerLatlngList[lat][lng] == null) {
-          window.centerLatlngList[lat][lng] = 1;
+        if (window.scannedLatlng[lat][lng] == null) {
+          window.scannedLatlng[lat][lng] = 1;
 
           console.log("search 위도 " + lat + ", 경도 " + lng);
 
