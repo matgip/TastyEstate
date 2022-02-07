@@ -53,25 +53,28 @@ export default {
       this.$router.push({ path: "/" });
     },
     logOutAndClearUser() {
-      this.kakaoLogout();
-      this.vuexClearUser();
+      const self = this;
+      kakaoLogout();
+      vuexClearUser();
       // If logout was successful, go back to login
       this.gotoLogin();
-    },
-    kakaoLogout() {
-      if (!this.isLoggedIn()) {
-        return;
-      }
-      window.Kakao.Auth.logout((response) => {
-        if (response == true) {
-          alert("정상적으로 로그아웃 하였습니다.");
-        } else {
-          alert("로그아웃 실패.");
+
+      function kakaoLogout() {
+        if (!self.isLoggedIn()) {
+          return;
         }
-      });
-    },
-    vuexClearUser() {
-      this.$store.commit("updateUser", {});
+        window.Kakao.Auth.logout((response) => {
+          if (response == true) {
+            alert("정상적으로 로그아웃 하였습니다.");
+          } else {
+            alert("로그아웃 실패.");
+          }
+        });
+      }
+
+      function vuexClearUser() {
+        self.$store.commit("updateUser", {});
+      }
     },
     isLoggedIn() {
       return this.user.email != undefined;

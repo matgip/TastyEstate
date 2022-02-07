@@ -1,7 +1,7 @@
 <template>
   <div data-app>
-    <!-- Search Bar -->
     <v-autocomplete
+      v-model="select"
       :items="items"
       :loading="isLoading"
       :menu-props="{ maxHeight: 500 }"
@@ -13,15 +13,13 @@
       return-object
       class="mx-4"
       color="deep-orange"
-      v-model="select"
       item-text="place_name"
       prepend-icon="fas fa-search"
       label="지역 또는 단지명을 입력하세요."
     >
       <!-- Selected real estate -->
       <template v-slot:selection="{ attr, on, item, selected }">
-        <!-- Selected real estate v-chip  -->
-        <v-chip :input-value="selected" small v-on="on" v-bind="attr" class="white--text" color="deep-orange">
+        <v-chip :input-value="selected" small class="white--text" color="deep-orange" v-on="on" v-bind="attr">
           <v-icon left small>fas fa-map-marked-alt</v-icon>
           <span v-text="item.place_name" />
         </v-chip>
@@ -51,24 +49,24 @@ export default {
       if (!selected) return;
       this.vuexUpdateEstate(selected);
     },
-    search(keyWord) {
-      if (!keyWord) return;
-      if (keyWord === this.select) return;
-      this.keywordSearch(keyWord);
+    search(keyword) {
+      if (!keyword) return;
+      if (keyword === this.select) return;
+      this.keywordSearch(keyword);
     },
   },
   methods: {
     vuexUpdateEstate(selected) {
       this.$store.commit("updateSelectedEstate", selected);
     },
-    keywordSearch(keyWord) {
+    keywordSearch(keyword) {
       this.isLoading = true;
 
       const headers = {
         Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
       };
       fetch(
-        `https://dapi.kakao.com/v2/local/search/keyword.json?query=${keyWord}&category_group_code=AG2&radius=20000`,
+        `https://dapi.kakao.com/v2/local/search/keyword.json?query=${keyword}&category_group_code=AG2&radius=20000`,
         { headers }
       )
         .then((res) => res.clone().json())

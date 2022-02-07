@@ -23,34 +23,37 @@ export default {
         scope: "profile_nickname, profile_image, account_email, gender",
         success: (authObj) => {
           console.log(authObj);
-          this.getUserProfile();
+          getUserProfile();
           // If login was successful, goto home
           this.$router.push({ path: "/" });
         },
         fail: (err) => console.log(err),
       });
-    },
-    getUserProfile() {
-      window.Kakao.API.request({
-        url: "/v2/user/me",
-        success: (profile) => {
-          this.updateDb(profile);
-          this.vuexUpdateUser(profile);
-        },
-        fail: (err) => console.log(err),
-      });
-    },
-    updateDb(profile) {
-      axios
-        .post("/api/users", {
-          email: profile.kakao_account.email,
-          nickname: profile.kakao_account.profile.nickname,
-        })
-        .then(({ data }) => console.log(data))
-        .catch((err) => console.log(err));
-    },
-    vuexUpdateUser(profile) {
-      this.$store.commit("updateUser", profile.kakao_account);
+
+      const getUserProfile = () => {
+        window.Kakao.API.request({
+          url: "/v2/user/me",
+          success: (profile) => {
+            updateDb(profile);
+            vuexUpdateUser(profile);
+          },
+          fail: (err) => console.log(err),
+        });
+
+        const updateDb = (profile) => {
+          axios
+            .post("/api/users", {
+              email: profile.kakao_account.email,
+              nickname: profile.kakao_account.profile.nickname,
+            })
+            .then(({ data }) => console.log(data))
+            .catch((err) => console.log(err));
+        };
+
+        const vuexUpdateUser = (profile) => {
+          this.$store.commit("updateUser", profile.kakao_account);
+        };
+      };
     },
   },
 };
