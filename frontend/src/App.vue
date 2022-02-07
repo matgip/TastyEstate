@@ -55,16 +55,12 @@ export default {
         this.$router.push({ name: "home" });
       }
     },
-    isLoggedIn() {
-      return this.user.email != undefined;
-    },
     logOut() {
       this.kakaoLogout();
       alert("로그아웃");
     },
     kakaoLogout() {
-      if (!window.Kakao.Auth.getAccessToken()) {
-        console.log("Not logged in");
+      if (!this.isLoggedIn()) {
         return;
       }
 
@@ -73,6 +69,9 @@ export default {
         this.$store.commit("updateUser", {});
         this.$router.push({ path: "/login" });
       });
+    },
+    isLoggedIn() {
+      return this.user.email != undefined;
     },
   },
 };
