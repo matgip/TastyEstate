@@ -4,21 +4,14 @@ const router = express.Router();
 let usersDb = require("../data-access/users");
 let users = (module.exports = {});
 
-users.getUser = (req, res, next) => {
-  res.send("respond with a resource");
+users.getUser = (req, res) => {
+  usersDb.getUser(req.params.id).then((data) => res.send(data));
 };
 users.addUser = (req, res) => {
-  usersDb
-    .addUser(req.body)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+  usersDb.addUser(req.body).then((data) => res.sendStatus(data));
 };
 
-router.get("/", users.getUser);
+router.get("/:id", users.getUser);
 
 router.post("/", users.addUser);
 

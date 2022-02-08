@@ -71,7 +71,6 @@ export default {
           }
         });
       }
-
       function vuexClearUser() {
         self.$store.commit("updateUser", {});
       }

@@ -43,13 +43,13 @@ export default {
         const updateDb = (profile) => {
           axios
             .post("/api/users", {
+              id: profile.id,
               email: profile.kakao_account.email,
               nickname: profile.kakao_account.profile.nickname,
             })
             .then(({ data }) => console.log(data))
             .catch((err) => console.log(err));
         };
-
         const vuexUpdateUser = (profile) => {
           this.$store.commit("updateUser", profile.kakao_account);
         };
