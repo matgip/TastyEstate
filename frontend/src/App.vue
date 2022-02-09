@@ -10,7 +10,7 @@
           <v-icon left>fas fa-user-lock</v-icon>
           로그인
         </v-btn>
-        <v-btn v-else x-small plain depressed color="deep-orange" @click="onLogOutAndClearUser">
+        <v-btn v-else x-small plain depressed color="deep-orange" @click="onLogOutClearUser">
           <v-icon left>fas fa-sign-out-alt</v-icon>
           로그아웃
         </v-btn>
@@ -52,7 +52,7 @@ export default {
       }
       this.$router.push({ path: "/" });
     },
-    onLogOutAndClearUser() {
+    onLogOutClearUser() {
       const self = this;
       kakaoLogout();
       vuexClearUser();
