@@ -10,7 +10,7 @@
 
 <script>
 import MapSearch from "./MapSearch.vue";
-import MapCard from "./MapCard.vue";
+import MapCard from "../Card/Card.vue";
 import MapKakao from "./MapKakao.vue";
 
 export default {
