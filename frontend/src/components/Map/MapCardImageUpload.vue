@@ -3,9 +3,11 @@
     <VueFileAgent
       ref="vueFileAgent"
       :uploadUrl="uploadUrl"
+      :theme="'list'"
       :multiple="true"
       :deletable="true"
       :meta="true"
+      :accept="'image/*,.zip'"
       :helpText="'부동산 이미지를 자유롭게 업로드해주세요!'"
       @select="filesSelected($event)"
       @delete="fileDeleted($event)"
@@ -20,12 +22,14 @@ export default {
   data() {
     return {
       fileRecords: [],
-      uploadUrl: "http://localhost:3000/upload",
+      uploadUrl: `http://localhost:3000/upload/${this.estateID}`,
       uploadHeaders: { "X-Test-Header": "vue-file-agent" },
       fileRecordsForUpload: [], // maintain an upload queue
     };
   },
-
+  props: {
+    estateID: String,
+  },
   methods: {
     uploadFiles() {
       // Using the default uploader. You may use another uploader instead.
