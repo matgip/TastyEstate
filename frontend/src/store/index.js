@@ -10,20 +10,20 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     map: null,
-    etate: {},
+    estate: {},
     user: {},
   },
   getters: {
     getSelectedEstate(state) {
-      return state.etate;
+      return state.estate;
     },
     getUser(state) {
       return state.user;
     },
   },
   mutations: {
-    updateSelectedEstate(state, etate) {
-      state.etate = etate;
+    updateSelectedEstate(state, estate) {
+      state.estate = estate;
     },
     updateUser(state, user) {
       state.user = user;

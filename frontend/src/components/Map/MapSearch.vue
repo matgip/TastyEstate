@@ -16,6 +16,7 @@
       item-text="place_name"
       color="deep-orange"
       class="mx-4"
+      @click:clear="onClearEstate"
     >
       <!-- Selected -->
       <template v-slot:selection="{ attr, on, item, selected }">
@@ -56,8 +57,11 @@ export default {
     },
   },
   methods: {
-    vuexUpdateEstate(selected) {
-      this.$store.commit("updateSelectedEstate", selected);
+    onClearEstate() {
+      this.vuexUpdateEstate({});
+    },
+    vuexUpdateEstate(estate) {
+      this.$store.commit("updateSelectedEstate", estate);
     },
     keywordSearch(keyword) {
       this.isLoading = true;
