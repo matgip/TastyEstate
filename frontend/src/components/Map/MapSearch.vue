@@ -2,22 +2,22 @@
   <div data-app>
     <v-autocomplete
       v-model="select"
+      :search-input.sync="search"
       :items="items"
       :loading="isLoading"
       :menu-props="{ maxHeight: 500 }"
-      :search-input.sync="search"
-      dense
       no-filter
       clearable
       solo-inverted
       return-object
-      class="mx-4"
-      color="deep-orange"
-      item-text="place_name"
-      prepend-icon="fas fa-search"
+      dense
       label="지역 또는 단지명을 입력하세요."
+      prepend-icon="fas fa-search"
+      item-text="place_name"
+      color="deep-orange"
+      class="mx-4"
     >
-      <!-- Selected real estate -->
+      <!-- Selected -->
       <template v-slot:selection="{ attr, on, item, selected }">
         <v-chip :input-value="selected" small class="white--text" color="deep-orange" v-on="on" v-bind="attr">
           <v-icon left small>fas fa-map-marked-alt</v-icon>
@@ -25,7 +25,7 @@
         </v-chip>
       </template>
 
-      <!-- Results of searching keyword -->
+      <!-- Search Results -->
       <template v-slot:item="{ item }">
         <v-list-item-content>
           <v-list-item-title v-text="item.place_name" />

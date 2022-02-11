@@ -28,8 +28,4 @@ export default {
   width: 100%;
   height: calc(100vh - 64px);
 }
-
-.space {
-  margin: 20px auto;
-}
 </style>

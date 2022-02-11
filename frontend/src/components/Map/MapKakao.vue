@@ -70,76 +70,73 @@ export default {
           }
         }
       }
-
       function searchAgency(lat, lng) {
-        if (!isAlreadyScanned(lat, lng)) {
+        if (isAlreadyScanned(lat, lng) == false) {
           setScannedLatLng(lat, lng);
-          placeSearch.categorySearch("AG2", placesSearchCallback, { x: lng, y: lat, radius: 710 });
           displayCircle(lat, lng);
-        }
-
-        function isAlreadyScanned(lat, lng) {
-          if (window.scannedLatlng == null || window.scannedLatlng[lat] == null) return false;
-          const SCANNED = 1;
-          return window.scannedLatlng[lat][lng] == SCANNED;
-        }
-        function setScannedLatLng(lat, lng) {
-          if (window.scannedLatlng == null) {
-            window.scannedLatlng = new Array();
-          }
-
-          if (window.scannedLatlng[lat] == null) {
-            window.scannedLatlng[lat] = new Array();
-          }
-
-          const SCANNED = 1;
-          window.scannedLatlng[lat][lng] = SCANNED;
-        }
-        function displayCircle(lat, lng) {
-          const circle = new kakao.maps.Circle({
-            center: new kakao.maps.LatLng(lat, lng), // 원의 중심좌표
-            radius: 710, // 미터 단위의 원의 반지름
-            strokeWeight: 1, // 선의 두께
-            strokeColor: "#FFFFFF", // 선의 색깔
-            strokeOpacity: 0.1, // 선의 불투명도 1에서 0 사이의 값이며 0에 가까울수록 투명
-            strokeStyle: "dashed", // 선의 스타일
-            fillColor: "#FFFFFF", // 채우기 색깔
-            fillOpacity: 0.5, // 채우기 불투명도
-          });
-          circle.setMap(window.map);
-        }
-        function placesSearchCallback(places, status, pagination) {
-          if (status === kakao.maps.services.Status.OK) {
-            places.forEach((place) => {
-              setScannedPlace(place);
-              displayMarker(place);
-            });
-
-            if (pagination.hasNextPage) pagination.nextPage();
-          }
-
-          function setScannedPlace(place) {
-            if (window.places == null) {
-              window.places = new Array();
-            }
-            if (window.places[place.id] == null) {
-              window.places[place.id] = place;
-            }
-          }
-          function displayMarker(place) {
-            const marker = new kakao.maps.Marker({
-              position: new kakao.maps.LatLng(place.y, place.x),
-            });
-            markerClusterer.addMarker(marker);
-            kakao.maps.event.addListener(marker, "click", () => {
-              infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>");
-              infowindow.open(window.map, marker);
-            });
-          }
+          placeSearch.categorySearch("AG2", placesSearchCallback, { x: lng, y: lat, radius: 710 });
         }
       }
+      function isAlreadyScanned(lat, lng) {
+        if (window.scannedLatlng == null || window.scannedLatlng[lat] == null) return false;
 
-      // TODO : need fix : view 전환될 때마다 updateSelectedEstate listener가 add 됨.
+        const SCANNED = 1;
+        return window.scannedLatlng[lat][lng] == SCANNED;
+      }
+      function setScannedLatLng(lat, lng) {
+        if (window.scannedLatlng == null) {
+          window.scannedLatlng = new Array();
+        }
+
+        if (window.scannedLatlng[lat] == null) {
+          window.scannedLatlng[lat] = new Array();
+        }
+
+        const SCANNED = 1;
+        window.scannedLatlng[lat][lng] = SCANNED;
+      }
+      function displayCircle(lat, lng) {
+        const circle = new kakao.maps.Circle({
+          center: new kakao.maps.LatLng(lat, lng), // 원의 중심좌표
+          radius: 710, // 미터 단위의 원의 반지름
+          strokeWeight: 1, // 선의 두께
+          strokeColor: "#FFFFFF", // 선의 색깔
+          strokeOpacity: 0.1, // 선의 불투명도 1에서 0 사이의 값이며 0에 가까울수록 투명
+          strokeStyle: "dashed", // 선의 스타일
+          fillColor: "#FFFFFF", // 채우기 색깔
+          fillOpacity: 0.5, // 채우기 불투명도
+        });
+        circle.setMap(window.map);
+      }
+      function placesSearchCallback(places, status, pagination) {
+        if (status === kakao.maps.services.Status.OK) {
+          places.forEach((place) => {
+            setScannedPlace(place);
+            displayMarker(place);
+          });
+
+          if (pagination.hasNextPage) pagination.nextPage();
+        }
+      }
+      function setScannedPlace(place) {
+        if (window.places == null) {
+          window.places = new Array();
+        }
+        if (window.places[place.id] == null) {
+          window.places[place.id] = place;
+        }
+      }
+      function displayMarker(place) {
+        const marker = new kakao.maps.Marker({
+          position: new kakao.maps.LatLng(place.y, place.x),
+        });
+        markerClusterer.addMarker(marker);
+        kakao.maps.event.addListener(marker, "click", () => {
+          infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>");
+          infowindow.open(window.map, marker);
+        });
+      }
+
       this.$store.subscribe((mutation) => {
         if (mutation.type == "updateSelectedEstate") {
           const estate = this.$store.getters.getSelectedEstate;
