@@ -1,8 +1,7 @@
 <template>
   <div>
     <v-card v-if="Object.keys(estate).length !== 0">
-      <v-img height="250" src=""></v-img>
-
+      <MapCardFileUpload />
       <v-card-title>{{ estate.place_name }}</v-card-title>
 
       <!-- Likes and Stars -->
@@ -52,9 +51,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import MapCardFileUpload from "./MapCardFileUpload.vue";
 
 export default {
-  components: {},
+  components: {
+    MapCardFileUpload,
+  },
   computed: {
     ...mapGetters({
       estate: "getSelectedEstate",

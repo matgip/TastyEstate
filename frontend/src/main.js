@@ -1,4 +1,6 @@
 import Vue from "vue";
+import VueFileAgent from "vue-file-agent";
+import VueFileAgentStyles from "vue-file-agent/dist/vue-file-agent.css";
 import router from "./router";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
@@ -7,6 +9,9 @@ import store from "./store";
 import "./assets/css/global.css";
 
 Vue.config.productionTip = false;
+
+Vue.use(VueFileAgent);
+Vue.use(VueFileAgentStyles);
 
 new Vue({
   router,
