@@ -16,6 +16,7 @@
       item-text="place_name"
       color="deep-orange"
       class="mx-4"
+      @click="onClearEstate"
       @click:clear="onClearEstate"
     >
       <!-- Selected -->

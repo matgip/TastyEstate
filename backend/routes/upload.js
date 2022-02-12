@@ -15,10 +15,12 @@ const storage = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    // const filename = new Date().getTime().toString(36) + Math.random().toString(36).slice(2);
-    // const filename = file.filename;
-    const filename = file.originalname;
-    cb(null, filename);
+    const uploadPath = path.join(__dirname, "..", "uploads", req.params.id);
+    fs.readdir(uploadPath, function (err, files) {
+      if (err) throw err;
+      const filename = (files.length + 1).toString();
+      cb(null, filename);
+    });
   },
 });
 const upload = multer({ storage: storage });
