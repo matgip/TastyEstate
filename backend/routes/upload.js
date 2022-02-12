@@ -29,7 +29,7 @@ const upload = multer({ storage: storage });
 
 router.get("/:id", function (req, res, next) {
   const uploadPath = path.join(uploadRootPath, req.params.id, req.query.image);
-  fs.access(uploadPath, fs.F_OK, (err) => {
+  fs.access(uploadPath, fs.F_OK, function (err) {
     if (err) {
       const defaultImgPath = path.join(uploadRootPath, "default.png");
       res.sendFile(defaultImgPath);

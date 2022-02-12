@@ -129,8 +129,12 @@ export default {
           }
         }
         function displayMarker(place) {
+          const imgSrc = require("../../assets/images/marker.png");
+          const imgSize = new kakao.maps.Size(35, 45);
+          const markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
           const marker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(place.y, place.x),
+            image: markerImg,
           });
           markerClusterer.addMarker(marker);
           kakao.maps.event.addListener(marker, "click", () => {
@@ -149,9 +153,14 @@ export default {
           window.map.setLevel(3);
           window.map.setCenter(position);
 
+          const imgSrc = require("../../assets/images/marker_selected.png");
+          const imgSize = new kakao.maps.Size(45, 55);
+          const markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
           const marker = new kakao.maps.Marker({
             position: position,
             title: estate.place_name,
+            image: markerImg,
           });
           marker.setMap(window.map);
         }
