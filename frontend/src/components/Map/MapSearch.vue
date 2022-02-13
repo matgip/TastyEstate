@@ -40,6 +40,7 @@
 
 <script>
 import store from "@/store";
+import axios from "axios";
 
 export default {
   data: () => ({
@@ -51,6 +52,7 @@ export default {
   watch: {
     select(selected) {
       if (!selected) return;
+      this.updateEstateDB(selected);
       this.vuexUpdateEstate(selected);
     },
     search(keyword) {
@@ -62,6 +64,29 @@ export default {
   methods: {
     onClearEstate() {
       this.vuexUpdateEstate({});
+    },
+    updateEstateDB(estate) {
+      axios
+        .get(`/api/estates/${estate.id}`)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch(() => {
+          console.log(`Real estate ${estate.place_name} is not registered.`);
+          console.log(`Register real estate ${estate.place_name} to db...`);
+          this.setRealEstateDB(estate);
+        });
+    },
+    setRealEstateDB(estate) {
+      axios
+        .post(`/api/estates`, {
+          id: estate.id,
+          place_name: estate.place_name,
+          phone_number: estate.phone,
+        })
+        .then((res) => {
+          console.log(res);
+        });
     },
     vuexUpdateEstate(estate) {
       store.commit("updateSelectedEstate", estate);

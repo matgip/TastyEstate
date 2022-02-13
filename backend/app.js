@@ -7,6 +7,7 @@ const cors = require("cors");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+const estatesRouter = require("./routes/estates");
 const uploadRouter = require("./routes/upload");
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/estates", estatesRouter);
 app.use("/upload", uploadRouter);
 
 // catch 404 and forward to error handler
