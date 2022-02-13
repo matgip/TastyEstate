@@ -1,5 +1,7 @@
 ## 🍰 TastyEstate
 
+![Generic badge](https://img.shields.io/badge/platform-Web-brightgreen.svg) ![Generic badge](https://img.shields.io/badge/library-vue-blue.svg) ![Generic badge](https://img.shields.io/badge/framework-nodejs-green.svg) ![Generic badge](https://img.shields.io/badge/database-Redis-yellow.svg) ![Generic badge](https://img.shields.io/badge/language-Java,JavaScript-important.svg)
+
 ![main img](./frontend/src/assets/TastyEstate.png)
 이 프로젝트는 대한민국 부동산 평점 시스템입니다.  
 간편하게 지역 근처에 부동산 평점을 검색해 보세요 👓
