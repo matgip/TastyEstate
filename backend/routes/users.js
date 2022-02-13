@@ -4,11 +4,13 @@ const router = express.Router();
 let usersDb = require("../data-access/users");
 let users = (module.exports = {});
 
-users.getUser = (req, res) => {
-  usersDb.getUser(req.params.id).then((data) => res.send(data));
+users.getUser = async (req, res) => {
+  const data = await usersDb.getUser(req.params.id);
+  res.send(data);
 };
-users.addUser = (req, res) => {
-  usersDb.addUser(req.body).then((data) => res.sendStatus(data));
+users.addUser = async (req, res) => {
+  const data = await usersDb.addUser(req.body);
+  res.sendStatus(data);
 };
 
 router.get("/:id", users.getUser);

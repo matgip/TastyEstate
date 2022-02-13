@@ -2,7 +2,7 @@
 
 const client = require("../../../db-client/redis/client");
 
-let getUser = async (userID) => {
+const getUser = async (userID) => {
   let result;
   await client.connect();
 
@@ -16,7 +16,7 @@ let getUser = async (userID) => {
   return result;
 };
 
-let addUser = async (profile) => {
+const addUser = async (profile) => {
   let HTTP_STATUS = 200;
   await client.connect();
 
