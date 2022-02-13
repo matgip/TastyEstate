@@ -21,8 +21,11 @@ const addUser = async (profile) => {
   await client.connect();
 
   try {
-    await client.HSET("users:" + profile.id, "email", profile.email);
-    await client.HSET("users:" + profile.id, "nickname", profile.nickname);
+    // Multiple promise objects to be processed in parallel
+    const emailPromise = client.HSET("users:" + profile.id, "email", profile.email);
+    const nicknamePromise = client.HSET("users:" + profile.id, "nickname", profile.nickname);
+    await emailPromise;
+    await nicknamePromise;
   } catch (err) {
     console.log(`HSET user command failed: ${err.message}`);
     HTTP_STATUS = 500;
