@@ -35,21 +35,21 @@ export default {
         window.Kakao.API.request({
           url: "/v2/user/me",
           success: (profile) => {
-            updateDb(profile);
+            setUserProfileDB(profile);
             vuexUpdateUser(profile);
           },
           fail: (err) => console.log(err),
         });
 
-        const updateDb = (profile) => {
+        const setUserProfileDB = (profile) => {
           axios
             .post("/api/users", {
               id: profile.id,
               email: profile.kakao_account.email,
               nickname: profile.kakao_account.profile.nickname,
             })
-            .then(({ data }) => {
-              console.log(data);
+            .then((res) => {
+              console.log(res);
             });
         };
         const vuexUpdateUser = (profile) => {
