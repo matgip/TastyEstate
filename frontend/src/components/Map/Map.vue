@@ -3,20 +3,20 @@
     <div class="space" />
 
     <MapSearch />
-    <MapCard />
+    <RealEstate />
     <MapKakao />
   </div>
 </template>
 
 <script>
 import MapSearch from "./MapSearch.vue";
-import MapCard from "../Card/Card.vue";
+import RealEstate from "../RealEstate/RealEstate.vue";
 import MapKakao from "./MapKakao.vue";
 
 export default {
   components: {
     MapSearch,
-    MapCard,
+    RealEstate,
     MapKakao,
   },
 };

@@ -48,8 +48,9 @@ export default {
               email: profile.kakao_account.email,
               nickname: profile.kakao_account.profile.nickname,
             })
-            .then(({ data }) => console.log(data))
-            .catch((err) => console.log(err));
+            .then(({ data }) => {
+              console.log(data);
+            });
         };
         const vuexUpdateUser = (profile) => {
           store.commit("updateUser", profile.kakao_account);
