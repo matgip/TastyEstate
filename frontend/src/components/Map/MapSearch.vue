@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import store from "@/store";
+
 export default {
   data: () => ({
     isLoading: false,
@@ -62,7 +64,7 @@ export default {
       this.vuexUpdateEstate({});
     },
     vuexUpdateEstate(estate) {
-      this.$store.commit("updateSelectedEstate", estate);
+      store.commit("updateSelectedEstate", estate);
     },
     keywordSearch(keyword) {
       this.isLoading = true;

@@ -28,12 +28,14 @@
 </template>
 
 <script>
+import store from "@/store";
+
 export default {
   name: "App",
   data: () => ({}),
   computed: {
     user() {
-      return this.$store.getters.getUser;
+      return store.getters.getUser;
     },
   },
   mounted() {
@@ -72,7 +74,7 @@ export default {
         });
       }
       function vuexClearUser() {
-        self.$store.commit("updateUser", {});
+        store.commit("updateUser", {});
       }
     },
     isLoggedIn() {

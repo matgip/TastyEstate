@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import store from "@/store";
 import axios from "axios";
 
 export default {
@@ -51,7 +52,7 @@ export default {
             .catch((err) => console.log(err));
         };
         const vuexUpdateUser = (profile) => {
-          this.$store.commit("updateUser", profile.kakao_account);
+          store.commit("updateUser", profile.kakao_account);
         };
       };
     },
