@@ -23,9 +23,8 @@ export default {
   components: {
     AppbarButton,
   },
-
   mounted() {
-    if (!this.isLoggedIn()) {
+    if (!this.isloggedIn()) {
       this.gotoLogin();
     }
   },
@@ -34,7 +33,7 @@ export default {
       this.$router.push({ path: "/login" });
     },
     gotoHome() {
-      if (!this.isLoggedIn()) {
+      if (!this.isloggedIn()) {
         alert("로그인 후, 사용 가능합니다.");
         return;
       }
@@ -46,7 +45,7 @@ export default {
       this.gotoLogin();
     },
     kakaoLogout() {
-      if (!this.isLoggedIn()) {
+      if (!this.isloggedIn()) {
         return;
       }
       window.Kakao.Auth.logout((response) => {
@@ -60,7 +59,7 @@ export default {
     clearUser() {
       store.commit("updateUser", {});
     },
-    isLoggedIn() {
+    isloggedIn() {
       return this.user.email != undefined;
     },
   },
