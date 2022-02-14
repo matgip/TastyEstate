@@ -4,14 +4,14 @@
 
     <v-spacer />
 
-    <AppbarButton v-if="user.email == undefined" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
-    <AppbarButton v-else :method="logoutHandler" :icon="'fas fa-sign-out-alt'" :button="'로그아웃'" />
-    <AppbarButton :method="gotoHome" :icon="'fas fa-home'" :button="'홈'" />
+    <AppbarBtn v-if="user.email == undefined" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
+    <AppbarBtn v-else :method="logoutHandler" :icon="'fas fa-sign-out-alt'" :button="'로그아웃'" />
+    <AppbarBtn :method="gotoHome" :icon="'fas fa-home'" :button="'홈'" />
   </v-app-bar>
 </template>
 
 <script>
-import AppbarButton from "./TheAppbarButton.vue";
+import AppbarBtn from "./TheAppbarBtn.vue";
 import store from "@/store";
 
 export default {
@@ -21,10 +21,10 @@ export default {
     },
   },
   components: {
-    AppbarButton,
+    AppbarBtn,
   },
   mounted() {
-    if (!this.isloggedIn()) {
+    if (this.isloggedIn() == false) {
       this.gotoLogin();
     }
   },
@@ -33,23 +33,23 @@ export default {
       this.$router.push({ path: "/login" });
     },
     gotoHome() {
-      if (!this.isloggedIn()) {
+      if (this.isloggedIn() == false) {
         alert("로그인 후, 사용 가능합니다.");
         return;
       }
       this.$router.push({ path: "/" });
     },
     logoutHandler() {
-      this.kakaoLogout();
+      this.logoutKakao();
       this.clearUser();
       this.gotoLogin();
     },
-    kakaoLogout() {
-      if (!this.isloggedIn()) {
+    logoutKakao() {
+      if (this.isloggedIn() == false) {
         return;
       }
-      window.Kakao.Auth.logout((response) => {
-        if (response == true) {
+      window.Kakao.Auth.logout(function(res) {
+        if (res == true) {
           alert("정상적으로 로그아웃 하였습니다.");
         } else {
           alert("로그아웃 실패.");

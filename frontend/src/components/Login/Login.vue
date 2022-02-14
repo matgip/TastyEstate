@@ -4,15 +4,19 @@
     <div class="seperator"></div>
     <h5>믿을 수 있는 부동산 중개업소 찾기. Tasty estate와 함께</h5>
 
-    <LoginKakao />
+    <LoginLayout>
+      <LoginKakao />
+    </LoginLayout>
   </div>
 </template>
 
 <script>
+import LoginLayout from "./LoginLayout.vue";
 import LoginKakao from "./LoginKakao.vue";
 
 export default {
   components: {
+    LoginLayout,
     LoginKakao,
   },
 };

@@ -2,6 +2,7 @@
   <div>
     <v-app>
       <Appbar />
+
       <v-main>
         <router-view :key="$route.fullPath"></router-view>
       </v-main>
