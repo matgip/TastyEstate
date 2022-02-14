@@ -1,23 +1,23 @@
 <template>
   <div>
     <v-card v-if="Object.keys(estate).length !== 0">
-      <RealEstateImage v-bind:estateID="estate.id" />
-      <RealEstateImgUpload v-bind:estateID="estate.id" />
+      <RealEstateImage :estateID="estate.id" />
+      <RealEstateImgUpload :estateID="estate.id" />
 
       <v-card-title>{{ estate.place_name }}</v-card-title>
 
-      <RealEstateRatings v-bind:rating="4.9" v-bind:likes="512" />
+      <RealEstateRatings :rating="4.9" :likes="512" />
 
       <v-divider class="mx-4" />
 
       <v-card-text>
-        <RealEstateLikes v-bind:likes="512" />
+        <RealEstateLikes :likes="512" />
         <RealEstateFeeds />
       </v-card-text>
 
       <v-divider class="mx-4" />
 
-      <RealEstateInfo v-bind:estateInfo="estate" />
+      <RealEstateInfo :estateInfo="estate" />
     </v-card>
   </div>
 </template>

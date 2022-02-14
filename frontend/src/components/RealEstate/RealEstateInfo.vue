@@ -19,7 +19,15 @@ export default {
     return {};
   },
   props: {
-    estateInfo: Object,
+    estateInfo: {
+      type: Object,
+      required: true,
+      validator: function(value) {
+        if (value.address_name == undefined) return false;
+        if (value.phone == undefined) return false;
+        return true;
+      },
+    },
   },
   methods: {},
 };

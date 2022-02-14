@@ -15,7 +15,13 @@ export default {
     return {};
   },
   props: {
-    likes: Number,
+    likes: {
+      type: Number,
+      required: true,
+      validator: function(value) {
+        return value >= 0;
+      },
+    },
   },
   methods: {},
 };

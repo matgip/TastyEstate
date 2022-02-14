@@ -28,7 +28,13 @@ export default {
     };
   },
   props: {
-    estateID: String,
+    estateID: {
+      type: String,
+      required: true,
+      validator: function(value) {
+        return value != null;
+      },
+    },
   },
   methods: {
     uploadFiles() {

@@ -15,8 +15,20 @@ export default {
     return {};
   },
   props: {
-    rating: Number,
-    likes: Number,
+    rating: {
+      type: Number,
+      required: true,
+      validator: function(value) {
+        return value >= 0;
+      },
+    },
+    likes: {
+      type: Number,
+      required: true,
+      validator: function(value) {
+        return value >= 0;
+      },
+    },
   },
   methods: {},
 };

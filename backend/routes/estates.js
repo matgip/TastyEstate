@@ -7,7 +7,7 @@ let estates = (module.exports = {});
 estates.getEstate = async (req, res) => {
   try {
     const result = await estatesDb.getEstate(req.params.id);
-    if (result.data == null) {
+    if (estatesDb.isEmptyReply(result) == true) {
       res.sendStatus(404);
       return;
     }

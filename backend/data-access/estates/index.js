@@ -1,6 +1,7 @@
-let { getEstate, addEstate } = require("./redis/index");
+let { isEmptyReply, getEstate, addEstate } = require("./redis/index");
 
 let estatesDb = {
+  isEmptyReply,
   getEstate,
   addEstate,
 };

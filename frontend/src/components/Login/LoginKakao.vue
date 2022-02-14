@@ -47,16 +47,28 @@ export default {
     setUserDB(user) {
       axios
         .post("/api/users", {
-          id: user.id,
-          email: user.kakao_account.email,
-          nickname: user.kakao_account.profile.nickname,
+          id: this.getID(user),
+          email: this.getEmail(user),
+          nickname: this.getNickname(user),
         })
         .then(function(res) {
           console.log(res);
         });
     },
     updateUser(user) {
-      store.commit("updateUser", user.kakao_account);
+      store.commit("updateUser", this.getAccount(user));
+    },
+    getID(user) {
+      return user.id;
+    },
+    getEmail(user) {
+      return user.kakao_account.email;
+    },
+    getNickname(user) {
+      return user.kakao_account.profile.nickname;
+    },
+    getAccount(user) {
+      return user.kakao_account;
     },
   },
 };

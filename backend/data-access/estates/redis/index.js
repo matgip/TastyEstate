@@ -2,6 +2,10 @@
 
 const client = require("../../../db-client/redis/client");
 
+const isEmptyReply = (result) => {
+  return result.place_name === undefined || result.phone_number === undefined;
+};
+
 const getEstate = async (estateID) => {
   let result;
   await client.connect();
@@ -37,6 +41,7 @@ const addEstate = async (estate) => {
 };
 
 module.exports = {
+  isEmptyReply,
   getEstate,
   addEstate,
 };
