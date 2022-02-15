@@ -5,8 +5,8 @@
 </template>
 
 <script>
+import api from "@/api/service.js";
 import store from "@/store";
-import axios from "axios";
 import LoginKakaoBtn from "./LoginKakaoBtn.vue";
 
 export default {
@@ -37,35 +37,19 @@ export default {
         url: "/v2/user/me",
         success: function(user) {
           self.setUserDB(user);
-          self.updateUser(user);
+          self.setUserState(user);
         },
         fail: function(err) {
           console.log(err);
         },
       });
     },
-    setUserDB(user) {
-      axios
-        .post("/api/users", {
-          id: this.getID(user),
-          email: this.getEmail(user),
-          nickname: this.getNickname(user),
-        })
-        .then(function(res) {
-          console.log(res);
-        });
+    async setUserDB(user) {
+      const resp = await api.users.setUser(user);
+      console.log(resp);
     },
-    updateUser(user) {
+    setUserState(user) {
       store.commit("updateUser", this.getAccount(user));
-    },
-    getID(user) {
-      return user.id;
-    },
-    getEmail(user) {
-      return user.kakao_account.email;
-    },
-    getNickname(user) {
-      return user.kakao_account.profile.nickname;
     },
     getAccount(user) {
       return user.kakao_account;

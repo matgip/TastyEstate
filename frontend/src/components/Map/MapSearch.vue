@@ -16,8 +16,8 @@
       item-text="place_name"
       color="deep-orange"
       class="mx-4"
-      @click="onClearEstate"
-      @click:clear="onClearEstate"
+      @click="clearRealEstateState"
+      @click:clear="clearRealEstateState"
     >
       <!-- Selected -->
       <template v-slot:selection="{ attr, on, item, selected }">
@@ -39,8 +39,8 @@
 </template>
 
 <script>
+import api from "@/api/service.js";
 import store from "@/store";
-import axios from "axios";
 
 export default {
   data: () => ({
@@ -52,46 +52,32 @@ export default {
   watch: {
     select(selected) {
       if (!selected) return;
-      this.updateEstateDB(selected);
-      this.vuexUpdateEstate(selected);
+      this.updateRealEstateDB(selected);
+      this.setRealEstateState(selected);
     },
     search(keyword) {
       if (!keyword) return;
       if (keyword === this.select) return;
-      this.keywordSearch(keyword);
+      this.searchKeyword(keyword);
     },
   },
   methods: {
-    onClearEstate() {
-      this.vuexUpdateEstate({});
+    clearRealEstateState() {
+      store.commit("updateSelectedEstate", {});
     },
-    updateEstateDB(estate) {
-      axios
-        .get(`/api/estates/${estate.id}`)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch(() => {
-          console.log(`Real estate ${estate.place_name} is not registered.`);
-          console.log(`Register real estate ${estate.place_name} to db...`);
-          this.setRealEstateDB(estate);
-        });
+    setRealEstateState(re) {
+      store.commit("updateSelectedEstate", re);
     },
-    setRealEstateDB(estate) {
-      axios
-        .post(`/api/estates`, {
-          id: estate.id,
-          place_name: estate.place_name,
-          phone_number: estate.phone,
-        })
-        .then((res) => {
-          console.log(res);
-        });
+    async updateRealEstateDB(re) {
+      try {
+        const resp = await api.estates.getRealEstate(re);
+        console.log(resp);
+      } catch {
+        const resp = await api.estates.setRealEstate(re);
+        console.log(resp);
+      }
     },
-    vuexUpdateEstate(estate) {
-      store.commit("updateSelectedEstate", estate);
-    },
-    keywordSearch(keyword) {
+    searchKeyword(keyword) {
       this.isLoading = true;
 
       const headers = {

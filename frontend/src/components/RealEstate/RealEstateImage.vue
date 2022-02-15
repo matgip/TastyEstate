@@ -2,7 +2,7 @@
   <div>
     <v-card-text>
       <v-row>
-        <v-col v-for="i in images" ref="images" :key="i" class="d-flex child-flex" cols="4">
+        <v-col v-for="i in images" :key="i" class="d-flex child-flex" cols="4">
           <v-img :src="getImageURL(estateID, i)" aspect-ratio="1" class="grey lighten-2">
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
