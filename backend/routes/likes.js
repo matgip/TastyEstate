@@ -14,6 +14,17 @@ likes.getLikes = async (req, res) => {
   }
 };
 
+likes.addLikes = async (req, res) => {
+  try {
+    const result = await likesDb.addLikes(req.params.id, req.body.user_id);
+    res.send(result);
+  } catch (err) {
+    console.error(err);
+    res.send(err);
+  }
+};
+
 router.get("/:id", likes.getLikes);
+router.put("/:id", likes.addLikes);
 
 module.exports = router;
