@@ -7,8 +7,8 @@
       :loading="isLoading"
       :search-input.sync="search"
       label="지역 또는 단지명을 입력하세요."
-      @click="clearRealEstate"
-      @click:clear="clearRealEstate"
+      @click="clearRE"
+      @click:clear="clearRE"
     >
       <template #selection="{ attr, on, item, selected }">
         <v-chip v-bind="[chipProps, attr]" :input-value="selected" v-on="on">
@@ -73,12 +73,12 @@ export default {
     select(selected) {
       if (!selected) return;
 
-      this.updateRealEstate(selected)
+      this.updateREDB(selected)
         .then(() => {
           store.commit("updateSelectedEstate", selected);
         })
         .then(() => {
-          return this.getLikes(selected);
+          return this.getLikesDB(selected);
         })
         .then((resp) => {
           store.commit("updateLikes", resp.data.likes);
@@ -95,7 +95,7 @@ export default {
     },
   },
   methods: {
-    async updateRealEstate(re) {
+    async updateREDB(re) {
       let resp = await api.estates.getRealEstate(re);
       if (resp.status == 204) {
         // No contents
@@ -103,7 +103,7 @@ export default {
       }
       return resp;
     },
-    async getLikes(re) {
+    async getLikesDB(re) {
       return await api.likes.getLikes(re);
     },
     searchKakao(keyword) {
@@ -121,7 +121,7 @@ export default {
         .catch((err) => console.log(err))
         .finally(() => (this.isLoading = false));
     },
-    clearRealEstate() {
+    clearRE() {
       store.commit("updateSelectedEstate", {});
     },
   },

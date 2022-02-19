@@ -4,7 +4,7 @@
 
     <v-spacer />
 
-    <AppbarBtn v-if="user.email == undefined" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
+    <AppbarBtn v-if="user.id == undefined" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
     <AppbarBtn v-else :method="logoutHandler" :icon="'fas fa-sign-out-alt'" :button="'로그아웃'" />
     <AppbarBtn :method="gotoHome" :icon="'fas fa-home'" :button="'홈'" />
   </v-app-bar>
@@ -40,27 +40,36 @@ export default {
       this.$router.push({ path: "/" });
     },
     logoutHandler() {
-      this.logoutKakao();
-      this.clearUser();
-      this.gotoLogin();
-    },
-    logoutKakao() {
       if (this.isloggedIn() == false) {
         return;
       }
-      window.Kakao.Auth.logout(function(res) {
-        if (res == true) {
+      this.logoutKakao()
+        .then(() => {
           alert("정상적으로 로그아웃 하였습니다.");
-        } else {
+          store.commit("updateUser", {});
+        })
+        .then(() => {
+          this.gotoLogin();
+        })
+        .catch((err) => {
           alert("로그아웃 실패.");
-        }
+          console.error(err);
+        });
+    },
+    logoutKakao() {
+      return new Promise((resolve, reject) => {
+        window.Kakao.Auth.logout((res) => {
+          console.log(res);
+          if (res == true) {
+            resolve();
+          } else {
+            reject(new Error("Failed to kakao logout"));
+          }
+        });
       });
     },
-    clearUser() {
-      store.commit("updateUser", {});
-    },
     isloggedIn() {
-      return this.user.email != undefined;
+      return this.user.id != undefined;
     },
   },
 };

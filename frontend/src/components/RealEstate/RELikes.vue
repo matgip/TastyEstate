@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn v-bind="btnProps">
+    <v-btn v-bind="btnProps" @click="addLikes">
       <v-icon v-bind="iconProps">
         {{ likesIcon }}
       </v-icon>
@@ -10,6 +10,9 @@
 </template>
 
 <script>
+import api from "@/api/service.js";
+import store from "@/store";
+
 export default {
   data: () => ({
     btnProps: {
@@ -34,6 +37,20 @@ export default {
       },
     },
   },
-  methods: {},
+  methods: {
+    addLikes() {
+      const req = { realEstateID: store.getters.getSelectedEstate.id, userID: store.getters.getUser.id };
+      api.likes
+        .addLikes(req)
+        .then((resp) => {
+          if (resp.data.cmd_result === 0) {
+            alert("이미 좋아요를 누르셨습니다.");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  },
 };
 </script>
