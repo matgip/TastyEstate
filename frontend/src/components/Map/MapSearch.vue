@@ -73,8 +73,19 @@ export default {
     select(selected) {
       if (!selected) return;
 
-      this.updateRealEstateDB(selected);
-      this.setRealEstate(selected);
+      this.updateRealEstate(selected)
+        .then(() => {
+          store.commit("updateSelectedEstate", selected);
+        })
+        .then(() => {
+          return this.getLikes(selected);
+        })
+        .then((resp) => {
+          store.commit("updateLikes", resp.data.likes);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     search(keyword) {
       if (!keyword) return;
@@ -84,20 +95,16 @@ export default {
     },
   },
   methods: {
-    clearRealEstate() {
-      store.commit("updateSelectedEstate", {});
-    },
-    setRealEstate(re) {
-      store.commit("updateSelectedEstate", re);
-    },
-    async updateRealEstateDB(re) {
-      try {
-        const resp = await api.estates.getRealEstate(re);
-        console.log(resp);
-      } catch {
-        const resp = await api.estates.setRealEstate(re);
-        console.log(resp);
+    async updateRealEstate(re) {
+      let resp = await api.estates.getRealEstate(re);
+      if (resp.status == 204) {
+        // No contents
+        resp = await api.estates.setRealEstate(re);
       }
+      return resp;
+    },
+    async getLikes(re) {
+      return await api.likes.getLikes(re);
     },
     searchKakao(keyword) {
       this.isLoading = true;
@@ -113,6 +120,9 @@ export default {
         .then((res) => (this.estates = res.documents))
         .catch((err) => console.log(err))
         .finally(() => (this.isLoading = false));
+    },
+    clearRealEstate() {
+      store.commit("updateSelectedEstate", {});
     },
   },
 };

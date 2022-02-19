@@ -3,8 +3,8 @@
     <RELayout>
       <REImgs slot="REimg" :estateID="estate.id" />
       <REImgUpload slot="REimgUpload" :estateID="estate.id" />
-      <RERatings slot="RERatings" :rating="4.9" :likes="512" />
-      <RELikes slot="RELikes" :likes="512" />
+      <RERatings slot="RERatings" :rating="rating" :likes="likes" />
+      <RELikes slot="RELikes" :likes="likes" />
       <REFeeds slot="REFeeds" />
       <REInfos slot="REInfo" :estateInfo="estate" />
     </RELayout>
@@ -34,6 +34,8 @@ export default {
   computed: {
     ...mapGetters({
       estate: "getSelectedEstate",
+      rating: "getRating",
+      likes: "getLikes",
     }),
   },
 };

@@ -48,4 +48,20 @@ api.estates = {
   },
 };
 
+api.likes = {
+  getLikes: async function(re) {
+    const resp = await axios.get(`/api/likes/${re.id}`);
+    return resp;
+  },
+  setLikes: async function(re) {
+    const resp = await axios.post(`/api/likes`, {
+      id: this.getID(re),
+    });
+    return resp;
+  },
+  getID: function(re) {
+    return re.id;
+  },
+};
+
 export default api;
