@@ -1,15 +1,13 @@
 <template>
   <div>
-    <v-card-text>
-      <div>
-        <v-icon v-bind="iconProps">{{ addrIcon }}</v-icon>
-        {{ estateInfo.address_name }}
-      </div>
-      <div>
-        <v-icon v-bind="iconProps">{{ phoneIcon }}</v-icon>
-        {{ estateInfo.phone }}
-      </div>
-    </v-card-text>
+    <div>
+      <v-icon v-bind="iconProps">{{ addrIcon }}</v-icon>
+      {{ estateInfo.address_name }}
+    </div>
+    <div>
+      <v-icon v-bind="iconProps">{{ phoneIcon }}</v-icon>
+      {{ estateInfo.phone }}
+    </div>
   </div>
 </template>
 

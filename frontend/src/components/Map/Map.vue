@@ -10,7 +10,7 @@
 
 <script>
 import MapSearch from "./MapSearch.vue";
-import RealEstate from "../RealEstate/RealEstate.vue";
+import RealEstate from "../RealEstate/RE.vue";
 import MapKakao from "./MapKakao.vue";
 
 export default {

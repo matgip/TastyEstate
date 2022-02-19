@@ -3,12 +3,6 @@ body {
   cursor: default;
 }
 
-.seperator {
-  width: 400px;
-  margin: 30px auto;
-  border-bottom: solid 1px #dcdcdc;
-}
-
 .wrapper {
   width: 100%;
   max-width: 1000px;

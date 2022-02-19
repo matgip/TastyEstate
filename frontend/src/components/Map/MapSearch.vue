@@ -3,10 +3,10 @@
     <v-autocomplete
       v-model="select"
       v-bind="autoCompleteProps"
-      label="지역 또는 단지명을 입력하세요."
-      :search-input.sync="search"
       :items="estates"
       :loading="isLoading"
+      :search-input.sync="search"
+      label="지역 또는 단지명을 입력하세요."
       @click="clearRealEstate"
       @click:clear="clearRealEstate"
     >

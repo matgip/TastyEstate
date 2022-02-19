@@ -1,11 +1,9 @@
 <template>
   <div>
-    <v-card-text>
-      <v-row v-bind="rowProps">
-        <v-rating v-bind="ratingProps" :value="4.5"></v-rating>
-        <div class="grey--text ms-4">{{ rating }} ({{ likes }})</div>
-      </v-row>
-    </v-card-text>
+    <v-row v-bind="rowProps">
+      <v-rating v-bind="ratingProps" :value="4.5"></v-rating>
+      <div class="grey--text ms-4">{{ rating }} ({{ likes }})</div>
+    </v-row>
   </div>
 </template>
 

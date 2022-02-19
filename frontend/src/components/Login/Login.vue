@@ -34,4 +34,10 @@ h5 {
   justify-content: center;
   margin: 20px 0px;
 }
+
+.seperator {
+  width: 400px;
+  margin: 30px auto;
+  border-bottom: solid 1px #dcdcdc;
+}
 </style>

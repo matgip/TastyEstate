@@ -1,18 +1,16 @@
 <template>
   <div>
-    <v-card-text>
-      <v-row>
-        <v-col v-bind="colProps" v-for="i in images" :key="i">
-          <v-img v-bind="imgProps" :src="getImageURL(estateID, i)">
-            <template #placeholder>
-              <v-row v-bind="rowProps">
-                <v-progress-circular v-bind="progressProps" />
-              </v-row>
-            </template>
-          </v-img>
-        </v-col>
-      </v-row>
-    </v-card-text>
+    <v-row>
+      <v-col v-bind="colProps" v-for="i in images" :key="i">
+        <v-img v-bind="imgProps" :src="getImageURL(estateID, i)">
+          <template #placeholder>
+            <v-row v-bind="rowProps">
+              <v-progress-circular v-bind="progressProps" />
+            </v-row>
+          </template>
+        </v-img>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -22,7 +20,7 @@ export default {
     images: [1, 2, 3, 4, 5, 6],
     colProps: {
       class: "d-flex child-flex",
-      cols: "4",
+      cols: "2",
     },
     rowProps: {
       class: "fill-height ma-0",
