@@ -28,7 +28,6 @@ estates.addEstate = async (req, res) => {
 };
 
 router.get("/:id", estates.getEstate);
-
 router.post("/", estates.addEstate);
 
 module.exports = router;

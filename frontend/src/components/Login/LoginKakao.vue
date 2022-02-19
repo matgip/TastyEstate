@@ -37,7 +37,7 @@ export default {
         url: "/v2/user/me",
         success: function(user) {
           self.setUserDB(user);
-          self.setUserState(user);
+          self.setUser(user);
         },
         fail: function(err) {
           console.log(err);
@@ -48,7 +48,7 @@ export default {
       const resp = await api.users.setUser(user);
       console.log(resp);
     },
-    setUserState(user) {
+    setUser(user) {
       store.commit("updateUser", this.getAccount(user));
     },
     getAccount(user) {

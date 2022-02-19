@@ -2,11 +2,11 @@
   <div>
     <v-card-text>
       <div>
-        <v-icon x-small>fas fa-map-marker-alt</v-icon>
+        <v-icon v-bind="iconProps">{{ addrIcon }}</v-icon>
         {{ estateInfo.address_name }}
       </div>
       <div>
-        <v-icon x-small>fas fa-book</v-icon>
+        <v-icon v-bind="iconProps">{{ phoneIcon }}</v-icon>
         {{ estateInfo.phone }}
       </div>
     </v-card-text>
@@ -15,9 +15,13 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
+  data: () => ({
+    addrIcon: "fas fa-map-marker-alt",
+    phoneIcon: "fas fa-book",
+    iconProps: {
+      "x-small": true,
+    },
+  }),
   props: {
     estateInfo: {
       type: Object,

@@ -2,33 +2,22 @@
   <div data-app>
     <v-autocomplete
       v-model="select"
-      :search-input.sync="search"
-      :items="items"
-      :loading="isLoading"
-      :menu-props="{ maxHeight: 500 }"
-      no-filter
-      clearable
-      solo-inverted
-      return-object
-      dense
+      v-bind="autoCompleteProps"
       label="지역 또는 단지명을 입력하세요."
-      prepend-icon="fas fa-search"
-      item-text="place_name"
-      color="deep-orange"
-      class="mx-4"
-      @click="clearRealEstateState"
-      @click:clear="clearRealEstateState"
+      :search-input.sync="search"
+      :items="estates"
+      :loading="isLoading"
+      @click="clearRealEstate"
+      @click:clear="clearRealEstate"
     >
-      <!-- Selected -->
-      <template v-slot:selection="{ attr, on, item, selected }">
-        <v-chip :input-value="selected" small class="white--text" color="deep-orange" v-on="on" v-bind="attr">
-          <v-icon left small>fas fa-map-marked-alt</v-icon>
+      <template #selection="{ attr, on, item, selected }">
+        <v-chip v-bind="[chipProps, attr]" :input-value="selected" v-on="on">
+          <v-icon v-bind="iconProps">{{ selectedIcon }}</v-icon>
           <span v-text="item.place_name" />
         </v-chip>
       </template>
 
-      <!-- Search Results -->
-      <template v-slot:item="{ item }">
+      <template #item="{ item }">
         <v-list-item-content>
           <v-list-item-title v-text="item.place_name" />
           <v-list-item-subtitle v-text="item.address_name" />
@@ -45,27 +34,60 @@ import store from "@/store";
 export default {
   data: () => ({
     isLoading: false,
-    items: [],
+    estates: [],
     search: null,
+
     select: null,
+    selectedIcon: "fas fa-map-marked-alt",
+
+    autoCompleteProps: {
+      clearable: true,
+      color: "deep-orange",
+      class: "mx-4",
+      dense: true,
+      "no-filter": true,
+      "solo-inverted": true,
+      "return-object": true,
+      "prepend-icon": "fas fa-search",
+      "item-text": "place_name",
+    },
+
+    iconProps: {
+      left: true,
+      small: true,
+    },
+
+    chipProps: {
+      small: true,
+      class: "white--text",
+      color: "deep-orange",
+    },
+
+    kakaoAPI: {
+      url: "https://dapi.kakao.com/v2/local/search/keyword.json",
+      groupCode: "AG2",
+      radius: 20000,
+    },
   }),
   watch: {
     select(selected) {
       if (!selected) return;
+
       this.updateRealEstateDB(selected);
-      this.setRealEstateState(selected);
+      this.setRealEstate(selected);
     },
     search(keyword) {
       if (!keyword) return;
       if (keyword === this.select) return;
-      this.searchKeyword(keyword);
+
+      this.searchKakao(keyword);
     },
   },
   methods: {
-    clearRealEstateState() {
+    clearRealEstate() {
       store.commit("updateSelectedEstate", {});
     },
-    setRealEstateState(re) {
+    setRealEstate(re) {
       store.commit("updateSelectedEstate", re);
     },
     async updateRealEstateDB(re) {
@@ -77,18 +99,18 @@ export default {
         console.log(resp);
       }
     },
-    searchKeyword(keyword) {
+    searchKakao(keyword) {
       this.isLoading = true;
-
       const headers = {
         Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
       };
+
       fetch(
-        `https://dapi.kakao.com/v2/local/search/keyword.json?query=${keyword}&category_group_code=AG2&radius=20000`,
+        `${this.kakaoAPI.url}?query=${keyword}&category_group_code=${this.kakaoAPI.groupCode}&radius=${this.kakaoAPI.radius}`,
         { headers }
       )
         .then((res) => res.clone().json())
-        .then((res) => (this.items = res.documents))
+        .then((res) => (this.estates = res.documents))
         .catch((err) => console.log(err))
         .finally(() => (this.isLoading = false));
     },

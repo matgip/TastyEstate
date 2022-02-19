@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-btn class="ma-2" color="deep-orange" x-small outlined rounded>
-      <v-icon left x-small>
-        fas fa-heart
+    <v-btn v-bind="btnProps">
+      <v-icon v-bind="iconProps">
+        {{ likesIcon }}
       </v-icon>
       좋아요({{ likes }})
     </v-btn>
@@ -11,9 +11,20 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
+  data: () => ({
+    btnProps: {
+      class: "ma-2",
+      color: "deep-orange",
+      outlined: true,
+      rounded: true,
+      "x-small": true,
+    },
+    iconProps: {
+      left: true,
+      "x-small": true,
+    },
+    likesIcon: "fas fa-heart",
+  }),
   props: {
     likes: {
       type: Number,

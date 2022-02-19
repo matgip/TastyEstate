@@ -1,12 +1,20 @@
 <template>
-  <v-btn color="yellow lighten-1" @click="method">
-    <v-icon left>{{ icon }}</v-icon>
+  <v-btn v-bind="btnProps" @click="method">
+    <v-icon v-bind="iconProps">{{ icon }}</v-icon>
     {{ button }}
   </v-btn>
 </template>
 
 <script>
 export default {
+  data: () => ({
+    btnProps: {
+      color: "yellow lighten-1",
+    },
+    iconProps: {
+      left: true,
+    },
+  }),
   props: {
     method: {
       type: Function,

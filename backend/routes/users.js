@@ -28,7 +28,6 @@ users.addUser = async (req, res) => {
 };
 
 router.get("/:id", users.getUser);
-
 router.post("/", users.addUser);
 
 module.exports = router;
