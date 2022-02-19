@@ -8,7 +8,7 @@ estates.getEstate = async (req, res) => {
   try {
     const result = await estatesDb.getEstate(req.params.id);
     if (estatesDb.isEmptyReply(result) == true) {
-      res.sendStatus(404);
+      res.sendStatus(204);
       return;
     }
     res.send(result);

@@ -18,41 +18,52 @@ export default {
   },
   methods: {
     onLogin() {
-      const self = this;
-      window.Kakao.Auth.login({
-        scope: self.scope,
-        success: function(authObj) {
-          console.log(authObj);
-          self.getUser();
-          self.$router.push({ path: "/" });
-        },
-        fail: function(err) {
-          console.log(err);
-        },
+      this.loginKakao()
+        .then(() => {
+          return this.getUserKakao();
+        })
+        .then((user) => {
+          store.commit("updateUser", user);
+          return user;
+        })
+        .then((user) => {
+          this.setUserDB(user);
+        })
+        .then(() => {
+          this.$router.push({ path: "/" });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    loginKakao() {
+      return new Promise((resolve, reject) => {
+        window.Kakao.Auth.login({
+          scope: this.scope,
+          success(authObj) {
+            resolve(authObj);
+          },
+          fail(err) {
+            reject(err);
+          },
+        });
       });
     },
-    getUser() {
-      const self = this;
-      window.Kakao.API.request({
-        url: "/v2/user/me",
-        success: function(user) {
-          self.setUserDB(user);
-          self.setUser(user);
-        },
-        fail: function(err) {
-          console.log(err);
-        },
+    getUserKakao() {
+      return new Promise((resolve, reject) => {
+        window.Kakao.API.request({
+          url: "/v2/user/me",
+          success(user) {
+            resolve(user);
+          },
+          fail(err) {
+            reject(err);
+          },
+        });
       });
     },
     async setUserDB(user) {
-      const resp = await api.users.setUser(user);
-      console.log(resp);
-    },
-    setUser(user) {
-      store.commit("updateUser", this.getAccount(user));
-    },
-    getAccount(user) {
-      return user.kakao_account;
+      return await api.users.setUser(user);
     },
   },
 };

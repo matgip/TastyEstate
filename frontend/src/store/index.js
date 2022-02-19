@@ -12,6 +12,8 @@ export default new Vuex.Store({
     map: null,
     estate: {},
     user: {},
+    rating: 0.0,
+    likes: 0,
   },
   getters: {
     getSelectedEstate(state) {
@@ -20,6 +22,12 @@ export default new Vuex.Store({
     getUser(state) {
       return state.user;
     },
+    getRating(state) {
+      return state.rating;
+    },
+    getLikes(state) {
+      return state.likes;
+    },
   },
   mutations: {
     updateSelectedEstate(state, estate) {
@@ -27,6 +35,9 @@ export default new Vuex.Store({
     },
     updateUser(state, user) {
       state.user = user;
+    },
+    updateLikes(state, likes) {
+      state.likes = likes;
     },
   },
   actions: {},

@@ -7,44 +7,39 @@ const api = axios.create({
 api.users = {
   setUser: async function(user) {
     const resp = await axios.post("/api/users", {
-      id: this.getID(user),
-      email: this.getEmail(user),
-      nickname: this.getNickname(user),
+      id: user.id,
+      email: user.kakao_account.email,
+      nickname: user.kakao_account.profile.nickname,
     });
     return resp;
-  },
-  getID: function(user) {
-    return user.id;
-  },
-  getEmail: function(user) {
-    return user.kakao_account.email;
-  },
-  getNickname: function(user) {
-    return user.kakao_account.profile.nickname;
   },
 };
 
 api.estates = {
-  getRealEstate: async function(re) {
-    const resp = await axios.get(`/api/estates/${re.id}`);
+  getRealEstate: async function(realEstate) {
+    const resp = await axios.get(`/api/estates/${realEstate.id}`);
     return resp;
   },
-  setRealEstate: async function(re) {
+  setRealEstate: async function(realEstate) {
     const resp = await axios.post(`/api/estates`, {
-      id: this.getID(re),
-      place_name: this.getPlace(re),
-      phone_number: this.getPhone(re),
+      id: realEstate.id,
+      place_name: realEstate.place_name,
+      phone_number: realEstate.phone,
     });
     return resp;
   },
-  getID: function(re) {
-    return re.id;
+};
+
+api.likes = {
+  getLikes: async function(realEstate) {
+    const resp = await axios.get(`/api/likes/${realEstate.id}`);
+    return resp;
   },
-  getPlace: function(re) {
-    return re.place_name;
-  },
-  getPhone: function(re) {
-    return re.phone;
+  addLikes: async function(req) {
+    const resp = await axios.put(`/api/likes/${req.realEstateID}`, {
+      user_id: req.userID,
+    });
+    return resp;
   },
 };
 

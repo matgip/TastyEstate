@@ -20,13 +20,13 @@ const getEstate = async (estateID) => {
   return result;
 };
 
-const addEstate = async (estate) => {
+const addEstate = async (realEstate) => {
   let HTTP_STATUS = 200;
   await client.connect();
 
   Promise.all([
-    client.HSET("estates:" + estate.id, "place_name", estate.place_name),
-    client.HSET("estates:" + estate.id, "phone_number", estate.phone_number),
+    client.HSET("estates:" + realEstate.id, "place_name", realEstate.place_name),
+    client.HSET("estates:" + realEstate.id, "phone_number", realEstate.phone_number),
   ])
     .then(() => {
       console.log("HSET estate command success");

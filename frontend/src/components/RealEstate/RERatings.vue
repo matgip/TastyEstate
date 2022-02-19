@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row v-bind="rowProps">
-      <v-rating v-bind="ratingProps" :value="4.5"></v-rating>
+      <v-rating v-bind="ratingProps" :value="rating"></v-rating>
       <div class="grey--text ms-4">{{ rating }} ({{ likes }})</div>
     </v-row>
   </div>
