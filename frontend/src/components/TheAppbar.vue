@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app rounded elevate-on-scroll class="wrapper">
-    <div id="title">Tasty estate</div>
+    <div id="title" @click="gotoHome">Tasty estate</div>
 
     <v-spacer />
 
@@ -78,6 +78,7 @@ export default {
 <style scoped>
 #title {
   color: #ff5722;
+  cursor: pointer;
   font-style: oblique;
   font-size: 30px;
   font-weight: 500;
