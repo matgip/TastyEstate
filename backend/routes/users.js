@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const httpStatus = require("../http-status");
 
 let usersDb = require("../data-access/users");
 let users = (module.exports = {});
@@ -8,13 +9,13 @@ users.getUser = async (req, res) => {
   try {
     const result = await usersDb.getUser(req.params.id);
     if (result.data == null) {
-      res.sendStatus(404);
+      res.sendStatus(httpStatus.NOT_FOUND);
       return;
     }
     res.send(result);
   } catch (err) {
     console.error(err);
-    res.sendStatus(500);
+    res.sendStatus(httpStatus.INTERNAL_ERR);
   }
 };
 users.addUser = async (req, res) => {
@@ -23,7 +24,7 @@ users.addUser = async (req, res) => {
     res.sendStatus(data);
   } catch (err) {
     console.error(err);
-    res.sendStatus(500);
+    res.sendStatus(httpStatus.INTERNAL_ERR);
   }
 };
 

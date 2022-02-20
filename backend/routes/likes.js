@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const httpStatus = require("../http-status");
 
 let likesDb = require("../data-access/likes");
 let likes = (module.exports = {});
@@ -10,7 +11,7 @@ likes.getLikes = async (req, res) => {
     res.send(result);
   } catch (err) {
     console.error(err);
-    res.sendStatus(500);
+    res.sendStatus(httpStatus.INTERNAL_ERR);
   }
 };
 
@@ -20,7 +21,7 @@ likes.addLikes = async (req, res) => {
     res.send(result);
   } catch (err) {
     console.error(err);
-    res.sendStatus(500);
+    res.sendStatus(httpStatus.INTERNAL_ERR);
   }
 };
 
