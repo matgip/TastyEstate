@@ -17,24 +17,16 @@ export default {
     LoginKakaoBtn,
   },
   methods: {
-    onLogin() {
-      this.loginKakao()
-        .then(() => {
-          return this.getUserKakao();
-        })
-        .then((user) => {
-          store.commit("updateUser", user);
-          return user;
-        })
-        .then((user) => {
-          this.setUserDB(user);
-        })
-        .then(() => {
-          this.$router.push({ path: "/" });
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    async onLogin() {
+      try {
+        await this.loginKakao();
+        const user = await this.getUserKakao();
+        this.setUserDB(user);
+        store.commit("updateUser", user);
+        this.$router.push({ path: "/" });
+      } catch (err) {
+        console.error(err);
+      }
     },
     loginKakao() {
       return new Promise((resolve, reject) => {

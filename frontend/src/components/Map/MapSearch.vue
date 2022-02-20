@@ -7,8 +7,8 @@
       :loading="isLoading"
       :search-input.sync="search"
       label="지역 또는 단지명을 입력하세요."
-      @click="clearRE"
-      @click:clear="clearRE"
+      @click="clearSelected"
+      @click:clear="clearSelected"
     >
       <template #selection="{ attr, on, item, selected }">
         <v-chip v-bind="[chipProps, attr]" :input-value="selected" v-on="on">
@@ -70,22 +70,17 @@ export default {
     },
   }),
   watch: {
-    select(selected) {
+    async select(selected) {
       if (!selected) return;
 
-      this.updateREDB(selected)
-        .then(() => {
-          store.commit("updateSelectedEstate", selected);
-        })
-        .then(() => {
-          return this.getLikesDB(selected);
-        })
-        .then((resp) => {
-          store.commit("updateLikes", resp.data.likes);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      try {
+        await this.updateREDB(selected);
+        store.commit("updateSelectedEstate", selected);
+        const resp = await this.getLikesDB(selected);
+        store.commit("updateLikes", resp.data.likes);
+      } catch (err) {
+        console.log(err);
+      }
     },
     search(keyword) {
       if (!keyword) return;
@@ -121,7 +116,7 @@ export default {
         .catch((err) => console.log(err))
         .finally(() => (this.isLoading = false));
     },
-    clearRE() {
+    clearSelected() {
       store.commit("updateSelectedEstate", {});
     },
   },

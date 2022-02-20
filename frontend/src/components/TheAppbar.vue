@@ -39,22 +39,20 @@ export default {
       }
       this.$router.push({ path: "/" });
     },
-    logoutHandler() {
+    async logoutHandler() {
       if (this.isloggedIn() == false) {
         return;
       }
-      this.logoutKakao()
-        .then(() => {
-          alert("정상적으로 로그아웃 하였습니다.");
-          store.commit("updateUser", {});
-        })
-        .then(() => {
-          this.gotoLogin();
-        })
-        .catch((err) => {
-          alert("로그아웃 실패.");
-          console.error(err);
-        });
+
+      try {
+        await this.logoutKakao();
+        store.commit("updateUser", {});
+        this.gotoLogin();
+        alert("정상적으로 로그아웃 하였습니다.");
+      } catch (err) {
+        console.error(err);
+        alert("로그아웃 실패.");
+      }
     },
     logoutKakao() {
       return new Promise((resolve, reject) => {
