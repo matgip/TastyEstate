@@ -10,7 +10,7 @@ likes.getLikes = async (req, res) => {
     res.send(result);
   } catch (err) {
     console.error(err);
-    res.send(err);
+    res.sendStatus(500);
   }
 };
 
@@ -20,7 +20,7 @@ likes.addLikes = async (req, res) => {
     res.send(result);
   } catch (err) {
     console.error(err);
-    res.send(err);
+    res.sendStatus(500);
   }
 };
 

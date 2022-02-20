@@ -14,7 +14,7 @@ users.getUser = async (req, res) => {
     res.send(result);
   } catch (err) {
     console.error(err);
-    res.send(err);
+    res.sendStatus(500);
   }
 };
 users.addUser = async (req, res) => {
@@ -23,7 +23,7 @@ users.addUser = async (req, res) => {
     res.sendStatus(data);
   } catch (err) {
     console.error(err);
-    res.send(err);
+    res.sendStatus(500);
   }
 };
 

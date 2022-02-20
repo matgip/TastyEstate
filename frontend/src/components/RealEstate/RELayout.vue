@@ -1,13 +1,15 @@
 <template>
   <div>
-    <v-card v-if="Object.keys(estate).length !== 0">
+    <v-card>
       <v-card-text>
         <slot name="REimg" />
         <div class="space"></div>
         <slot name="REimgUpload" />
       </v-card-text>
 
-      <v-card-title>{{ estate.place_name }}</v-card-title>
+      <v-card-title>
+        <slot name="REName" />
+      </v-card-title>
 
       <v-card-text>
         <slot name="RERatings" />

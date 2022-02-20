@@ -1,10 +1,11 @@
 <template>
   <div>
-    <RELayout>
+    <RELayout v-if="Object.keys(estate).length !== 0">
       <REImgs slot="REimg" :estateID="estate.id" />
       <REImgUpload slot="REimgUpload" :estateID="estate.id" />
-      <RERatings slot="RERatings" :rating="rating" :likes="likes" />
-      <RELikes slot="RELikes" :likes="likes" />
+      <REName slot="REName" :placeName="estate.place_name" />
+      <RERatings v-if="likes !== undefined" slot="RERatings" :rating="rating" :likes="likes" />
+      <RELikes v-if="likes !== undefined" slot="RELikes" :likes="likes" />
       <REFeeds slot="REFeeds" />
       <REInfos slot="REInfo" :estateInfo="estate" />
     </RELayout>
@@ -16,6 +17,7 @@ import { mapGetters } from "vuex";
 import RELayout from "./RELayout.vue";
 import REImgs from "./REImgs.vue";
 import REImgUpload from "./REImgUpload.vue";
+import REName from "./REName.vue";
 import RERatings from "./RERatings.vue";
 import RELikes from "./RELikes.vue";
 import REFeeds from "./REFeeds.vue";
@@ -26,6 +28,7 @@ export default {
     RELayout,
     REImgs,
     REImgUpload,
+    REName,
     RERatings,
     RELikes,
     REFeeds,

@@ -14,7 +14,7 @@ estates.getEstate = async (req, res) => {
     res.send(result);
   } catch (err) {
     console.error(err);
-    res.send(err);
+    res.sendStatus(500);
   }
 };
 estates.addEstate = async (req, res) => {
@@ -23,7 +23,7 @@ estates.addEstate = async (req, res) => {
     res.sendStatus(result);
   } catch (err) {
     console.error(err);
-    res.send(err);
+    res.sendStatus(500);
   }
 };
 
