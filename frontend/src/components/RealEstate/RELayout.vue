@@ -19,7 +19,8 @@
 
       <v-card-text>
         <slot name="RELikes" />
-        <slot name="REFeeds" />
+        <slot name="REReview" />
+        <slot name="REALLReviews" />
       </v-card-text>
 
       <v-divider class="mx-4" />

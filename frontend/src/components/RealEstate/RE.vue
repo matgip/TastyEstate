@@ -6,7 +6,8 @@
       <REName slot="REName" :placeName="estate.place_name" />
       <REStars slot="REStars" :stars="stars" :likes="likes" />
       <RELikes slot="RELikes" :likes="likes" @likeBtnClicked="updateLikes" />
-      <REFeeds slot="REFeeds" />
+      <REReview slot="REReview" />
+      <REAllReviews slot="REALLReviews" />
       <REInfos slot="REInfo" :estateInfo="estate" />
     </RELayout>
   </div>
@@ -20,7 +21,8 @@ import REImgUpload from "./REImgUpload.vue";
 import REName from "./REName.vue";
 import REStars from "./REStars.vue";
 import RELikes from "./RELikes.vue";
-import REFeeds from "./REFeeds.vue";
+import REReview from "./REReview.vue";
+import REAllReviews from "./REAllReviews.vue";
 import REInfos from "./REInfos.vue";
 
 import api from "@/api/service.js";
@@ -41,7 +43,8 @@ export default {
     REName,
     REStars,
     RELikes,
-    REFeeds,
+    REReview,
+    REAllReviews,
     REInfos,
   },
   computed: {
