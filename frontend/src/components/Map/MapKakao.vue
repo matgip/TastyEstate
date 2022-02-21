@@ -145,8 +145,8 @@ export default {
       }
 
       this.$store.subscribe((mutation) => {
-        if (mutation.type == "updateSelectedEstate") {
-          const estate = this.$store.getters.getSelectedEstate;
+        if (mutation.type == "updateSelected") {
+          const estate = this.$store.getters.getSelected;
           if (isEmpty(estate)) return;
 
           const position = new kakao.maps.LatLng(estate.y, estate.x);

@@ -30,15 +30,3 @@
     </v-card>
   </div>
 </template>
-
-<script>
-import { mapGetters } from "vuex";
-
-export default {
-  computed: {
-    ...mapGetters({
-      estate: "getSelectedEstate",
-    }),
-  },
-};
-</script>

@@ -39,12 +39,14 @@ export default {
   },
   methods: {
     async addLikes() {
-      const req = { realEstateID: store.getters.getSelectedEstate.id, userID: store.getters.getUser.id };
+      const realEstateID = store.getters.getSelected.id;
+      const userID = store.getters.getUser.id;
       try {
-        const resp = await api.likes.addLikes(req);
+        const resp = await api.likes.addLikes(realEstateID, userID);
         if (resp.data.cmd_result === "already-added") {
           alert("이미 좋아요를 누르셨습니다.");
         }
+        this.$emit("likeBtnClicked");
       } catch (err) {
         console.error(err);
       }

@@ -75,9 +75,7 @@ export default {
 
       try {
         await this.updateREDB(selected);
-        store.commit("updateSelectedEstate", selected);
-        const resp = await this.getLikesDB(selected);
-        store.commit("updateLikes", resp.data.likes);
+        store.commit("updateSelected", selected);
       } catch (err) {
         console.log(err);
       }
@@ -98,9 +96,6 @@ export default {
       }
       return resp;
     },
-    async getLikesDB(re) {
-      return await api.likes.getLikes(re);
-    },
     searchKakao(keyword) {
       this.isLoading = true;
       const headers = {
@@ -117,7 +112,7 @@ export default {
         .finally(() => (this.isLoading = false));
     },
     clearSelected() {
-      store.commit("updateSelectedEstate", {});
+      store.commit("updateSelected", {});
     },
   },
 };

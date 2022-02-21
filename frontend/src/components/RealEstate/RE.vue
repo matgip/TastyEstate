@@ -4,8 +4,8 @@
       <REImgs slot="REimg" :estateID="estate.id" />
       <REImgUpload slot="REimgUpload" :estateID="estate.id" />
       <REName slot="REName" :placeName="estate.place_name" />
-      <RERatings v-if="likes !== undefined" slot="RERatings" :rating="rating" :likes="likes" />
-      <RELikes v-if="likes !== undefined" slot="RELikes" :likes="likes" />
+      <RERatings slot="RERatings" :rating="rating" :likes="likes" />
+      <RELikes slot="RELikes" :likes="likes" @likeBtnClicked="updateLikes" />
       <REFeeds slot="REFeeds" />
       <REInfos slot="REInfo" :estateInfo="estate" />
     </RELayout>
@@ -23,7 +23,17 @@ import RELikes from "./RELikes.vue";
 import REFeeds from "./REFeeds.vue";
 import REInfos from "./REInfos.vue";
 
+import api from "@/api/service.js";
+import store from "@/store";
+
 export default {
+  mounted() {
+    store.subscribe((mutation) => {
+      if (mutation.type == "updateSelected") {
+        this.updateLikes();
+      }
+    });
+  },
   components: {
     RELayout,
     REImgs,
@@ -36,10 +46,23 @@ export default {
   },
   computed: {
     ...mapGetters({
-      estate: "getSelectedEstate",
+      estate: "getSelected",
       rating: "getRating",
       likes: "getLikes",
     }),
+  },
+  methods: {
+    async updateLikes() {
+      try {
+        const resp = await this.getLikesDB(this.estate.id);
+        store.commit("updateLikes", resp.data.likes);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getLikesDB(reID) {
+      return await api.likes.getLikes(reID);
+    },
   },
 };
 </script>

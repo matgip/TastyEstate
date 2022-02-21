@@ -10,14 +10,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     map: null,
-    estate: {},
+    selected: {},
     user: {},
     rating: 0.0,
     likes: 0,
   },
   getters: {
-    getSelectedEstate(state) {
-      return state.estate;
+    getSelected(state) {
+      return state.selected;
     },
     getUser(state) {
       return state.user;
@@ -30,8 +30,8 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    updateSelectedEstate(state, estate) {
-      state.estate = estate;
+    updateSelected(state, selected) {
+      state.selected = selected;
     },
     updateUser(state, user) {
       state.user = user;

@@ -31,13 +31,13 @@ api.estates = {
 };
 
 api.likes = {
-  getLikes: async function(realEstate) {
-    const resp = await axios.get(`/api/likes/${realEstate.id}`);
+  getLikes: async function(realEstateID) {
+    const resp = await axios.get(`/api/likes/${realEstateID}`);
     return resp;
   },
-  addLikes: async function(req) {
-    const resp = await axios.put(`/api/likes/${req.realEstateID}`, {
-      user_id: req.userID,
+  addLikes: async function(realEstateID, userID) {
+    const resp = await axios.put(`/api/likes/${realEstateID}`, {
+      user_id: userID,
     });
     return resp;
   },
