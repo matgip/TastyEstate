@@ -12,7 +12,7 @@
       </v-card-title>
 
       <v-card-text>
-        <slot name="RERatings" />
+        <slot name="REStars" />
       </v-card-text>
 
       <v-divider class="mx-4" />

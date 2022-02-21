@@ -12,7 +12,7 @@ export default new Vuex.Store({
     map: null,
     selected: {},
     user: {},
-    rating: 0.0,
+    stars: 0.0,
     likes: 0,
   },
   getters: {
@@ -22,8 +22,8 @@ export default new Vuex.Store({
     getUser(state) {
       return state.user;
     },
-    getRating(state) {
-      return state.rating;
+    getStars(state) {
+      return state.stars;
     },
     getLikes(state) {
       return state.likes;
