@@ -6,6 +6,7 @@
       :theme="'list'"
       :multiple="true"
       :deletable="true"
+      :linkable="true"
       :meta="true"
       :accept="'image/*,.zip'"
       :helpText="'부동산 이미지를 자유롭게 업로드해주세요!'"

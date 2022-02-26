@@ -6,7 +6,6 @@
       :items="estates"
       :loading="isLoading"
       :search-input.sync="search"
-      label="지역 또는 단지명을 입력하세요."
       @click="clearSelected"
       @click:clear="clearSelected"
     >
@@ -45,6 +44,7 @@ export default {
       color: "deep-orange",
       class: "mx-4",
       dense: true,
+      label: "지역 또는 단지명을 입력하세요.",
       "no-filter": true,
       "solo-inverted": true,
       "return-object": true,

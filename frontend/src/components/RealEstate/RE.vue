@@ -6,7 +6,7 @@
       <REName slot="REName" :placeName="estate.place_name" />
       <REStars slot="REStars" :stars="stars" :likes="likes" />
       <RELikes slot="RELikes" :likes="likes" @likeBtnClicked="updateLikes" />
-      <REReview slot="REReview" />
+      <REReview slot="REReview" :placeName="estate.place_name" />
       <REAllReviews slot="REALLReviews" />
       <REInfos slot="REInfo" :estateInfo="estate" />
     </RELayout>
