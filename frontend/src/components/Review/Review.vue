@@ -12,8 +12,10 @@
 
       <!-- Only can see if dialog is true -->
       <ReviewLayout>
-        <ReviewREName slot="RealEstateName" :placeName="placeName" />
-        <ReviewBtns slot="ReviewBtns" @closeBtnClicked="closeDiag" @saveBtnClicked="addReview" />
+        <RealEstateName slot="RealEstateName" :placeName="placeName" />
+        <RCMSelectList slot="Recommand" />
+        <NotRCMSelectList slot="NotRecommand" />
+        <DiagBtns slot="DiagBtns" @closeBtnClicked="closeDiag" @saveBtnClicked="addReview" />
       </ReviewLayout>
     </v-dialog>
   </div>
@@ -21,8 +23,9 @@
 
 <script>
 import ReviewLayout from "./ReviewLayout.vue";
-import ReviewREName from "./ReviewREName.vue";
-import ReviewBtns from "./ReviewBtns.vue";
+import RealEstateName from "./ReviewREName.vue";
+import RCMSelectList from "./ReviewRCMSelecList.vue";
+import DiagBtns from "./ReviewBtns.vue";
 
 export default {
   data: () => ({
@@ -30,7 +33,7 @@ export default {
 
     dialogProps: {
       persistent: true,
-      "max-width": "600px",
+      "max-width": "700px",
     },
 
     btnProps: {
@@ -58,8 +61,9 @@ export default {
   },
   components: {
     ReviewLayout,
-    ReviewREName,
-    ReviewBtns,
+    RealEstateName,
+    RCMSelectList,
+    DiagBtns,
   },
   methods: {
     closeDiag() {
