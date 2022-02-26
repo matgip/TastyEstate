@@ -21,7 +21,7 @@ import REImgUpload from "./REImgUpload.vue";
 import REName from "./REName.vue";
 import REStars from "./REStars.vue";
 import RELikes from "./RELikes.vue";
-import REReview from "./REReview.vue";
+import REReview from "../Review/Review.vue";
 import REAllReviews from "./REAllReviews.vue";
 import REInfos from "./REInfos.vue";
 
