@@ -6,9 +6,9 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-list-item-group v-model="kindness">
+    <v-list-item-group v-model="kindness" @change="emitKindness">
       <template v-for="(item, i) in items">
-        <v-list-item v-bind="listItemProps" :key="`item-${i}`" :value="item.text">
+        <v-list-item v-bind="listItemProps" :key="`item-${i}`" :value="item.value">
           <template #default="{ active }">
             <v-list-item-action>
               <v-checkbox v-bind="checkboxProps" :input-value="active" :label="item.text" />
@@ -40,6 +40,10 @@ export default {
       color: "deep-orange",
     },
   }),
-  methods: {},
+  methods: {
+    emitKindness() {
+      this.$emit("kindnessSelected", this.kindness);
+    },
+  },
 };
 </script>
