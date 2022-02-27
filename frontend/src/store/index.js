@@ -14,6 +14,7 @@ export default new Vuex.Store({
     user: {},
     stars: 0.0,
     likes: 0,
+    dialogFlag: false,
   },
   getters: {
     getSelected(state) {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     getLikes(state) {
       return state.likes;
     },
+    getDialogFlag(state) {
+      return state.dialogFlag;
+    },
   },
   mutations: {
     updateSelected(state, selected) {
@@ -38,6 +42,9 @@ export default new Vuex.Store({
     },
     updateLikes(state, likes) {
       state.likes = likes;
+    },
+    updateDialogFlag(state, dialogFlag) {
+      state.dialogFlag = dialogFlag;
     },
   },
   actions: {},
