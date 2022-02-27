@@ -20,7 +20,13 @@
 
         <slot name="Rating" />
 
+        <v-divider></v-divider>
+
         <slot name="Kindness" />
+
+        <v-divider></v-divider>
+
+        <slot name="TextArea" />
 
         <v-card-actions>
           <v-spacer />
