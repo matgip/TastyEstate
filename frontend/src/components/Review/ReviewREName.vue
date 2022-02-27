@@ -1,7 +1,5 @@
 <template>
-  <div>
-    {{ placeName }}
-  </div>
+  <div>🏠 {{ placeName }}</div>
 </template>
 
 <script>

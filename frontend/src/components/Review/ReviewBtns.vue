@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import store from "@/store";
+
 export default {
   data: () => ({
     btnProps: {
@@ -18,10 +20,10 @@ export default {
   }),
   methods: {
     closeDiag() {
-      this.$emit("closeBtnClicked");
+      store.commit("updateDialogFlag", false);
     },
     addReview() {
-      this.$emit("saveBtnClicked");
+      store.commit("updateDialogFlag", false);
     },
   },
 };
