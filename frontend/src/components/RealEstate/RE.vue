@@ -5,7 +5,7 @@
       <REImgUpload slot="REimgUpload" :estateID="estate.id" />
       <REName slot="REName" :placeName="estate.place_name" />
       <REStars slot="REStars" :stars="stars" :likes="likes" />
-      <RELikes slot="RELikes" :likes="likes" @likeBtnClicked="updateLikes" />
+      <RELikes slot="RELikes" :likes="likes" @likeBtnClicked="addLikes" />
       <REReview slot="REReview" :placeName="estate.place_name" />
       <REAllReviews slot="REALLReviews" />
       <REInfos slot="REInfo" :estateInfo="estate" />
@@ -50,21 +50,31 @@ export default {
   computed: {
     ...mapGetters({
       estate: "getSelected",
+      user: "getUser",
       stars: "getStars",
       likes: "getLikes",
     }),
   },
   methods: {
-    async updateLikes() {
+    async addLikes() {
       try {
-        const resp = await this.getLikesDB(this.estate.id);
-        store.commit("updateLikes", resp.data.likes);
+        const resp = await api.likes.addLikes(this.estate.id, this.user.id);
+        if (resp.data.cmd_result === "already-added") {
+          alert("이미 좋아요를 누르셨습니다.");
+        }
+        // Update like counts
+        await this.updateLikes();
       } catch (err) {
         console.log(err);
       }
     },
-    async getLikesDB(reID) {
-      return await api.likes.getLikes(reID);
+    async updateLikes() {
+      try {
+        const resp = await api.likes.getLikes(this.estate.id);
+        store.commit("updateLikes", resp.data.likes);
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };
