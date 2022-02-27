@@ -6,6 +6,8 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
+// Use vue-devtools for debugging
+Vue.config.devtools = true;
 
 export default new Vuex.Store({
   state: {

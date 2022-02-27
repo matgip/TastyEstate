@@ -2,9 +2,9 @@
   <div>
     <ReviewLayout>
       <RealEstateName slot="RealEstateName" :placeName="placeName" />
-      <ReviewRating slot="Rating" />
-      <ReviewKindness slot="Kindness" />
-      <ReviewTextArea slot="TextArea" />
+      <ReviewRating slot="Rating" @ratingSelected="getRating" />
+      <ReviewKindness slot="Kindness" @kindnessSelected="getKindness" />
+      <ReviewTextArea slot="TextArea" @reviewText="getText" />
       <DiagBtns slot="DiagBtns" />
     </ReviewLayout>
   </div>
@@ -19,6 +19,11 @@ import ReviewTextArea from "./ReviewTextArea.vue";
 import DiagBtns from "./ReviewBtns.vue";
 
 export default {
+  data: () => ({
+    rating: 0.0,
+    kindness: "",
+    text: "",
+  }),
   props: {
     placeName: {
       type: String,
@@ -36,6 +41,16 @@ export default {
     ReviewTextArea,
     DiagBtns,
   },
-  methods: {},
+  methods: {
+    getRating(rating) {
+      this.rating = rating;
+    },
+    getKindness(kindness) {
+      this.kindness = kindness;
+    },
+    getText(text) {
+      this.text = text;
+    },
+  },
 };
 </script>
