@@ -18,6 +18,8 @@
 
         <v-divider></v-divider>
 
+        <slot name="Rating" />
+
         <slot name="Kindness" />
 
         <v-card-actions>

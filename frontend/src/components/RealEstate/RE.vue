@@ -5,7 +5,7 @@
       <REImgUpload slot="REimgUpload" :estateID="estate.id" />
       <REName slot="REName" :placeName="estate.place_name" />
       <REStars slot="REStars" :stars="stars" :likes="likes" />
-      <RELikes slot="RELikes" :likes="likes" @likeBtnClicked="addLikes" />
+      <RELikes slot="RELikes" :likes="likes" @likeBtnClicked="likesBtnHandler" />
       <REReview slot="REReview" :placeName="estate.place_name" />
       <REAllReviews slot="REALLReviews" />
       <REInfos slot="REInfo" :estateInfo="estate" />
@@ -32,7 +32,7 @@ export default {
   mounted() {
     store.subscribe((mutation) => {
       if (mutation.type == "updateSelected") {
-        this.updateLikes();
+        this.updateViewLikes();
       }
     });
   },
@@ -56,19 +56,19 @@ export default {
     }),
   },
   methods: {
-    async addLikes() {
+    async likesBtnHandler() {
       try {
         const resp = await api.likes.addLikes(this.estate.id, this.user.id);
         if (resp.data.cmd_result === "already-added") {
           alert("이미 좋아요를 누르셨습니다.");
+          return;
         }
-        // Update like counts
-        await this.updateLikes();
+        await this.updateViewLikes();
       } catch (err) {
         console.log(err);
       }
     },
-    async updateLikes() {
+    async updateViewLikes() {
       try {
         const resp = await api.likes.getLikes(this.estate.id);
         store.commit("updateLikes", resp.data.likes);

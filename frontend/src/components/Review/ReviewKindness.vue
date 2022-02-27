@@ -8,10 +8,10 @@
 
     <v-list-item-group v-model="kindness">
       <template v-for="(item, i) in items">
-        <v-list-item v-bind="listItemProps" :key="`item-${i}`" :value="item">
+        <v-list-item v-bind="listItemProps" :key="`item-${i}`" :value="item.text">
           <template #default="{ active }">
             <v-list-item-action>
-              <v-checkbox v-bind="checkboxProps" :input-value="active" :label="item" />
+              <v-checkbox v-bind="checkboxProps" :input-value="active" :label="item.text" />
             </v-list-item-action>
           </template>
         </v-list-item>
@@ -23,8 +23,14 @@
 <script>
 export default {
   data: () => ({
-    items: ["매우 친절", "친절", "보통", "불친절", "매우 불친절"],
-    kindness: [""],
+    items: [
+      { value: "veryKind", text: "매우 친절" },
+      { value: "kind", text: "친절" },
+      { value: "soso", text: "보통" },
+      { value: "unKind", text: "불친절" },
+      { value: "veryUnkind", text: "매우 불친절" },
+    ],
+    kindness: "",
 
     listItemProps: {
       class: "d-inline-flex",
