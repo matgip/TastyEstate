@@ -7,7 +7,7 @@
       <ReviewPrice slot="Price" :propPrice="price" @priceSelected="getPrice" />
       <ReviewContracted slot="isContracted" :propIsContracted="isContracted" @isContracted="getContracted" />
       <ReviewTextArea slot="TextArea" :propText="text" @reviewText="getText" />
-      <DiagBtns slot="DiagBtns" @addReview="addReviewHandler" />
+      <DiagBtns slot="DiagBtns" @submitReview="onSubmitReview" />
     </ReviewLayout>
   </div>
 </template>
@@ -52,7 +52,7 @@ export default {
     DiagBtns,
   },
   methods: {
-    addReviewHandler() {
+    onSubmitReview() {
       this.rating = 0.0;
       this.kindness = "";
       this.price = "";
