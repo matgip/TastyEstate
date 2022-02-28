@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import api from "@/api/service.js";
 import store from "@/store";
 import LoginKakaoBtn from "./LoginKakaoBtn.vue";
 
@@ -21,8 +20,7 @@ export default {
       try {
         await this.loginKakao();
         const user = await this.getUserKakao();
-        this.setUserDB(user);
-        store.commit("updateUser", user);
+        store.dispatch("updateUser", user);
         this.$router.push({ path: "/" });
       } catch (err) {
         console.error(err);
@@ -53,9 +51,6 @@ export default {
           },
         });
       });
-    },
-    async setUserDB(user) {
-      return await api.users.setUser(user);
     },
   },
 };

@@ -5,7 +5,7 @@
       <REImgUpload slot="REimgUpload" :estateID="estate.id" />
       <REName slot="REName" :placeName="estate.place_name" />
       <REStars slot="REStars" :stars="stars" :likes="likes" />
-      <RELikes slot="RELikes" :likes="likes" @likeBtnClicked="likesBtnHandler" />
+      <RELikes slot="RELikes" :likes="likes" @likeBtnClicked="onLikeBtnClicked" />
       <REReview slot="REReview" :placeName="estate.place_name" />
       <REAllReviews slot="REALLReviews" />
       <REInfos slot="REInfo" :estateInfo="estate" />
@@ -25,14 +25,13 @@ import REReview from "../Review/Review.vue";
 import REAllReviews from "./REAllReviews.vue";
 import REInfos from "./REInfos.vue";
 
-import api from "@/api/service.js";
 import store from "@/store";
 
 export default {
   mounted() {
     store.subscribe((mutation) => {
       if (mutation.type == "updateSelected") {
-        this.updateViewLikes();
+        store.dispatch("getLikes", this.estate.id);
       }
     });
   },
@@ -56,25 +55,8 @@ export default {
     }),
   },
   methods: {
-    async likesBtnHandler() {
-      try {
-        const resp = await api.likes.addLikes(this.estate.id, this.user.id);
-        if (resp.data.cmd_result === "already-added") {
-          alert("이미 좋아요를 누르셨습니다.");
-          return;
-        }
-        await this.updateViewLikes();
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async updateViewLikes() {
-      try {
-        const resp = await api.likes.getLikes(this.estate.id);
-        store.commit("updateLikes", resp.data.likes);
-      } catch (err) {
-        console.log(err);
-      }
+    onLikeBtnClicked() {
+      store.dispatch("updateLikes", { estateID: this.estate.id, userID: this.user.id });
     },
   },
 };
