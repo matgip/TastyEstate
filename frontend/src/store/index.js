@@ -101,7 +101,7 @@ export default new Vuex.Store({
         alert("이미 좋아요를 누르셨습니다.");
         return;
       }
-      dispatch(GET_LIKES, payLoad.estateID);
+      dispatch("getLikes", payLoad.estateID);
     },
   },
   plugins: [
