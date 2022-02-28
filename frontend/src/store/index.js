@@ -73,6 +73,7 @@ export default new Vuex.Store({
       }
     },
     async getLikes(context, estateID) {
+      if (estateID === undefined) return;
       try {
         const resp = await api.likes.getLikes(estateID);
         context.commit("updateLikes", resp.data.likes);
