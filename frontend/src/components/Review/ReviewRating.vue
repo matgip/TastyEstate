@@ -7,7 +7,7 @@
     </v-list-item>
 
     <v-list-item>
-      <v-rating v-bind="starProps" v-model="rating" @input="emitRating"></v-rating>
+      <v-rating v-bind="starProps" v-model="rating"></v-rating>
       <span v-bind="textProp"> ({{ rating }}) </span>
     </v-list-item>
   </div>
@@ -16,7 +16,6 @@
 <script>
 export default {
   data: () => ({
-    rating: 0.0,
     textProp: {
       class: "grey--text text-caption mr-2",
     },
@@ -27,9 +26,23 @@ export default {
       "half-increments": true,
     },
   }),
-  methods: {
-    emitRating() {
-      this.$emit("ratingSelected", this.rating);
+  props: {
+    propRating: {
+      type: Number,
+      required: true,
+      validator: function(value) {
+        return value >= 0.0;
+      },
+    },
+  },
+  computed: {
+    rating: {
+      get() {
+        return this.propRating;
+      },
+      set(newRating) {
+        this.$emit("ratingSelected", newRating);
+      },
     },
   },
 };

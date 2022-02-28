@@ -23,7 +23,7 @@ export default {
       store.commit("updateDialogFlag", false);
     },
     addReview() {
-      store.commit("updateDialogFlag", false);
+      this.$emit("addReview");
     },
   },
 };

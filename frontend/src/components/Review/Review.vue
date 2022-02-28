@@ -2,12 +2,12 @@
   <div>
     <ReviewLayout>
       <RealEstateName slot="RealEstateName" :placeName="placeName" />
-      <ReviewRating slot="Rating" @ratingSelected="getRating" />
-      <ReviewKindness slot="Kindness" @kindnessSelected="getKindness" />
-      <ReviewPrice slot="Price" @priceSelected="getPrice" />
-      <ReviewContracted slot="isContracted" @isContracted="getContracted" />
-      <ReviewTextArea slot="TextArea" @reviewText="getText" />
-      <DiagBtns slot="DiagBtns" />
+      <ReviewRating slot="Rating" :propRating="rating" @ratingSelected="getRating" />
+      <ReviewKindness slot="Kindness" :propKindness="kindness" @kindnessSelected="getKindness" />
+      <ReviewPrice slot="Price" :propPrice="price" @priceSelected="getPrice" />
+      <ReviewContracted slot="isContracted" :propIsContracted="isContracted" @isContracted="getContracted" />
+      <ReviewTextArea slot="TextArea" :propText="text" @reviewText="getText" />
+      <DiagBtns slot="DiagBtns" @addReview="addReviewHandler" />
     </ReviewLayout>
   </div>
 </template>
@@ -22,12 +22,14 @@ import ReviewContracted from "./ReviewContractRate.vue";
 import ReviewTextArea from "./ReviewTextArea.vue";
 import DiagBtns from "./ReviewBtns.vue";
 
+import store from "@/store";
+
 export default {
   data: () => ({
     rating: 0.0,
     kindness: "",
     price: "",
-    isContracted: false,
+    isContracted: null,
     text: "",
   }),
   props: {
@@ -50,6 +52,14 @@ export default {
     DiagBtns,
   },
   methods: {
+    addReviewHandler() {
+      this.rating = 0.0;
+      this.kindness = "";
+      this.price = "";
+      this.isContracted = null;
+      this.text = "";
+      store.commit("updateDialogFlag", false);
+    },
     getRating(rating) {
       this.rating = rating;
     },

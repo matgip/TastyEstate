@@ -6,7 +6,7 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-list-item-group v-model="price" @change="emitPrice">
+    <v-list-item-group v-model="price">
       <template v-for="(item, i) in items">
         <v-list-item v-bind="listItemProps" :key="`item-${i}`" :value="item.value">
           <template #default="{ active }">
@@ -30,7 +30,6 @@ export default {
       { value: "cheap", text: "5~10% 더 쌈" },
       { value: "veryCheap", text: "10% 이상 쌈" },
     ],
-    price: "",
 
     listItemProps: {
       class: "d-inline-flex",
@@ -40,9 +39,20 @@ export default {
       color: "deep-orange",
     },
   }),
-  methods: {
-    emitPrice() {
-      this.$emit("priceSelected", this.price);
+  props: {
+    propPrice: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    price: {
+      get() {
+        return this.propPrice;
+      },
+      set(newPrice) {
+        this.$emit("priceSelected", newPrice);
+      },
     },
   },
 };
