@@ -2,7 +2,7 @@
   <div>
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title>🌟 평가점수를 입력해주세요!</v-list-item-title>
+        <v-list-item-title>🌟 평점을 남겨주세요</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
 
