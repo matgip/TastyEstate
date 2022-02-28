@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn v-bind="btnProps" @click="closeDiag">닫기</v-btn>
-    <v-btn v-bind="btnProps" @click="addReview">리뷰 등록하기</v-btn>
+    <v-btn v-bind="btnProps" @click="submit">리뷰 등록하기</v-btn>
   </div>
 </template>
 
@@ -22,8 +22,8 @@ export default {
     closeDiag() {
       store.commit("UPDATE_DIALOG", false);
     },
-    addReview() {
-      this.$emit("addReview");
+    submit() {
+      this.$emit("submitReview");
     },
   },
 };
