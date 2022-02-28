@@ -20,7 +20,7 @@ export default {
   }),
   methods: {
     closeDiag() {
-      store.commit("updateDialogFlag", false);
+      store.commit("UPDATE_DIALOG", false);
     },
     addReview() {
       this.$emit("addReview");

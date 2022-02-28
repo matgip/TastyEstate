@@ -58,7 +58,7 @@ export default {
       this.price = "";
       this.isContracted = null;
       this.text = "";
-      store.commit("updateDialogFlag", false);
+      store.commit("UPDATE_DIALOG", false);
     },
     getRating(rating) {
       this.rating = rating;

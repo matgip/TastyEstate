@@ -30,7 +30,11 @@ import store from "@/store";
 export default {
   mounted() {
     store.subscribe((mutation) => {
-      if (mutation.type == "updateSelected") {
+      if (mutation.type == "UPDATE_ESTATE") {
+        if (this.estate.id === undefined) {
+          //  When selected estate is cleared
+          return;
+        }
         store.dispatch("getLikes", this.estate.id);
       }
     });
@@ -48,10 +52,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      estate: "getSelected",
-      user: "getUser",
-      stars: "getStars",
-      likes: "getLikes",
+      estate: "GET_ESTATE",
+      user: "GET_USER",
+      stars: "GET_STARS",
+      likes: "GET_LIKES",
     }),
   },
   methods: {

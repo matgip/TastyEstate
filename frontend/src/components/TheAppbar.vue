@@ -17,7 +17,7 @@ import store from "@/store";
 export default {
   computed: {
     user() {
-      return store.getters.getUser;
+      return store.getters.GET_USER;
     },
   },
   components: {
@@ -46,7 +46,7 @@ export default {
 
       try {
         await this.logoutKakao();
-        store.commit("updateUser", {});
+        store.commit("UPDATE_USER", {});
         this.gotoLogin();
         alert("정상적으로 로그아웃 하였습니다.");
       } catch (err) {
