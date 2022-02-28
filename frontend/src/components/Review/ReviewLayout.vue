@@ -51,8 +51,8 @@ import store from "@/store";
 export default {
   mounted() {
     store.subscribe((mutation) => {
-      if (mutation.type == "updateDialogFlag") {
-        this.dialog = store.getters.getDialogFlag;
+      if (mutation.type == "UPDATE_DIALOG") {
+        this.dialog = store.getters.GET_DIALOG;
       }
     });
   },

@@ -97,7 +97,7 @@ export default {
         .finally(() => (this.isLoading = false));
     },
     clearSelected() {
-      store.commit("updateSelected", {});
+      store.commit("UPDATE_ESTATE", {});
     },
   },
 };
