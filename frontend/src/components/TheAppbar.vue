@@ -5,7 +5,7 @@
     <v-spacer />
 
     <AppbarBtn v-if="user.id == undefined" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
-    <AppbarBtn v-else :method="logoutHandler" :icon="'fas fa-sign-out-alt'" :button="'로그아웃'" />
+    <AppbarBtn v-else :method="onLogout" :icon="'fas fa-sign-out-alt'" :button="'로그아웃'" />
     <AppbarBtn :method="gotoHome" :icon="'fas fa-home'" :button="'홈'" />
   </v-app-bar>
 </template>
@@ -39,7 +39,7 @@ export default {
       }
       this.$router.push({ path: "/" });
     },
-    async logoutHandler() {
+    async onLogout() {
       if (this.isloggedIn() == false) {
         return;
       }

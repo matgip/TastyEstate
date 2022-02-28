@@ -69,7 +69,7 @@ export default {
     },
   }),
   watch: {
-    async select(selected) {
+    select(selected) {
       if (!selected) return;
       store.dispatch("updateRealEstate", selected);
     },
