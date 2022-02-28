@@ -6,7 +6,7 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-list-item-group v-model="kindness" @change="emitKindness">
+    <v-list-item-group v-model="kindness">
       <template v-for="(item, i) in items">
         <v-list-item v-bind="listItemProps" :key="`item-${i}`" :value="item.value">
           <template #default="{ active }">
@@ -30,7 +30,6 @@ export default {
       { value: "unKind", text: "불친절" },
       { value: "veryUnkind", text: "매우 불친절" },
     ],
-    kindness: "",
 
     listItemProps: {
       class: "d-inline-flex",
@@ -40,9 +39,20 @@ export default {
       color: "deep-orange",
     },
   }),
-  methods: {
-    emitKindness() {
-      this.$emit("kindnessSelected", this.kindness);
+  props: {
+    propKindness: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    kindness: {
+      get() {
+        return this.propKindness;
+      },
+      set(newKindness) {
+        this.$emit("kindnessSelected", newKindness);
+      },
     },
   },
 };

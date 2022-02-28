@@ -6,7 +6,7 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-list-item-group v-model="isContracted" @change="emitContrated">
+    <v-list-item-group v-model="isContracted">
       <template v-for="(item, i) in items">
         <v-list-item v-bind="listItemProps" :key="`item-${i}`" :value="item.value">
           <template #default="{ active }">
@@ -27,7 +27,6 @@ export default {
       { value: true, text: "네. 여기서 계약했어요" },
       { value: false, text: "아니요. 여기서 계약 안했어요" },
     ],
-    isContracted: null,
 
     listItemProps: {
       class: "d-inline-flex",
@@ -37,9 +36,19 @@ export default {
       color: "deep-orange",
     },
   }),
-  methods: {
-    emitContrated() {
-      this.$emit("isContracted", this.isContracted);
+  props: {
+    propIsContracted: {
+      required: true,
+    },
+  },
+  computed: {
+    isContracted: {
+      get() {
+        return this.propIsContracted;
+      },
+      set(newCheckFlag) {
+        this.$emit("isContracted", newCheckFlag);
+      },
     },
   },
 };
