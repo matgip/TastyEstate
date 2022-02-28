@@ -4,6 +4,8 @@
       <RealEstateName slot="RealEstateName" :placeName="placeName" />
       <ReviewRating slot="Rating" @ratingSelected="getRating" />
       <ReviewKindness slot="Kindness" @kindnessSelected="getKindness" />
+      <ReviewPrice slot="Price" @priceSelected="getPrice" />
+      <ReviewContracted slot="isContracted" @isContracted="getContracted" />
       <ReviewTextArea slot="TextArea" @reviewText="getText" />
       <DiagBtns slot="DiagBtns" />
     </ReviewLayout>
@@ -15,6 +17,8 @@ import ReviewLayout from "./ReviewLayout.vue";
 import RealEstateName from "./ReviewREName.vue";
 import ReviewRating from "./ReviewRating.vue";
 import ReviewKindness from "./ReviewKindness.vue";
+import ReviewPrice from "./ReviewPrice.vue";
+import ReviewContracted from "./ReviewContractRate.vue";
 import ReviewTextArea from "./ReviewTextArea.vue";
 import DiagBtns from "./ReviewBtns.vue";
 
@@ -22,6 +26,8 @@ export default {
   data: () => ({
     rating: 0.0,
     kindness: "",
+    price: "",
+    isContracted: false,
     text: "",
   }),
   props: {
@@ -38,6 +44,8 @@ export default {
     RealEstateName,
     ReviewRating,
     ReviewKindness,
+    ReviewPrice,
+    ReviewContracted,
     ReviewTextArea,
     DiagBtns,
   },
@@ -47,6 +55,12 @@ export default {
     },
     getKindness(kindness) {
       this.kindness = kindness;
+    },
+    getPrice(price) {
+      this.price = price;
+    },
+    getContracted(isContracted) {
+      this.isContracted = isContracted;
     },
     getText(text) {
       this.text = text;

@@ -16,15 +16,23 @@
           <slot name="RealEstateName" />
         </v-card-title>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <slot name="Rating" />
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <slot name="Kindness" />
 
-        <v-divider></v-divider>
+        <v-divider />
+
+        <slot name="Price" />
+
+        <v-divider />
+
+        <slot name="isContracted" />
+
+        <v-divider />
 
         <slot name="TextArea" />
 
