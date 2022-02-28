@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import api from "@/api/service.js";
 import store from "@/store";
 
 export default {
@@ -72,13 +71,7 @@ export default {
   watch: {
     async select(selected) {
       if (!selected) return;
-
-      try {
-        await this.updateREDB(selected);
-        store.commit("updateSelected", selected);
-      } catch (err) {
-        console.log(err);
-      }
+      store.dispatch("updateRealEstate", selected);
     },
     search(keyword) {
       if (!keyword) return;
@@ -88,14 +81,6 @@ export default {
     },
   },
   methods: {
-    async updateREDB(re) {
-      let resp = await api.estates.getRealEstate(re);
-      if (resp.status == 204) {
-        // No contents
-        resp = await api.estates.setRealEstate(re);
-      }
-      return resp;
-    },
     searchKakao(keyword) {
       this.isLoading = true;
       const headers = {
