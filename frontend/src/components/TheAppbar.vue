@@ -12,12 +12,11 @@
 
 <script>
 import AppbarBtn from "./TheAppbarBtn.vue";
-import store from "@/store";
 
 export default {
   computed: {
     user() {
-      return store.getters.GET_USER;
+      return this.$store.getters.GET_USER;
     },
   },
   components: {
@@ -46,7 +45,7 @@ export default {
 
       try {
         await this.logoutKakao();
-        store.commit("UPDATE_USER", {});
+        this.$store.commit("UPDATE_USER", {});
         this.gotoLogin();
         alert("정상적으로 로그아웃 하였습니다.");
       } catch (err) {

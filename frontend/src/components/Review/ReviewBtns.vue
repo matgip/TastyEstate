@@ -8,8 +8,6 @@
 <script>
 import BaseButton from "@/common/BaseButton.vue";
 
-import store from "@/store";
-
 export default {
   data: () => ({
     btnProps: {
@@ -22,7 +20,7 @@ export default {
   }),
   methods: {
     closeDiag() {
-      store.commit("UPDATE_DIALOG", false);
+      this.$store.commit("UPDATE_DIALOG", false);
     },
     submit() {
       this.$emit("submitReview");

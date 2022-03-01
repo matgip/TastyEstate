@@ -25,17 +25,15 @@ import REReview from "../Review/Review.vue";
 import REAllReviews from "./REAllReviews.vue";
 import REInfos from "./REInfos.vue";
 
-import store from "@/store";
-
 export default {
   mounted() {
-    store.subscribe((mutation) => {
+    this.$store.subscribe((mutation) => {
       if (mutation.type == "UPDATE_ESTATE") {
         if (this.estate.id === undefined) {
           //  When selected estate is cleared
           return;
         }
-        store.dispatch("getLikes", this.estate.id);
+        this.$store.dispatch("getLikes", this.estate.id);
       }
     });
   },
@@ -60,7 +58,7 @@ export default {
   },
   methods: {
     onLikeBtnClicked() {
-      store.dispatch("updateLikes", { estateID: this.estate.id, userID: this.user.id });
+      this.$store.dispatch("updateLikes", { estateID: this.estate.id, userID: this.user.id });
     },
   },
 };

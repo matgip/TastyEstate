@@ -46,13 +46,11 @@
 </template>
 
 <script>
-import store from "@/store";
-
 export default {
   mounted() {
-    store.subscribe((mutation) => {
+    this.$store.subscribe((mutation) => {
       if (mutation.type == "UPDATE_DIALOG") {
-        this.dialog = store.getters.GET_DIALOG;
+        this.dialog = this.$store.getters.GET_DIALOG;
       }
     });
   },

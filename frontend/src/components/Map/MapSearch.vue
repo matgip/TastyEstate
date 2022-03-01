@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import store from "@/store";
-
 export default {
   data: () => ({
     isLoading: false,
@@ -71,7 +69,7 @@ export default {
   watch: {
     select(estate) {
       if (!estate) return;
-      store.dispatch("updateRealEstate", estate);
+      this.$store.dispatch("updateRealEstate", estate);
     },
     search(keyword) {
       if (!keyword || keyword === this.select) return;
@@ -95,7 +93,7 @@ export default {
         .finally(() => (this.isLoading = false));
     },
     clearSelected() {
-      store.commit("UPDATE_ESTATE", {});
+      this.$store.commit("UPDATE_ESTATE", {});
     },
   },
 };

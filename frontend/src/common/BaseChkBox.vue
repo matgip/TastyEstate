@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import store from "@/store";
-
 export default {
   data: () => ({
     listItemProps: {
@@ -63,7 +61,7 @@ export default {
         return this.propSelect;
       },
       set(newSelect) {
-        store.commit(this.updateCmd, newSelect);
+        this.$store.commit(this.updateCmd, newSelect);
       },
     },
   },

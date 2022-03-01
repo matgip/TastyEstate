@@ -23,22 +23,13 @@ import ReviewTextArea from "./ReviewTextArea.vue";
 import DiagBtns from "./ReviewBtns.vue";
 
 import { mapGetters } from "vuex";
-import store from "@/store";
 
 export default {
   data: () => ({
     rating: 0.0,
     text: "",
   }),
-  props: {
-    placeName: {
-      type: String,
-      required: true,
-      validator: function(value) {
-        return value != null;
-      },
-    },
-  },
+  props: ["placeName"],
   components: {
     ReviewLayout,
     RealEstateName,
@@ -59,11 +50,11 @@ export default {
   methods: {
     onSubmitReview() {
       this.rating = 0.0;
-      store.commit("UPDATE_KINDNESS", "");
-      store.commit("UPDATE_PRICE", "");
-      store.commit("UPDATE_CONTRACT", null);
       this.text = "";
-      store.commit("UPDATE_DIALOG", false);
+      this.$store.commit("UPDATE_KINDNESS", "");
+      this.$store.commit("UPDATE_PRICE", "");
+      this.$store.commit("UPDATE_CONTRACT", null);
+      this.$store.commit("UPDATE_DIALOG", false);
     },
     getRating(rating) {
       this.rating = rating;

@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import store from "@/store";
 import LoginKakaoBtn from "./LoginKakaoBtn.vue";
 
 export default {
@@ -20,7 +19,7 @@ export default {
       try {
         await this.loginKakao();
         const user = await this.getUserKakao();
-        store.dispatch("updateUser", user);
+        this.$store.dispatch("updateUser", user);
         this.$router.push({ path: "/" });
       } catch (err) {
         console.error(err);
