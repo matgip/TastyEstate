@@ -63,7 +63,7 @@ class MapKakao {
         window.map.setLevel(3);
         window.map.setCenter(position);
 
-        const imgSrc = require("../../assets/images/marker_selected.png");
+        const imgSrc = require("@/assets/images/marker_selected.png");
         const imgSize = new kakao.maps.Size(45, 55);
         const mi = new kakao.maps.MarkerImage(imgSrc, imgSize);
         const m = new kakao.maps.Marker({
@@ -79,7 +79,7 @@ class MapKakao {
   scanMap() {
     const lvl = window.map.getLevel();
     if (lvl >= this.MIN_CLSTR_MAP_LEVEL) return;
-
+    // Get current mouse position
     const latlng = window.map.getCenter();
     const lat = Math.round(latlng.getLat() * 100) / 100;
     const lng = Math.round(latlng.getLng() * 100) / 100;
@@ -88,16 +88,12 @@ class MapKakao {
       for (let j = -1; j < 2; j++) {
         const centerX = (lng + j / 100).toFixed(2);
         const centerY = (lat + i / 100).toFixed(2);
-        this.scan(centerY, centerX);
+        if (this.isScanned(centerY, centerX)) continue;
+        this.setScanned(centerY, centerX);
+        this.placeSrch.categorySearch("AG2", this.callback.bind(this), { x: centerX, y: centerY, radius: 300 });
         this.addCircle(centerY, centerX);
       }
     }
-  }
-
-  scan(lat, lng) {
-    if (this.isScanned(lat, lng)) return;
-    this.setScanned(lat, lng);
-    this.placeSrch.categorySearch("AG2", this.callback.bind(this), { x: lng, y: lat, radius: 300 });
   }
 
   callback(places, status, pagination) {
@@ -111,8 +107,6 @@ class MapKakao {
   }
 
   addCircle(lat, lng) {
-    if (this.isCircleAdded(lat, lng)) return;
-    this.setCircleAdded(lat, lng);
     const crcl = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(lat, lng),
       radius: 300,
@@ -120,7 +114,7 @@ class MapKakao {
       strokeColor: "#FFFFFF",
       strokeOpacity: 0.1,
       strokeStyle: "dashed",
-      fillColor: "#FFFFFF",
+      fillColor: "#757575",
       fillOpacity: 0.5,
     });
     crcl.setMap(window.map);
@@ -151,18 +145,6 @@ class MapKakao {
     window.scannedLatlng ??= new Array();
     window.scannedLatlng[lat] ??= new Array();
     window.scannedLatlng[lat][lng] = this.SCANNED;
-  }
-
-  isCircleAdded(lat, lng) {
-    if (window.circle === undefined) return false;
-    if (window.circle[lat] === undefined) return false;
-    return window.circle[lat][lng] === this.ADDED;
-  }
-
-  setCircleAdded(lat, lng) {
-    window.circle ??= new Array();
-    window.circle[lat] ??= new Array();
-    window.circle[lat][lng] = this.ADDED;
   }
 
   setPlace(place) {
