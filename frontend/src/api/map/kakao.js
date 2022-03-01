@@ -1,8 +1,8 @@
 import store from "@/store";
 /* global kakao */
-
 class MapKakao {
   SCANNED = 1;
+  ADDED = 1;
   MIN_CLSTR_MAP_LEVEL = 5;
 
   options;
@@ -86,7 +86,10 @@ class MapKakao {
 
     for (let i = -1; i < 2; i++) {
       for (let j = -1; j < 2; j++) {
-        this.scan((lat + i / 100).toFixed(2), (lng + j / 100).toFixed(2));
+        const centerX = (lng + j / 100).toFixed(2);
+        const centerY = (lat + i / 100).toFixed(2);
+        this.scan(centerY, centerX);
+        this.addCircle(centerY, centerX);
       }
     }
   }
@@ -94,34 +97,7 @@ class MapKakao {
   scan(lat, lng) {
     if (this.isScanned(lat, lng)) return;
     this.setScanned(lat, lng);
-    this.addCircle(lat, lng);
     this.placeSrch.categorySearch("AG2", this.callback.bind(this), { x: lng, y: lat, radius: 300 });
-  }
-
-  isScanned(lat, lng) {
-    if (window.scannedLatlng === undefined) return false;
-    if (window.scannedLatlng[lat] === undefined) return false;
-    return window.scannedLatlng[lat][lng] === this.SCANNED;
-  }
-
-  setScanned(lat, lng) {
-    window.scannedLatlng ??= new Array();
-    window.scannedLatlng[lat] ??= new Array();
-    window.scannedLatlng[lat][lng] = this.SCANNED;
-  }
-
-  addCircle(lat, lng) {
-    const crcl = new kakao.maps.Circle({
-      center: new kakao.maps.LatLng(lat, lng),
-      radius: 300,
-      strokeWeight: 1,
-      strokeColor: "#FFFFFF",
-      strokeOpacity: 0.1,
-      strokeStyle: "dashed",
-      fillColor: "#FFFFFF",
-      fillOpacity: 0.5,
-    });
-    crcl.setMap(window.map);
   }
 
   callback(places, status, pagination) {
@@ -134,9 +110,20 @@ class MapKakao {
     if (pagination.hasNextPage) pagination.nextPage();
   }
 
-  setPlace(place) {
-    window.places ??= new Array();
-    window.places[place.id] ??= place;
+  addCircle(lat, lng) {
+    if (this.isCircleAdded(lat, lng)) return;
+    this.setCircleAdded(lat, lng);
+    const crcl = new kakao.maps.Circle({
+      center: new kakao.maps.LatLng(lat, lng),
+      radius: 300,
+      strokeWeight: 1,
+      strokeColor: "#FFFFFF",
+      strokeOpacity: 0.1,
+      strokeStyle: "dashed",
+      fillColor: "#FFFFFF",
+      fillOpacity: 0.5,
+    });
+    crcl.setMap(window.map);
   }
 
   addMarker(place) {
@@ -152,6 +139,35 @@ class MapKakao {
       this.infoWindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>");
       this.infoWindow.open(window.map, m);
     });
+  }
+
+  isScanned(lat, lng) {
+    if (window.scannedLatlng === undefined) return false;
+    if (window.scannedLatlng[lat] === undefined) return false;
+    return window.scannedLatlng[lat][lng] === this.SCANNED;
+  }
+
+  setScanned(lat, lng) {
+    window.scannedLatlng ??= new Array();
+    window.scannedLatlng[lat] ??= new Array();
+    window.scannedLatlng[lat][lng] = this.SCANNED;
+  }
+
+  isCircleAdded(lat, lng) {
+    if (window.circle === undefined) return false;
+    if (window.circle[lat] === undefined) return false;
+    return window.circle[lat][lng] === this.ADDED;
+  }
+
+  setCircleAdded(lat, lng) {
+    window.circle ??= new Array();
+    window.circle[lat] ??= new Array();
+    window.circle[lat][lng] = this.ADDED;
+  }
+
+  setPlace(place) {
+    window.places ??= new Array();
+    window.places[place.id] ??= place;
   }
 }
 
