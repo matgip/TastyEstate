@@ -69,14 +69,12 @@ export default {
     },
   }),
   watch: {
-    select(selected) {
-      if (!selected) return;
-      store.dispatch("updateRealEstate", selected);
+    select(estate) {
+      if (!estate) return;
+      store.dispatch("updateRealEstate", estate);
     },
     search(keyword) {
-      if (!keyword) return;
-      if (keyword === this.select) return;
-
+      if (!keyword || keyword === this.select) return;
       this.searchKakao(keyword);
     },
   },

@@ -1,11 +1,13 @@
 <template>
   <div>
-    <v-btn v-bind="btnProps" @click="closeDiag">닫기</v-btn>
-    <v-btn v-bind="btnProps" @click="submit">리뷰 등록하기</v-btn>
+    <BaseButton :btnProps="btnProps" :method="closeDiag" :button="'닫기'" />
+    <BaseButton :btnProps="btnProps" :method="submit" :button="'리뷰 등록하기'" />
   </div>
 </template>
 
 <script>
+import BaseButton from "@/common/BaseButton.vue";
+
 import store from "@/store";
 
 export default {
@@ -25,6 +27,9 @@ export default {
     submit() {
       this.$emit("submitReview");
     },
+  },
+  components: {
+    BaseButton,
   },
 };
 </script>
