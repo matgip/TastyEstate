@@ -1,28 +1,15 @@
 <template>
   <div>
-    <v-list-item>
-      <v-list-item-content>
-        <v-list-item-title>💵 중개 수수료는 어때요?</v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-
-    <v-list-item-group v-model="price">
-      <template v-for="(item, i) in items">
-        <v-list-item v-bind="listItemProps" :key="`item-${i}`" :value="item.value">
-          <template #default="{ active }">
-            <v-list-item-action>
-              <v-checkbox v-bind="checkboxProps" :input-value="active" :label="item.text" />
-            </v-list-item-action>
-          </template>
-        </v-list-item>
-      </template>
-    </v-list-item-group>
+    <BaseChkBox :title="title" :propSelect="propPrice" :items="items" :updateCmd="updateCmd" />
   </div>
 </template>
 
 <script>
+import BaseChkBox from "@/common/BaseChkBox.vue";
+
 export default {
   data: () => ({
+    title: "💵 중개 수수료는 어때요?",
     items: [
       { value: "veryExpensive", text: "10% 이상 비쌈" },
       { value: "expensive", text: "5~10% 더 비쌈" },
@@ -30,14 +17,7 @@ export default {
       { value: "cheap", text: "5~10% 더 쌈" },
       { value: "veryCheap", text: "10% 이상 쌈" },
     ],
-
-    listItemProps: {
-      class: "d-inline-flex",
-    },
-
-    checkboxProps: {
-      color: "deep-orange",
-    },
+    updateCmd: "UPDATE_PRICE",
   }),
   props: {
     propPrice: {
@@ -45,15 +25,8 @@ export default {
       required: true,
     },
   },
-  computed: {
-    price: {
-      get() {
-        return this.propPrice;
-      },
-      set(newPrice) {
-        this.$emit("priceSelected", newPrice);
-      },
-    },
+  components: {
+    BaseChkBox,
   },
 };
 </script>

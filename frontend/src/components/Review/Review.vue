@@ -1,13 +1,13 @@
 <template>
   <div>
     <ReviewLayout>
-      <RealEstateName slot="RealEstateName" :placeName="placeName" />
-      <ReviewRating slot="Rating" :propRating="rating" @ratingSelected="getRating" />
-      <ReviewKindness slot="Kindness" :propKindness="kindness" @kindnessSelected="getKindness" />
-      <ReviewPrice slot="Price" :propPrice="price" @priceSelected="getPrice" />
-      <ReviewContracted slot="isContracted" :propIsContracted="isContracted" @isContracted="getContracted" />
-      <ReviewTextArea slot="TextArea" :propText="text" @reviewText="getText" />
-      <DiagBtns slot="DiagBtns" @submitReview="onSubmitReview" />
+      <RealEstateName slot="realestateName" :placeName="placeName" />
+      <ReviewRating slot="rating" :propRating="rating" @ratingSelected="getRating" />
+      <ReviewKindness slot="kindness" :propKindness="kindness" />
+      <ReviewPrice slot="price" :propPrice="price" />
+      <ReviewContract slot="contract" :propContract="contract" />
+      <ReviewTextArea slot="text" :propText="text" @reviewText="getText" />
+      <DiagBtns slot="buttons" @submitReview="onSubmitReview" />
     </ReviewLayout>
   </div>
 </template>
@@ -18,18 +18,16 @@ import RealEstateName from "./ReviewREName.vue";
 import ReviewRating from "./ReviewRating.vue";
 import ReviewKindness from "./ReviewKindness.vue";
 import ReviewPrice from "./ReviewPrice.vue";
-import ReviewContracted from "./ReviewContractRate.vue";
+import ReviewContract from "./ReviewContract.vue";
 import ReviewTextArea from "./ReviewTextArea.vue";
 import DiagBtns from "./ReviewBtns.vue";
 
+import { mapGetters } from "vuex";
 import store from "@/store";
 
 export default {
   data: () => ({
     rating: 0.0,
-    kindness: "",
-    price: "",
-    isContracted: null,
     text: "",
   }),
   props: {
@@ -47,30 +45,28 @@ export default {
     ReviewRating,
     ReviewKindness,
     ReviewPrice,
-    ReviewContracted,
+    ReviewContract,
     ReviewTextArea,
     DiagBtns,
+  },
+  computed: {
+    ...mapGetters({
+      kindness: "GET_KINDNESS",
+      price: "GET_PRICE",
+      contract: "GET_CONTRACT",
+    }),
   },
   methods: {
     onSubmitReview() {
       this.rating = 0.0;
-      this.kindness = "";
-      this.price = "";
-      this.isContracted = null;
+      store.commit("UPDATE_KINDNESS", "");
+      store.commit("UPDATE_PRICE", "");
+      store.commit("UPDATE_CONTRACT", null);
       this.text = "";
       store.commit("UPDATE_DIALOG", false);
     },
     getRating(rating) {
       this.rating = rating;
-    },
-    getKindness(kindness) {
-      this.kindness = kindness;
-    },
-    getPrice(price) {
-      this.price = price;
-    },
-    getContracted(isContracted) {
-      this.isContracted = isContracted;
     },
     getText(text) {
       this.text = text;

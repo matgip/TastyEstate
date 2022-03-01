@@ -22,6 +22,15 @@ const UPDATE_LIKES = "UPDATE_LIKES";
 
 const GET_STARS = "GET_STARS";
 
+const GET_KINDNESS = "GET_KINDNESS";
+const UPDATE_KINDNESS = "UPDATE_KINDNESS";
+
+const GET_PRICE = "GET_PRICE";
+const UPDATE_PRICE = "UPDATE_PRICE";
+
+const GET_CONTRACT = "GET_CONTRACT";
+const UPDATE_CONTRACT = "UPDATE_CONTRACT";
+
 const GET_DIALOG = "GET_DIALOG";
 const UPDATE_DIALOG = "UPDATE_DIALOG";
 
@@ -32,6 +41,9 @@ export default new Vuex.Store({
     user: {},
     stars: 0.0,
     likes: 0,
+    kindness: "",
+    price: "",
+    contract: null,
     dialog: false,
   },
   getters: {
@@ -47,6 +59,15 @@ export default new Vuex.Store({
     [GET_LIKES](state) {
       return state.likes;
     },
+    [GET_KINDNESS](state) {
+      return state.kindness;
+    },
+    [GET_PRICE](state) {
+      return state.price;
+    },
+    [GET_CONTRACT](state) {
+      return state.contract;
+    },
     [GET_DIALOG](state) {
       return state.dialog;
     },
@@ -60,6 +81,15 @@ export default new Vuex.Store({
     },
     [UPDATE_LIKES](state, likes) {
       state.likes = likes;
+    },
+    [UPDATE_KINDNESS](state, kindness) {
+      state.kindness = kindness;
+    },
+    [UPDATE_CONTRACT](state, contract) {
+      state.contract = contract;
+    },
+    [UPDATE_PRICE](state, price) {
+      state.price = price;
     },
     [UPDATE_DIALOG](state, dialog) {
       state.dialog = dialog;
