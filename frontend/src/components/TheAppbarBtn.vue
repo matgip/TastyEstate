@@ -1,36 +1,25 @@
 <template>
-  <v-btn x-small plain depressed color="deep-orange" @click="method">
-    <v-icon left>{{ icon }}</v-icon>
-    {{ button }}
-  </v-btn>
+  <BaseButton :btnProps="btnProps" :iconProps="iconProps" :icon="icon" :method="method" :button="button" />
 </template>
 
 <script>
+import BaseButton from "@/common/BaseButton.vue";
+
 export default {
-  props: {
-    method: {
-      type: Function,
-      required: true,
-      validator: function(value) {
-        return value != null;
-      },
+  data: () => ({
+    btnProps: {
+      color: "deep-orange",
+      depressed: true,
+      plain: true,
+      "x-small": true,
     },
-    icon: {
-      type: String,
-      required: true,
-      validator: function(value) {
-        if (value.indexOf("fas") != -1) return true;
-        if (value.indexOf("mdi") != -1) return true;
-        return false;
-      },
+    iconProps: {
+      left: true,
     },
-    button: {
-      type: String,
-      required: true,
-      validator: function(value) {
-        return value != null;
-      },
-    },
+  }),
+  props: ["method", "icon", "button"],
+  components: {
+    BaseButton,
   },
 };
 </script>

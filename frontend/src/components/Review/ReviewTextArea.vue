@@ -10,8 +10,6 @@
 <script>
 export default {
   data: () => ({
-    // text: "",
-
     textAreaProps: {
       filled: true,
       label: "자유롭게 리뷰를 남겨주세요!",
