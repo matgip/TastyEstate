@@ -14,8 +14,8 @@ class MapKakao {
   markerClstr;
   infoWindow;
   // marker img
-  imgPlaceSelected;
-  imgPlace;
+  imgSelected;
+  imgMarker;
   imgSize;
 
   constructor(lat, lng) {
@@ -29,8 +29,8 @@ class MapKakao {
     // display infos when marker clicked
     this.infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
-    this.imgPlaceSelected = require("@/assets/images/marker_selected.png");
-    this.imgPlace = require("@/assets/images/marker.png");
+    this.imgSelected = require("@/assets/images/marker_selected.png");
+    this.imgMarker = require("@/assets/images/marker.png");
     this.imgSize = new kakao.maps.Size(35, 45);
   }
 
@@ -71,15 +71,15 @@ class MapKakao {
         const e = store.getters.GET_ESTATE;
         if (Object.keys(e).length === 0) return;
         this.moveTo(e);
-        this.addMarker(e, this.imgPlaceSelected);
+        this.addMarker(e, this.imgSelected);
       }
     });
   }
 
   moveTo(estate) {
-    const p = new kakao.maps.LatLng(estate.y, estate.x);
+    const latlng = new kakao.maps.LatLng(estate.y, estate.x);
     window.map.setLevel(3);
-    window.map.setCenter(p);
+    window.map.setCenter(latlng);
   }
 
   scan() {
@@ -104,7 +104,7 @@ class MapKakao {
     if (status === kakao.maps.services.Status.OK) {
       for (let p of places) {
         this.setPlace(p);
-        this.addMarker(p, this.imgPlace);
+        this.addMarker(p, this.imgMarker);
       }
     }
     if (pagination.hasNextPage) pagination.nextPage();
@@ -125,10 +125,9 @@ class MapKakao {
   }
 
   addMarker(place, img) {
-    const mi = new kakao.maps.MarkerImage(img, this.imgSize);
     const m = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(place.y, place.x),
-      image: mi,
+      image: new kakao.maps.MarkerImage(img, this.imgSize),
     });
     this.markerClstr.addMarker(m);
     kakao.maps.event.addListener(m, "click", () => {
