@@ -17,15 +17,15 @@ export default {
   methods: {
     async onLogin() {
       try {
-        await this.loginKakao();
-        const user = await this.getUserKakao();
+        await this.login();
+        const user = await this.getUser();
         this.$store.dispatch("updateUser", user);
         this.$router.push({ path: "/" });
       } catch (err) {
         console.error(err);
       }
     },
-    loginKakao() {
+    login() {
       return new Promise((resolve, reject) => {
         window.Kakao.Auth.login({
           scope: this.scope,
@@ -38,7 +38,7 @@ export default {
         });
       });
     },
-    getUserKakao() {
+    getUser() {
       return new Promise((resolve, reject) => {
         window.Kakao.API.request({
           url: "/v2/user/me",

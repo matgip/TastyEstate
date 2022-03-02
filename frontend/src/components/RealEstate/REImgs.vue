@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col v-bind="colProps" v-for="i in images" :key="i">
-        <v-img v-bind="imgProps" :src="getImageURL(estateID, i)">
+        <v-img v-bind="imgProps" :src="getImgURL(estateID, i)">
           <template #placeholder>
             <v-row v-bind="rowProps">
               <v-progress-circular v-bind="progressProps" />
@@ -46,7 +46,7 @@ export default {
     },
   },
   methods: {
-    getImageURL(estateID, imgNum) {
+    getImgURL(estateID, imgNum) {
       return `http://localhost:3000/upload/${estateID}?image=${imgNum}`;
     },
   },

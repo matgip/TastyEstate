@@ -63,45 +63,39 @@ class MapKakao {
     // zoom in and out
     window.map.addControl(this.zoomCtrl, kakao.maps.ControlPosition.RIGHT);
 
-    kakao.maps.event.addListener(window.map, "dragend", this.scanMap.bind(this));
-    kakao.maps.event.addListener(window.map, "zoom_changed", this.scanMap.bind(this));
+    kakao.maps.event.addListener(window.map, "dragend", this.scan.bind(this));
+    kakao.maps.event.addListener(window.map, "zoom_changed", this.scan.bind(this));
 
     store.subscribe((mutation) => {
       if (mutation.type == "UPDATE_ESTATE") {
         const e = store.getters.GET_ESTATE;
         if (Object.keys(e).length === 0) return;
-
-        const position = new kakao.maps.LatLng(e.y, e.x);
-        window.map.setLevel(3);
-        window.map.setCenter(position);
-
-        const mi = new kakao.maps.MarkerImage(this.imgPlaceSelected, this.imgSize);
-        const m = new kakao.maps.Marker({
-          position: position,
-          title: e.place_name,
-          image: mi,
-        });
-        m.setMap(window.map);
+        this.moveTo(e);
+        this.addMarker(e, this.imgPlaceSelected);
       }
     });
   }
 
-  scanMap() {
+  moveTo(estate) {
+    const p = new kakao.maps.LatLng(estate.y, estate.x);
+    window.map.setLevel(3);
+    window.map.setCenter(p);
+  }
+
+  scan() {
     const lvl = window.map.getLevel();
     if (lvl >= this.MIN_MAP_LEVEL) return;
 
-    const latlng = window.map.getCenter();
-    const lat = Math.round(latlng.getLat() * 100) / 100;
-    const lng = Math.round(latlng.getLng() * 100) / 100;
+    const { lat, lng } = this.getRoundedLatLng();
 
     for (let i = -1; i < 2; i++) {
       for (let j = -1; j < 2; j++) {
-        const centerX = (lng + j / 100).toFixed(2);
-        const centerY = (lat + i / 100).toFixed(2);
-        if (this.isScanned(centerY, centerX)) continue;
-        this.setScanned(centerY, centerX);
-        this.placeSrch.categorySearch("AG2", this.callback.bind(this), { x: centerX, y: centerY, radius: 300 });
-        this.addCircle(centerY, centerX);
+        const x = (lng + j / 100).toFixed(2);
+        const y = (lat + i / 100).toFixed(2);
+        if (this.isScanned(y, x)) continue;
+        this.setScanned(y, x);
+        this.placeSrch.categorySearch("AG2", this.callback.bind(this), { x: x, y: y, radius: 300 });
+        this.addCircle(y, x);
       }
     }
   }
@@ -110,14 +104,14 @@ class MapKakao {
     if (status === kakao.maps.services.Status.OK) {
       for (let p of places) {
         this.setPlace(p);
-        this.addMarker(p);
+        this.addMarker(p, this.imgPlace);
       }
     }
     if (pagination.hasNextPage) pagination.nextPage();
   }
 
   addCircle(lat, lng) {
-    const crcl = new kakao.maps.Circle({
+    const cl = new kakao.maps.Circle({
       center: new kakao.maps.LatLng(lat, lng),
       radius: 300,
       strokeWeight: 1,
@@ -127,11 +121,11 @@ class MapKakao {
       fillColor: "#757575",
       fillOpacity: 0.5,
     });
-    crcl.setMap(window.map);
+    cl.setMap(window.map);
   }
 
-  addMarker(place) {
-    const mi = new kakao.maps.MarkerImage(this.imgPlace, this.imgSize);
+  addMarker(place, img) {
+    const mi = new kakao.maps.MarkerImage(img, this.imgSize);
     const m = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(place.y, place.x),
       image: mi,
@@ -141,6 +135,13 @@ class MapKakao {
       this.infoWindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>");
       this.infoWindow.open(window.map, m);
     });
+  }
+
+  getRoundedLatLng() {
+    const latlng = window.map.getCenter();
+    const lat = Math.round(latlng.getLat() * 100) / 100;
+    const lng = Math.round(latlng.getLng() * 100) / 100;
+    return { lat: lat, lng: lng };
   }
 
   isScanned(lat, lng) {
