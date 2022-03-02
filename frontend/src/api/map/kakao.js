@@ -2,18 +2,37 @@ import store from "@/store";
 /* global kakao */
 class MapKakao {
   SCANNED = 1;
-  ADDED = 1;
-  MIN_CLSTR_MAP_LEVEL = 5;
+  MIN_MAP_LEVEL = 5;
 
+  // defaults
   options;
   container;
+  // map control
   mapCtrl;
   zoomCtrl;
   placeSrch;
   markerClstr;
   infoWindow;
+  // marker img
+  imgPlaceSelected;
+  imgPlace;
+  imgSize;
 
-  constructor() {}
+  constructor(lat, lng) {
+    this.options = {
+      center: new kakao.maps.LatLng(lat, lng),
+      level: this.MIN_MAP_LEVEL,
+    };
+    this.mapCtrl = new kakao.maps.MapTypeControl();
+    this.zoomCtrl = new kakao.maps.ZoomControl();
+
+    // display infos when marker clicked
+    this.infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+    this.imgPlaceSelected = require("@/assets/images/marker_selected.png");
+    this.imgPlace = require("@/assets/images/marker.png");
+    this.imgSize = new kakao.maps.Size(35, 45);
+  }
 
   loadMap() {
     if (window.kakao && window.kakao.maps) {
@@ -27,23 +46,16 @@ class MapKakao {
   }
 
   initMap() {
-    this.options = {
-      center: new kakao.maps.LatLng(37.2579324408187, 127.059981890576),
-      level: this.MIN_CLSTR_MAP_LEVEL,
-    };
+    // Must guarantee to call initMap() after MapKakao.vue mounted
     this.container = document.getElementById("mapview");
     window.map = new kakao.maps.Map(this.container, this.options);
-    this.mapCtrl = new kakao.maps.MapTypeControl();
-    this.zoomCtrl = new kakao.maps.ZoomControl();
     this.placeSrch = new kakao.maps.services.Places(window.map);
     this.markerClstr = new kakao.maps.MarkerClusterer({
       map: window.map,
       averageCenter: true,
-      minLevel: this.MIN_CLSTR_MAP_LEVEL,
+      minLevel: this.MIN_MAP_LEVEL,
     });
 
-    // display infos when marker clicked
-    this.infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });
     // terrian infos
     window.map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
     // switch between normal and skyview
@@ -63,9 +75,7 @@ class MapKakao {
         window.map.setLevel(3);
         window.map.setCenter(position);
 
-        const imgSrc = require("@/assets/images/marker_selected.png");
-        const imgSize = new kakao.maps.Size(45, 55);
-        const mi = new kakao.maps.MarkerImage(imgSrc, imgSize);
+        const mi = new kakao.maps.MarkerImage(this.imgPlaceSelected, this.imgSize);
         const m = new kakao.maps.Marker({
           position: position,
           title: e.place_name,
@@ -78,8 +88,8 @@ class MapKakao {
 
   scanMap() {
     const lvl = window.map.getLevel();
-    if (lvl >= this.MIN_CLSTR_MAP_LEVEL) return;
-    // Get current mouse position
+    if (lvl >= this.MIN_MAP_LEVEL) return;
+
     const latlng = window.map.getCenter();
     const lat = Math.round(latlng.getLat() * 100) / 100;
     const lng = Math.round(latlng.getLng() * 100) / 100;
@@ -121,9 +131,7 @@ class MapKakao {
   }
 
   addMarker(place) {
-    const imgSrc = require("@/assets/images/marker.png");
-    const imgSize = new kakao.maps.Size(35, 45);
-    const mi = new kakao.maps.MarkerImage(imgSrc, imgSize);
+    const mi = new kakao.maps.MarkerImage(this.imgPlace, this.imgSize);
     const m = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(place.y, place.x),
       image: mi,
@@ -154,5 +162,5 @@ class MapKakao {
 }
 
 export const $map = {
-  kakao: new MapKakao(),
+  kakao: new MapKakao(37.2579324408187, 127.059981890576),
 };
