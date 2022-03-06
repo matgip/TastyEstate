@@ -6,6 +6,9 @@ const isEmpty = (result) => {
 };
 
 const getEstate = async (id) => {
+  if (!id) {
+    throw new Error("estate id not provided");
+  }
   await client.connect();
   const estate = await client.HGETALL("estates:" + id);
   await client.quit();
@@ -13,6 +16,13 @@ const getEstate = async (id) => {
 };
 
 const addEstate = async (e) => {
+  if (!e) {
+    throw new Error("estate is not provided");
+  }
+  if (!e.id || !e.place_name || !e.phone_number) {
+    throw new Error("invalid estate object");
+  }
+
   await client.connect();
   client.HSET("estates:" + e.id, "place_name", e.place_name);
   client.HSET("estates:" + e.id, "phone_number", e.phone_number);

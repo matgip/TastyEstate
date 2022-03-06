@@ -3,6 +3,12 @@ const client = require("../../../../db-config/redis/client");
 const zset = require("./result");
 
 const addUser = async (estateID, data) => {
+  if (!estateID || !data) {
+    throw new Error("Invalid input");
+  }
+  if (!data.user) {
+    throw new Error("user id must be provided");
+  }
   await client.connect();
   const result = await client.ZADD(`reviews:${estateID}:likes`, [
     {
