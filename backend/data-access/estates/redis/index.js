@@ -24,8 +24,11 @@ const addEstate = async (e) => {
   }
 
   await client.connect();
-  client.HSET("estates:" + e.id, "place_name", e.place_name);
-  client.HSET("estates:" + e.id, "phone_number", e.phone_number);
+  client
+    .multi()
+    .HSET("estates:" + e.id, "place_name", e.place_name)
+    .HSET("estates:" + e.id, "phone_number", e.phone_number)
+    .exec();
   await client.quit();
 };
 

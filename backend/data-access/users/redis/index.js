@@ -23,8 +23,11 @@ const addUser = async (usr) => {
     throw new Error("user object must has email and nickname");
   }
   await client.connect();
-  client.HSET("users:" + usr.id, "email", usr.email);
-  client.HSET("users:" + usr.id, "nickname", usr.nickname);
+  client
+    .multi()
+    .HSET("users:" + usr.id, "email", usr.email)
+    .HSET("users:" + usr.id, "nickname", usr.nickname)
+    .exec();
   await client.quit();
 };
 
