@@ -6,8 +6,8 @@ const DAL = require("../data-access/likes");
 
 const getLikes = async (req, res) => {
   try {
-    const result = await DAL.getLikes(req.params.id);
-    res.json(result);
+    const likesCnt = await DAL.getLikes(req.params.id);
+    res.json(likesCnt);
   } catch (err) {
     res.sendStatus(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR);
   }

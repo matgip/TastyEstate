@@ -1,7 +1,7 @@
-let { isEmptyReply, getEstate, addEstate } = require("./redis/index");
+let { isEmpty, getEstate, addEstate } = require("./redis/index");
 
 const DAL = {
-  isEmptyReply,
+  isEmpty,
   getEstate,
   addEstate,
 };

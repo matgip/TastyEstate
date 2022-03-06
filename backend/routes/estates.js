@@ -6,12 +6,12 @@ const DAL = require("../data-access/estates");
 
 const getEstate = async (req, res) => {
   try {
-    const result = await DAL.getEstate(req.params.id);
-    if (DAL.isEmptyReply(result) === true) {
+    const estate = await DAL.getEstate(req.params.id);
+    if (DAL.isEmpty(estate) === true) {
       res.sendStatus(httpStatus.StatusCodes.NO_CONTENT);
       return;
     }
-    res.json(result);
+    res.json(estate);
   } catch (err) {
     res.sendStatus(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR);
   }

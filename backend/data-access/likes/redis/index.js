@@ -1,5 +1,4 @@
 // Reference: https://www.npmjs.com/package/redis
-
 const client = require("../../../db-client/redis/client");
 
 const SADD_SUCCESS = 0;
@@ -14,9 +13,9 @@ const int2Str = (cmdInt) => {
 
 const getLikes = async (estateID) => {
   await client.connect();
-  const result = await client.SCARD("likes:" + estateID);
+  const likesCnt = await client.SCARD("likes:" + estateID);
   await client.quit();
-  return { likes: result };
+  return { likes: likesCnt };
 };
 
 const addLikes = async (estateID, userID) => {

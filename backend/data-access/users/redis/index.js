@@ -3,9 +3,9 @@ const client = require("../../../db-client/redis/client");
 
 const getUser = async (userID) => {
   await client.connect();
-  const result = await client.HGETALL("users:" + userID);
+  const user = await client.HGETALL("users:" + userID);
   await client.quit();
-  return result;
+  return user;
 };
 
 const addUser = async (profile) => {

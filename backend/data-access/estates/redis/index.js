@@ -1,16 +1,15 @@
 // Reference: https://www.npmjs.com/package/redis
-
 const client = require("../../../db-client/redis/client");
 
-const isEmptyReply = (result) => {
+const isEmpty = (result) => {
   return result.place_name === undefined || result.phone_number === undefined;
 };
 
 const getEstate = async (id) => {
   await client.connect();
-  const result = await client.HGETALL("estates:" + id);
+  const estate = await client.HGETALL("estates:" + id);
   await client.quit();
-  return result;
+  return estate;
 };
 
 const addEstate = async (estate) => {
@@ -21,7 +20,7 @@ const addEstate = async (estate) => {
 };
 
 module.exports = {
-  isEmptyReply,
+  isEmpty,
   getEstate,
   addEstate,
 };
