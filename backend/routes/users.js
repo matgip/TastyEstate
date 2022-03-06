@@ -7,8 +7,8 @@ const DAL = require("../data-access/users");
 const getUser = async (req, res) => {
   try {
     const user = await DAL.getUser(req.params.id);
-    if (user.data === null) {
-      res.sendStatus(httpStatus.StatusCodes.NOT_FOUND);
+    if (DAL.isEmpty(user) === true) {
+      res.sendStatus(httpStatus.StatusCodes.NO_CONTENT);
       return;
     }
     res.json(user);

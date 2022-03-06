@@ -1,6 +1,10 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../db-config/redis/client");
 
+const isEmpty = (result) => {
+  return result.email === undefined || result.nickname === undefined;
+};
+
 const getUser = async (usrID) => {
   if (!usrID) {
     throw new Error("user id should be provided");
@@ -25,6 +29,7 @@ const addUser = async (usr) => {
 };
 
 module.exports = {
+  isEmpty,
   getUser,
   addUser,
 };

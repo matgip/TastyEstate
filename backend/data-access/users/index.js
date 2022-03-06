@@ -1,6 +1,7 @@
-let { getUser, addUser } = require("./redis/index");
+let { isEmpty, getUser, addUser } = require("./redis/index");
 
 const DAL = {
+  isEmpty,
   getUser,
   addUser,
 };
