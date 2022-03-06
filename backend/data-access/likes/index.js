@@ -1,8 +1,8 @@
 let { getLikes, addLikes } = require("./redis/index");
 
-let likesDb = {
+const DAL = {
   getLikes,
   addLikes,
 };
 
-module.exports = likesDb;
+module.exports = DAL;

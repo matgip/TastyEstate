@@ -1,9 +1,9 @@
 let { isEmptyReply, getEstate, addEstate } = require("./redis/index");
 
-let estatesDb = {
+const DAL = {
   isEmptyReply,
   getEstate,
   addEstate,
 };
 
-module.exports = estatesDb;
+module.exports = DAL;

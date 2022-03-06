@@ -10,6 +10,8 @@ const usersRouter = require("./routes/users");
 const estatesRouter = require("./routes/estates");
 const uploadRouter = require("./routes/upload");
 const likesRouter = require("./routes/likes");
+const reviewLikesOrderRouter = require("./routes/reviews/reviewLikesOrder");
+const reviewTimeOrderRouter = require("./routes/reviews/reviewTimeOrder");
 
 const app = express();
 
@@ -28,6 +30,8 @@ app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/estates", estatesRouter);
 app.use("/api/likes", likesRouter);
+app.use("/api/reviews", reviewLikesOrderRouter);
+app.use("/api/reviews", reviewTimeOrderRouter);
 app.use("/upload", uploadRouter);
 
 // catch 404 and forward to error handler

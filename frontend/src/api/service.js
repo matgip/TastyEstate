@@ -85,6 +85,31 @@ class ModeAPI extends ReadOnlyAPI {
   }
 }
 
+class NestedAPI extends ModeAPI {
+  subResource;
+
+  constructor(baseResource, subResource) {
+    super(baseResource);
+    if (!subResource) throw new Error("Sub resource is not provided");
+    this.subResource = subResource;
+  }
+  // Override
+  getURL(baseID, subID = "") {
+    if (!baseID) throw Error("base id is not provided");
+    return `${this.baseURL}/${this.resource}/${baseID}/${this.subResource}/${subID}`;
+  }
+  // Override
+  async put(baseID, subID = "", data = {}) {
+    if (!baseID) throw Error("base id is not provided");
+    try {
+      const resp = await this.api.put(this.getURL(baseID, subID), data);
+      return resp;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
+}
+
 class UsersAPI extends ModeAPI {
   constructor() {
     super("api/users");
@@ -103,8 +128,22 @@ class LikesAPI extends ModeAPI {
   }
 }
 
+class ReviewLikesOrderAPI extends NestedAPI {
+  constructor() {
+    super("api/reviews", "likes");
+  }
+}
+
+class ReviewTimeOrderAPI extends NestedAPI {
+  constructor() {
+    super("api/reviews", "time");
+  }
+}
+
 export const $api = {
   users: new UsersAPI(),
   estates: new EstatesAPI(),
   likes: new LikesAPI(),
+  reviewLikesOrder: new ReviewLikesOrderAPI(),
+  reviewTimeOrder: new ReviewTimeOrderAPI(),
 };

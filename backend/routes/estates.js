@@ -1,34 +1,32 @@
 const express = require("express");
 const router = express.Router();
-const httpStatus = require("../http-status");
+const httpStatus = require("http-status-codes");
 
-let estatesDb = require("../data-access/estates");
-let estates = (module.exports = {});
+const DAL = require("../data-access/estates");
 
-estates.getEstate = async (req, res) => {
+const getEstate = async (req, res) => {
   try {
-    const result = await estatesDb.getEstate(req.params.id);
-    if (estatesDb.isEmptyReply(result) == true) {
-      res.sendStatus(httpStatus.NO_CONTENT);
+    const result = await DAL.getEstate(req.params.id);
+    if (DAL.isEmptyReply(result) === true) {
+      res.sendStatus(httpStatus.StatusCodes.NO_CONTENT);
       return;
     }
-    res.send(result);
+    res.json(result);
   } catch (err) {
-    console.error(err);
-    res.sendStatus(httpStatus.INTERNAL_ERR);
-  }
-};
-estates.addEstate = async (req, res) => {
-  try {
-    const result = await estatesDb.addEstate(req.body);
-    res.sendStatus(result);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(httpStatus.INTERNAL_ERR);
+    res.sendStatus(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
-router.get("/:id", estates.getEstate);
-router.post("/", estates.addEstate);
+const addEstate = async (req, res) => {
+  try {
+    await DAL.addEstate(req.body);
+    res.sendStatus(httpStatus.StatusCodes.OK);
+  } catch (err) {
+    res.sendStatus(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};
+
+router.get("/:id", getEstate);
+router.post("/", addEstate);
 
 module.exports = router;

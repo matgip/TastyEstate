@@ -1,8 +1,8 @@
 let { getUser, addUser } = require("./redis/index");
 
-let usersDb = {
+const DAL = {
   getUser,
   addUser,
 };
 
-module.exports = usersDb;
+module.exports = DAL;

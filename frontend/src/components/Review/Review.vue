@@ -42,25 +42,32 @@ export default {
   },
   computed: {
     ...mapGetters({
+      estate: "GET_ESTATE",
+      user: "GET_USER",
       kindness: "GET_KINDNESS",
       price: "GET_PRICE",
       contract: "GET_CONTRACT",
     }),
   },
   methods: {
-    onSubmitReview() {
-      this.rating = 0.0;
-      this.text = "";
-      this.$store.commit("UPDATE_KINDNESS", "");
-      this.$store.commit("UPDATE_PRICE", "");
-      this.$store.commit("UPDATE_CONTRACT", null);
-      this.$store.commit("UPDATE_DIALOG", false);
+    async onSubmitReview() {
+      await this.$api.reviewLikesOrder.put(this.estate.id, "", { user: this.user.id });
+      await this.$api.reviewTimeOrder.put(this.estate.id, "", { user: this.user.id });
+      this.clearReview();
     },
     getRating(rating) {
       this.rating = rating;
     },
     getText(text) {
       this.text = text;
+    },
+    clearReview() {
+      this.rating = 0.0;
+      this.text = "";
+      this.$store.commit("UPDATE_KINDNESS", "");
+      this.$store.commit("UPDATE_PRICE", "");
+      this.$store.commit("UPDATE_CONTRACT", null);
+      this.$store.commit("UPDATE_DIALOG", false);
     },
   },
 };

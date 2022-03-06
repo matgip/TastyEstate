@@ -18,7 +18,7 @@ export default {
   }),
   props: {
     propContract: {
-      required: true,
+      type: Boolean,
     },
   },
   components: {

@@ -1,34 +1,32 @@
 const express = require("express");
 const router = express.Router();
-const httpStatus = require("../http-status");
+const httpStatus = require("http-status-codes");
 
-let usersDb = require("../data-access/users");
-let users = (module.exports = {});
+const DAL = require("../data-access/users");
 
-users.getUser = async (req, res) => {
+const getUser = async (req, res) => {
   try {
-    const result = await usersDb.getUser(req.params.id);
-    if (result.data == null) {
-      res.sendStatus(httpStatus.NOT_FOUND);
+    const result = await DAL.getUser(req.params.id);
+    if (result.data === null) {
+      res.sendStatus(httpStatus.StatusCodes.NOT_FOUND);
       return;
     }
-    res.send(result);
+    res.json(result);
   } catch (err) {
-    console.error(err);
-    res.sendStatus(httpStatus.INTERNAL_ERR);
-  }
-};
-users.addUser = async (req, res) => {
-  try {
-    const data = await usersDb.addUser(req.body);
-    res.sendStatus(data);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(httpStatus.INTERNAL_ERR);
+    res.sendStatus(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
-router.get("/:id", users.getUser);
-router.post("/", users.addUser);
+const addUser = async (req, res) => {
+  try {
+    await DAL.addUser(req.body);
+    res.sendStatus(StatusCodes.OK);
+  } catch (err) {
+    res.sendStatus(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};
+
+router.get("/:id", getUser);
+router.post("/", addUser);
 
 module.exports = router;
