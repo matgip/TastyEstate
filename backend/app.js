@@ -6,12 +6,12 @@ const logger = require("morgan");
 const cors = require("cors");
 
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-const estatesRouter = require("./routes/estates");
-const uploadRouter = require("./routes/upload");
-const likesRouter = require("./routes/likes");
-const reviewLikesOrderRouter = require("./routes/reviews/reviewLikesOrder");
-const reviewTimeOrderRouter = require("./routes/reviews/reviewTimeOrder");
+const usrRtr = require("./routes/users");
+const estateRtr = require("./routes/estates");
+const uploadRtr = require("./routes/upload");
+const likesRtr = require("./routes/likes");
+const rvwLikesRtr = require("./routes/reviews/likesOrder");
+const rvwTimeRtr = require("./routes/reviews/timeOrder");
 
 const app = express();
 
@@ -26,13 +26,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// Router
 app.use("/", indexRouter);
-app.use("/api/users", usersRouter);
-app.use("/api/estates", estatesRouter);
-app.use("/api/likes", likesRouter);
-app.use("/api/reviews", reviewLikesOrderRouter);
-app.use("/api/reviews", reviewTimeOrderRouter);
-app.use("/upload", uploadRouter);
+app.use("/api/users", usrRtr);
+app.use("/api/estates", estateRtr);
+app.use("/api/likes", likesRtr);
+app.use("/upload", uploadRtr);
+app.use("/api/reviews", rvwLikesRtr);
+app.use("/api/reviews", rvwTimeRtr);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
