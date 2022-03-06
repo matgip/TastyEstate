@@ -1,5 +1,5 @@
 // Reference: https://www.npmjs.com/package/redis
-const client = require("../../../db-client/redis/client");
+const client = require("../../../db-config/redis/client");
 
 const getUser = async (userID) => {
   await client.connect();

@@ -1,5 +1,5 @@
 // Reference: https://www.npmjs.com/package/redis
-const client = require("../../../db-client/redis/client");
+const client = require("../../../db-config/redis/client");
 
 const isEmpty = (result) => {
   return result.place_name === undefined || result.phone_number === undefined;
@@ -12,10 +12,10 @@ const getEstate = async (id) => {
   return estate;
 };
 
-const addEstate = async (estate) => {
+const addEstate = async (e) => {
   await client.connect();
-  client.HSET("estates:" + estate.id, "place_name", estate.place_name);
-  client.HSET("estates:" + estate.id, "phone_number", estate.phone_number);
+  client.HSET("estates:" + e.id, "place_name", e.place_name);
+  client.HSET("estates:" + e.id, "phone_number", e.phone_number);
   await client.quit();
 };
 
