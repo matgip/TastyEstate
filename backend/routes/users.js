@@ -3,6 +3,7 @@ const router = express.Router();
 const httpStatus = require("http-status-codes");
 
 const DAL = require("../data-access/users");
+const { InvalidInputError } = require("../error-handler/errors");
 
 const getUser = async (req, res) => {
   try {
@@ -13,7 +14,15 @@ const getUser = async (req, res) => {
     }
     res.json(user);
   } catch (err) {
-    res.sendStatus(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR);
+    if (err instanceof InvalidInputError) {
+      res.status(httpStatus.StatusCodes.BAD_REQUEST).send({
+        error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.BAD_REQUEST),
+      });
+    } else {
+      res.status(httpStatus.StatusCodes.SERVICE_UNAVAILABLE).send({
+        error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.SERVICE_UNAVAILABLE),
+      });
+    }
   }
 };
 
@@ -22,7 +31,15 @@ const addUser = async (req, res) => {
     await DAL.addUser(req.body);
     res.sendStatus(StatusCodes.OK);
   } catch (err) {
-    res.sendStatus(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR);
+    if (err instanceof InvalidInputError) {
+      res.status(httpStatus.StatusCodes.BAD_REQUEST).send({
+        error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.BAD_REQUEST),
+      });
+    } else {
+      res.status(httpStatus.StatusCodes.SERVICE_UNAVAILABLE).send({
+        error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.SERVICE_UNAVAILABLE),
+      });
+    }
   }
 };
 

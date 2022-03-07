@@ -16,7 +16,6 @@ class BaseAPI {
   }
 
   getURL(id = "") {
-    console.log(this.baseURL);
     return `${this.baseURL}/${this.resource}/${id}`;
   }
 

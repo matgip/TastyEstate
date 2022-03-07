@@ -1,13 +1,14 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../../db-config/redis/client");
-const zset = require("./result");
+const zset = require("./cmd-return");
+const { InvalidInputError } = require("../../../../error-handler/errors");
 
 const addUser = async (estateID, data) => {
   if (!estateID || !data) {
-    throw new Error("Invalid input");
+    throw new InvalidInputError("estate id and data object should be provided", true);
   }
   if (!data.user) {
-    throw new Error("user id must be provided");
+    throw new InvalidInputError("user id should be provided", true);
   }
   await client.connect();
   const result = await client.ZADD(`reviews:${estateID}:likes`, [

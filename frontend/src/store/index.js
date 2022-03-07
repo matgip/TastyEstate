@@ -98,7 +98,7 @@ export default new Vuex.Store({
   actions: {
     async updateRealEstate({ commit }, estate) {
       let resp = await this.$api.estates.get(estate.id);
-      if (resp.status === 204) {
+      if (resp && resp.status === 204) {
         // No contents
         const post = {
           id: estate.id,
@@ -112,7 +112,7 @@ export default new Vuex.Store({
     },
     async updateUser({ commit }, user) {
       let resp = await this.$api.users.get(user.id);
-      if (resp.status === 204) {
+      if (resp && resp.status === 204) {
         // No contents
         const post = {
           id: user.id,

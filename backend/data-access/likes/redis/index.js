@@ -1,10 +1,11 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../db-config/redis/client");
+const { InvalidInputError } = require("../../../error-handler/errors");
 const sortedSet = require("./result");
 
 const getLikes = async (estateID) => {
   if (!estateID) {
-    throw new Error("estate id not provided");
+    throw new InvalidInputError("estate id not provided", true);
   }
   await client.connect();
   const likesCnt = await client.SCARD("likes:" + estateID);
@@ -14,7 +15,7 @@ const getLikes = async (estateID) => {
 
 const addLikes = async (estateID, usrID) => {
   if (!estateID || !usrID) {
-    throw new Error("estate id and user id should be provided");
+    throw new InvalidInputError("estate id and user id should be provided", true);
   }
   await client.connect();
   const isExist = await client.SISMEMBER(`likes:${estateID}`, `users:${usrID}`);

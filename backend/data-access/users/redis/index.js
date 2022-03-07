@@ -1,5 +1,6 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../db-config/redis/client");
+const { InvalidInputError } = require("../../../error-handler/errors");
 
 const isEmpty = (result) => {
   return result.email === undefined || result.nickname === undefined;
@@ -7,7 +8,7 @@ const isEmpty = (result) => {
 
 const getUser = async (usrID) => {
   if (!usrID) {
-    throw new Error("user id should be provided");
+    throw new InvalidInputError("user id should be provided", true);
   }
   await client.connect();
   const user = await client.HGETALL("users:" + usrID);
@@ -17,10 +18,10 @@ const getUser = async (usrID) => {
 
 const addUser = async (usr) => {
   if (!usr) {
-    throw new Error("user is not valid");
+    throw new InvalidInputError("user is not valid", true);
   }
   if (!usr.id || !usr.email || !usr.nickname) {
-    throw new Error("user object must has email and nickname");
+    throw new InvalidInputError("user object must has email and nickname", true);
   }
   await client.connect();
   client
