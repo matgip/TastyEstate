@@ -22,7 +22,7 @@ const getEstate = async (req, res) => {
 const addEstate = async (req, res) => {
   try {
     await DAL.addEstate(req.body);
-    res.sendStatus(httpStatus.StatusCodes.OK);
+    res.sendStatus(StatusCodes.OK);
   } catch (err) {
     const errCode = getStatus(err);
     res.status(errCode).send({
