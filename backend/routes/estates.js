@@ -3,7 +3,7 @@ const router = express.Router();
 const httpStatus = require("http-status-codes");
 
 const DAL = require("../data-access/estates");
-const { InvalidInputError } = require("../errors");
+const { InvalidInputError, ConnectionError } = require("../errors");
 
 const getEstate = async (req, res) => {
   try {
@@ -14,14 +14,17 @@ const getEstate = async (req, res) => {
     }
     res.json(estate);
   } catch (err) {
-    console.log(err);
     if (err instanceof InvalidInputError) {
       res.status(httpStatus.StatusCodes.BAD_REQUEST).send({
         error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.BAD_REQUEST),
       });
-    } else {
+    } else if (err instanceof ConnectionError) {
       res.status(httpStatus.StatusCodes.SERVICE_UNAVAILABLE).send({
         error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.SERVICE_UNAVAILABLE),
+      });
+    } else {
+      res.status(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send({
+        error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR),
       });
     }
   }
@@ -35,6 +38,10 @@ const addEstate = async (req, res) => {
     if (err instanceof InvalidInputError) {
       res.status(httpStatus.StatusCodes.BAD_REQUEST).send({
         error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.BAD_REQUEST),
+      });
+    } else if (err instanceof ConnectionError) {
+      res.status(httpStatus.StatusCodes.SERVICE_UNAVAILABLE).send({
+        error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.SERVICE_UNAVAILABLE),
       });
     } else {
       res.status(httpStatus.StatusCodes.SERVICE_UNAVAILABLE).send({
