@@ -1,6 +1,6 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../db-config/redis/client");
-const { InvalidInputError } = require("../../../error-handler/errors");
+const { InvalidInputError } = require("../../../errors");
 
 const isEmpty = (result) => {
   return result.place_name === undefined || result.phone_number === undefined;
@@ -10,6 +10,7 @@ const getEstate = async (id) => {
   if (!id) {
     throw new InvalidInputError("estate id not provided", true);
   }
+
   await client.connect();
   const estate = await client.HGETALL("estates:" + id);
   await client.quit();

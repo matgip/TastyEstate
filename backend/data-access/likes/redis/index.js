@@ -1,6 +1,6 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../db-config/redis/client");
-const { InvalidInputError } = require("../../../error-handler/errors");
+const { InvalidInputError } = require("../../../errors");
 const sortedSet = require("./result");
 
 const getLikes = async (estateID) => {

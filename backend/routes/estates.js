@@ -3,7 +3,7 @@ const router = express.Router();
 const httpStatus = require("http-status-codes");
 
 const DAL = require("../data-access/estates");
-const { InvalidInputError } = require("../error-handler/errors");
+const { InvalidInputError } = require("../errors");
 
 const getEstate = async (req, res) => {
   try {
@@ -14,6 +14,7 @@ const getEstate = async (req, res) => {
     }
     res.json(estate);
   } catch (err) {
+    console.log(err);
     if (err instanceof InvalidInputError) {
       res.status(httpStatus.StatusCodes.BAD_REQUEST).send({
         error: httpStatus.getReasonPhrase(httpStatus.StatusCodes.BAD_REQUEST),

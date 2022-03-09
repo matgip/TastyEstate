@@ -3,7 +3,7 @@ const router = express.Router();
 const httpStatus = require("http-status-codes");
 
 const DAL = require("../data-access/likes");
-const { InvalidInputError } = require("../error-handler/errors");
+const { InvalidInputError } = require("../errors");
 
 const getLikes = async (req, res) => {
   try {

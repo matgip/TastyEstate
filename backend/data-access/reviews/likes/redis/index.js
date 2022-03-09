@@ -1,7 +1,7 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../../db-config/redis/client");
 const zset = require("./cmd-return");
-const { InvalidInputError } = require("../../../../error-handler/errors");
+const { InvalidInputError } = require("../../../../errors");
 
 const addUser = async (estateID, data) => {
   if (!estateID || !data) {

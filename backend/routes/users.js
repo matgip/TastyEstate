@@ -3,7 +3,7 @@ const router = express.Router();
 const httpStatus = require("http-status-codes");
 
 const DAL = require("../data-access/users");
-const { InvalidInputError } = require("../error-handler/errors");
+const { InvalidInputError } = require("../errors");
 
 const getUser = async (req, res) => {
   try {

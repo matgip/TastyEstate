@@ -3,7 +3,7 @@ const router = express.Router();
 const httpStatus = require("http-status-codes");
 
 const DAL = require("../../data-access/reviews/time");
-const { InvalidInputError } = require("../../error-handler/errors");
+const { InvalidInputError } = require("../../errors");
 
 const addUser = async (req, res) => {
   try {
