@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 
 const DAL = require("../../infrastructure/repositories/estates");
-const { getStatus, getReasonPhrase } = require("../../utils/http");
+const { getErrorCode, getReason } = require("../../utils/http");
 
 const getEstate = async (req, res) => {
   try {
@@ -12,9 +12,9 @@ const getEstate = async (req, res) => {
     }
     res.json(estate);
   } catch (err) {
-    const errCode = getStatus(err);
+    const errCode = getErrorCode(err);
     res.status(errCode).send({
-      error: getReasonPhrase(errCode),
+      error: getReason(errCode),
     });
   }
 };
@@ -24,9 +24,9 @@ const addEstate = async (req, res) => {
     await DAL.addEstate(req.body);
     res.sendStatus(StatusCodes.OK);
   } catch (err) {
-    const errCode = getStatus(err);
+    const errCode = getErrorCode(err);
     res.status(errCode).send({
-      error: getReasonPhrase(errCode),
+      error: getReason(errCode),
     });
   }
 };

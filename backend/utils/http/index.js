@@ -1,7 +1,7 @@
 const httpStatus = require("http-status-codes");
 const { InvalidInputError, ConnectionError } = require("../errors");
 
-const getStatus = (err) => {
+const getErrorCode = (err) => {
   if (err instanceof InvalidInputError) {
     return httpStatus.StatusCodes.BAD_REQUEST;
   } else if (err instanceof ConnectionError) {
@@ -11,11 +11,11 @@ const getStatus = (err) => {
   }
 };
 
-const getReasonPhrase = (code) => {
+const getReason = (code) => {
   return httpStatus.getReasonPhrase(code);
 };
 
 module.exports = {
-  getStatus,
-  getReasonPhrase,
+  getErrorCode,
+  getReason,
 };

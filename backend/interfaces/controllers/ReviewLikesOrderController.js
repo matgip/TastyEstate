@@ -1,14 +1,14 @@
 const DAL = require("../../infrastructure/repositories/reviews/likes");
-const { getStatus, getReasonPhrase } = require("../../utils/http");
+const { getErrorCode, getReason } = require("../../utils/http");
 
 const addUser = async (req, res) => {
   try {
     const result = await DAL.addUser(req.params.id, req.body);
     res.json(result);
   } catch (err) {
-    const errCode = getStatus(err);
+    const errCode = getErrorCode(err);
     res.status(errCode).send({
-      error: getReasonPhrase(errCode),
+      error: getReason(errCode),
     });
   }
 };
