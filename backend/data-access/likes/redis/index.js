@@ -18,7 +18,7 @@ const getLikes = async (estateID) => {
     if (err instanceof AbortError) {
       throw new CommandError();
     } else {
-      throw new ConnectionError();
+      throw new ConnectionError("Failed to connect database", true);
     }
   }
 };
@@ -42,7 +42,7 @@ const addLikes = async (estateID, usrID) => {
     if (err instanceof AbortError) {
       throw new CommandError();
     } else {
-      throw new ConnectionError();
+      throw new ConnectionError("Failed to connect database", true);
     }
   }
 };

@@ -26,7 +26,7 @@ const addUser = async (estateID, data) => {
     if (err instanceof AbortError) {
       throw new CommandError();
     } else {
-      throw new ConnectionError();
+      throw new ConnectionError("Failed to connect database", true);
     }
   }
 };
