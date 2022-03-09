@@ -5,13 +5,12 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 
-const indexRouter = require("./routes/index");
-const usrRtr = require("./routes/users");
-const estateRtr = require("./routes/estates");
-const uploadRtr = require("./routes/upload");
-const likesRtr = require("./routes/likes");
-const rvwLikesRtr = require("./routes/reviews/likesOrder");
-const rvwTimeRtr = require("./routes/reviews/timeOrder");
+const usrRtr = require("./interfaces/routes/users");
+const estateRtr = require("./interfaces/routes/estates");
+const uploadRtr = require("./interfaces/routes/upload");
+const likesRtr = require("./interfaces/routes/likes");
+const rvwLikesRtr = require("./interfaces/routes/reviewLikesOrder");
+const rvwTimeRtr = require("./interfaces/routes/reviewTimeOrder");
 
 const app = express();
 
@@ -27,7 +26,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Router
-app.use("/", indexRouter);
 app.use("/api/users", usrRtr);
 app.use("/api/estates", estateRtr);
 app.use("/api/likes", likesRtr);
