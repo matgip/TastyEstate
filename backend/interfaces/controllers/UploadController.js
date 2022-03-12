@@ -17,7 +17,7 @@ async function get(req, res) {
     await fileSystemManager.get(estateId, imgId);
     res.sendFile(fileSystemManager.getFilePath(estateId, imgId));
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     res.sendFile(fileSystemManager.getDefaultFilePath());
   }
 }
@@ -31,7 +31,7 @@ async function update(req, res) {
     await fileSystemManager.update(estateId, originFilename, newFilename);
     res.json({ my_key: newFilename });
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
@@ -45,7 +45,7 @@ async function remove(req, res) {
     await fileSystemManager.remove(estateId, fileName);
     res.json({ deleted: true });
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }

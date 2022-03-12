@@ -7,12 +7,13 @@ module.exports = class extends EstateRepository {
     super();
   }
 
-  async persist(estate) {
+  async persist(estateEntity) {
+    const { id, placeName, phoneNumber } = estateEntity;
     await client.connect();
     client
       .multi()
-      .HSET(`estates:${estate.id}`, "place_name", estate.place_name)
-      .HSET(`estates:${estate.id}`, "phone_number", estate.phone_number)
+      .HSET(`estates:${id}`, "place_name", placeName)
+      .HSET(`estates:${id}`, "phone_number", phoneNumber)
       .exec();
     await client.quit();
   }

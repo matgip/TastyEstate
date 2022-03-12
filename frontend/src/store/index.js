@@ -102,8 +102,8 @@ export default new Vuex.Store({
         // No contents
         const post = {
           id: estate.id,
-          place_name: estate.place_name,
-          phone_number: estate.phone,
+          placeName: estate.place_name,
+          phoneNumber: estate.phone,
         };
         await this.$api.estates.post(post);
         console.log({ message: "Created estate", post: { ...post } });
