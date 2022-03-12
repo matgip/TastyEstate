@@ -3,111 +3,84 @@ const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 
-const rootPath = path.join(__dirname, "../../", "uploads");
-
-const setUpPath = (estateID, cb) => {
-  const imgPath = path.join(rootPath, estateID);
-  if (!fs.existsSync(imgPath)) {
-    fs.mkdirSync(imgPath);
-  }
-  cb(null, imgPath);
-};
-
-const readImg = (estateID, cb) => {
-  const imgPath = path.join(rootPath, estateID);
-  fs.readdir(imgPath, (err, files) => {
-    if (err) throw err;
-
-    const filename = (files.length + 1).toString();
-    cb(null, filename);
-  });
-};
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      setUpPath(req.params.id, cb);
-    },
-    filename(req, file, cb) {
-      readImg(req.params.id, cb);
-    },
-  }),
+const rootPath = path.join(__dirname, "../../", "upload_imgs");
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    setDir(req.params.id, cb);
+  },
+  filename(req, file, cb) {
+    setFilename(req.params.id, cb);
+  },
 });
+const upload = multer({ storage: storage });
 
-const getImage = (req, res) => {
-  if (!req.params || !req.params.id) {
-    res.sendStatus(StatusCodes.BAD_REQUEST);
+function setDir(estateId, cb) {
+  const ep = path.join(rootPath, estateId);
+  if (!fs.existsSync(ep)) {
+    fs.mkdirSync(ep);
   }
-  if (!req.query || !req.query.image) {
-    res.sendStatus(StatusCodes.BAD_REQUEST);
-  }
+  cb(null, ep);
+}
 
-  const estateID = req.params.id;
-  const imgID = req.query.image;
-
-  const img = path.join(rootPath, estateID, imgID);
-  fs.access(img, fs.F_OK, (err) => {
-    if (err) {
-      const defaultImg = path.join(rootPath, "default.png");
-      res.sendFile(defaultImg);
-    } else {
-      res.sendFile(img);
-    }
-  });
-};
-
-const addImage = (req, res) => {
-  const fileName = req.file.filename;
-  res.json({ my_key: fileName });
-};
-
-const updateImage = (req, res) => {
-  if (!req.params || !req.params.id) {
-    res.sendStatus(StatusCodes.BAD_REQUEST);
-  }
-  if (!req.body || !req.body.my_key || !req.body.filename) {
-    res.sendStatus(StatusCodes.BAD_REQUEST);
-  }
-
-  const estateID = req.params.id;
-  const originName = req.body.my_key;
-  const newName = req.body.filename;
-
-  const imgPath = path.join(rootPath, estateID);
-  fs.rename(path.join(imgPath, originName), path.join(imgPath, newName), (err) => {
+function setFilename(estateId, cb) {
+  const ep = path.join(rootPath, estateId);
+  fs.readdir(ep, (err, files) => {
     if (err) throw err;
-    let resp = {};
-    resp.my_key = newName;
-    res.json(resp);
+    const fname = (files.length + 1).toString();
+    cb(null, fname);
   });
-};
+}
 
-const removeImage = (req, res) => {
-  if (!req.params || !req.params.id) {
-    res.sendStatus(StatusCodes.BAD_REQUEST);
+function sendResponse(req, res) {
+  res.json({ my_key: req.file.filename });
+}
+
+async function get(req, res) {
+  try {
+    const {
+      params: { id: estateId },
+      query: { image: imgId },
+    } = req;
+    await fs.promises.access(path.join(rootPath, estateId, imgId), fs.F_OK);
+    res.sendFile(path.join(path.join(rootPath, estateId, imgId)));
+  } catch (err) {
+    console.log(err);
+    res.sendFile(path.join(rootPath, "default.png"));
   }
-  if (!req.body || !req.body.my_key) {
-    res.sendStatus(StatusCodes.BAD_REQUEST);
+}
+
+async function update(req, res) {
+  try {
+    const {
+      params: { id: estateId },
+      body: { my_key: originFilename, fileName: newFilename },
+    } = req;
+    await fs.promises.rename(path.join(rootPath, estateId, originFilename), path.join(rootPath, estateId, newFilename));
+    res.json({ my_key: newFilename });
+  } catch (err) {
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
+}
 
-  const estateID = req.params.id;
-  const fileName = req.body.my_key;
-
-  const imgPath = path.join(rootPath, estateID);
-  fs.unlink(path.join(imgPath, fileName), (err) => {
-    if (err) throw err;
-    let resp = {};
-    resp.deleted = true;
-    res.json(resp);
-  });
-};
+async function remove(req, res) {
+  try {
+    const {
+      params: { id: estateId },
+      body: { my_key: fileName },
+    } = req;
+    await fs.promises.unlink(path.join(rootPath, estateId, fileName));
+    res.json({ deleted: true });
+  } catch (err) {
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
 
 module.exports = {
   upload,
-  setUpPath,
-  readImg,
-  getImage,
-  addImage,
-  updateImage,
-  removeImage,
+  setDir,
+  setFilename,
+  get,
+  sendResponse,
+  update,
+  remove,
 };

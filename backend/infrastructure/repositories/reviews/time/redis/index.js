@@ -1,11 +1,11 @@
 // Reference: https://www.npmjs.com/package/redis
 const { AbortError } = require("redis");
 const client = require("../../../../config/redis/client");
-const zset = require("./cmd-return");
+const zset = require("./zset");
 const { InvalidInputError, CommandError, ConnectionError } = require("../../../../../utils/errors");
 
-const addUser = async (estateID, data) => {
-  if (!estateID || !data) {
+const addUser = async (estateId, data) => {
+  if (!estateId || !data) {
     throw new InvalidInputError("estate id and data should be provided", true);
   }
   if (!data.user) {
@@ -14,7 +14,7 @@ const addUser = async (estateID, data) => {
 
   try {
     await client.connect();
-    const result = await client.ZADD(`reviews:${estateID}:time`, [
+    const result = await client.ZADD(`reviews:${estateId}:time`, [
       {
         score: Math.floor(new Date().getTime() / 1000),
         value: `user:${data.user}`,

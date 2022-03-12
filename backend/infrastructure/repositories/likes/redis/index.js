@@ -2,7 +2,7 @@
 const { AbortError } = require("redis");
 const client = require("../../../config/redis/client");
 const { InvalidInputError, CommandError, ConnectionError } = require("../../../../utils/errors");
-const sortedSet = require("./result");
+const sortedSet = require("./sortedSet");
 
 const getLikes = async (estateId) => {
   if (!estateId || isNaN(estateId)) {
