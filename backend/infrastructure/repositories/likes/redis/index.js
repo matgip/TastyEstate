@@ -1,27 +1,35 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../config/redis/client");
 const sortedSet = require("./sortedSet");
+const LikeRepository = require("../../../../domain/LikeRepository");
 
-const getLikes = async (estateId) => {
-  await client.connect();
-  const likesCnt = await client.SCARD("likes:" + estateId);
-  await client.quit();
-  return { likes: likesCnt };
-};
-
-const addLikes = async (estateId, usrId) => {
-  await client.connect();
-  const isExist = await client.SISMEMBER(`likes:${estateId}`, `users:${usrId}`);
-  if (isExist === true) {
-    client.quit();
-    return { cmd_result: sortedSet.toString(sortedSet.ALREADY_ADDED) };
+module.exports = class extends LikeRepository {
+  constructor() {
+    super();
   }
-  const result = await client.SADD(`likes:${estateId}`, `users:${usrId}`);
-  await client.quit();
-  return { cmd_result: sortedSet.toString(result) };
-};
 
-module.exports = {
-  getLikes,
-  addLikes,
+  async persist(estateId, usrId) {
+    const isExist = await this.find(estateId, usrId);
+    if (isExist === true) {
+      return { cmd_result: sortedSet.toString(sortedSet.ALREADY_ADDED) };
+    }
+    await client.connect();
+    const result = await client.SADD(`likes:${estateId}`, `users:${usrId}`);
+    await client.quit();
+    return { cmd_result: sortedSet.toString(result) };
+  }
+
+  async get(estateId) {
+    await client.connect();
+    const likesCnt = await client.SCARD("likes:" + estateId);
+    await client.quit();
+    return { likes: likesCnt };
+  }
+
+  async find(estateId, usrId) {
+    await client.connect();
+    const result = await client.SISMEMBER(`likes:${estateId}`, `users:${usrId}`);
+    await client.quit();
+    return result;
+  }
 };

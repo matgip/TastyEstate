@@ -1,11 +1,11 @@
 const { StatusCodes } = require("http-status-codes");
 
-const DAL = require("../../infrastructure/repositories/users");
+const UserRepository = require("../../infrastructure/repositories/users");
 
 const getUser = async (req, res) => {
   try {
-    const user = await DAL.getUser(req.params.id);
-    if (DAL.isEmpty(user) === true) {
+    const user = await UserRepository.get(req.params.id);
+    if (UserRepository.isEmpty(user) === true) {
       res.sendStatus(StatusCodes.NO_CONTENT);
       return;
     }
@@ -18,7 +18,7 @@ const getUser = async (req, res) => {
 
 const addUser = async (req, res) => {
   try {
-    await DAL.addUser(req.body);
+    await UserRepository.persist(req.body);
     res.sendStatus(StatusCodes.OK);
   } catch (err) {
     console.error(err);

@@ -1,8 +1,6 @@
 // Reference: https://www.npmjs.com/package/redis
-const { AbortError } = require("redis");
 const client = require("../../../../config/redis/client");
 const zset = require("./zset");
-const { InvalidInputError, CommandError, ConnectionError } = require("../../../../../utils/errors");
 
 const addUser = async (estateId, data) => {
   await client.connect();

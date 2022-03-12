@@ -1,11 +1,11 @@
 const { StatusCodes } = require("http-status-codes");
 
-const DAL = require("../../infrastructure/repositories/estates");
+const EstateRepository = require("../../infrastructure/repositories/estates");
 
 const getEstate = async (req, res) => {
   try {
-    const estate = await DAL.getEstate(req.params.id);
-    if (DAL.isEmpty(estate) === true) {
+    const estate = await EstateRepository.get(req.params.id);
+    if (EstateRepository.isEmpty(estate) === true) {
       res.sendStatus(StatusCodes.NO_CONTENT);
       return;
     }
@@ -18,7 +18,7 @@ const getEstate = async (req, res) => {
 
 const addEstate = async (req, res) => {
   try {
-    await DAL.addEstate(req.body);
+    await EstateRepository.persist(req.body);
     res.sendStatus(StatusCodes.OK);
   } catch (err) {
     console.error(err);

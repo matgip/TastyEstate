@@ -1,8 +1,3 @@
-let { getLikes, addLikes } = require("./redis/index");
+const LikeRepository = require("./redis/index");
 
-const DAL = {
-  getLikes,
-  addLikes,
-};
-
-module.exports = DAL;
+module.exports = new LikeRepository();

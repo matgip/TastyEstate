@@ -1,29 +1,30 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../config/redis/client");
+const EstateRepository = require("../../../../domain/EstateRepository");
 
-const isEmpty = (result) => {
-  return result.place_name === undefined || result.phone_number === undefined;
-};
+module.exports = class extends EstateRepository {
+  constructor() {
+    super();
+  }
 
-const getEstate = async (id) => {
-  await client.connect();
-  const estate = await client.HGETALL("estates:" + id);
-  await client.quit();
-  return estate;
-};
+  async persist(estate) {
+    await client.connect();
+    client
+      .multi()
+      .HSET(`estates:${estate.id}`, "place_name", estate.place_name)
+      .HSET(`estates:${estate.id}`, "phone_number", estate.phone_number)
+      .exec();
+    await client.quit();
+  }
 
-const addEstate = async (e) => {
-  await client.connect();
-  client
-    .multi()
-    .HSET("estates:" + e.id, "place_name", e.place_name)
-    .HSET("estates:" + e.id, "phone_number", e.phone_number)
-    .exec();
-  await client.quit();
-};
+  async get(estateId) {
+    await client.connect();
+    const estate = await client.HGETALL(`estates:${estateId}`);
+    await client.quit();
+    return estate;
+  }
 
-module.exports = {
-  isEmpty,
-  getEstate,
-  addEstate,
+  isEmpty(result) {
+    return !result.place_name || !result.phone_number;
+  }
 };

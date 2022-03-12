@@ -1,29 +1,30 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../config/redis/client");
+const UserRepository = require("../../../../domain/UserRepository");
 
-const isEmpty = (result) => {
-  return result.email === undefined || result.nickname === undefined;
-};
+module.exports = class extends UserRepository {
+  constructor() {
+    super();
+  }
 
-const getUser = async (usrID) => {
-  await client.connect();
-  const user = await client.HGETALL("users:" + usrID);
-  await client.quit();
-  return user;
-};
+  async persist(user) {
+    await client.connect();
+    client
+      .multi()
+      .HSET(`users:${user.id}`, "email", user.email)
+      .HSET(`users:${user.id}`, "nickname", user.nickname)
+      .exec();
+    await client.quit();
+  }
 
-const addUser = async (usr) => {
-  await client.connect();
-  client
-    .multi()
-    .HSET("users:" + usr.id, "email", usr.email)
-    .HSET("users:" + usr.id, "nickname", usr.nickname)
-    .exec();
-  await client.quit();
-};
+  async get(userId) {
+    await client.connect();
+    const user = await client.HGETALL(`users:${userId}`);
+    await client.quit();
+    return user;
+  }
 
-module.exports = {
-  isEmpty,
-  getUser,
-  addUser,
+  isEmpty(result) {
+    return !result.email || !result.nickname;
+  }
 };

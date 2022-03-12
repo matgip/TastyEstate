@@ -1,9 +1,3 @@
-let { isEmpty, getEstate, addEstate } = require("./redis/index");
+const EstateRepository = require("./redis/index");
 
-const DAL = {
-  isEmpty,
-  getEstate,
-  addEstate,
-};
-
-module.exports = DAL;
+module.exports = new EstateRepository();

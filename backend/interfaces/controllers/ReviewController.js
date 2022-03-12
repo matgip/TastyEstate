@@ -11,7 +11,7 @@ const getReview = async (req, res) => {
     }
     res.json(review);
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
@@ -21,7 +21,7 @@ const addReview = async (req, res) => {
     const result = await DAL.addReview(req.params.estateId, req.body);
     res.json(result);
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };

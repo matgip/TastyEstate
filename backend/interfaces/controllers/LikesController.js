@@ -1,10 +1,10 @@
 const { StatusCodes } = require("http-status-codes");
 
-const DAL = require("../../infrastructure/repositories/likes");
+const LikeRepository = require("../../infrastructure/repositories/likes");
 
 const getLikes = async (req, res) => {
   try {
-    const likesCnt = await DAL.getLikes(req.params.id);
+    const likesCnt = await LikeRepository.get(req.params.id);
     res.json(likesCnt);
   } catch (err) {
     console.error(err);
@@ -14,7 +14,7 @@ const getLikes = async (req, res) => {
 
 const addLikes = async (req, res) => {
   try {
-    const result = await DAL.addLikes(req.params.id, req.body.user_id);
+    const result = await LikeRepository.persist(req.params.id, req.body.user_id);
     res.json(result);
   } catch (err) {
     console.error(err);
