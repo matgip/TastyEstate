@@ -3,60 +3,60 @@ const path = require("path");
 const multer = require("multer");
 
 module.exports = class FileSystemManager {
-  rootPath;
+  rootUploadFilePath = path.join(__dirname, "../../upload_imgs");
   middleWare;
 
-  constructor(rootUploadFilePath) {
-    this.rootPath = rootUploadFilePath;
-
+  constructor() {
+    const self = this;
     const storage = multer.diskStorage({
       destination(req, file, cb) {
-        this.setDir(req.params.id, cb);
+        self.setDir(req.params.id, cb);
       },
       filename(req, file, cb) {
-        this.setFilename(req.params.id, cb);
+        self.setFilename(req.params.id, cb);
       },
     });
     this.middleWare = multer({ storage: storage });
   }
 
-  setDir(estateId, cb) {
-    const dir = this.getDirPath(estateId);
+  setDir(dirname, cb) {
+    const dir = this.getDirPath(dirname);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
     cb(null, dir);
   }
 
-  setFilename(estateId, cb) {
-    fs.readdir(this.getDirPath(estateId), (err, files) => {
+  setFilename(dirname, cb) {
+    fs.readdir(this.getDirPath(dirname), (err, files) => {
       if (err) throw err;
       const fname = (files.length + 1).toString();
       cb(null, fname);
     });
   }
 
-  async get(estateId, filename) {
-    await fs.promises.access(this.getFilePath(estateId, filename)), fs.F_OK);
+  async get(dirname, fname) {
+    await fs.promises.access(this.getFilePath(dirname, fname), fs.F_OK);
   }
 
-  async update(estateId, originFilename, newFilename) {
-    await fs.promises.rename(
-      this.getFilePath(estateId, originFilename),
-      this.getFilePath(estateId, newFilename)
-    );
+  async update(dirname, oFile, nFile) {
+    await fs.promises.rename(this.getFilePath(dirname, oFile), this.getFilePath(dirname, nFile));
   }
 
-  async remove(estateId, filename) {
-    await fs.promises.unlink(this.getFilePath(estateId, filename));
+  async remove(dirname, fname) {
+    await fs.promises.unlink(this.getFilePath(dirname, fname));
   }
 
-  getDirPath(estateId) {
-    return path.join(this.rootPath, estateId);
+  getDirPath(dirname) {
+    return path.join(this.rootUploadFilePath, dirname);
   }
 
-  getFilePath(estateId, filename) {
-    return path.join(this.getDirPath(estateId), filename);
+  getFilePath(dirname, fname) {
+    return path.join(this.rootUploadFilePath, dirname, fname);
+  }
+
+  getDefaultFilePath() {
+    return path.join(this.rootUploadFilePath, "default.png");
   }
 
   getMiddleWare() {
