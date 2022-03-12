@@ -1,7 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
 const DAL = require("../../infrastructure/repositories/reviews/review");
-const { getErrorCode, getReason } = require("../../utils/http");
 
 const getReview = async (req, res) => {
   try {
@@ -12,10 +11,8 @@ const getReview = async (req, res) => {
     }
     res.json(review);
   } catch (err) {
-    const errCode = getErrorCode(err);
-    res.status(errCode).send({
-      error: getReason(errCode),
-    });
+    console.error(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -24,10 +21,8 @@ const addReview = async (req, res) => {
     const result = await DAL.addReview(req.params.estateId, req.body);
     res.json(result);
   } catch (err) {
-    const errCode = getErrorCode(err);
-    res.status(errCode).send({
-      error: getReason(errCode),
-    });
+    console.error(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 

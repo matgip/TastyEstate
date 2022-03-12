@@ -1,7 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
 const DAL = require("../../infrastructure/repositories/users");
-const { getErrorCode, getReason } = require("../../utils/http");
 
 const getUser = async (req, res) => {
   try {
@@ -12,10 +11,8 @@ const getUser = async (req, res) => {
     }
     res.json(user);
   } catch (err) {
-    const errCode = getErrorCode(err);
-    res.status(errCode).send({
-      error: getReason(errCode),
-    });
+    console.error(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -24,10 +21,8 @@ const addUser = async (req, res) => {
     await DAL.addUser(req.body);
     res.sendStatus(StatusCodes.OK);
   } catch (err) {
-    const errCode = getErrorCode(err);
-    res.status(errCode).send({
-      error: getReason(errCode),
-    });
+    console.error(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 

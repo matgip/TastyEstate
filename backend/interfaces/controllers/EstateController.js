@@ -1,7 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
 const DAL = require("../../infrastructure/repositories/estates");
-const { getErrorCode, getReason } = require("../../utils/http");
 
 const getEstate = async (req, res) => {
   try {
@@ -12,10 +11,8 @@ const getEstate = async (req, res) => {
     }
     res.json(estate);
   } catch (err) {
-    const errCode = getErrorCode(err);
-    res.status(errCode).send({
-      error: getReason(errCode),
-    });
+    console.error(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -24,10 +21,8 @@ const addEstate = async (req, res) => {
     await DAL.addEstate(req.body);
     res.sendStatus(StatusCodes.OK);
   } catch (err) {
-    const errCode = getErrorCode(err);
-    res.status(errCode).send({
-      error: getReason(errCode),
-    });
+    console.error(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
