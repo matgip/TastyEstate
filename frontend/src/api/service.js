@@ -92,16 +92,36 @@ class NestedAPI extends ModeAPI {
     if (!subResource) throw new Error("Sub resource is not provided");
     this.subResource = subResource;
   }
-  // Override
-  getURL(baseID, subID = "") {
-    if (!baseID) throw Error("base id is not provided");
-    return `${this.baseURL}/${this.resource}/${baseID}/${this.subResource}/${subID}`;
+
+  getURL(baseId, subId = "") {
+    if (!baseId) throw Error("base id is not provided");
+    return `${this.baseURL}/${this.resource}/${baseId}/${this.subResource}/${subId}`;
   }
-  // Override
-  async put(baseID, subID = "", data = {}) {
-    if (!baseID) throw Error("base id is not provided");
+
+  async get(baseId, subId = "") {
     try {
-      const resp = await this.api.put(this.getURL(baseID, subID), data);
+      if (!baseId) throw Error("id is not provided");
+      const resp = await this.api.get(this.getURL(baseId, subId));
+      return resp;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
+
+  async post(baseId, data = {}) {
+    try {
+      if (!baseId) throw Error("base id is not provided");
+      const resp = await this.api.post(this.getURL(baseId), data);
+      return resp;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
+
+  async put(baseId, subId = "", data = {}) {
+    if (!baseId) throw Error("base id is not provided");
+    try {
+      const resp = await this.api.put(this.getURL(baseId, subId), data);
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -127,6 +147,12 @@ class LikesAPI extends ModeAPI {
   }
 }
 
+class ReviewAPI extends NestedAPI {
+  constructor() {
+    super("api/reviews", "users");
+  }
+}
+
 class ReviewLikesOrderAPI extends NestedAPI {
   constructor() {
     super("api/reviews", "likes");
@@ -143,6 +169,7 @@ export const $api = {
   users: new UsersAPI(),
   estates: new EstatesAPI(),
   likes: new LikesAPI(),
+  review: new ReviewAPI(),
   reviewLikesOrder: new ReviewLikesOrderAPI(),
   reviewTimeOrder: new ReviewTimeOrderAPI(),
 };

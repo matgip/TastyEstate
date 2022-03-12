@@ -9,6 +9,7 @@ const usrRtr = require("./interfaces/routes/users");
 const estateRtr = require("./interfaces/routes/estates");
 const uploadRtr = require("./interfaces/routes/upload");
 const likesRtr = require("./interfaces/routes/likes");
+const rvwRtr = require("./interfaces/routes/reviews");
 const rvwLikesRtr = require("./interfaces/routes/reviewLikesOrder");
 const rvwTimeRtr = require("./interfaces/routes/reviewTimeOrder");
 
@@ -30,6 +31,7 @@ app.use("/api/users", usrRtr);
 app.use("/api/estates", estateRtr);
 app.use("/api/likes", likesRtr);
 app.use("/upload", uploadRtr);
+app.use("/api/reviews", rvwRtr);
 app.use("/api/reviews", rvwLikesRtr);
 app.use("/api/reviews", rvwTimeRtr);
 

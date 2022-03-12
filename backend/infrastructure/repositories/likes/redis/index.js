@@ -4,14 +4,14 @@ const client = require("../../../config/redis/client");
 const { InvalidInputError, CommandError, ConnectionError } = require("../../../../utils/errors");
 const sortedSet = require("./result");
 
-const getLikes = async (estateID) => {
-  if (!estateID || isNaN(estateID)) {
+const getLikes = async (estateId) => {
+  if (!estateId || isNaN(estateId)) {
     throw new InvalidInputError("Invalid estate id", true);
   }
 
   try {
     await client.connect();
-    const likesCnt = await client.SCARD("likes:" + estateID);
+    const likesCnt = await client.SCARD("likes:" + estateId);
     await client.quit();
     return { likes: likesCnt };
   } catch (err) {
@@ -23,19 +23,19 @@ const getLikes = async (estateID) => {
   }
 };
 
-const addLikes = async (estateID, usrID) => {
-  if (!estateID || !usrID || isNaN(estateID) || isNaN(usrID)) {
+const addLikes = async (estateId, usrId) => {
+  if (!estateId || !usrId || isNaN(estateId) || isNaN(usrId)) {
     throw new InvalidInputError("Invalid estate id or user id", true);
   }
 
   try {
     await client.connect();
-    const isExist = await client.SISMEMBER(`likes:${estateID}`, `users:${usrID}`);
+    const isExist = await client.SISMEMBER(`likes:${estateId}`, `users:${usrId}`);
     if (isExist === true) {
       client.quit();
       return { cmd_result: sortedSet.toString(sortedSet.ALREADY_ADDED) };
     }
-    const result = await client.SADD(`likes:${estateID}`, `users:${usrID}`);
+    const result = await client.SADD(`likes:${estateId}`, `users:${usrId}`);
     await client.quit();
     return { cmd_result: sortedSet.toString(result) };
   } catch (err) {

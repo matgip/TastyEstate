@@ -51,8 +51,20 @@ export default {
   },
   methods: {
     async onSubmitReview() {
-      await this.$api.reviewLikesOrder.put(this.estate.id, "", { user: this.user.id });
-      await this.$api.reviewTimeOrder.put(this.estate.id, "", { user: this.user.id });
+      const resp = await this.$api.review.get(this.estate.id, this.user.id);
+      if (resp && resp.status === 204) {
+        // No contents
+        await this.$api.review.post(this.estate.id, {
+          userId: this.user.id,
+          rating: this.rating,
+          kindness: this.kindness,
+          price: this.price,
+          contract: this.contract,
+          text: this.text,
+        });
+        await this.$api.reviewLikesOrder.put(this.estate.id, "", { user: this.user.id });
+        await this.$api.reviewTimeOrder.put(this.estate.id, "", { user: this.user.id });
+      }
       this.clearReview();
     },
     getRating(rating) {
