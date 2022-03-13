@@ -129,9 +129,12 @@ export default new Vuex.Store({
       commit(UPDATE_USER, user);
     },
     async getStars({ commit }, id) {
+      let stars = 0.0;
       const totRatings = await this.$api.reviewRatings.get(id);
       const totUserCnt = await this.$api.reviewCount.get(id);
-      const stars = totRatings.data / totUserCnt.data;
+      if (totUserCnt.data != 0) {
+        stars = totRatings.data / totUserCnt.data;
+      }
       commit("UPDATE_STARS", stars);
     },
     async getLikes({ commit }, id) {
