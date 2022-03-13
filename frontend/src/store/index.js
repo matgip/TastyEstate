@@ -148,6 +148,9 @@ export default new Vuex.Store({
         alert("이미 좋아요를 누르셨습니다.");
         return;
       }
+      if (resp.data.result === "success") {
+        alert("이 부동산을 좋아합니다.");
+      }
       dispatch("getLikes", payLoad.estateID);
     },
   },

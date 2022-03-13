@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn v-bind="btnProps">
+    <v-btn v-bind="btnProps" @click="gotoAllReviews">
       다른 사람들의 리뷰를 확인해보세요!
     </v-btn>
   </div>
@@ -15,6 +15,10 @@ export default {
       "x-small": true,
     },
   }),
-  methods: {},
+  methods: {
+    gotoAllReviews() {
+      this.$router.push({ path: "/reviews" });
+    },
+  },
 };
 </script>

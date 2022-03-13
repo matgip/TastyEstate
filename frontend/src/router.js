@@ -8,14 +8,19 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: "/",
+      name: "home",
+      component: () => import("@/components/Map/Map.vue"),
+    },
+    {
       path: "/login",
       name: "login",
       component: () => import("@/components/Login/Login.vue"),
     },
     {
-      path: "/",
-      name: "home",
-      component: () => import("@/components/Map/Map.vue"),
+      path: "/reviews",
+      name: "reviews",
+      component: () => import("@/components/AllReviews/AllReviews.vue"),
     },
   ],
 });
