@@ -153,6 +153,12 @@ class ReviewAPI extends NestedAPI {
   }
 }
 
+class ReviewCountAPI extends NestedAPI {
+  constructor() {
+    super("api/reviews", "count");
+  }
+}
+
 class ReviewRatingAPI extends NestedAPI {
   constructor() {
     super("api/reviews", "ratings");
@@ -176,6 +182,7 @@ export const $api = {
   estates: new EstatesAPI(),
   likes: new LikesAPI(),
   review: new ReviewAPI(),
+  reviewCount: new ReviewCountAPI(),
   reviewRatings: new ReviewRatingAPI(),
   reviewLikesOrder: new ReviewLikesOrderAPI(),
   reviewTimeOrder: new ReviewTimeOrderAPI(),

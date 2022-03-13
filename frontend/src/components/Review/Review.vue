@@ -65,6 +65,8 @@ export default {
         await this.$api.reviewRatings.put(this.estate.id, "", { rating: this.rating });
         await this.$api.reviewLikesOrder.put(this.estate.id, "", { user: this.user.id });
         await this.$api.reviewTimeOrder.put(this.estate.id, "", { user: this.user.id });
+
+        this.$store.dispatch("getStars", this.estate.id);
       }
       this.clearReview();
     },

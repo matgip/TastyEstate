@@ -16,7 +16,6 @@ module.exports = class extends ReviewLikeOrderRepository {
         value: `user:${user}`,
       },
     ]);
-    await client.ZCARD(`reviews:${estateId}:likes`);
     await client.quit();
   }
 };

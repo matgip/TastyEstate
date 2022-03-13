@@ -9,7 +9,6 @@ const addUser = async (estateId, data) => {
       value: `user:${data.user}`,
     },
   ]);
-  await client.ZCARD(`reviews:${estateId}:time`);
   await client.quit();
 };
 

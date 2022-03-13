@@ -34,6 +34,7 @@ export default {
           return;
         }
         this.$store.dispatch("getLikes", this.estate.id);
+        this.$store.dispatch("getStars", this.estate.id);
       }
     });
   },

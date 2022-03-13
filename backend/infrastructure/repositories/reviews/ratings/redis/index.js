@@ -13,4 +13,11 @@ module.exports = class extends ReviewRatingRepository {
     await client.INCRBYFLOAT(`reviews:${estateId}:ratings`, rating);
     await client.quit();
   }
+
+  async get(estateId) {
+    await client.connect();
+    const totRatings = await client.GET(`reviews:${estateId}:ratings`);
+    await client.quit();
+    return totRatings;
+  }
 };

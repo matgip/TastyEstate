@@ -12,6 +12,17 @@ const add = async (req, res) => {
   }
 };
 
+const get = async (req, res) => {
+  try {
+    const totRatings = await ReviewRatingRepository.get(req.params.id);
+    res.json(totRatings);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};
+
 module.exports = {
   add,
+  get,
 };
