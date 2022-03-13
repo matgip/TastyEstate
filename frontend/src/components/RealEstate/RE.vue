@@ -27,14 +27,14 @@ import REInfos from "./REInfos.vue";
 
 export default {
   mounted() {
-    this.$store.subscribe((mutation) => {
+    this.$store.subscribe(async (mutation) => {
       if (mutation.type == "UPDATE_ESTATE") {
         if (this.estate.id === undefined) {
           //  When selected estate is cleared
           return;
         }
-        this.$store.dispatch("getLikes", this.estate.id);
-        this.$store.dispatch("getStars", this.estate.id);
+        await this.$store.dispatch("getLikes", this.estate.id);
+        await this.$store.dispatch("getStars", this.estate.id);
       }
     });
   },
