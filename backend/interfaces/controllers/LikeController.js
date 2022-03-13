@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 
 const LikeRepository = require("../../infrastructure/repositories/likes");
 
-const getLikes = async (req, res) => {
+const get = async (req, res) => {
   try {
     const likesCnt = await LikeRepository.get(req.params.id);
     res.json(likesCnt);
@@ -12,7 +12,7 @@ const getLikes = async (req, res) => {
   }
 };
 
-const addLikes = async (req, res) => {
+const add = async (req, res) => {
   try {
     const result = await LikeRepository.persist(req.params.id, req.body.user_id);
     res.json(result);
@@ -23,6 +23,6 @@ const addLikes = async (req, res) => {
 };
 
 module.exports = {
-  getLikes,
-  addLikes,
+  get,
+  add,
 };

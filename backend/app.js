@@ -6,10 +6,10 @@ const logger = require("morgan");
 const cors = require("cors");
 
 const usrRtr = require("./interfaces/routes/users");
-const estateRtr = require("./interfaces/routes/estates");
+const estateRtr = require("./interfaces/routes/estate");
 const uploadRtr = require("./interfaces/routes/upload");
-const likesRtr = require("./interfaces/routes/likes");
-const rvwRtr = require("./interfaces/routes/reviews");
+const likeRtr = require("./interfaces/routes/like");
+const rvwRtr = require("./interfaces/routes/review");
 const rvwLikesRtr = require("./interfaces/routes/reviewLikesOrder");
 const rvwTimeRtr = require("./interfaces/routes/reviewTimeOrder");
 
@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Router
 app.use("/api/users", usrRtr);
 app.use("/api/estates", estateRtr);
-app.use("/api/likes", likesRtr);
+app.use("/api/likes", likeRtr);
 app.use("/upload", uploadRtr);
 app.use("/api/reviews", rvwRtr);
 app.use("/api/reviews", rvwLikesRtr);

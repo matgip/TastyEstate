@@ -3,7 +3,7 @@ const router = express.Router();
 
 const EstateController = require("../controllers/EstateController");
 
-router.get("/:id", EstateController.getEstate);
-router.post("/", EstateController.addEstate);
+router.get("/:id", EstateController.get);
+router.post("/", EstateController.add);
 
 module.exports = router;

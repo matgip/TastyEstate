@@ -1,32 +1,32 @@
 const { StatusCodes } = require("http-status-codes");
 
-const DAL = require("../../infrastructure/repositories/reviews/review");
+const ReviewRepository = require("../../infrastructure/repositories/reviews/review");
 
-const getReview = async (req, res) => {
+const get = async (req, res) => {
   try {
-    const review = await DAL.getReview(req.params.estateId, req.params.userId);
-    if (DAL.isEmpty(review) === true) {
+    const review = await ReviewRepository.get(req.params.estateId, req.params.userId);
+    if (ReviewRepository.isEmpty(review) === true) {
       res.sendStatus(StatusCodes.NO_CONTENT);
       return;
     }
     res.json(review);
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
-const addReview = async (req, res) => {
+const add = async (req, res) => {
   try {
-    const result = await DAL.addReview(req.params.estateId, req.body);
-    res.json(result);
+    await ReviewRepository.persist(req.params.estateId, req.body);
+    res.sendStatus(StatusCodes.OK);
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
 module.exports = {
-  getReview,
-  addReview,
+  get,
+  add,
 };

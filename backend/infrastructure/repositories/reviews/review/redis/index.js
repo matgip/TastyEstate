@@ -1,32 +1,34 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../../config/redis/client");
+const ReviewRepository = require("../../../../../domain/ReviewRepository");
 
-const isEmpty = (result) => {
-  return !result.rating || !result.kindness || !result.price || !result.contract || !result.text;
-};
+module.exports = class extends ReviewRepository {
+  constructor() {
+    super();
+  }
 
-const getReview = async (estateId, userId) => {
-  await client.connect();
-  const review = await client.HGETALL(`reviews:${estateId}:users:${userId}`);
-  await client.quit();
-  return review;
-};
+  async persist(estateId, reviewEntity) {
+    const { userId, rating, kindness, price, contract, text } = reviewEntity;
+    await client.connect();
+    client
+      .multi()
+      .HSET(`reviews:${estateId}:users:${userId}`, "rating", rating)
+      .HSET(`reviews:${estateId}:users:${userId}`, "kindness", kindness)
+      .HSET(`reviews:${estateId}:users:${userId}`, "price", price)
+      .HSET(`reviews:${estateId}:users:${userId}`, "contract", contract)
+      .HSET(`reviews:${estateId}:users:${userId}`, "text", text)
+      .exec();
+    await client.quit();
+  }
 
-const addReview = async (estateId, r) => {
-  await client.connect();
-  client
-    .multi()
-    .HSET(`reviews:${estateId}:users:${r.userId}`, "rating", r.rating)
-    .HSET(`reviews:${estateId}:users:${r.userId}`, "kindness", r.kindness)
-    .HSET(`reviews:${estateId}:users:${r.userId}`, "price", r.price)
-    .HSET(`reviews:${estateId}:users:${r.userId}`, "contract", r.contract)
-    .HSET(`reviews:${estateId}:users:${r.userId}`, "text", r.text)
-    .exec();
-  await client.quit();
-};
+  async get(estateId, userId) {
+    await client.connect();
+    const review = await client.HGETALL(`reviews:${estateId}:users:${userId}`);
+    await client.quit();
+    return review;
+  }
 
-module.exports = {
-  isEmpty,
-  getReview,
-  addReview,
+  isEmpty(result) {
+    return !result.rating || !result.kindness || !result.price || !result.contract || !result.text;
+  }
 };

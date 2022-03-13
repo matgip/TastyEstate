@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 
 const EstateRepository = require("../../infrastructure/repositories/estates");
 
-const getEstate = async (req, res) => {
+const get = async (req, res) => {
   try {
     const estate = await EstateRepository.get(req.params.id);
     if (EstateRepository.isEmpty(estate) === true) {
@@ -16,7 +16,7 @@ const getEstate = async (req, res) => {
   }
 };
 
-const addEstate = async (req, res) => {
+const add = async (req, res) => {
   try {
     await EstateRepository.persist(req.body);
     res.sendStatus(StatusCodes.OK);
@@ -27,6 +27,6 @@ const addEstate = async (req, res) => {
 };
 
 module.exports = {
-  getEstate,
-  addEstate,
+  get,
+  add,
 };
