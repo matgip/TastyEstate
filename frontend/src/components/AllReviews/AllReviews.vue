@@ -1,6 +1,7 @@
 <template>
-  <div>
-    TODO
+  <div class="wrapper space">
+    <v-divider />
+    <v-card> </v-card>
   </div>
 </template>
 
