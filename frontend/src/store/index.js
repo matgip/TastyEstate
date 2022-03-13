@@ -21,6 +21,7 @@ const GET_LIKES = "GET_LIKES";
 const UPDATE_LIKES = "UPDATE_LIKES";
 
 const GET_STARS = "GET_STARS";
+const UPDATE_STARS = "UPDATE_STARS";
 
 const GET_KINDNESS = "GET_KINDNESS";
 const UPDATE_KINDNESS = "UPDATE_KINDNESS";
@@ -79,6 +80,9 @@ export default new Vuex.Store({
     [UPDATE_USER](state, user) {
       state.user = user;
     },
+    [UPDATE_STARS](state, stars) {
+      state.stars = stars;
+    },
     [UPDATE_LIKES](state, likes) {
       state.likes = likes;
     },
@@ -131,7 +135,7 @@ export default new Vuex.Store({
     },
     async updateLikes({ dispatch }, payLoad) {
       const resp = await this.$api.likes.put(payLoad.estateID, { user_id: payLoad.userID });
-      if (resp.data.cmd_result === "already-added") {
+      if (resp.data.result === "already-added") {
         alert("이미 좋아요를 누르셨습니다.");
         return;
       }

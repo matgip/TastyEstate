@@ -11,12 +11,12 @@ module.exports = class extends LikeRepository {
   async persist(estateId, usrId) {
     const isExist = await this.find(estateId, usrId);
     if (isExist === true) {
-      return { cmd_result: sortedSet.toString(sortedSet.ALREADY_ADDED) };
+      return { result: sortedSet.toString(sortedSet.ALREADY_ADDED) };
     }
     await client.connect();
     const result = await client.SADD(`likes:${estateId}`, `users:${usrId}`);
     await client.quit();
-    return { cmd_result: sortedSet.toString(result) };
+    return { result: sortedSet.toString(result) };
   }
 
   async get(estateId) {

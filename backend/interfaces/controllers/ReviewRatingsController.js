@@ -1,10 +1,10 @@
 const { StatusCodes } = require("http-status-codes");
 
-const DAL = require("../../infrastructure/repositories/reviews/time");
+const ReviewRatingRepository = require("../../infrastructure/repositories/reviews/ratings");
 
 const add = async (req, res) => {
   try {
-    await DAL.addUser(req.params.id, req.body);
+    await ReviewRatingRepository.persist(req.params.id, req.body);
     res.sendStatus(StatusCodes.OK);
   } catch (err) {
     console.error(err);
