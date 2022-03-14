@@ -26,6 +26,6 @@ module.exports = class extends EstateRepository {
   }
 
   isEmpty(result) {
-    return !result.place_name || !result.phone_number;
+    return Object.keys(result).length === 0;
   }
 };

@@ -29,6 +29,6 @@ module.exports = class extends ReviewRepository {
   }
 
   isEmpty(result) {
-    return !result.rating || !result.kindness || !result.price || !result.contract || !result.text;
+    return Object.keys(result).length === 0;
   }
 };

@@ -22,6 +22,6 @@ module.exports = class extends UserRepository {
   }
 
   isEmpty(result) {
-    return !result.email || !result.nickname;
+    return Object.keys(result).length === 0;
   }
 };
