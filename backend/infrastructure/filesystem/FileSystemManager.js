@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 
-module.exports = class FileSystemManager {
+class FileSystemManager {
   rootUploadFilePath = path.join(__dirname, "../../upload_imgs");
   middleWare;
 
@@ -62,4 +62,6 @@ module.exports = class FileSystemManager {
   getMiddleWare() {
     return this.middleWare;
   }
-};
+}
+
+module.exports = new FileSystemManager();
