@@ -3,7 +3,8 @@
 import axios from "axios";
 
 class BaseAPI {
-  baseURL = "http://localhost:3000";
+  // baseURL = "http://localhost:3000";
+  baseURL = ""
   resource;
   api;
 

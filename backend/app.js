@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/users", usrRtr);
 app.use("/api/estates", estateRtr);
 app.use("/api/likes", likeRtr);
-app.use("/upload", uploadRtr);
+app.use("/api/upload", uploadRtr);
 
 app.use("/api/reviews", rvwRtr);
 app.use("/api/reviews", rvwCountRtr);

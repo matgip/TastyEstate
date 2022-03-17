@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     getImgURL(estateID, imgNum) {
-      return `http://localhost:3000/upload/${estateID}?image=${imgNum}`;
+      return `/api/upload/${estateID}?image=${imgNum}`;
     },
   },
 };
