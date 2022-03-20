@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LoginKakaoBtn :method="onLogin" :icon="'fas fa-comment'" :button="'카카오 로그인'" />
+    <LoginKakaoBtn :method="onClick" :icon="'fas fa-comment'" :button="'카카오 로그인'" />
   </div>
 </template>
 
@@ -15,12 +15,23 @@ export default {
     LoginKakaoBtn,
   },
   methods: {
-    async onLogin() {
+    async onClick() {
+      try {
+        const user = await this.getUser();
+        await this.$store.dispatch("updateUser", user);
+        this.$router.push({ path: "/" });
+      } catch (err) {
+        console.error(err);
+        if (err.code === -401) {
+          // Unauthorized
+          await this.doLogin();
+        }
+      }
+    },
+    async doLogin() {
       try {
         await this.login();
-        const user = await this.getUser();
-        this.$store.dispatch("updateUser", user);
-        this.$router.push({ path: "/" });
+        await this.onClick();
       } catch (err) {
         console.error(err);
       }
