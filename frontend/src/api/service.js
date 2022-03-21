@@ -3,8 +3,7 @@
 import axios from "axios";
 
 class BaseAPI {
-  // baseURL = "http://localhost:3000";
-  baseURL = ""
+  baseURL = "";
   resource;
   api;
 
@@ -130,6 +129,12 @@ class NestedAPI extends ModeAPI {
   }
 }
 
+class LoginAPI extends ModeAPI {
+  constructor() {
+    super("api/login");
+  }
+}
+
 class UsersAPI extends ModeAPI {
   constructor() {
     super("api/users");
@@ -179,6 +184,7 @@ class ReviewTimeOrderAPI extends NestedAPI {
 }
 
 export const $api = {
+  login: new LoginAPI(),
   users: new UsersAPI(),
   estates: new EstatesAPI(),
   likes: new LikesAPI(),
