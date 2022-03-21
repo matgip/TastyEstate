@@ -30,7 +30,11 @@ export default {
     },
     async doLogin() {
       try {
-        await this.login();
+        const auth = await this.login();
+        const payload = {
+          token: auth.access_token,
+        };
+        await this.$api.login.post(payload);
         await this.onClick();
       } catch (err) {
         console.error(err);

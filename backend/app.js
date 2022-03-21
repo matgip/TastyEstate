@@ -3,8 +3,11 @@ const createError = require("http-errors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+
+// CORS
 const cors = require("cors");
 
+const loginRtr = require("./interfaces/routes/login");
 const usrRtr = require("./interfaces/routes/users");
 const estateRtr = require("./interfaces/routes/estate");
 const uploadRtr = require("./interfaces/routes/upload");
@@ -23,13 +26,14 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
 app.use(cors()); // enable CORS
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Router
+app.use("/api/login", loginRtr);
 app.use("/api/users", usrRtr);
 app.use("/api/estates", estateRtr);
 app.use("/api/likes", likeRtr);
