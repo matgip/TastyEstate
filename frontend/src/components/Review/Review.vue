@@ -6,7 +6,7 @@
       <ReviewKindness slot="kindness" :propKindness="kindness" />
       <ReviewPrice slot="price" :propPrice="price" />
       <ReviewContract slot="contract" :propContract="contract" />
-      <ReviewTextArea slot="text" :propText="text" @reviewText="getText" />
+      <ReviewTextArea slot="text" :propTitle="title" :propText="text" @reviewTitle="getTitle" @reviewText="getText" />
       <DiagBtns slot="buttons" @submitReview="onSubmitReview" />
     </ReviewLayout>
   </div>
@@ -27,6 +27,7 @@ import { mapGetters } from "vuex";
 export default {
   data: () => ({
     rating: 0.0,
+    title: "",
     text: "",
   }),
   props: ["placeName"],
@@ -60,6 +61,7 @@ export default {
           kindness: this.kindness,
           price: this.price,
           contract: this.contract,
+          title: this.title,
           text: this.text,
         });
         await this.$api.reviewRatings.put(this.estate.id, "", { rating: this.rating });
@@ -73,11 +75,15 @@ export default {
     getRating(rating) {
       this.rating = rating;
     },
+    getTitle(title) {
+      this.title = title;
+    },
     getText(text) {
       this.text = text;
     },
     clearReview() {
       this.rating = 0.0;
+      this.title = "";
       this.text = "";
       this.$store.commit("UPDATE_KINDNESS", "");
       this.$store.commit("UPDATE_PRICE", "");

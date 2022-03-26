@@ -8,7 +8,7 @@ module.exports = class extends ReviewRepository {
   }
 
   async persist(estateId, reviewEntity) {
-    const { userId, rating, kindness, price, contract, text } = reviewEntity;
+    const { userId, rating, kindness, price, contract, title, text } = reviewEntity;
     await client.connect();
     await client
       .multi()
@@ -16,6 +16,7 @@ module.exports = class extends ReviewRepository {
       .HSET(`reviews:${estateId}:users:${userId}`, "kindness", kindness)
       .HSET(`reviews:${estateId}:users:${userId}`, "price", price)
       .HSET(`reviews:${estateId}:users:${userId}`, "contract", contract)
+      .HSET(`reviews:${estateId}:users:${userId}`, "title", title)
       .HSET(`reviews:${estateId}:users:${userId}`, "text", text)
       .exec();
     await client.quit();
