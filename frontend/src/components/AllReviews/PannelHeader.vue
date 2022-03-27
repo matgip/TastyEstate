@@ -23,7 +23,18 @@ import Avatar from "./PannelHeaderAvatar.vue";
 import Likes from "./PannelHeaderLikes.vue";
 
 export default {
-  props: ["review"],
+  props: {
+    review: {
+      type: Object,
+      required: true,
+      validator: function(value) {
+        if (value.avatar == undefined) return false;
+        if (value.likes == undefined) return false;
+        if (value.title == undefined) return false;
+        return true;
+      },
+    },
+  },
   components: {
     Avatar,
     Likes,

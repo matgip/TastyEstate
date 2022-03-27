@@ -9,6 +9,14 @@
 
 <script>
 export default {
-  props: ["content"],
+  props: {
+    content: {
+      type: String,
+      required: true,
+      validator: function(value) {
+        return value != null;
+      },
+    },
+  },
 };
 </script>

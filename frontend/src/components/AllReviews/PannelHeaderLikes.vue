@@ -8,7 +8,15 @@
 
 <script>
 export default {
-  props: ["likes"],
+  props: {
+    likes: {
+      type: Number,
+      required: true,
+      validator: function(value) {
+        return value >= 0;
+      },
+    },
+  },
   data: () => ({
     likesProps: {
       color: "red lighten-4",
