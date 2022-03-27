@@ -2,16 +2,18 @@
   <div>
     <v-expansion-panel-header>
       <v-row v-bind="rowProps">
-        <v-col v-bind="avatarColProps">
+        <v-col v-bind="colProps">
           <Avatar :avatar="review.avatar" :icon="review.icon" />
         </v-col>
 
-        <v-col v-bind="likesColProps">
+        <v-col v-bind="colProps">
           <Likes :likes="review.likes" />
         </v-col>
-      </v-row>
 
-      <strong v-html="review.title"></strong>
+        <v-col v-bind="colProps">
+          <strong v-html="review.title"></strong>
+        </v-col>
+      </v-row>
     </v-expansion-panel-header>
   </div>
 </template>
@@ -29,18 +31,10 @@ export default {
   data: () => ({
     rowProps: {
       align: "center",
-      class: "spacer",
-      "no-gutters": true,
     },
-    avatarColProps: {
+    colProps: {
       cols: "4",
       sm: "2",
-      md: "1",
-    },
-    likesColProps: {
-      class: "text-no-wrap",
-      cols: "5",
-      sm: "3",
     },
   }),
 };

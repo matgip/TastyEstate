@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-chip v-if="likes" v-bind="likesProps"> {{ likes }} 좋아요 </v-chip>
+    <v-chip v-if="likes" v-bind="likesProps">
+      <v-icon v-bind="iconProps"> {{ likesIcon }} </v-icon> {{ likes }}
+    </v-chip>
   </div>
 </template>
 
@@ -14,6 +16,12 @@ export default {
       label: true,
       small: true,
     },
+    iconProps: {
+      left: true,
+      color: "red",
+      "x-small": true,
+    },
+    likesIcon: "fas fa-heart",
   }),
 };
 </script>
