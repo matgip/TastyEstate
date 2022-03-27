@@ -1,11 +1,15 @@
 <template>
   <div>
     <v-list-item>
-      <v-row>
-        <v-textarea v-bind="titleProps" :value="title" v-on:blur="emitTitle"></v-textarea>
-        <v-textarea v-bind="textAreaProps" :value="text" v-on:blur="emitText"></v-textarea>
-        <!-- Only emit event when textarea is blurred -->
-      </v-row>
+      <!-- Only emit event when textarea is blurred -->
+      <v-container>
+        <v-row>
+          <v-textarea v-bind="titleProps" :value="title" v-on:blur="emitTitle" />
+        </v-row>
+        <v-row>
+          <v-textarea v-bind="textAreaProps" :value="text" v-on:blur="emitText" />
+        </v-row>
+      </v-container>
     </v-list-item>
   </div>
 </template>
@@ -15,7 +19,7 @@ export default {
   data: () => ({
     titleProps: {
       filled: true,
-      class: "mt-12",
+      class: "mt-4",
       rows: "1",
       label: "한줄 요약을 남겨주세요",
       "row-height": "15",
