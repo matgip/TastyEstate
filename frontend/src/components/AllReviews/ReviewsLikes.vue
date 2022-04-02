@@ -28,7 +28,6 @@ export default {
     iconProps: {
       left: true,
       color: "deep-orange",
-      "x-small": true,
     },
     likesIcon: "fas fa-thumbs-up",
   }),

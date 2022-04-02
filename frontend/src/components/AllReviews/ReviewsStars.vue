@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="divProps">
+  <div>
     <v-row v-bind="rowProps">
       <v-rating v-bind="ratingProps" :value="rating" />
       <div v-bind="textProps">({{ rating }})</div>
@@ -19,11 +19,9 @@ export default {
     },
   },
   data: () => ({
-    divProps: {
-      class: "ml-2",
-    },
     rowProps: {
       align: "center",
+      class: "ml-2",
     },
     ratingProps: {
       size: 18,

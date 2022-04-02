@@ -14,7 +14,7 @@ export default {
     avatarProps: {
       size: "36px",
     },
-    avatarIcon: "mdi-account-multiple",
+    avatarIcon: "fas fa-user-large",
   }),
 };
 </script>

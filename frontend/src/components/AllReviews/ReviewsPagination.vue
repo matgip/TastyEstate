@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-pagination v-bind="paginationProps" v-model="page" :length="pageCount" :total-visible="7"></v-pagination>
+    <v-pagination v-bind="paginationProps" v-model="page" :length="pageCount" :total-visible="7" />
   </div>
 </template>
 
@@ -20,6 +20,7 @@ export default {
     paginationProps: {
       color: "deep-orange",
       circle: true,
+      class: "mt-10",
     },
   }),
   computed: {
@@ -30,5 +31,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
