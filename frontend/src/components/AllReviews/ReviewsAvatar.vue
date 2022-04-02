@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="divProps">
+  <div>
     <v-avatar v-bind="avatarProps">
       <img v-if="avatar" alt="Avatar" src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" />
       <v-icon v-else v-text="avatarIcon" />
@@ -11,9 +11,6 @@
 export default {
   props: ["avatar"],
   data: () => ({
-    divProps: {
-      class: "mb-6",
-    },
     avatarProps: {
       size: "36px",
     },

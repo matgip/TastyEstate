@@ -1,9 +1,5 @@
 <template>
-  <div>
-    <v-expansion-panel-content>
-      <v-card-text v-text="content" />
-    </v-expansion-panel-content>
-  </div>
+  <div>{{ content }}</div>
 </template>
 
 <script>

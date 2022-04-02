@@ -20,7 +20,7 @@ export default {
   },
   data: () => ({
     divProps: {
-      class: "mb-6 ml-2",
+      class: "ml-2",
     },
     rowProps: {
       align: "center",

@@ -1,16 +1,31 @@
 <template>
-  <div class="wrapper space">
-    <v-divider />
-    <Pannels :reviews="reviews" />
+  <div>
+    <ReviewsLayout v-for="(review, i) in reviews" :key="i">
+      <Avatar slot="Avatar" :avatar="review.avatar" />
+      <Stars slot="Rating" :rating="review.rating" />
+      <Likes slot="Likes" :likes="review.likes" />
+      <Title slot="Title" :title="review.title" />
+      <Content slot="Content" :content="review.content" />
+    </ReviewsLayout>
   </div>
 </template>
 
 <script>
-import Pannels from "./Pannels.vue";
+import ReviewsLayout from "./ReviewsLayout.vue";
+import Avatar from "./ReviewsAvatar.vue";
+import Stars from "./ReviewsStars.vue";
+import Likes from "./ReviewsLikes.vue";
+import Title from "./ReviewsTitle.vue";
+import Content from "./ReviewsContent.vue";
 
 export default {
   components: {
-    Pannels,
+    ReviewsLayout,
+    Avatar,
+    Stars,
+    Likes,
+    Title,
+    Content,
   },
   data: () => ({
     reviews: [
@@ -31,5 +46,3 @@ export default {
   }),
 };
 </script>
-
-<style scoped></style>
