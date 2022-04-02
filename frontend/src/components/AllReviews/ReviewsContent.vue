@@ -1,11 +1,11 @@
 <template>
-  <div>{{ content }}</div>
+  <div>{{ text }}</div>
 </template>
 
 <script>
 export default {
   props: {
-    content: {
+    text: {
       type: String,
       required: true,
       validator: function(value) {

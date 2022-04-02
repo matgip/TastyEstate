@@ -5,7 +5,7 @@
       <Stars slot="Rating" :rating="review.rating" />
       <Likes slot="Likes" :likes="review.likes" />
       <Title slot="Title" :title="review.title" />
-      <Content slot="Content" :content="review.content" />
+      <Content slot="Content" :text="review.text" />
     </ReviewsLayout>
 
     <Pagenation :totalCount="totalCount" />
@@ -43,52 +43,52 @@ export default {
         rating: 4.5,
         likes: 3,
         title: "추천합니다",
-        content: "굿",
+        text: "굿",
       },
       {
         rating: 5.0,
         likes: 1,
         title: "사장님이 친절하시네요",
-        content: "사장님 나이스",
+        text: "사장님 나이스",
       },
       {
         avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
         rating: 4.5,
         likes: 3,
         title: "추천합니다",
-        content: "굿",
+        text: "굿",
       },
       {
         rating: 5.0,
         likes: 1,
         title: "사장님이 친절하시네요",
-        content: "사장님 나이스",
+        text: "사장님 나이스",
       },
       {
         avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
         rating: 4.5,
         likes: 3,
         title: "추천합니다",
-        content: "굿",
+        text: "굿",
       },
       {
         rating: 5.0,
         likes: 1,
         title: "사장님이 친절하시네요",
-        content: "사장님 나이스",
+        text: "사장님 나이스",
       },
       {
         avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
         rating: 4.5,
         likes: 3,
         title: "추천합니다",
-        content: "굿",
+        text: "굿",
       },
       {
         rating: 5.0,
         likes: 1,
         title: "사장님이 친절하시네요",
-        content: "사장님 나이스",
+        text: "사장님 나이스",
       },
     ],
   }),
