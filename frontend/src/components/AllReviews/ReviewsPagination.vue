@@ -26,7 +26,7 @@ export default {
   computed: {
     pageCount() {
       if (this.totalCount <= 7) return 1;
-      return this.totalCount / 7;
+      return Math.trunc(this.totalCount / 7 + 1);
     },
   },
 };
