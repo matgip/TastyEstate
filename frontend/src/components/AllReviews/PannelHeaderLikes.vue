@@ -1,9 +1,9 @@
 <template>
   <div v-bind="divProps">
-    <v-chip v-bind="likesProps">
+    <v-btn v-bind="btnProps" @click="onClicked">
       <v-icon v-bind="iconProps"> {{ likesIcon }} </v-icon>
       {{ likes }}
-    </v-chip>
+    </v-btn>
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
     divProps: {
       class: "mb-6",
     },
-    likesProps: {
+    btnProps: {
       color: "red lighten-4",
       class: "ml-0 mr-2 black--text",
       label: true,
@@ -35,5 +35,10 @@ export default {
     },
     likesIcon: "fas fa-heart",
   }),
+  methods: {
+    onClicked() {
+      console.log("Likes btn Clicked!");
+    },
+  },
 };
 </script>

@@ -1,8 +1,8 @@
 <template>
   <div v-bind="divProps">
     <v-row v-bind="rowProps">
-      <v-rating v-bind="starProps" :value="stars" />
-      <div v-bind="textProps">({{ stars }})</div>
+      <v-rating v-bind="ratingProps" :value="rating" />
+      <div v-bind="textProps">({{ rating }})</div>
     </v-row>
   </div>
 </template>
@@ -10,7 +10,7 @@
 <script>
 export default {
   props: {
-    stars: {
+    rating: {
       type: Number,
       required: true,
       validator: function(value) {
@@ -25,7 +25,7 @@ export default {
     rowProps: {
       align: "center",
     },
-    starProps: {
+    ratingProps: {
       size: 18,
       color: "amber",
       dense: true,

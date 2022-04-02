@@ -4,7 +4,7 @@
       <v-row v-bind="rowProps">
         <v-col>
           <Avatar :avatar="review.avatar" :icon="review.icon" />
-          <Stars :stars="review.stars" />
+          <Stars :rating="review.rating" />
           <Likes :likes="review.likes" />
           <strong v-html="review.title" />
         </v-col>
@@ -29,7 +29,7 @@ export default {
       type: Object,
       required: true,
       validator: function(value) {
-        if (value.stars == undefined) return false;
+        if (value.rating == undefined) return false;
         if (value.likes == undefined) return false;
         if (value.title == undefined) return false;
         return true;

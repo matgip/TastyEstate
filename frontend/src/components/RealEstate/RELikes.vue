@@ -11,6 +11,15 @@
 
 <script>
 export default {
+  props: {
+    likes: {
+      type: Number,
+      required: true,
+      validator: function(value) {
+        return value >= 0;
+      },
+    },
+  },
   data: () => ({
     btnProps: {
       class: "ma-2",
@@ -25,15 +34,6 @@ export default {
     },
     likesIcon: "fas fa-heart",
   }),
-  props: {
-    likes: {
-      type: Number,
-      required: true,
-      validator: function(value) {
-        return value >= 0;
-      },
-    },
-  },
   methods: {
     emitEvent() {
       this.$emit("likeBtnClicked");
