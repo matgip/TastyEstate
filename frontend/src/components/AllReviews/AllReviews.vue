@@ -7,6 +7,8 @@
       <Title slot="Title" :title="review.title" />
       <Content slot="Content" :content="review.content" />
     </ReviewsLayout>
+
+    <Pagenation :totalCount="totalCount" />
   </div>
 </template>
 
@@ -17,6 +19,7 @@ import Stars from "./ReviewsStars.vue";
 import Likes from "./ReviewsLikes.vue";
 import Title from "./ReviewsTitle.vue";
 import Content from "./ReviewsContent.vue";
+import Pagenation from "./ReviewsPagination.vue";
 
 export default {
   components: {
@@ -26,6 +29,12 @@ export default {
     Likes,
     Title,
     Content,
+    Pagenation,
+  },
+  computed: {
+    totalCount() {
+      return this.reviews.length;
+    },
   },
   data: () => ({
     reviews: [
