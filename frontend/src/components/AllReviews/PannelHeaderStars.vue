@@ -9,6 +9,15 @@
 
 <script>
 export default {
+  props: {
+    stars: {
+      type: Number,
+      required: true,
+      validator: function(value) {
+        return value >= 0;
+      },
+    },
+  },
   data: () => ({
     divProps: {
       class: "mb-6 ml-2",
@@ -27,14 +36,5 @@ export default {
       class: "grey--text mx-2",
     },
   }),
-  props: {
-    stars: {
-      type: Number,
-      required: true,
-      validator: function(value) {
-        return value >= 0;
-      },
-    },
-  },
 };
 </script>

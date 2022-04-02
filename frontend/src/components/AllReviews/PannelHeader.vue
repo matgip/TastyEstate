@@ -2,12 +2,10 @@
   <div>
     <v-expansion-panel-header>
       <v-row v-bind="rowProps">
-        <v-col v-bind="colProps">
+        <v-col>
           <Avatar :avatar="review.avatar" :icon="review.icon" />
           <Stars :stars="review.stars" />
           <Likes :likes="review.likes" />
-        </v-col>
-        <v-col v-bind="colProps">
           <strong v-html="review.title" />
         </v-col>
       </v-row>
@@ -21,6 +19,11 @@ import Stars from "./PannelHeaderStars.vue";
 import Likes from "./PannelHeaderLikes.vue";
 
 export default {
+  components: {
+    Avatar,
+    Stars,
+    Likes,
+  },
   props: {
     review: {
       type: Object,
@@ -33,21 +36,11 @@ export default {
       },
     },
   },
-  components: {
-    Avatar,
-    Stars,
-    Likes,
-  },
   data: () => ({
     rowProps: {
       align: "center",
       class: "spacer",
       "no-gutters": true,
-    },
-    colProps: {
-      cols: "6",
-      sm: "4",
-      md: "6",
     },
   }),
 };
