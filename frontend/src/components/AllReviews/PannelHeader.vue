@@ -4,14 +4,11 @@
       <v-row v-bind="rowProps">
         <v-col v-bind="colProps">
           <Avatar :avatar="review.avatar" :icon="review.icon" />
-        </v-col>
-
-        <v-col v-bind="colProps">
+          <Stars :stars="review.stars" />
           <Likes :likes="review.likes" />
         </v-col>
-
         <v-col v-bind="colProps">
-          <strong v-html="review.title"></strong>
+          <strong v-html="review.title" />
         </v-col>
       </v-row>
     </v-expansion-panel-header>
@@ -20,6 +17,7 @@
 
 <script>
 import Avatar from "./PannelHeaderAvatar.vue";
+import Stars from "./PannelHeaderStars.vue";
 import Likes from "./PannelHeaderLikes.vue";
 
 export default {
@@ -28,7 +26,7 @@ export default {
       type: Object,
       required: true,
       validator: function(value) {
-        if (value.avatar == undefined) return false;
+        if (value.stars == undefined) return false;
         if (value.likes == undefined) return false;
         if (value.title == undefined) return false;
         return true;
@@ -37,15 +35,19 @@ export default {
   },
   components: {
     Avatar,
+    Stars,
     Likes,
   },
   data: () => ({
     rowProps: {
       align: "center",
+      class: "spacer",
+      "no-gutters": true,
     },
     colProps: {
-      cols: "4",
-      sm: "2",
+      cols: "6",
+      sm: "4",
+      md: "6",
     },
   }),
 };

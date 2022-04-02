@@ -1,7 +1,8 @@
 <template>
   <div>
-    <v-chip v-if="likes" v-bind="likesProps">
-      <v-icon v-bind="iconProps"> {{ likesIcon }} </v-icon> {{ likes }}
+    <v-chip v-bind="likesProps">
+      <v-icon v-bind="iconProps"> {{ likesIcon }} </v-icon>
+      {{ likes }}
     </v-chip>
   </div>
 </template>
