@@ -1,16 +1,17 @@
 <template>
   <div>
     <v-card>
+      <v-divider />
+
       <v-card-text>
         <slot name="Avatar" />
       </v-card-text>
 
       <v-card-text>
-        <slot name="Rating" />
-      </v-card-text>
-
-      <v-card-text>
-        <slot name="Likes" />
+        <v-row align="center">
+          <slot name="Rating" />
+          <slot name="Likes" />
+        </v-row>
       </v-card-text>
 
       <v-card-title>

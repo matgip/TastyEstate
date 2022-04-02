@@ -20,17 +20,16 @@ export default {
   },
   data: () => ({
     btnProps: {
-      color: "red lighten-4",
-      class: "ml-0 mr-2 black--text",
+      class: "ml-4",
+      depressed: true,
       label: true,
       small: true,
     },
     iconProps: {
       left: true,
-      color: "red",
       "x-small": true,
     },
-    likesIcon: "fas fa-heart",
+    likesIcon: "fas fa-thumbs-up",
   }),
   methods: {
     onClicked() {

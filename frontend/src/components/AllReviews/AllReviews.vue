@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <ReviewsLayout v-for="(review, i) in reviews" :key="i">
       <Avatar slot="Avatar" :avatar="review.avatar" />
       <Stars slot="Rating" :rating="review.rating" />
