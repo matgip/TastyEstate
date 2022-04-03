@@ -9,10 +9,12 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.0",
+    "apexcharts": "^3.35.0",
     "axios": "^0.25.0",
     "core-js": "^3.6.5",
     "dotenv": "^8.6.0",
     "vue": "^2.6.11",
+    "vue-apexcharts": "^1.6.2",
     "vue-file-agent": "^1.7.3",
     "vuetify": "^2.4.0",
     "vuex": "^3.6.2",
