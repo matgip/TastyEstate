@@ -14,11 +14,6 @@
 import AppbarBtn from "./TheAppbarBtn.vue";
 
 export default {
-  computed: {
-    user() {
-      return this.$store.getters.GET_USER;
-    },
-  },
   components: {
     AppbarBtn,
   },
@@ -26,6 +21,11 @@ export default {
     if (this.isloggedIn() == false) {
       this.gotoLogin();
     }
+  },
+  computed: {
+    user() {
+      return this.$store.getters.GET_USER;
+    },
   },
   methods: {
     gotoLogin() {

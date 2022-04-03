@@ -21,6 +21,8 @@ import Title from "./ReviewsTitle.vue";
 import Content from "./ReviewsContent.vue";
 import Pagenation from "./ReviewsPagination.vue";
 
+import { mapGetters } from "vuex";
+
 export default {
   components: {
     ReviewsLayout,
@@ -31,66 +33,39 @@ export default {
     Content,
     Pagenation,
   },
+  mounted() {
+    const queryRange = "0-6";
+    this.getReviews(queryRange);
+  },
   computed: {
+    ...mapGetters({
+      estate: "GET_ESTATE",
+    }),
+    reviews() {
+      return this.reviewObjs;
+    },
     totalCount() {
       return this.reviews.length;
     },
   },
+  methods: {
+    async getReviews(queryRange) {
+      try {
+        const reviewedUsers = await this.$api.reviewLikesOrder.get(this.estate.id, queryRange);
+        for (let i = 0; i < reviewedUsers.data.length; i++) {
+          const user = reviewedUsers.data[i].value;
+          const review = await this.$api.review.get(this.estate.id, user.split(":")[1]);
+          this.reviewObjs.push(review.data);
+          this.reviewObjs[i].rating = parseFloat(this.reviewObjs[i].rating);
+          this.reviewObjs[i].likes = reviewedUsers.data[i].score;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    },
+  },
   data: () => ({
-    reviews: [
-      {
-        avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
-        rating: 4.5,
-        likes: 3,
-        title: "추천합니다",
-        text: "굿",
-      },
-      {
-        rating: 5.0,
-        likes: 1,
-        title: "사장님이 친절하시네요",
-        text: "사장님 나이스",
-      },
-      {
-        avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
-        rating: 4.5,
-        likes: 3,
-        title: "추천합니다",
-        text: "굿",
-      },
-      {
-        rating: 5.0,
-        likes: 1,
-        title: "사장님이 친절하시네요",
-        text: "사장님 나이스",
-      },
-      {
-        avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
-        rating: 4.5,
-        likes: 3,
-        title: "추천합니다",
-        text: "굿",
-      },
-      {
-        rating: 5.0,
-        likes: 1,
-        title: "사장님이 친절하시네요",
-        text: "사장님 나이스",
-      },
-      {
-        avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
-        rating: 4.5,
-        likes: 3,
-        title: "추천합니다",
-        text: "굿",
-      },
-      {
-        rating: 5.0,
-        likes: 1,
-        title: "사장님이 친절하시네요",
-        text: "사장님 나이스",
-      },
-    ],
+    reviewObjs: [],
   }),
 };
 </script>
