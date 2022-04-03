@@ -1,5 +1,9 @@
 <template>
   <div class="wrapper">
+    <GraphsLayout>
+      <KindnessGraph slot="KindnessGraph" />
+    </GraphsLayout>
+
     <ReviewsLayout v-for="(review, i) in reviews" :key="i">
       <Avatar slot="Avatar" :avatar="review.avatar" />
       <Stars slot="Rating" :rating="review.rating" />
@@ -13,6 +17,9 @@
 </template>
 
 <script>
+import GraphsLayout from "./GraphsLayout.vue";
+import KindnessGraph from "./KindnessGraph.vue";
+
 import ReviewsLayout from "./ReviewsLayout.vue";
 import Avatar from "./ReviewsAvatar.vue";
 import Stars from "./ReviewsStars.vue";
@@ -25,6 +32,8 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
+    GraphsLayout,
+    KindnessGraph,
     ReviewsLayout,
     Avatar,
     Stars,
