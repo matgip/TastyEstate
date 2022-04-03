@@ -46,6 +46,12 @@ export default {
           },
         },
       },
+      dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+          return val + "%";
+        },
+      },
       plotOptions: {
         bar: {
           borderRadius: 4,

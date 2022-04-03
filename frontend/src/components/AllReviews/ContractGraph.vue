@@ -33,7 +33,7 @@ export default {
       title: {
         text: "계약률",
       },
-      colors: ["#FFD54F"],
+      colors: ["#81C784"],
       tooltip: {
         y: {
           formatter: (val) => {
@@ -44,6 +44,12 @@ export default {
               return seriesName.split(" ")[1];
             },
           },
+        },
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+          return val + "%";
         },
       },
       plotOptions: {
