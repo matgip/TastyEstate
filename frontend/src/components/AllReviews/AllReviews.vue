@@ -2,6 +2,8 @@
   <div class="wrapper">
     <GraphsLayout>
       <KindnessGraph slot="KindnessGraph" />
+      <PriceGraph slot="PriceGraph" />
+      <ContractGraph slot="ContractGraph" />
     </GraphsLayout>
 
     <ReviewsLayout v-for="(review, i) in reviews" :key="i">
@@ -19,6 +21,8 @@
 <script>
 import GraphsLayout from "./GraphsLayout.vue";
 import KindnessGraph from "./KindnessGraph.vue";
+import PriceGraph from "./PriceGraph.vue";
+import ContractGraph from "./ContractGraph.vue";
 
 import ReviewsLayout from "./ReviewsLayout.vue";
 import Avatar from "./ReviewsAvatar.vue";
@@ -34,6 +38,8 @@ export default {
   components: {
     GraphsLayout,
     KindnessGraph,
+    PriceGraph,
+    ContractGraph,
     ReviewsLayout,
     Avatar,
     Stars,

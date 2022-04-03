@@ -14,7 +14,7 @@ export default {
   data: () => ({
     series: [
       {
-        data: [60, 20, 5, 5, 5],
+        data: [20, 50, 10, 10, 10],
       },
     ],
     chartOptions: {
@@ -25,15 +25,15 @@ export default {
         },
       },
       xaxis: {
-        categories: ["매우 친절", "친절", "보통", "불친절", "매우 불친절"],
+        categories: ["10% 이상 비쌈", "5~10% 더 비쌈", "평균 가격", "5~10% 더 쌈", "10% 이상 쌈"],
         labels: {
           show: false,
         },
       },
       title: {
-        text: "친절함",
+        text: "가격",
       },
-      colors: ["#4DD0E1"],
+      colors: ["#BA68C8"],
       tooltip: {
         y: {
           formatter: (val) => {
@@ -56,5 +56,3 @@ export default {
   }),
 };
 </script>
-
-<style></style>

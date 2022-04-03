@@ -14,7 +14,7 @@ export default {
   data: () => ({
     series: [
       {
-        data: [60, 20, 5, 5, 5],
+        data: [70, 30],
       },
     ],
     chartOptions: {
@@ -25,15 +25,15 @@ export default {
         },
       },
       xaxis: {
-        categories: ["매우 친절", "친절", "보통", "불친절", "매우 불친절"],
+        categories: ["여기서 계약했어요", "여기서 계약 안했어요"],
         labels: {
           show: false,
         },
       },
       title: {
-        text: "친절함",
+        text: "계약률",
       },
-      colors: ["#4DD0E1"],
+      colors: ["#FFD54F"],
       tooltip: {
         y: {
           formatter: (val) => {
@@ -56,5 +56,3 @@ export default {
   }),
 };
 </script>
-
-<style></style>
