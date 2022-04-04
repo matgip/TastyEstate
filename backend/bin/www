@@ -8,7 +8,6 @@ var app = require("../app");
 var client = require("../infrastructure/config/redis/client");
 var debug = require("debug")("backend:server");
 var http = require("http");
-const { redis } = require("../utils/env");
 
 /**
  * Get port from environment and store in Express.
