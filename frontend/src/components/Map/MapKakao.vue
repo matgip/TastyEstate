@@ -1,7 +1,5 @@
 <template>
-  <div id="map_container">
     <div id="mapview"></div>
-  </div>
 </template>
 
 <script>
@@ -17,12 +15,8 @@ export default {
 </script>
 
 <style scoped>
-#map_container {
-  width: 100%;
-  height: 100%;
-}
 #mapview {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 64px);
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-footer class="wrapper divider"></v-footer>
+    <!-- <v-footer class="wrapper divider"></v-footer> -->
   </div>
 </template>
 
