@@ -9,19 +9,15 @@ module.exports = class extends EstateRepository {
 
   async persist(estateEntity) {
     const { id, placeName, phoneNumber } = estateEntity;
-    await client.connect();
     await client
       .multi()
       .HSET(`estates:${id}`, "place_name", placeName)
       .HSET(`estates:${id}`, "phone_number", phoneNumber)
       .exec();
-    await client.quit();
   }
 
   async get(estateId) {
-    await client.connect();
     const estate = await client.HGETALL(`estates:${estateId}`);
-    await client.quit();
     return estate;
   }
 

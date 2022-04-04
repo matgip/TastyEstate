@@ -13,23 +13,17 @@ module.exports = class extends LikeRepository {
     if (isExist === true) {
       return { result: sortedSet.toString(sortedSet.ALREADY_ADDED) };
     }
-    await client.connect();
     const result = await client.SADD(`likes:${estateId}`, `users:${usrId}`);
-    await client.quit();
     return { result: sortedSet.toString(result) };
   }
 
   async get(estateId) {
-    await client.connect();
     const likesCnt = await client.SCARD("likes:" + estateId);
-    await client.quit();
     return { likes: likesCnt };
   }
 
   async find(estateId, usrId) {
-    await client.connect();
     const result = await client.SISMEMBER(`likes:${estateId}`, `users:${usrId}`);
-    await client.quit();
     return result;
   }
 };
