@@ -18,8 +18,12 @@ const likesStore = {
   actions: {
     async getLikes({ commit }, id) {
       const resp = await this.$api.likes.get(id);
+      let likes = 0;
+      if (resp.data !== undefined || resp.data.likes !== undefined) {
+        likes = resp.data.likes;
+      }
       console.log({ message: "Get likes" });
-      commit(UPDATE_LIKES, resp.data.likes);
+      commit(UPDATE_LIKES, likes);
     },
     async updateLikes({ dispatch }, payLoad) {
       const resp = await this.$api.likes.put(payLoad.estateID, { user_id: payLoad.userID });
