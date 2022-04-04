@@ -6,7 +6,6 @@
       :items="estates"
       :loading="isLoading"
       :search-input.sync="search"
-      @click="clearSelected"
       @click:clear="clearSelected"
     >
       <template #selection="{ attr, on, item, selected }">
@@ -93,7 +92,9 @@ export default {
         .finally(() => (this.isLoading = false));
     },
     clearSelected() {
-      this.$store.commit("UPDATE_ESTATE", {});
+      this.$store.commit("CLEAR_ESTATE");
+      this.$store.commit("CLEAR_LIKES");
+      this.$store.commit("CLEAR_STARS");
     },
   },
 };

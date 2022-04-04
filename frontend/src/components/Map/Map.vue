@@ -18,13 +18,15 @@ export default {
     estate() {
       return this.$store.getters.GET_ESTATE;
     },
-    drawer() {
-      return Object.keys(this.estate).length !== 0;
-    },
   },
   components: {
     RealEstate,
     MapKakao,
+  },
+  methods: {
+    drawer() {
+      return Object.keys(this.estate).length !== 0;
+    },
   },
 };
 </script>

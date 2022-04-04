@@ -1,5 +1,6 @@
 const GET_LIKES = "GET_LIKES";
 const UPDATE_LIKES = "UPDATE_LIKES";
+const CLEAR_LIKES = "CLEAR_LIKES";
 
 const likesStore = {
   state: {
@@ -14,12 +15,15 @@ const likesStore = {
     [UPDATE_LIKES](state, likes) {
       state.likes = likes;
     },
+    [CLEAR_LIKES](state) {
+      state.likes = 0;
+    },
   },
   actions: {
     async getLikes({ commit }, id) {
       const resp = await this.$api.likes.get(id);
       let likes = 0;
-      if (resp.data !== undefined || resp.data.likes !== undefined) {
+      if (resp.data !== undefined && resp.data.likes !== undefined) {
         likes = resp.data.likes;
       }
       console.log({ message: "Get likes" });
@@ -34,7 +38,7 @@ const likesStore = {
       if (resp.data.result === "success") {
         alert("이 부동산을 좋아합니다.");
       }
-      dispatch("getLikes", payLoad.estateID);
+      await dispatch("getLikes", payLoad.estateID);
     },
   },
 };

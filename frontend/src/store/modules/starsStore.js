@@ -1,5 +1,6 @@
 const GET_STARS = "GET_STARS";
 const UPDATE_STARS = "UPDATE_STARS";
+const CLEAR_STARS = "CLEAR_STARS";
 
 const starsStore = {
   state: {
@@ -13,6 +14,9 @@ const starsStore = {
   mutations: {
     [UPDATE_STARS](state, stars) {
       state.stars = stars;
+    },
+    [CLEAR_STARS](state) {
+      state.stars = 0.0;
     },
   },
   actions: {

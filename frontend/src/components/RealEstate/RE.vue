@@ -29,10 +29,6 @@ export default {
   mounted() {
     this.$store.subscribe(async (mutation) => {
       if (mutation.type == "UPDATE_ESTATE") {
-        if (this.estate.id === undefined) {
-          //  When selected estate is cleared
-          return;
-        }
         await this.$store.dispatch("getLikes", this.estate.id);
         await this.$store.dispatch("getStars", this.estate.id);
       }

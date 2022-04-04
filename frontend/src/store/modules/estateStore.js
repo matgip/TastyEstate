@@ -1,5 +1,6 @@
 const GET_ESTATE = "GET_ESTATE";
 const UPDATE_ESTATE = "UPDATE_ESTATE";
+const CLEAR_ESTATE = "CLEAR_ESTATE";
 
 const estateStore = {
   state: {
@@ -13,6 +14,9 @@ const estateStore = {
   mutations: {
     [UPDATE_ESTATE](state, estate) {
       state.estate = estate;
+    },
+    [CLEAR_ESTATE](state) {
+      state.estate = {};
     },
   },
   actions: {
