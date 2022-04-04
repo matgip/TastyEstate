@@ -1,7 +1,12 @@
+<!-- @format -->
+
 <template>
-  <v-app-bar app rounded elevate-on-scroll class="wrapper">
+  <v-app-bar app rounded elevate-on-scroll>
     <div id="title" @click="gotoHome">Tasty estate</div>
 
+    <v-spacer />
+
+    <MapSearch />
     <v-spacer />
 
     <AppbarBtn v-if="user.id == undefined" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
@@ -11,10 +16,12 @@
 </template>
 
 <script>
+import MapSearch from "./Map/MapSearch.vue";
 import AppbarBtn from "./TheAppbarBtn.vue";
 
 export default {
   components: {
+    MapSearch,
     AppbarBtn,
   },
   mounted() {

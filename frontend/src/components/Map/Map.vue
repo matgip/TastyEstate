@@ -1,31 +1,32 @@
-<template>
-  <div id="mapcontainer" class="wrapper">
-    <div class="space" />
+<!-- @format -->
 
-    <MapSearch />
-    <RealEstate />
+<template>
+  <div>
     <MapKakao />
+    <v-navigation-drawer bottom absolute v-model="drawer">
+      <RealEstate />
+    </v-navigation-drawer>
   </div>
 </template>
 
 <script>
-import MapSearch from "./MapSearch.vue";
 import RealEstate from "../RealEstate/RE.vue";
 import MapKakao from "./MapKakao.vue";
 
 export default {
+  computed: {
+    estate() {
+      return this.$store.getters.GET_ESTATE;
+    },
+    drawer() {
+      return Object.keys(this.estate).length !== 0;
+    },
+  },
   components: {
-    MapSearch,
     RealEstate,
     MapKakao,
   },
 };
 </script>
 
-<style scoped>
-#mapcontainer {
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 64px);
-}
-</style>
+<style scoped></style>
