@@ -20,7 +20,7 @@ const starsStore = {
       let stars = 0.0;
       const totRatings = await this.$api.reviewRatings.get(id);
       const totUserCnt = await this.$api.reviewCount.get(id);
-      if (totUserCnt.data !== undefined && totUserCnt.data !== 0) {
+      if (totUserCnt.data !== undefined && totRatings.data !== undefined && totUserCnt.data !== 0) {
         stars = totRatings.data / totUserCnt.data;
       }
       commit("UPDATE_STARS", stars);
