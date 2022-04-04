@@ -8,6 +8,15 @@
 import BaseChkBox from "@/common/BaseChkBox.vue";
 
 export default {
+  components: {
+    BaseChkBox,
+  },
+  props: {
+    propKindness: {
+      type: String,
+      required: true,
+    },
+  },
   data: () => ({
     title: "😀 사장님이 친절하셨나요?",
     items: [
@@ -19,14 +28,5 @@ export default {
     ],
     updateCmd: "UPDATE_KINDNESS",
   }),
-  props: {
-    propKindness: {
-      type: String,
-      required: true,
-    },
-  },
-  components: {
-    BaseChkBox,
-  },
 };
 </script>

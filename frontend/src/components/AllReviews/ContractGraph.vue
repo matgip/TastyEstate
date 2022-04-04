@@ -1,64 +1,21 @@
 <template>
   <div>
-    <apexchart type="bar" height="200" width="300" :options="chartOptions" :series="series" />
+    <BaseBarGraph :data="data" :categories="categories" :title="title" :colors="colors" />
   </div>
 </template>
 
 <script>
-import VueApexCharts from "vue-apexcharts";
+import BaseBarGraph from "@/common/BaseBarGraph.vue";
 
 export default {
   components: {
-    apexchart: VueApexCharts,
+    BaseBarGraph,
   },
   data: () => ({
-    series: [
-      {
-        data: [70, 30],
-      },
-    ],
-    chartOptions: {
-      chart: {
-        type: "bar",
-        toolbar: {
-          show: false,
-        },
-      },
-      xaxis: {
-        categories: ["여기서 계약했어요", "여기서 계약 안했어요"],
-        labels: {
-          show: false,
-        },
-      },
-      title: {
-        text: "계약률",
-      },
-      colors: ["#81C784"],
-      tooltip: {
-        y: {
-          formatter: (val) => {
-            return val + "%";
-          },
-          title: {
-            formatter: (seriesName) => {
-              return seriesName.split(" ")[1];
-            },
-          },
-        },
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function(val) {
-          return val + "%";
-        },
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 4,
-          horizontal: true,
-        },
-      },
-    },
+    data: [70, 30],
+    categories: ["여기서 계약했어요", "여기서 계약 안했어요"],
+    title: "계약률",
+    colors: ["#81C784"],
   }),
 };
 </script>

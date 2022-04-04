@@ -22,14 +22,6 @@
 
 <script>
 export default {
-  data: () => ({
-    listItemProps: {
-      class: "d-inline-flex",
-    },
-    defaultBoxProps: {
-      color: "deep-orange",
-    },
-  }),
   props: {
     title: {
       type: String,
@@ -65,5 +57,13 @@ export default {
       },
     },
   },
+  data: () => ({
+    listItemProps: {
+      class: "d-inline-flex",
+    },
+    defaultBoxProps: {
+      color: "deep-orange",
+    },
+  }),
 };
 </script>

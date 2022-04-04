@@ -25,12 +25,6 @@ import DiagBtns from "./ReviewBtns.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  data: () => ({
-    rating: 0.0,
-    title: "",
-    text: "",
-  }),
-  props: ["placeName"],
   components: {
     ReviewLayout,
     RealEstateName,
@@ -50,6 +44,12 @@ export default {
       contract: "GET_CONTRACT",
     }),
   },
+  props: ["placeName"],
+  data: () => ({
+    rating: 0.0,
+    title: "",
+    text: "",
+  }),
   methods: {
     async onSubmitReview() {
       const resp = await this.$api.review.get(this.estate.id, this.user.id);
