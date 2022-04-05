@@ -4,19 +4,21 @@ class MapKakao {
   SCANNED = 1;
   MIN_MAP_LEVEL = 5;
 
-  // defaults
+  // Defaults
   options;
   container;
-  // map control
+  // Map control
   mapCtrl;
   zoomCtrl;
   placeSrch;
   markerClstr;
   infoWindow;
-  // marker img
+  // Marker img
   imgSelected;
   imgMarker;
   imgSize;
+  // Selected marker
+  selectedMarker;
 
   constructor(lat, lng) {
     this.options = {
@@ -69,7 +71,10 @@ class MapKakao {
         const e = store.getters.GET_ESTATE;
         if (Object.keys(e).length === 0) return;
         this.moveTo(e);
-        this.addMarker(e, this.imgSelected);
+        this.addMarker({ place: e, image: this.imgSelected, isSelected: true });
+      }
+      if (mutation.type == "CLEAR_ESTATE") {
+        this.markerClstr.removeMarker(this.selectedMarker);
       }
     });
   }
@@ -102,7 +107,7 @@ class MapKakao {
     if (status === kakao.maps.services.Status.OK) {
       for (let p of places) {
         this.setPlace(p);
-        this.addMarker(p, this.imgMarker);
+        this.addMarker({ place: p, image: this.imgMarker, isSelected: false });
       }
     }
     if (pagination.hasNextPage) pagination.nextPage();
@@ -122,11 +127,15 @@ class MapKakao {
     cl.setMap(window.map);
   }
 
-  addMarker(place, img) {
+  addMarker(markerInfo) {
+    const { place, image, isSelected } = markerInfo;
     const m = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(place.y, place.x),
-      image: new kakao.maps.MarkerImage(img, this.imgSize),
+      image: new kakao.maps.MarkerImage(image, this.imgSize),
     });
+    if (isSelected === true) {
+      this.selectedMarker = m;
+    }
     this.markerClstr.addMarker(m);
     kakao.maps.event.addListener(m, "click", () => {
       this.infoWindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>");
