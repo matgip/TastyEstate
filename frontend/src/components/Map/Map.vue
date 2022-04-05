@@ -13,11 +13,13 @@
 import RealEstate from "../RealEstate/RE.vue";
 import MapKakao from "./MapKakao.vue";
 
+import { mapGetters } from "vuex";
+
 export default {
   computed: {
-    estate() {
-      return this.$store.getters.GET_ESTATE;
-    },
+    ...mapGetters({
+      estate: "GET_ESTATE",
+    }),
     drawer() {
       return Object.keys(this.estate).length !== 0;
     },

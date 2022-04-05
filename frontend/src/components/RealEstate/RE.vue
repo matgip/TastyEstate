@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import RELayout from "./RELayout.vue";
 import REImgs from "./REImgs.vue";
 import REImgUpload from "./REImgUpload.vue";
@@ -24,6 +23,8 @@ import RELikes from "./RELikes.vue";
 import REReview from "../Review/Review.vue";
 import REAllReviews from "./REAllReviews.vue";
 import REInfos from "./REInfos.vue";
+
+import { mapGetters } from "vuex";
 
 export default {
   mounted() {
