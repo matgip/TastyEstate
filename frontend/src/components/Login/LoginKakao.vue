@@ -19,9 +19,11 @@ export default {
       try {
         const user = await this.getUser();
         await this.$store.dispatch("updateUser", user);
+        console.log("Success to login");
         this.$router.push({ path: "/" });
       } catch (err) {
         console.error(err);
+        console.log("Try to login to kakao...");
         if (err.code === -401) {
           // Unauthorized
           await this.doLogin();

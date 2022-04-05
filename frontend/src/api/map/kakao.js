@@ -4,7 +4,6 @@ class MapKakao {
   SCANNED = 1;
   MIN_MAP_LEVEL = 5;
 
-  // Defaults
   options;
   container;
   // Map control
@@ -25,9 +24,7 @@ class MapKakao {
       center: new kakao.maps.LatLng(lat, lng),
       level: this.MIN_MAP_LEVEL,
     };
-    // switch between normal and skyview
     this.mapCtrl = new kakao.maps.MapTypeControl();
-    // zoom in and out
     this.zoomCtrl = new kakao.maps.ZoomControl();
     // display infos when marker clicked
     this.infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });

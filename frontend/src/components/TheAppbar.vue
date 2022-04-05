@@ -19,37 +19,32 @@
 import MapSearch from "./Map/MapSearch.vue";
 import AppbarBtn from "./TheAppbarBtn.vue";
 
+import { mapGetters } from "vuex";
+
 export default {
   components: {
     MapSearch,
     AppbarBtn,
   },
-  mounted() {
-    if (this.isloggedIn() == false) {
-      this.gotoLogin();
-    }
-  },
   computed: {
-    user() {
-      return this.$store.getters.GET_USER;
-    },
+    ...mapGetters({
+      user: "GET_USER",
+    }),
+    // user() {
+    //   return this.$store.getters.GET_USER;
+    // },
   },
   methods: {
     gotoLogin() {
       this.$router.push({ path: "/login" });
     },
     gotoHome() {
-      if (this.isloggedIn() == false) {
-        alert("로그인 후, 사용 가능합니다.");
-        return;
-      }
       this.$router.push({ path: "/" });
     },
     async onLogout() {
       if (this.isloggedIn() == false) {
         return;
       }
-
       try {
         await this.logoutKakao();
         this.$store.commit("UPDATE_USER", {});

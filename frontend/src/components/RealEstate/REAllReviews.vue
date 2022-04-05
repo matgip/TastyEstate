@@ -8,6 +8,11 @@
 
 <script>
 export default {
+  computed: {
+    user() {
+      return this.$store.getters.GET_USER;
+    },
+  },
   data: () => ({
     btnProps: {
       color: "orange accent-3",
@@ -17,7 +22,18 @@ export default {
   }),
   methods: {
     gotoAllReviews() {
+      if (this.isloggedIn() === false) {
+        alert("로그인 후, 사용 가능합니다.");
+        this.gotoLogin();
+        return;
+      }
       this.$router.push({ path: "/reviews" });
+    },
+    gotoLogin() {
+      this.$router.push({ path: "/login" });
+    },
+    isloggedIn() {
+      return this.user.id != undefined;
     },
   },
 };
