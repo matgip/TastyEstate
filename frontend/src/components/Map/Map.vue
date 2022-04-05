@@ -3,7 +3,7 @@
 <template>
   <div>
     <MapKakao />
-    <v-navigation-drawer bottom absolute v-model="drawer">
+    <v-navigation-drawer bottom absolute :value="drawer">
       <RealEstate />
     </v-navigation-drawer>
   </div>
@@ -28,5 +28,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>
