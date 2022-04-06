@@ -14,7 +14,7 @@
       <Content slot="Content" :text="review.text" />
     </ReviewsLayout>
 
-    <Pagenation :totalCount="totalCount" />
+    <Pagenation :page="page" :totalCount="totalCount" />
   </div>
 </template>
 
@@ -49,6 +49,7 @@ export default {
     Pagenation,
   },
   mounted() {
+    this.page = 1;
     const queryRange = "0-6";
     this.getReviews(queryRange);
   },
@@ -63,6 +64,10 @@ export default {
       return this.reviews.length;
     },
   },
+  data: () => ({
+    page: 0,
+    reviewObjs: [],
+  }),
   methods: {
     async getReviews(queryRange) {
       try {
@@ -79,8 +84,5 @@ export default {
       }
     },
   },
-  data: () => ({
-    reviewObjs: [],
-  }),
 };
 </script>

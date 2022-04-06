@@ -7,6 +7,13 @@
 <script>
 export default {
   props: {
+    page: {
+      type: Number,
+      required: true,
+      validator: function(value) {
+        return value >= 0;
+      },
+    },
     totalCount: {
       type: Number,
       required: true,
@@ -16,7 +23,6 @@ export default {
     },
   },
   data: () => ({
-    page: 1,
     paginationProps: {
       color: "deep-orange",
       circle: true,
