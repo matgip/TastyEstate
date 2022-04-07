@@ -55,7 +55,7 @@ export default {
       const resp = await this.$api.review.get(this.estate.id, this.user.id);
       if (resp && resp.status === 204) {
         const current = new Date();
-
+        // Fix-me: Depeding on kakao profile, needed to decouple
         await this.$api.review.post(this.estate.id, {
           userId: this.user.id,
           avatar: this.user.kakao_account.profile.profile_image_url,
