@@ -9,6 +9,9 @@
 import BaseButton from "@/common/BaseButton.vue";
 
 export default {
+  components: {
+    BaseButton,
+  },
   data: () => ({
     btnProps: {
       class: "ma-2",
@@ -25,9 +28,6 @@ export default {
     submit() {
       this.$emit("submitReview");
     },
-  },
-  components: {
-    BaseButton,
   },
 };
 </script>

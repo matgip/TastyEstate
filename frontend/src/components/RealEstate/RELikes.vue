@@ -1,16 +1,16 @@
 <template>
   <div>
-    <v-btn v-bind="btnProps" @click="emitEvent">
-      <v-icon v-bind="iconProps">
-        {{ likesIcon }}
-      </v-icon>
-      좋아요({{ likes }})
-    </v-btn>
+    <BaseButton :btnProps="btnProps" :method="emitEvent" :icon="likesIcon" :iconProps="iconProps" :button="'좋아요'" />
   </div>
 </template>
 
 <script>
+import BaseButton from "@/common/BaseButton.vue";
+
 export default {
+  components: {
+    BaseButton,
+  },
   props: {
     likes: {
       type: Number,
