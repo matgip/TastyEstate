@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
     <GraphsLayout>
-      <KindnessGraph :key="kindness.count" :data="kindness.stats" slot="KindnessGraph" />
-      <PriceGraph :key="price.count" :data="price.stats" slot="PriceGraph" />
-      <ContractGraph :key="contract.count" :data="contract.stats" slot="ContractGraph" />
+      <PriceGraph :key="stats[0].count" :data="stats[0].data" slot="PriceGraph" />
+      <KindnessGraph :key="stats[1].count" :data="stats[1].data" slot="KindnessGraph" />
+      <ContractGraph :key="stats[2].count" :data="stats[2].data" slot="ContractGraph" />
     </GraphsLayout>
 
     <ReviewsLayout v-for="(review, i) in reviews" :key="i">
@@ -66,20 +66,26 @@ export default {
   },
   data: () => ({
     page: 0,
-    price: {
-      count: 0,
-      stats: [0, 0, 0, 0, 0],
-      fields: ["veryCheap", "cheap", "avgPrice", "expensive", "veryExpensive"],
-    },
-    kindness: {
-      count: 0,
-      stats: [0, 0, 0, 0, 0],
-      fields: ["veryKind", "kind", "soso", "unKind", "veryUnkind"],
-    },
-    contract: {
-      count: 0,
-      stats: [0, 0],
-    },
+    stats: [
+      {
+        name: "price",
+        count: 0,
+        data: [0, 0, 0, 0, 0],
+        fields: ["veryCheap", "cheap", "avgPrice", "expensive", "veryExpensive"],
+      },
+      {
+        name: "kindness",
+        count: 0,
+        data: [0, 0, 0, 0, 0],
+        fields: ["veryKind", "kind", "soso", "unKind", "veryUnkind"],
+      },
+      {
+        name: "contract",
+        count: 0,
+        data: [0, 0],
+        fields: [true, false],
+      },
+    ],
     reviewObjs: [],
   }),
   methods: {
@@ -90,65 +96,41 @@ export default {
           this.gotoHome();
           return;
         }
-        const reviewedUsers = await this.$api.reviewLikesOrder.get(this.estate.id, queryRange);
-        for (let i = 0; i < reviewedUsers.data.length; i++) {
-          const user = reviewedUsers.data[i].value;
-          const review = await this.$api.review.get(this.estate.id, user.split(":")[1]);
-          this.reviewObjs.push(review.data);
-          this.reviewObjs[i].rating = parseFloat(this.reviewObjs[i].rating);
-          this.reviewObjs[i].likes = reviewedUsers.data[i].score;
-          this.calcStats(this.reviewObjs[i]);
+        const resp = await this.$api.reviewLikesOrder.get(this.estate.id, queryRange);
+        for (let r of resp.data) {
+          const userId = r.value.split(":")[1];
+          const likes = r.score;
+          const review = await this.$api.review.get(this.estate.id, userId);
+          this.reviewObjs.push(this.preProcessReview(review.data, likes));
+          this.calcStats(this.reviewObjs[resp.data.indexOf(r)]);
         }
       } catch (err) {
         console.error(err);
       }
     },
+    preProcessReview(review, likes) {
+      review.likes = likes;
+      review.contract = Boolean(review.contract);
+      review.rating = parseFloat(review.rating);
+      return review;
+    },
     calcStats(review) {
-      if (review.price) {
-        this.calPriceStats(review.price);
-      }
-      if (review.contract) {
-        this.calContractStats(review.contract);
-      }
-      if (review.kindness) {
-        this.calKindnessStats(review.kindness);
-      }
-      this.calPercentage();
-    },
-    calPercentage() {
-      if (this.price.count > 0) {
-        this.toPercentage(this.price);
-      }
-      if (this.kindness.count > 0) {
-        this.toPercentage(this.kindness);
-      }
-      if (this.contract.count > 0) {
-        this.toPercentage(this.contract);
+      for (let stat of this.stats) {
+        this.calcStatData(review[stat.name], stat);
+        this.toPercentage(stat);
       }
     },
-    calPriceStats(price) {
-      this.price.count += 1;
-      for (let i = 0; i < this.price.fields.length; i++) {
-        if (price === this.price.fields[i]) this.price.stats[i]++;
+    calcStatData(dataFromDb, stat) {
+      if (!dataFromDb) return;
+      stat.count += 1;
+      for (let field of stat.fields) {
+        if (dataFromDb === field) stat.data[stat.fields.indexOf(field)]++;
       }
     },
-    calContractStats(contract) {
-      this.contract.count += 1;
-      if (contract === true) {
-        this.contract.stats[0]++;
-      } else {
-        this.contract.stats[1]++;
-      }
-    },
-    calKindnessStats(kindness) {
-      this.kindness.count += 1;
-      for (let i = 0; i < this.kindness.fields.length; i++) {
-        if (kindness === this.kindness.fields[i]) this.kindness.stats[i]++;
-      }
-    },
-    toPercentage(data) {
-      for (let i = 0; i < data.stats.length; i++) {
-        data.stats[i] = (data.stats[i] / data.count) * 100;
+    toPercentage(stat) {
+      if (stat.count === 0) return;
+      for (let i = 0; i < stat.data.length; i++) {
+        stat.data[i] = (stat.data[i] / stat.count) * 100;
       }
     },
     gotoHome() {
