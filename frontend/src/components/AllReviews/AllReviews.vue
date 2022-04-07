@@ -50,8 +50,8 @@ export default {
   },
   async mounted() {
     this.page = 1;
-    const pageRange = "0~-1";
-    await this.constructReviews(pageRange);
+    const allRange = "0~-1";
+    await this.constructReviews(allRange);
   },
   computed: {
     ...mapGetters({
@@ -116,11 +116,11 @@ export default {
     },
     calcStats(review) {
       for (let stat of this.stats) {
-        this.calcStatData(review[stat.name], stat);
+        this.calcStatData(stat, review[stat.name]);
         this.toPercentage(stat);
       }
     },
-    calcStatData(dataFromDb, stat) {
+    calcStatData(stat, dataFromDb) {
       if (!dataFromDb) return;
       stat.count += 1;
       for (let field of stat.fields) {
