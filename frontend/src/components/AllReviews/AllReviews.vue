@@ -7,7 +7,7 @@
     </GraphsLayout>
 
     <ReviewsLayout v-for="(review, i) in reviews" :key="i">
-      <Avatar slot="Avatar" :avatar="review.avatar" />
+      <UserProfile slot="UserProfile" :avatar="review.avatar" :nickName="review.nickname" />
       <Stars slot="Rating" :rating="review.rating" />
       <Likes slot="Likes" :likes="review.likes" />
       <Title slot="Title" :title="review.title" />
@@ -25,7 +25,7 @@ import PriceGraph from "./PriceGraph.vue";
 import ContractGraph from "./ContractGraph.vue";
 
 import ReviewsLayout from "./ReviewsLayout.vue";
-import Avatar from "./ReviewsAvatar.vue";
+import UserProfile from "./ReviewsUserProfile.vue";
 import Stars from "./ReviewsStars.vue";
 import Likes from "./ReviewsLikes.vue";
 import Title from "./ReviewsTitle.vue";
@@ -41,7 +41,7 @@ export default {
     PriceGraph,
     ContractGraph,
     ReviewsLayout,
-    Avatar,
+    UserProfile,
     Stars,
     Likes,
     Title,

@@ -7,11 +7,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   computed: {
-    user() {
-      return this.$store.getters.GET_USER;
-    },
+    ...mapGetters({
+      user: "GET_USER",
+    }),
   },
   data: () => ({
     btnProps: {

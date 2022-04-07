@@ -4,7 +4,7 @@
       <v-divider />
 
       <v-card-text>
-        <slot name="Avatar" />
+        <slot name="UserProfile" />
       </v-card-text>
 
       <v-card-text>

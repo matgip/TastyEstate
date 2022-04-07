@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" v-bind="dialogProps">
       <template #activator="{ on }">
-        <v-btn v-bind="btnProps" v-on="on">
+        <v-btn v-bind="btnProps" v-on="on" @click="onClicked">
           <v-icon v-bind="iconProps">
             {{ icon }}
           </v-icon>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   mounted() {
     this.$store.subscribe((mutation) => {
@@ -53,6 +55,11 @@ export default {
         this.dialog = this.$store.getters.GET_DIALOG;
       }
     });
+  },
+  computed: {
+    ...mapGetters({
+      user: "GET_USER",
+    }),
   },
   data: () => ({
     dialog: false,
@@ -75,5 +82,20 @@ export default {
       "x-small": true,
     },
   }),
+  methods: {
+    onClicked() {
+      if (this.isloggedIn() === false) {
+        alert("로그인 후, 사용 가능합니다.");
+        this.gotoLogin();
+        return;
+      }
+    },
+    gotoLogin() {
+      this.$router.push({ path: "/login" });
+    },
+    isloggedIn() {
+      return this.user.id != undefined;
+    },
+  },
 };
 </script>

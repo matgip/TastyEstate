@@ -57,6 +57,7 @@ export default {
         // No contents
         await this.$api.review.post(this.estate.id, {
           userId: this.user.id,
+          nickname: this.user.kakao_account.profile.nickname,
           rating: this.rating,
           kindness: this.kindness,
           price: this.price,
