@@ -18,7 +18,7 @@ module.exports = class extends ReviewLikeOrderRepository {
   }
 
   async get(estateId, query) {
-    const range = query.range.split("-");
+    const range = query.range.split("~");
     const reviewedUsers = await client.ZRANGE_WITHSCORES(
       `reviews:${estateId}:likes`,
       range[0],

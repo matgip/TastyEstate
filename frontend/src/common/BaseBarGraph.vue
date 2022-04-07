@@ -13,21 +13,14 @@ export default {
   },
   props: {
     data: {
-      default: () => {
-        return [];
-      },
       type: Array,
       required: true,
     },
     categories: {
-      default: () => {
-        return [];
-      },
       type: Array,
       required: true,
     },
     title: {
-      default: "",
       type: String,
       required: true,
     },

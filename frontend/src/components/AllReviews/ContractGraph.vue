@@ -11,11 +11,18 @@ export default {
   components: {
     BaseBarGraph,
   },
-  data: () => ({
-    data: [70, 30],
-    categories: ["여기서 계약했어요", "여기서 계약 안했어요"],
-    title: "계약률",
-    colors: ["#81C784"],
-  }),
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      categories: ["여기서 계약했어요", "여기서 계약 안했어요"],
+      title: "계약률",
+      colors: ["#81C784"],
+    };
+  },
 };
 </script>

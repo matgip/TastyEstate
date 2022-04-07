@@ -11,11 +11,18 @@ export default {
   components: {
     BaseBarGraph,
   },
-  data: () => ({
-    data: [20, 50, 10, 10, 10],
-    categories: ["10% 이상 비쌈", "5~10% 더 비쌈", "평균 가격", "5~10% 더 쌈", "10% 이상 쌈"],
-    title: "가격",
-    colors: ["#BA68C8"],
-  }),
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      categories: ["10% 이상 쌈", "5~10% 더 쌈", "평균 가격", "5~10% 더 비쌈", "10% 이상 비쌈"],
+      title: "가격",
+      colors: ["#BA68C8"],
+    };
+  },
 };
 </script>

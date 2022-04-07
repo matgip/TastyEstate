@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
     <GraphsLayout>
-      <KindnessGraph slot="KindnessGraph" />
-      <PriceGraph slot="PriceGraph" />
-      <ContractGraph slot="ContractGraph" />
+      <KindnessGraph :key="kindness.count" :data="kindness.stats" slot="KindnessGraph" />
+      <PriceGraph :key="price.count" :data="price.stats" slot="PriceGraph" />
+      <ContractGraph :key="contract.count" :data="contract.stats" slot="ContractGraph" />
     </GraphsLayout>
 
     <ReviewsLayout v-for="(review, i) in reviews" :key="i">
@@ -48,10 +48,10 @@ export default {
     Content,
     Pagenation,
   },
-  mounted() {
+  async mounted() {
     this.page = 1;
-    const queryRange = "0-6";
-    this.getReviews(queryRange);
+    const pageRange = "0~-1";
+    await this.constructReviews(pageRange);
   },
   computed: {
     ...mapGetters({
@@ -65,12 +65,32 @@ export default {
     },
   },
   data: () => ({
+    kindnessKey: 0,
     page: 0,
+    price: {
+      count: 0,
+      stats: [0, 0, 0, 0, 0],
+      fields: ["veryCheap", "cheap", "avgPrice", "expensive", "veryExpensive"],
+    },
+    kindness: {
+      count: 0,
+      stats: [0, 0, 0, 0, 0],
+      fields: ["veryKind", "kind", "soso", "unKind", "veryUnkind"],
+    },
+    contract: {
+      count: 0,
+      stats: [0, 0],
+    },
     reviewObjs: [],
   }),
   methods: {
-    async getReviews(queryRange) {
+    async constructReviews(queryRange) {
       try {
+        if (this.estate === undefined || this.estate.id === undefined) {
+          // When page is refreshed...
+          this.gotoHome();
+          return;
+        }
         const reviewedUsers = await this.$api.reviewLikesOrder.get(this.estate.id, queryRange);
         for (let i = 0; i < reviewedUsers.data.length; i++) {
           const user = reviewedUsers.data[i].value;
@@ -78,10 +98,62 @@ export default {
           this.reviewObjs.push(review.data);
           this.reviewObjs[i].rating = parseFloat(this.reviewObjs[i].rating);
           this.reviewObjs[i].likes = reviewedUsers.data[i].score;
+          this.calcStats(this.reviewObjs[i]);
         }
       } catch (err) {
         console.error(err);
       }
+    },
+    calcStats(review) {
+      if (review.price) {
+        this.calPriceStats(review.price);
+      }
+      if (review.contract) {
+        this.calContractStats(review.contract);
+      }
+      if (review.kindness) {
+        this.calKindnessStats(review.kindness);
+      }
+      this.calPercentage();
+    },
+    calPercentage() {
+      if (this.price.count > 0) {
+        this.toPercentage(this.price);
+      }
+      if (this.kindness.count > 0) {
+        this.toPercentage(this.kindness);
+      }
+      if (this.contract.count > 0) {
+        this.toPercentage(this.contract);
+      }
+    },
+    calPriceStats(price) {
+      this.price.count += 1;
+      for (let i = 0; i < this.price.fields.length; i++) {
+        if (price === this.price.fields[i]) this.price.stats[i]++;
+      }
+    },
+    calContractStats(contract) {
+      this.contract.count += 1;
+      if (contract === true) {
+        this.contract.stats[0]++;
+      } else {
+        this.contract.stats[1]++;
+      }
+    },
+    calKindnessStats(kindness) {
+      this.kindness.count += 1;
+      for (let i = 0; i < this.kindness.fields.length; i++) {
+        if (kindness === this.kindness.fields[i]) this.kindness.stats[i]++;
+      }
+    },
+    toPercentage(data) {
+      for (let i = 0; i < data.stats.length; i++) {
+        data.stats[i] = (data.stats[i] / data.count) * 100;
+      }
+    },
+    gotoHome() {
+      this.$router.push({ path: "/" });
     },
   },
 };

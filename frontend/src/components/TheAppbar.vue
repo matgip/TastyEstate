@@ -30,9 +30,6 @@ export default {
     ...mapGetters({
       user: "GET_USER",
     }),
-    // user() {
-    //   return this.$store.getters.GET_USER;
-    // },
   },
   methods: {
     gotoLogin() {
