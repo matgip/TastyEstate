@@ -54,10 +54,12 @@ export default {
     async onSubmitReview() {
       const resp = await this.$api.review.get(this.estate.id, this.user.id);
       if (resp && resp.status === 204) {
-        // No contents
+        const current = new Date();
+
         await this.$api.review.post(this.estate.id, {
           userId: this.user.id,
           nickname: this.user.kakao_account.profile.nickname,
+          time: current.toLocaleDateString(),
           rating: this.rating,
           kindness: this.kindness,
           price: this.price,

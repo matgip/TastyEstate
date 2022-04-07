@@ -7,7 +7,7 @@
     </GraphsLayout>
 
     <ReviewsLayout v-for="(review, i) in reviews" :key="i">
-      <UserProfile slot="UserProfile" :avatar="review.avatar" :nickName="review.nickname" />
+      <UserProfile slot="UserProfile" :avatar="review.avatar" :nickName="review.nickname" :timeStamp="review.time" />
       <Stars slot="Rating" :rating="review.rating" />
       <Likes slot="Likes" :likes="review.likes" />
       <Title slot="Title" :title="review.title" />

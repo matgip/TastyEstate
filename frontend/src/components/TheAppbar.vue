@@ -76,7 +76,7 @@ export default {
   color: #ff5722;
   cursor: pointer;
   font-style: oblique;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 500;
 }
 </style>

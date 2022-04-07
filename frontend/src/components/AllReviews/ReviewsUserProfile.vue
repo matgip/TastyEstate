@@ -5,6 +5,7 @@
       <v-icon v-else v-text="avatarIcon" />
     </v-avatar>
     {{ nickName }}
+    <span id="time">{{ timeStamp }}</span>
   </div>
 </template>
 
@@ -21,6 +22,13 @@ export default {
         return value !== null;
       },
     },
+    timeStamp: {
+      type: String,
+      required: true,
+      validator: function(value) {
+        return value !== null;
+      },
+    },
   },
   data: () => ({
     avatarProps: {
@@ -30,3 +38,9 @@ export default {
   }),
 };
 </script>
+
+<style scoped>
+#time {
+  font-size: 8px;
+}
+</style>
