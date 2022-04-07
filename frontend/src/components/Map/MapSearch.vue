@@ -66,9 +66,15 @@ export default {
     },
   }),
   watch: {
-    select(estate) {
+    async select(estate) {
       if (!estate) return;
-      this.$store.dispatch("updateRealEstate", estate);
+      try {
+        await this.$store.dispatch("updateRealEstate", estate);
+        await this.$store.dispatch("getLikes", estate.id);
+        await this.$store.dispatch("getStars", estate.id);
+      } catch (err) {
+        console.error(err);
+      }
     },
     search(keyword) {
       if (!keyword || keyword === this.select) return;

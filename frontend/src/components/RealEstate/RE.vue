@@ -27,14 +27,6 @@ import REInfos from "./REInfos.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  mounted() {
-    this.$store.subscribe(async (mutation) => {
-      if (mutation.type == "UPDATE_ESTATE") {
-        await this.$store.dispatch("getLikes", this.estate.id);
-        await this.$store.dispatch("getStars", this.estate.id);
-      }
-    });
-  },
   components: {
     RELayout,
     REImgs,
