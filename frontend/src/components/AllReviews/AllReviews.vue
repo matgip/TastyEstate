@@ -65,7 +65,6 @@ export default {
     },
   },
   data: () => ({
-    kindnessKey: 0,
     page: 0,
     price: {
       count: 0,

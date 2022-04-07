@@ -15,9 +15,9 @@ export default {
   },
   data: () => ({
     btnProps: {
-      color: "orange accent-3",
+      color: "blue darken-4",
       text: true,
-      "x-small": true,
+      small: true,
     },
   }),
   methods: {
