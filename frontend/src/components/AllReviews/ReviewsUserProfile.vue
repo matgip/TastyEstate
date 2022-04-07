@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-avatar v-bind="avatarProps">
-      <img v-if="avatar" alt="Avatar" src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" />
+      <img v-if="avatarURL" :src="avatarURL" />
       <v-icon v-else v-text="avatarIcon" />
     </v-avatar>
     {{ nickName }}
@@ -12,7 +12,7 @@
 <script>
 export default {
   props: {
-    avatar: {
+    avatarURL: {
       type: String,
     },
     nickName: {

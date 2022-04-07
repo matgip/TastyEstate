@@ -58,6 +58,7 @@ export default {
 
         await this.$api.review.post(this.estate.id, {
           userId: this.user.id,
+          avatar: this.user.kakao_account.profile.profile_image_url,
           nickname: this.user.kakao_account.profile.nickname,
           time: current.toLocaleDateString(),
           rating: this.rating,
