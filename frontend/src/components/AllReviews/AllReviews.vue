@@ -59,7 +59,7 @@ export default {
     await this.constructReviews(allRange);
     this.$store.subscribe((mutation) => {
       if (mutation.type === "UPDATE_ESTATE") {
-        this.clear();
+        this.clear(); // Must clear the data to update view
         this.constructReviews(allRange);
       }
     });
@@ -69,7 +69,7 @@ export default {
       estate: "GET_ESTATE",
     }),
     reviews() {
-      return this.order === "like" ? this.rvwOrderByLikes : this.rvwOrderByTimes;
+      return this.order === "like" ? this.orderByLikes : this.orderByTimes;
     },
     totalCount() {
       return this.reviews.length;
@@ -98,8 +98,8 @@ export default {
         fields: [true, false],
       },
     ],
-    rvwOrderByLikes: [],
-    rvwOrderByTimes: [],
+    orderByLikes: [],
+    orderByTimes: [],
   }),
   methods: {
     async constructReviews(queryRange) {
@@ -117,13 +117,13 @@ export default {
           const likes = d.score;
           userLike.set(`user:${userId}`, likes);
           const review = await this.$api.review.get(this.estate.id, userId);
-          this.rvwOrderByLikes.push(this.preProcessReview(review.data, likes));
-          this.calcStats(this.rvwOrderByLikes[likesOrder.data.indexOf(d)]);
+          this.orderByLikes.push(this.preProcessReview(review.data, likes));
+          this.calcStats(this.orderByLikes[likesOrder.data.indexOf(d)]);
         }
         for (let d of timeOrder.data) {
           const userId = d.value.split(":")[1];
           const review = await this.$api.review.get(this.estate.id, userId);
-          this.rvwOrderByTimes.push(this.preProcessReview(review.data, userLike.get(`user:${userId}`)));
+          this.orderByTimes.push(this.preProcessReview(review.data, userLike.get(`user:${userId}`)));
         }
       } catch (err) {
         console.error(err);
@@ -164,8 +164,8 @@ export default {
       this.order = "time";
     },
     clear() {
-      this.rvwOrderByLikes = [];
-      this.rvwOrderByTimes = [];
+      this.orderByLikes = [];
+      this.orderByTimes = [];
       this.stats[0].count = 0;
       this.stats[1].count = 0;
       this.stats[2].count = 0;
