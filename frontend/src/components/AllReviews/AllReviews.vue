@@ -56,14 +56,14 @@ export default {
   async mounted() {
     this.page = 1;
     const allRange = "0~-1";
-    await this.constructReviewsByLikes(allRange);
+    await this.constructReviews(allRange);
   },
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
     }),
     reviews() {
-      return this.rvwOrderByLikes;
+      return this.order === "like" ? this.rvwOrderByLikes : this.rvwOrderByTimes;
     },
     totalCount() {
       return this.reviews.length;
@@ -96,23 +96,28 @@ export default {
     rvwOrderByTimes: [],
   }),
   methods: {
-    async constructReviewsByLikes(queryRange) {
+    async constructReviews(queryRange) {
       try {
         if (this.estate === undefined || this.estate.id === undefined) {
           // When page is refreshed...
           this.gotoHome();
           return;
         }
-
+        const userLike = new Map();
         const likesOrder = await this.$api.reviewLikesOrder.get(this.estate.id, queryRange);
         const timeOrder = await this.$api.reviewTimeOrder.get(this.estate.id, queryRange);
-        console.log(timeOrder);
-        for (let r of likesOrder.data) {
-          const userId = r.value.split(":")[1];
-          const likes = r.score;
+        for (let d of likesOrder.data) {
+          const userId = d.value.split(":")[1];
+          const likes = d.score;
+          userLike.set(`user:${userId}`, likes);
           const review = await this.$api.review.get(this.estate.id, userId);
           this.rvwOrderByLikes.push(this.preProcessReview(review.data, likes));
-          this.calcStats(this.rvwOrderByLikes[likesOrder.data.indexOf(r)]);
+          this.calcStats(this.rvwOrderByLikes[likesOrder.data.indexOf(d)]);
+        }
+        for (let d of timeOrder.data) {
+          const userId = d.value.split(":")[1];
+          const review = await this.$api.review.get(this.estate.id, userId);
+          this.rvwOrderByTimes.push(this.preProcessReview(review.data, userLike.get(`user:${userId}`)));
         }
       } catch (err) {
         console.error(err);
