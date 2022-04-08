@@ -6,6 +6,8 @@
       <ContractGraph :key="stats[2].count" :data="stats[2].data" slot="ContractGraph" />
     </GraphsLayout>
 
+    <Tabs @orderByLike="toLikeOrder" @orderByTime="toTimeOrder" />
+
     <ReviewsLayout v-for="(review, i) in reviews" :key="i">
       <UserProfile slot="UserProfile" :avatarURL="review.avatar" :nickName="review.nickname" :timeStamp="review.time" />
       <Stars slot="Rating" :rating="review.rating" />
@@ -24,6 +26,8 @@ import KindnessGraph from "./KindnessGraph.vue";
 import PriceGraph from "./PriceGraph.vue";
 import ContractGraph from "./ContractGraph.vue";
 
+import Tabs from "./ReviewsTabs.vue";
+
 import ReviewsLayout from "./ReviewsLayout.vue";
 import UserProfile from "./ReviewsUserProfile.vue";
 import Stars from "./ReviewsStars.vue";
@@ -40,6 +44,7 @@ export default {
     KindnessGraph,
     PriceGraph,
     ContractGraph,
+    Tabs,
     ReviewsLayout,
     UserProfile,
     Stars,
@@ -51,14 +56,14 @@ export default {
   async mounted() {
     this.page = 1;
     const allRange = "0~-1";
-    await this.constructReviews(allRange);
+    await this.constructReviewsByLikes(allRange);
   },
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
     }),
     reviews() {
-      return this.reviewObjs;
+      return this.rvwOrderByLikes;
     },
     totalCount() {
       return this.reviews.length;
@@ -66,6 +71,7 @@ export default {
   },
   data: () => ({
     page: 0,
+    order: "",
     stats: [
       {
         name: "price",
@@ -86,23 +92,25 @@ export default {
         fields: [true, false],
       },
     ],
-    reviewObjs: [],
+    rvwOrderByLikes: [],
+    rvwOrderByTimes: [],
   }),
   methods: {
-    async constructReviews(queryRange) {
+    async constructReviewsByLikes(queryRange) {
       try {
         if (this.estate === undefined || this.estate.id === undefined) {
           // When page is refreshed...
           this.gotoHome();
           return;
         }
+
         const resp = await this.$api.reviewLikesOrder.get(this.estate.id, queryRange);
         for (let r of resp.data) {
           const userId = r.value.split(":")[1];
           const likes = r.score;
           const review = await this.$api.review.get(this.estate.id, userId);
-          this.reviewObjs.push(this.preProcessReview(review.data, likes));
-          this.calcStats(this.reviewObjs[resp.data.indexOf(r)]);
+          this.rvwOrderByLikes.push(this.preProcessReview(review.data, likes));
+          this.calcStats(this.rvwOrderByLikes[resp.data.indexOf(r)]);
         }
       } catch (err) {
         console.error(err);
@@ -135,6 +143,12 @@ export default {
     },
     gotoHome() {
       this.$router.push({ path: "/" });
+    },
+    toLikeOrder() {
+      this.order = "like";
+    },
+    toTimeOrder() {
+      this.order = "time";
     },
   },
 };
