@@ -1,7 +1,3 @@
-let { addUser } = require("./redis/index");
+const ReviewTimeOrderRepository = require("./redis/index");
 
-const DAL = {
-  addUser,
-};
-
-module.exports = DAL;
+module.exports = new ReviewTimeOrderRepository();

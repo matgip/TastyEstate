@@ -196,6 +196,21 @@ class ReviewTimeOrderAPI extends NestedAPI {
   constructor() {
     super("api/reviews", "time");
   }
+
+  getURL(baseId, range = "") {
+    if (!baseId) throw Error("base id is not provided");
+    return `${this.baseURL}/${this.resource}/${baseId}/${this.subResource}?range=${range}`;
+  }
+
+  async get(baseId, range = "") {
+    try {
+      if (!baseId) throw Error("id is not provided");
+      const resp = await this.api.get(this.getURL(baseId, range));
+      return resp;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
 }
 
 export const $api = {

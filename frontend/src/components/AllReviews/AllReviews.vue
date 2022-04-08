@@ -104,13 +104,15 @@ export default {
           return;
         }
 
-        const resp = await this.$api.reviewLikesOrder.get(this.estate.id, queryRange);
-        for (let r of resp.data) {
+        const likesOrder = await this.$api.reviewLikesOrder.get(this.estate.id, queryRange);
+        const timeOrder = await this.$api.reviewTimeOrder.get(this.estate.id, queryRange);
+        console.log(timeOrder);
+        for (let r of likesOrder.data) {
           const userId = r.value.split(":")[1];
           const likes = r.score;
           const review = await this.$api.review.get(this.estate.id, userId);
           this.rvwOrderByLikes.push(this.preProcessReview(review.data, likes));
-          this.calcStats(this.rvwOrderByLikes[resp.data.indexOf(r)]);
+          this.calcStats(this.rvwOrderByLikes[likesOrder.data.indexOf(r)]);
         }
       } catch (err) {
         console.error(err);
