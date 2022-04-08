@@ -71,7 +71,7 @@ export default {
   },
   data: () => ({
     page: 0,
-    order: "",
+    order: "like",
     stats: [
       {
         name: "price",
