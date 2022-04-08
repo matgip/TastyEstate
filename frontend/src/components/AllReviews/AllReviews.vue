@@ -57,6 +57,12 @@ export default {
     this.page = 1;
     const allRange = "0~-1";
     await this.constructReviews(allRange);
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === "UPDATE_ESTATE") {
+        this.clear();
+        this.constructReviews(allRange);
+      }
+    });
   },
   computed: {
     ...mapGetters({
@@ -145,7 +151,7 @@ export default {
     toPercentage(stat) {
       if (stat.count === 0) return;
       for (let i = 0; i < stat.data.length; i++) {
-        stat.data[i] = (stat.data[i] / stat.count) * 100;
+        stat.data[i] = ((stat.data[i] / stat.count) * 100).toFixed(2);
       }
     },
     gotoHome() {
@@ -156,6 +162,16 @@ export default {
     },
     toTimeOrder() {
       this.order = "time";
+    },
+    clear() {
+      this.rvwOrderByLikes = [];
+      this.rvwOrderByTimes = [];
+      this.stats[0].count = 0;
+      this.stats[1].count = 0;
+      this.stats[2].count = 0;
+      this.stats[0].data = [0, 0, 0, 0, 0];
+      this.stats[1].data = [0, 0, 0, 0, 0];
+      this.stats[2].data = [0, 0];
     },
   },
 };
