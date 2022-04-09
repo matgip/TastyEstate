@@ -110,19 +110,31 @@ export default {
           return;
         }
         const userLike = new Map();
-        const likesOrder = await this.$api.reviewLikesOrder.get(this.estate.id, queryRange);
-        const timeOrder = await this.$api.reviewTimeOrder.get(this.estate.id, queryRange);
+        const likesOrder = await this.$api.reviewLikesOrder.get({
+          baseId: this.estate.id,
+          range: queryRange,
+        });
+        const timeOrder = await this.$api.reviewTimeOrder.get({
+          baseId: this.estate.id,
+          range: queryRange,
+        });
         for (let d of likesOrder.data) {
           const userId = d.value.split(":")[1];
           const likes = d.score;
           userLike.set(`user:${userId}`, likes);
-          const review = await this.$api.review.get({ baseId: this.estate.id, subIds: [userId] });
+          const review = await this.$api.review.get({
+            baseId: this.estate.id,
+            subIds: [userId],
+          });
           this.orderByLikes.push(this.preProcessReview(review.data, likes));
           this.calcStats(this.orderByLikes[likesOrder.data.indexOf(d)]);
         }
         for (let d of timeOrder.data) {
           const userId = d.value.split(":")[1];
-          const review = await this.$api.review.get({ baseId: this.estate.id, subIds: [userId] });
+          const review = await this.$api.review.get({
+            baseId: this.estate.id,
+            subIds: [userId],
+          });
           this.orderByTimes.push(this.preProcessReview(review.data, userLike.get(`user:${userId}`)));
         }
       } catch (err) {

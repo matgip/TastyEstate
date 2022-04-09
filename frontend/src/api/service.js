@@ -103,9 +103,9 @@ class NestedAPI extends ModeAPI {
     return url;
   }
 
-  async get(ids) {
+  async get(getEntity) {
     try {
-      const { baseId, subIds } = ids;
+      const { baseId, subIds } = getEntity;
       if (!baseId) throw Error("id is not provided");
       const resp = await this.api.get(this.getURL(baseId, subIds));
       return resp;
@@ -137,83 +137,29 @@ class NestedAPI extends ModeAPI {
   }
 }
 
-class LoginAPI extends ModeAPI {
-  constructor() {
-    super("api/login");
-  }
-}
-
-class UsersAPI extends ModeAPI {
-  constructor() {
-    super("api/users");
-  }
-}
-
-class EstatesAPI extends ModeAPI {
-  constructor() {
-    super("api/estates");
-  }
-}
-
-class LikesAPI extends ModeAPI {
-  constructor() {
-    super("api/likes");
-  }
-}
-
-class ReviewAPI extends NestedAPI {
-  constructor() {
-    super("api/reviews", ["users"]);
-  }
-}
-
-class ReviewCountAPI extends NestedAPI {
-  constructor() {
-    super("api/reviews", ["count"]);
-  }
-}
-
-class ReviewRatingAPI extends NestedAPI {
-  constructor() {
-    super("api/reviews", ["ratings"]);
-  }
-}
-
-class ReviewLikesOrderAPI extends NestedAPI {
-  constructor() {
-    super("api/reviews", ["likes"]);
+class NestedWithQueryAPI extends NestedAPI {
+  constructor(baseResource, subResources) {
+    super(baseResource, subResources);
   }
 
-  getURL(baseId, range = "") {
-    if (!baseId) throw Error("base id is not provided");
-    return `${this.baseURL}/${this.resource}/${baseId}/${this.subResources[0]}?range=${range}`;
+  getURL(baseId, subIds = [], range) {
+    if (!baseId) throw Error("Base id is not provided");
+    if (!range) throw Error("Range is not provided");
+    let url = `${this.baseURL}/${this.resource}/${baseId}`;
+    this.subResources.forEach((subResource, idx) => {
+      url += `/${subResource}`;
+      if (subIds[idx]) url += `/${subIds[idx]}`;
+    });
+    url += `?range=${range}`;
+    return url;
   }
 
-  async get(baseId, range = "") {
+  async get(getEntity) {
     try {
+      const { baseId, subIds, range } = getEntity;
       if (!baseId) throw Error("id is not provided");
-      const resp = await this.api.get(this.getURL(baseId, range));
-      return resp;
-    } catch (err) {
-      this.handleError(err);
-    }
-  }
-}
-
-class ReviewTimeOrderAPI extends NestedAPI {
-  constructor() {
-    super("api/reviews", ["time"]);
-  }
-
-  getURL(baseId, range = "") {
-    if (!baseId) throw Error("base id is not provided");
-    return `${this.baseURL}/${this.resource}/${baseId}/${this.subResources[0]}?range=${range}`;
-  }
-
-  async get(baseId, range = "") {
-    try {
-      if (!baseId) throw Error("id is not provided");
-      const resp = await this.api.get(this.getURL(baseId, range));
+      if (!range) throw Error("Range is not provided");
+      const resp = await this.api.get(this.getURL(baseId, subIds, range));
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -222,13 +168,13 @@ class ReviewTimeOrderAPI extends NestedAPI {
 }
 
 export const $api = {
-  login: new LoginAPI(),
-  users: new UsersAPI(),
-  estates: new EstatesAPI(),
-  likes: new LikesAPI(),
-  review: new ReviewAPI(),
-  reviewCount: new ReviewCountAPI(),
-  reviewRatings: new ReviewRatingAPI(),
-  reviewLikesOrder: new ReviewLikesOrderAPI(),
-  reviewTimeOrder: new ReviewTimeOrderAPI(),
+  login: new ModeAPI("api/login"),
+  users: new ModeAPI("api/users"),
+  estates: new ModeAPI("api/estates"),
+  likes: new ModeAPI("api/likes"),
+  review: new NestedAPI("api/reviews", ["users"]),
+  reviewCount: new NestedAPI("api/reviews", ["count"]),
+  reviewRatings: new NestedAPI("api/reviews", ["ratings"]),
+  reviewLikesOrder: new NestedWithQueryAPI("api/reviews", ["likes"]),
+  reviewTimeOrder: new NestedWithQueryAPI("api/reviews", ["time"]),
 };
