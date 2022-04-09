@@ -6,7 +6,7 @@
           <v-icon v-bind="iconProps">
             {{ icon }}
           </v-icon>
-          평가하기
+          리뷰 작성
         </v-btn>
       </template>
 
