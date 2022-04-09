@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import ReviewLayout from "../components/Review/ReviewLayout.vue";
-import EstateName from "../components/Review/EstateName.vue";
-import Rating from "../components/Review/Rating.vue";
-import Kindness from "../components/Review/Kindness.vue";
-import Price from "../components/Review/Price.vue";
-import Contract from "../components/Review/Contract.vue";
-import TextArea from "../components/Review/TextArea.vue";
-import SubmitBtns from "../components/Review/SubmitBtns.vue";
+import ReviewLayout from "@/layouts/ReviewLayout.vue";
+import EstateName from "@/components/Review/EstateName.vue";
+import Rating from "@/components/Review/Rating.vue";
+import Kindness from "@/components/Review/Kindness.vue";
+import Price from "@/components/Review/Price.vue";
+import Contract from "@/components/Review/Contract.vue";
+import TextArea from "@/components/Review/TextArea.vue";
+import SubmitBtns from "@/components/Review/SubmitBtns.vue";
 
 import { mapGetters } from "vuex";
 

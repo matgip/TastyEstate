@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import RELayout from "@/components/RealEstate/RELayout.vue";
+import RELayout from "@/layouts/RealEstateLayout.vue";
 import Images from "@/components/RealEstate/Images.vue";
 import ImageUpload from "@/components/RealEstate/ImageUpload.vue";
 import Title from "@/components/RealEstate/Title.vue";

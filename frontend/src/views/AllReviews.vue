@@ -8,27 +8,27 @@
 
     <Tabs @orderByLike="toLikeOrder" @orderByTime="toTimeOrder" />
 
-    <ReviewsLayout v-for="(review, i) in reviews" :key="i">
+    <AllReviewsLayout v-for="(review, i) in reviews" :key="i">
       <UserProfile slot="UserProfile" :avatarURL="review.avatar" :nickName="review.nickname" :timeStamp="review.time" />
       <Stars slot="Rating" :rating="review.rating" />
       <Likes slot="Likes" :likes="review.likes" />
       <Title slot="Title" :title="review.title" />
       <Content slot="Content" :text="review.text" />
-    </ReviewsLayout>
+    </AllReviewsLayout>
 
     <Pagenation :page="page" :totalCount="totalCount" />
   </div>
 </template>
 
 <script>
-import GraphsLayout from "@/components/AllReviews/GraphsLayout.vue";
+import GraphsLayout from "@/layouts/GraphsLayout.vue";
 import KindnessGraph from "@/components/AllReviews/BarGraph/KindnessGraph.vue";
 import PriceGraph from "@/components/AllReviews/BarGraph/PriceGraph.vue";
 import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
 
 import Tabs from "@/components/AllReviews/Reviews/Tabs.vue";
 
-import ReviewsLayout from "@/components/AllReviews/ReviewsLayout.vue";
+import AllReviewsLayout from "@/layouts/AllReviewsLayout.vue";
 import UserProfile from "@/components/AllReviews/Reviews/UserProfile.vue";
 import Stars from "@/components/AllReviews/Reviews/Stars.vue";
 import Likes from "@/components/AllReviews/Reviews/Likes.vue";
@@ -45,7 +45,7 @@ export default {
     PriceGraph,
     ContractGraph,
     Tabs,
-    ReviewsLayout,
+    AllReviewsLayout,
     UserProfile,
     Stars,
     Likes,

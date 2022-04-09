@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import LoginLayout from "@/components/Login/LoginLayout.vue";
+import LoginLayout from "@/layouts/LoginLayout.vue";
 import LoginKakao from "@/components/Login/LoginKakao.vue";
 
 export default {
