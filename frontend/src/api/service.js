@@ -93,21 +93,24 @@ class NestedAPI extends ModeAPI {
     this.subResources = subResources;
   }
 
-  getURL(baseId, subIds = []) {
+  getURL(baseId, subIds = [], range = "") {
     if (!baseId) throw Error("base id is not provided");
     let url = `${this.baseURL}/${this.resource}/${baseId}`;
     this.subResources.forEach((subResource, idx) => {
       url += `/${subResource}`;
       if (subIds[idx]) url += `/${subIds[idx]}`;
     });
+    if (range.length > 0) {
+      url += `?range=${range}`;
+    }
     return url;
   }
 
   async get(getEntity) {
     try {
-      const { baseId, subIds } = getEntity;
+      const { baseId, subIds, range } = getEntity;
       if (!baseId) throw Error("id is not provided");
-      const resp = await this.api.get(this.getURL(baseId, subIds));
+      const resp = await this.api.get(this.getURL(baseId, subIds, range));
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -137,36 +140,6 @@ class NestedAPI extends ModeAPI {
   }
 }
 
-class NestedWithQueryAPI extends NestedAPI {
-  constructor(baseResource, subResources) {
-    super(baseResource, subResources);
-  }
-
-  getURL(baseId, subIds = [], range) {
-    if (!baseId) throw Error("Base id is not provided");
-    if (!range) throw Error("Range is not provided");
-    let url = `${this.baseURL}/${this.resource}/${baseId}`;
-    this.subResources.forEach((subResource, idx) => {
-      url += `/${subResource}`;
-      if (subIds[idx]) url += `/${subIds[idx]}`;
-    });
-    url += `?range=${range}`;
-    return url;
-  }
-
-  async get(getEntity) {
-    try {
-      const { baseId, subIds, range } = getEntity;
-      if (!baseId) throw Error("id is not provided");
-      if (!range) throw Error("Range is not provided");
-      const resp = await this.api.get(this.getURL(baseId, subIds, range));
-      return resp;
-    } catch (err) {
-      this.handleError(err);
-    }
-  }
-}
-
 export const $api = {
   login: new ModeAPI("api/login"),
   users: new ModeAPI("api/users"),
@@ -175,6 +148,6 @@ export const $api = {
   review: new NestedAPI("api/reviews", ["users"]),
   reviewCount: new NestedAPI("api/reviews", ["count"]),
   reviewRatings: new NestedAPI("api/reviews", ["ratings"]),
-  reviewLikesOrder: new NestedWithQueryAPI("api/reviews", ["likes"]),
-  reviewTimeOrder: new NestedWithQueryAPI("api/reviews", ["time"]),
+  reviewLikesOrder: new NestedAPI("api/reviews", ["likes"]),
+  reviewTimeOrder: new NestedAPI("api/reviews", ["time"]),
 };
