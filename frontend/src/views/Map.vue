@@ -1,7 +1,7 @@
 <template>
   <div>
     <MapKakao />
-    <v-navigation-drawer bottom absolute :value="drawer">
+    <v-navigation-drawer v-bind="navbarProps" :value="drawer">
       <RealEstate />
     </v-navigation-drawer>
   </div>
@@ -25,6 +25,15 @@ export default {
   components: {
     RealEstate,
     MapKakao,
+  },
+  data() {
+    return {
+      navbarProps: {
+        bottom: true,
+        absolute: true,
+        width: 400,
+      },
+    };
   },
 };
 </script>
