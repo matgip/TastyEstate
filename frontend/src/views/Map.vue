@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <template>
   <div>
     <MapKakao />
@@ -10,8 +8,8 @@
 </template>
 
 <script>
-import RealEstate from "../RealEstate/RE.vue";
-import MapKakao from "./MapKakao.vue";
+import RealEstate from "./RealEstate.vue";
+import MapKakao from "@/components/Map/MapKakao.vue";
 
 import { mapGetters } from "vuex";
 

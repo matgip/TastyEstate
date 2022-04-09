@@ -21,20 +21,20 @@
 </template>
 
 <script>
-import GraphsLayout from "./GraphsLayout.vue";
-import KindnessGraph from "./KindnessGraph.vue";
-import PriceGraph from "./PriceGraph.vue";
-import ContractGraph from "./ContractGraph.vue";
+import GraphsLayout from "@/components/AllReviews/GraphsLayout.vue";
+import KindnessGraph from "@/components/AllReviews/BarGraph/KindnessGraph.vue";
+import PriceGraph from "@/components/AllReviews/BarGraph/PriceGraph.vue";
+import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
 
-import Tabs from "./ReviewsTabs.vue";
+import Tabs from "@/components/AllReviews/Reviews/Tabs.vue";
 
-import ReviewsLayout from "./ReviewsLayout.vue";
-import UserProfile from "./ReviewsUserProfile.vue";
-import Stars from "./ReviewsStars.vue";
-import Likes from "./ReviewsLikes.vue";
-import Title from "./ReviewsTitle.vue";
-import Content from "./ReviewsContent.vue";
-import Pagenation from "./ReviewsPagination.vue";
+import ReviewsLayout from "@/components/AllReviews/ReviewsLayout.vue";
+import UserProfile from "@/components/AllReviews/Reviews/UserProfile.vue";
+import Stars from "@/components/AllReviews/Reviews/Stars.vue";
+import Likes from "@/components/AllReviews/Reviews/Likes.vue";
+import Title from "@/components/AllReviews/Reviews/Title.vue";
+import Content from "@/components/AllReviews/Reviews/Content.vue";
+import Pagenation from "@/components/AllReviews/Reviews/Pagination.vue";
 
 import { mapGetters } from "vuex";
 

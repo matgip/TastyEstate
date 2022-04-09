@@ -10,17 +10,17 @@ const router = new Router({
     {
       path: "/",
       name: "home",
-      component: () => import("@/components/Map/Map.vue"),
+      component: () => import("@/views/Map.vue"),
     },
     {
       path: "/login",
       name: "login",
-      component: () => import("@/components/Login/Login.vue"),
+      component: () => import("@/views/Login.vue"),
     },
     {
       path: "/reviews",
       name: "reviews",
-      component: () => import("@/components/AllReviews/AllReviews.vue"),
+      component: () => import("@/views/AllReviews.vue"),
     },
   ],
 });
