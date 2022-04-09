@@ -1,8 +1,8 @@
-<!-- @format -->
-
 <template>
   <v-app-bar app rounded elevate-on-scroll>
-    <div id="title" @click="gotoHome">Tasty estate</div>
+    <div id="title" @click="gotoHome">
+      <img src="@/assets/logo.png" />
+    </div>
 
     <v-spacer />
 

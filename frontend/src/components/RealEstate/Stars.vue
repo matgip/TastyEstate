@@ -2,7 +2,7 @@
   <div>
     <v-row v-bind="rowProps">
       <v-rating v-bind="starProps" :value="stars"></v-rating>
-      <div class="grey--text ms-4">{{ stars }} ({{ likes }})</div>
+      <div class="grey--text ms-4">{{ stars }} 점 ({{ likes }} 명이 좋아해요)</div>
     </v-row>
   </div>
 </template>
