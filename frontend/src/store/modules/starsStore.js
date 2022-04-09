@@ -22,8 +22,8 @@ const starsStore = {
   actions: {
     async getStars({ commit }, id) {
       let stars = 0.0;
-      const totRatings = await this.$api.reviewRatings.get(id);
-      const totUserCnt = await this.$api.reviewCount.get(id);
+      const totRatings = await this.$api.reviewRatings.get({ baseId: id });
+      const totUserCnt = await this.$api.reviewCount.get({ baseId: id });
       if (totUserCnt.data !== undefined && totRatings.data !== undefined && totUserCnt.data !== 0) {
         stars = totRatings.data / totUserCnt.data;
       }

@@ -52,25 +52,37 @@ export default {
   }),
   methods: {
     async onSubmitReview() {
-      const resp = await this.$api.review.get(this.estate.id, [this.user.id]);
+      const resp = await this.$api.review.get({ baseId: this.estate.id, subIds: [this.user.id] });
       if (resp && resp.status === 204) {
         const current = new Date();
         // Fix-me: Depeding on kakao profile, needed to decouple
-        await this.$api.review.post(this.estate.id, {
-          userId: this.user.id,
-          avatar: this.user.kakao_account.profile.profile_image_url,
-          nickname: this.user.kakao_account.profile.nickname,
-          time: current.toLocaleDateString(),
-          rating: this.rating,
-          kindness: this.kindness,
-          price: this.price,
-          contract: this.contract,
-          title: this.title,
-          text: this.text,
+        await this.$api.review.post({
+          baseId: this.estate.id,
+          data: {
+            userId: this.user.id,
+            avatar: this.user.kakao_account.profile.profile_image_url,
+            nickname: this.user.kakao_account.profile.nickname,
+            time: current.toLocaleDateString(),
+            rating: this.rating,
+            kindness: this.kindness,
+            price: this.price,
+            contract: this.contract,
+            title: this.title,
+            text: this.text,
+          },
         });
-        await this.$api.reviewRatings.put(this.estate.id, [], { rating: this.rating });
-        await this.$api.reviewLikesOrder.put(this.estate.id, [], { user: this.user.id });
-        await this.$api.reviewTimeOrder.put(this.estate.id, [], { user: this.user.id });
+        await this.$api.reviewRatings.put({
+          baseId: this.estate.id,
+          data: { rating: this.rating },
+        });
+        await this.$api.reviewLikesOrder.put({
+          baseId: this.estate.id,
+          data: { user: this.user.id },
+        });
+        await this.$api.reviewTimeOrder.put({
+          baseId: this.estate.id,
+          data: { user: this.user.id },
+        });
 
         this.$store.dispatch("getStars", this.estate.id);
       }

@@ -103,8 +103,9 @@ class NestedAPI extends ModeAPI {
     return url;
   }
 
-  async get(baseId, subIds = []) {
+  async get(ids) {
     try {
+      const { baseId, subIds } = ids;
       if (!baseId) throw Error("id is not provided");
       const resp = await this.api.get(this.getURL(baseId, subIds));
       return resp;
@@ -113,19 +114,21 @@ class NestedAPI extends ModeAPI {
     }
   }
 
-  async post(baseId, data = {}) {
+  async post(postEntity) {
     try {
+      const { baseId, subIds, data } = postEntity;
       if (!baseId) throw Error("base id is not provided");
-      const resp = await this.api.post(this.getURL(baseId), data);
+      const resp = await this.api.post(this.getURL(baseId, subIds), data);
       return resp;
     } catch (err) {
       this.handleError(err);
     }
   }
 
-  async put(baseId, subIds = [], data = {}) {
-    if (!baseId) throw Error("base id is not provided");
+  async put(putEntity) {
     try {
+      const { baseId, subIds, data } = putEntity;
+      if (!baseId) throw Error("base id is not provided");
       const resp = await this.api.put(this.getURL(baseId, subIds), data);
       return resp;
     } catch (err) {
