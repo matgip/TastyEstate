@@ -85,23 +85,28 @@ class ModeAPI extends ReadOnlyAPI {
 }
 
 class NestedAPI extends ModeAPI {
-  subResource;
+  subResources;
 
-  constructor(baseResource, subResource) {
+  constructor(baseResource, subResources) {
     super(baseResource);
-    if (!subResource) throw new Error("Sub resource is not provided");
-    this.subResource = subResource;
+    if (!subResources) throw new Error("Sub resource is not provided");
+    this.subResources = subResources;
   }
 
-  getURL(baseId, subId = "") {
+  getURL(baseId, subIds = []) {
     if (!baseId) throw Error("base id is not provided");
-    return `${this.baseURL}/${this.resource}/${baseId}/${this.subResource}/${subId}`;
+    let url = `${this.baseURL}/${this.resource}/${baseId}`;
+    this.subResources.forEach((subResource, idx) => {
+      url += `/${subResource}`;
+      if (subIds[idx]) url += `/${subIds[idx]}`;
+    });
+    return url;
   }
 
-  async get(baseId, subId = "") {
+  async get(baseId, subIds = []) {
     try {
       if (!baseId) throw Error("id is not provided");
-      const resp = await this.api.get(this.getURL(baseId, subId));
+      const resp = await this.api.get(this.getURL(baseId, subIds));
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -118,10 +123,10 @@ class NestedAPI extends ModeAPI {
     }
   }
 
-  async put(baseId, subId = "", data = {}) {
+  async put(baseId, subIds = [], data = {}) {
     if (!baseId) throw Error("base id is not provided");
     try {
-      const resp = await this.api.put(this.getURL(baseId, subId), data);
+      const resp = await this.api.put(this.getURL(baseId, subIds), data);
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -155,30 +160,30 @@ class LikesAPI extends ModeAPI {
 
 class ReviewAPI extends NestedAPI {
   constructor() {
-    super("api/reviews", "users");
+    super("api/reviews", ["users"]);
   }
 }
 
 class ReviewCountAPI extends NestedAPI {
   constructor() {
-    super("api/reviews", "count");
+    super("api/reviews", ["count"]);
   }
 }
 
 class ReviewRatingAPI extends NestedAPI {
   constructor() {
-    super("api/reviews", "ratings");
+    super("api/reviews", ["ratings"]);
   }
 }
 
 class ReviewLikesOrderAPI extends NestedAPI {
   constructor() {
-    super("api/reviews", "likes");
+    super("api/reviews", ["likes"]);
   }
 
   getURL(baseId, range = "") {
     if (!baseId) throw Error("base id is not provided");
-    return `${this.baseURL}/${this.resource}/${baseId}/${this.subResource}?range=${range}`;
+    return `${this.baseURL}/${this.resource}/${baseId}/${this.subResources[0]}?range=${range}`;
   }
 
   async get(baseId, range = "") {
@@ -194,12 +199,12 @@ class ReviewLikesOrderAPI extends NestedAPI {
 
 class ReviewTimeOrderAPI extends NestedAPI {
   constructor() {
-    super("api/reviews", "time");
+    super("api/reviews", ["time"]);
   }
 
   getURL(baseId, range = "") {
     if (!baseId) throw Error("base id is not provided");
-    return `${this.baseURL}/${this.resource}/${baseId}/${this.subResource}?range=${range}`;
+    return `${this.baseURL}/${this.resource}/${baseId}/${this.subResources[0]}?range=${range}`;
   }
 
   async get(baseId, range = "") {
