@@ -148,6 +148,7 @@ export const $api = {
   review: new NestedAPI("api/reviews", ["users"]),
   reviewCount: new NestedAPI("api/reviews", ["count"]),
   reviewRatings: new NestedAPI("api/reviews", ["ratings"]),
+  reviewUserLikes: new NestedAPI("api/reviews", ["users", "likes"]),
   reviewLikesOrder: new NestedAPI("api/reviews", ["likes"]),
   reviewTimeOrder: new NestedAPI("api/reviews", ["time"]),
 };

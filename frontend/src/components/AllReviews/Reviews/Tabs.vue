@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-tabs v-bind="tabsProps">
-      <v-tab @click="emitLikeClicked">좋아요 순</v-tab>
-      <v-tab @click="emitTimeClicked">최신 순</v-tab>
+      <v-tab @click="orderByLike">좋아요 순</v-tab>
+      <v-tab @click="orderByTime">최신 순</v-tab>
     </v-tabs>
   </div>
 </template>
@@ -17,10 +17,10 @@ export default {
     };
   },
   methods: {
-    emitLikeClicked() {
+    orderByLike() {
       this.$emit("orderByLike");
     },
-    emitTimeClicked() {
+    orderByTime() {
       this.$emit("orderByTime");
     },
   },

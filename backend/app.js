@@ -18,6 +18,7 @@ const rvwCountRtr = require("./interfaces/routes/reviewCount");
 const rvwRatingRtr = require("./interfaces/routes/reviewRatings");
 const rvwLikesRtr = require("./interfaces/routes/reviewLikesOrder");
 const rvwTimeRtr = require("./interfaces/routes/reviewTimeOrder");
+const rvwUserLikesRtr = require("./interfaces/routes/reviewUserLikes");
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use("/api/reviews", rvwCountRtr);
 app.use("/api/reviews", rvwRatingRtr);
 app.use("/api/reviews", rvwLikesRtr);
 app.use("/api/reviews", rvwTimeRtr);
+app.use("/api/reviews", rvwUserLikesRtr);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

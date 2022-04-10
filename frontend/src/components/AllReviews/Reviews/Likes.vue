@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn v-bind="btnProps" @click="onClicked">
+    <v-btn v-bind="btnProps" @click="likeBtnClicked">
       <v-icon v-bind="iconProps"> {{ likesIcon }} </v-icon>
       {{ likes }}
     </v-btn>
@@ -10,6 +10,13 @@
 <script>
 export default {
   props: {
+    userId: {
+      type: String,
+      required: true,
+      validator: function(value) {
+        return value !== null;
+      },
+    },
     likes: {
       type: Number,
       required: true,
@@ -32,8 +39,8 @@ export default {
     likesIcon: "fas fa-thumbs-up",
   }),
   methods: {
-    onClicked() {
-      console.log("Likes btn Clicked!");
+    likeBtnClicked() {
+      this.$emit("likeBtnClicked", this.userId);
     },
   },
 };

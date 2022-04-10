@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
-const ReviewTimeOrderRepository = require("../../infrastructure/repositories/reviews/time");
+const ReviewTimeOrderRepository = require("../../infrastructure/repositories/reviews/timeOrder");
 
 const get = async (req, res) => {
   try {

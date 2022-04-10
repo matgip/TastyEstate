@@ -4,6 +4,7 @@ const router = express.Router();
 const ReviewLikesOrderController = require("../controllers/ReviewLikesOrderController");
 
 router.get("/:id/likes", ReviewLikesOrderController.get);
-router.put("/:id/likes", ReviewLikesOrderController.add);
+router.post("/:id/likes", ReviewLikesOrderController.add);
+router.put("/:id/likes", ReviewLikesOrderController.update);
 
 module.exports = router;

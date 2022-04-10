@@ -41,7 +41,7 @@ class MapKakao {
     }
     const script = document.createElement("script");
     script.onload = () => kakao.maps.load(this.initMap);
-    script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY;
+    script.src = `${process.env.VUE_APP_MAP_LIB_URL}?autoload=false&appkey=${process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY}`;
     document.head.appendChild(script);
   }
 

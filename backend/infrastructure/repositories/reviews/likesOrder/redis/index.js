@@ -17,6 +17,11 @@ module.exports = class extends ReviewLikeOrderRepository {
     ]);
   }
 
+  async update(estateId, userId) {
+    const { user, count } = userId;
+    await client.ZINCRBY(`reviews:${estateId}:likes`, count, `user:${user}`);
+  }
+
   async get(estateId, query) {
     const range = query.range.split("~");
     const reviewedUsers = await client.ZRANGE_WITHSCORES(

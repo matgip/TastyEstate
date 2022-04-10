@@ -1,6 +1,6 @@
 // Reference: https://www.npmjs.com/package/redis
 const client = require("../../../config/redis/client");
-const sortedSet = require("./sortedSet");
+const sortedSet = require("../../../config/redis/sortedSet");
 const LikeRepository = require("../../../../domain/LikeRepository");
 
 module.exports = class extends LikeRepository {

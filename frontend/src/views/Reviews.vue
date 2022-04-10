@@ -11,7 +11,7 @@
     <AllReviewsLayout v-for="(review, i) in reviews" :key="i">
       <UserProfile slot="UserProfile" :avatarURL="review.avatar" :nickName="review.nickname" :timeStamp="review.time" />
       <Stars slot="Rating" :rating="review.rating" />
-      <Likes slot="Likes" :likes="review.likes" />
+      <Likes slot="Likes" :likes="review.likes" :userId="review.userId" @likeBtnClicked="addLike" />
       <Title slot="Title" :title="review.title" />
       <Content slot="Content" :text="review.text" />
     </AllReviewsLayout>
@@ -67,6 +67,7 @@ export default {
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
+      user: "GET_USER",
     }),
     reviews() {
       return this.order === "like" ? this.orderByLikes : this.orderByTimes;
@@ -126,7 +127,7 @@ export default {
             baseId: this.estate.id,
             subIds: [userId],
           });
-          this.orderByLikes.push(this.preProcessReview(review.data, likes));
+          this.orderByLikes.push(this.preProcessReview(review.data, userId, likes));
           this.calcStats(this.orderByLikes[likesOrder.data.indexOf(d)]);
         }
         for (let d of timeOrder.data) {
@@ -135,13 +136,14 @@ export default {
             baseId: this.estate.id,
             subIds: [userId],
           });
-          this.orderByTimes.push(this.preProcessReview(review.data, userLike.get(`user:${userId}`)));
+          this.orderByTimes.push(this.preProcessReview(review.data, userId, userLike.get(`user:${userId}`)));
         }
       } catch (err) {
         console.error(err);
       }
     },
-    preProcessReview(review, likes) {
+    preProcessReview(review, userId, likes) {
+      review.userId = userId; // To find user to increase review likes count if like button clicked
       review.likes = likes;
       review.contract = Boolean(review.contract);
       review.rating = parseFloat(review.rating);
@@ -184,6 +186,30 @@ export default {
       this.stats[0].data = [0, 0, 0, 0, 0];
       this.stats[1].data = [0, 0, 0, 0, 0];
       this.stats[2].data = [0, 0];
+    },
+    async addLike(userId) {
+      try {
+        const resp = await this.$api.reviewUserLikes.post({
+          baseId: this.estate.id,
+          subIds: [userId],
+          data: {
+            user: this.user.id,
+          },
+        });
+        if (resp.data.result === "already-added") {
+          alert("이미 이 리뷰를 좋아합니다.");
+          return;
+        }
+        if (resp.data.result === "success") {
+          alert("이 리뷰를 좋아합니다.");
+        }
+        await this.$api.reviewLikesOrder.put({
+          baseId: this.estate.id,
+          data: { user: userId, count: 1 },
+        });
+      } catch (err) {
+        console.error(err);
+      }
     },
   },
 };
