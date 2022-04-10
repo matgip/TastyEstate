@@ -14,7 +14,6 @@ export default {
   props: {
     propKindness: {
       type: String,
-      required: true,
     },
   },
   data: () => ({

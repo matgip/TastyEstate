@@ -8,6 +8,14 @@
 import BaseChkBox from "@/common/BaseChkBox.vue";
 
 export default {
+  components: {
+    BaseChkBox,
+  },
+  props: {
+    propContract: {
+      type: Boolean,
+    },
+  },
   data: () => ({
     title: "🤝 여기서 계약하셨나요?",
     items: [
@@ -16,13 +24,5 @@ export default {
     ],
     updateCmd: "UPDATE_CONTRACT",
   }),
-  props: {
-    propContract: {
-      type: Boolean,
-    },
-  },
-  components: {
-    BaseChkBox,
-  },
 };
 </script>

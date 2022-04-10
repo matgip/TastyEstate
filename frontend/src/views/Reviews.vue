@@ -96,7 +96,7 @@ export default {
         name: "contract",
         count: 0,
         data: [0, 0],
-        fields: [true, false],
+        fields: ["true", "false"],
       },
     ],
     orderByLikes: [],
@@ -145,7 +145,6 @@ export default {
     preProcessReview(review, userId, likes) {
       review.userId = userId; // To find user to increase review likes count if like button clicked
       review.likes = likes;
-      review.contract = Boolean(review.contract);
       review.rating = parseFloat(review.rating);
       return review;
     },
