@@ -86,7 +86,7 @@ export default {
           });
           this.$store.dispatch("getStars", this.estate.id);
         }
-        this.clearReview();
+        await this.clearReview();
       } catch (err) {
         console.error(err);
       }
