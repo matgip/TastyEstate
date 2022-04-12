@@ -54,12 +54,12 @@ export default {
     Pagenation,
   },
   async mounted() {
+    this.clear(); // Must clear the data to calculate correctly
     this.page = 1;
     const allRange = "0~-1";
     await this.constructReviews(allRange);
     this.$store.subscribe((mutation) => {
       if (mutation.type === "UPDATE_ESTATE") {
-        this.clear(); // Must clear the data to update view
         this.constructReviews(allRange);
       }
     });
