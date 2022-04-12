@@ -4,7 +4,7 @@
       <Appbar />
 
       <v-main>
-        <Search v-if="isNotInLogin()" id="search" />
+        <Search v-if="isNotInLoginPage()" id="search" />
         <router-view :key="$route.fullPath"></router-view>
       </v-main>
 
@@ -20,7 +20,7 @@ import Footer from "./components/TheFooter.vue";
 export default {
   name: "App",
   methods: {
-    isNotInLogin() {
+    isNotInLoginPage() {
       return this.$router.history.current["path"] !== "/login";
     },
   },
