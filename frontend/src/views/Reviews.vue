@@ -39,20 +39,6 @@ import Pagenation from "@/components/AllReviews/Reviews/Pagination.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    GraphsLayout,
-    KindnessGraph,
-    PriceGraph,
-    ContractGraph,
-    Tabs,
-    AllReviewsLayout,
-    UserProfile,
-    Stars,
-    Likes,
-    Title,
-    Content,
-    Pagenation,
-  },
   async mounted() {
     this.clear(); // Must clear the data to calculate correctly
     this.page = 1;
@@ -77,32 +63,6 @@ export default {
       return this.reviews.length;
     },
   },
-  data: () => ({
-    page: 0,
-    order: "like",
-    stats: [
-      {
-        name: "price",
-        count: 0,
-        data: [0, 0, 0, 0, 0],
-        fields: ["veryCheap", "cheap", "avgPrice", "expensive", "veryExpensive"],
-      },
-      {
-        name: "kindness",
-        count: 0,
-        data: [0, 0, 0, 0, 0],
-        fields: ["veryKind", "kind", "soso", "unKind", "veryUnkind"],
-      },
-      {
-        name: "contract",
-        count: 0,
-        data: [0, 0],
-        fields: ["true", "false"],
-      },
-    ],
-    orderByLikes: [],
-    orderByTimes: [],
-  }),
   methods: {
     async constructReviews(queryRange) {
       try {
@@ -211,6 +171,46 @@ export default {
         console.error(err);
       }
     },
+  },
+  data: () => ({
+    page: 0,
+    order: "like",
+    stats: [
+      {
+        name: "price",
+        count: 0,
+        data: [0, 0, 0, 0, 0],
+        fields: ["veryCheap", "cheap", "avgPrice", "expensive", "veryExpensive"],
+      },
+      {
+        name: "kindness",
+        count: 0,
+        data: [0, 0, 0, 0, 0],
+        fields: ["veryKind", "kind", "soso", "unKind", "veryUnkind"],
+      },
+      {
+        name: "contract",
+        count: 0,
+        data: [0, 0],
+        fields: ["true", "false"],
+      },
+    ],
+    orderByLikes: [],
+    orderByTimes: [],
+  }),
+  components: {
+    GraphsLayout,
+    KindnessGraph,
+    PriceGraph,
+    ContractGraph,
+    Tabs,
+    AllReviewsLayout,
+    UserProfile,
+    Stars,
+    Likes,
+    Title,
+    Content,
+    Pagenation,
   },
 };
 </script>

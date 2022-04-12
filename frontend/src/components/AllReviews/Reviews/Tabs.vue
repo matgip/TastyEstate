@@ -9,13 +9,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      tabsProps: {
-        left: true,
-      },
-    };
-  },
   methods: {
     orderByLike() {
       this.$emit("orderByLike");
@@ -23,6 +16,14 @@ export default {
     orderByTime() {
       this.$emit("orderByTime");
     },
+  },
+  data() {
+    return {
+      // Vuetify CSS style props
+      tabsProps: {
+        left: true,
+      },
+    };
   },
 };
 </script>

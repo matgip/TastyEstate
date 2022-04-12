@@ -25,7 +25,13 @@ export default {
       },
     },
   },
+  methods: {
+    likeBtnClicked() {
+      this.$emit("likeBtnClicked", this.userId);
+    },
+  },
   data: () => ({
+    // Vuetify CSS style props
     btnProps: {
       class: "ml-4",
       depressed: true,
@@ -38,10 +44,5 @@ export default {
     },
     likesIcon: "fas fa-thumbs-up",
   }),
-  methods: {
-    likeBtnClicked() {
-      this.$emit("likeBtnClicked", this.userId);
-    },
-  },
 };
 </script>

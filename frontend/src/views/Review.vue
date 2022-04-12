@@ -25,16 +25,7 @@ import SubmitBtns from "@/components/Review/SubmitBtns.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    ReviewLayout,
-    EstateName,
-    Rating,
-    Kindness,
-    Price,
-    Contract,
-    TextArea,
-    SubmitBtns,
-  },
+  props: ["placeName"],
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
@@ -44,12 +35,6 @@ export default {
       contract: "GET_CONTRACT",
     }),
   },
-  props: ["placeName"],
-  data: () => ({
-    rating: 0.0,
-    title: "",
-    text: "",
-  }),
   methods: {
     async onSubmitReview() {
       try {
@@ -109,6 +94,21 @@ export default {
       this.$store.commit("UPDATE_CONTRACT", null);
       this.$store.commit("UPDATE_DIALOG", false);
     },
+  },
+  data: () => ({
+    rating: 0.0,
+    title: "",
+    text: "",
+  }),
+  components: {
+    ReviewLayout,
+    EstateName,
+    Rating,
+    Kindness,
+    Price,
+    Contract,
+    TextArea,
+    SubmitBtns,
   },
 };
 </script>

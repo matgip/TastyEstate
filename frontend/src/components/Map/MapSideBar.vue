@@ -25,6 +25,7 @@ export default {
   },
   data() {
     return {
+      // Vuetify CSS style props
       navbarProps: {
         bottom: true,
         width: 360,

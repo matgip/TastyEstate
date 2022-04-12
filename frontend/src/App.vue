@@ -4,7 +4,7 @@
       <Appbar />
 
       <v-main>
-        <Search id="search" />
+        <Search v-if="isNotInLogin()" id="search" />
         <router-view :key="$route.fullPath"></router-view>
       </v-main>
 
@@ -19,6 +19,11 @@ import Search from "./components/Map/MapSearch.vue";
 import Footer from "./components/TheFooter.vue";
 export default {
   name: "App",
+  methods: {
+    isNotInLogin() {
+      return this.$router.history.current["path"] !== "/login";
+    },
+  },
   components: {
     Appbar,
     Search,

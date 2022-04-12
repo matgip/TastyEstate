@@ -10,8 +10,14 @@
 
 <script>
 export default {
+  methods: {
+    getImgURL(estateID, imgNum) {
+      return `/api/upload/${estateID}?image=${imgNum}`;
+    },
+  },
   data: () => ({
     images: [1, 2, 3, 4, 5, 6],
+    // Vuetify CSS style props
     carouselProps: {
       height: "400px",
       "hide-delimiters": true,
@@ -29,11 +35,6 @@ export default {
       validator: function(value) {
         return value != null;
       },
-    },
-  },
-  methods: {
-    getImgURL(estateID, imgNum) {
-      return `/api/upload/${estateID}?image=${imgNum}`;
     },
   },
 };

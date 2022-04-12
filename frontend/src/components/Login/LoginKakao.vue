@@ -8,12 +8,6 @@
 import LoginKakaoBtn from "./LoginKakaoBtn.vue";
 
 export default {
-  data: () => ({
-    scope: "profile_nickname, profile_image, account_email, gender",
-  }),
-  components: {
-    LoginKakaoBtn,
-  },
   methods: {
     async onClick() {
       try {
@@ -68,6 +62,12 @@ export default {
         });
       });
     },
+  },
+  data: () => ({
+    scope: "profile_nickname, profile_image, account_email, gender",
+  }),
+  components: {
+    LoginKakaoBtn,
   },
 };
 </script>

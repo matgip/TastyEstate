@@ -31,6 +31,7 @@ export default {
     },
   },
   data: () => ({
+    // Vuetify CSS style props
     avatarProps: {
       size: "36px",
     },

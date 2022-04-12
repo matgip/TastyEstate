@@ -15,17 +15,6 @@
 
 <script>
 export default {
-  data: () => ({
-    textProp: {
-      class: "grey--text text-caption mr-2",
-    },
-    starProps: {
-      size: 18,
-      color: "amber",
-      dense: true,
-      "half-increments": true,
-    },
-  }),
   props: {
     propRating: {
       type: Number,
@@ -45,6 +34,18 @@ export default {
       },
     },
   },
+  data: () => ({
+    // Vuetify CSS style props
+    textProp: {
+      class: "grey--text text-caption mr-2",
+    },
+    starProps: {
+      size: 18,
+      color: "amber",
+      dense: true,
+      "half-increments": true,
+    },
+  }),
 };
 </script>
 

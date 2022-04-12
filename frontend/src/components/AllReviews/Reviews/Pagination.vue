@@ -22,18 +22,19 @@ export default {
       },
     },
   },
-  data: () => ({
-    paginationProps: {
-      color: "deep-orange",
-      circle: true,
-      class: "mt-10",
-    },
-  }),
   computed: {
     pageCount() {
       if (this.totalCount <= 7) return 1;
       return Math.trunc(this.totalCount / 7 + 1);
     },
   },
+  data: () => ({
+    // Vuetify CSS style props
+    paginationProps: {
+      color: "deep-orange",
+      circle: true,
+      class: "mt-10",
+    },
+  }),
 };
 </script>

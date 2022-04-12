@@ -27,17 +27,6 @@ import EstateInfo from "@/components/RealEstate/EstateInfo.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    RELayout,
-    Images,
-    ImageUpload,
-    Title,
-    Stars,
-    LikeButton,
-    ReviewButton,
-    AllReviewsBtn,
-    EstateInfo,
-  },
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
@@ -50,6 +39,17 @@ export default {
     onLikeBtnClicked() {
       this.$store.dispatch("updateLikes", { estateID: this.estate.id, userID: this.user.id });
     },
+  },
+  components: {
+    RELayout,
+    Images,
+    ImageUpload,
+    Title,
+    Stars,
+    LikeButton,
+    ReviewButton,
+    AllReviewsBtn,
+    EstateInfo,
   },
 };
 </script>

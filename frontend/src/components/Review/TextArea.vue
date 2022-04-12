@@ -16,20 +16,6 @@
 
 <script>
 export default {
-  data: () => ({
-    titleProps: {
-      filled: true,
-      class: "mt-4",
-      rows: "1",
-      label: "한줄 요약을 남겨주세요",
-      "row-height": "15",
-    },
-    textAreaProps: {
-      filled: true,
-      counter: true,
-      label: "자유롭게 리뷰를 남겨주세요!",
-    },
-  }),
   props: {
     propTitle: {
       type: String,
@@ -60,5 +46,20 @@ export default {
       this.$emit("reviewText", event.target.value);
     },
   },
+  data: () => ({
+    // Vuetify CSS style props
+    titleProps: {
+      filled: true,
+      class: "mt-4",
+      rows: "1",
+      label: "한줄 요약을 남겨주세요",
+      "row-height": "15",
+    },
+    textAreaProps: {
+      filled: true,
+      counter: true,
+      label: "자유롭게 리뷰를 남겨주세요!",
+    },
+  }),
 };
 </script>

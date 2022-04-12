@@ -6,7 +6,9 @@
 import BaseButton from "@/common/BaseButton.vue";
 
 export default {
+  props: ["method", "icon", "button"],
   data: () => ({
+    // Vuetify CSS style props
     btnProps: {
       color: "yellow lighten-1",
     },
@@ -14,7 +16,6 @@ export default {
       left: true,
     },
   }),
-  props: ["method", "icon", "button"],
   components: {
     BaseButton,
   },

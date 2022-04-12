@@ -8,9 +8,6 @@
 import BaseButton from "@/common/BaseButton.vue";
 
 export default {
-  components: {
-    BaseButton,
-  },
   props: {
     likes: {
       type: Number,
@@ -20,7 +17,14 @@ export default {
       },
     },
   },
+  methods: {
+    emitEvent() {
+      this.$emit("likeBtnClicked");
+    },
+  },
   data: () => ({
+    likesIcon: "fas fa-heart",
+    // Vuetify CSS style props
     btnProps: {
       class: "ma-2",
       color: "deep-orange",
@@ -32,12 +36,9 @@ export default {
       left: true,
       "x-small": true,
     },
-    likesIcon: "fas fa-heart",
   }),
-  methods: {
-    emitEvent() {
-      this.$emit("likeBtnClicked");
-    },
+  components: {
+    BaseButton,
   },
 };
 </script>

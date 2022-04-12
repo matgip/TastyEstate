@@ -8,9 +8,6 @@
 import BaseChkBox from "@/common/BaseChkBox.vue";
 
 export default {
-  components: {
-    BaseChkBox,
-  },
   props: {
     propContract: {
       type: Boolean,
@@ -24,5 +21,8 @@ export default {
     ],
     updateCmd: "UPDATE_CONTRACT",
   }),
+  components: {
+    BaseChkBox,
+  },
 };
 </script>

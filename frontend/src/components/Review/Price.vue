@@ -8,6 +8,12 @@
 import BaseChkBox from "@/common/BaseChkBox.vue";
 
 export default {
+  props: {
+    propPrice: {
+      type: String,
+      required: true,
+    },
+  },
   data: () => ({
     title: "💵 중개 수수료는 어때요?",
     items: [
@@ -19,12 +25,6 @@ export default {
     ],
     updateCmd: "UPDATE_PRICE",
   }),
-  props: {
-    propPrice: {
-      type: String,
-      required: true,
-    },
-  },
   components: {
     BaseChkBox,
   },

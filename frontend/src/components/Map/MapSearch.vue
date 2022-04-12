@@ -28,12 +28,56 @@
 
 <script>
 export default {
+  watch: {
+    async select(estate) {
+      if (!estate) return;
+      try {
+        await this.$store.dispatch("updateRealEstate", estate);
+        await this.$store.dispatch("getLikes", estate.id);
+        await this.$store.dispatch("getStars", estate.id);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    search(keyword) {
+      if (!keyword || keyword === this.select) return;
+      this.searchEstate(keyword);
+    },
+  },
+  methods: {
+    searchEstate(keyword) {
+      this.isLoading = true;
+      fetch(
+        `${this.KAKAO_API.url}?query=${keyword}&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}`,
+        {
+          headers: {
+            Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
+          },
+        }
+      )
+        .then((res) => res.clone().json())
+        .then((res) => (this.estates = res.documents))
+        .catch((err) => console.log(err))
+        .finally(() => (this.isLoading = false));
+    },
+    clear() {
+      this.$store.commit("CLEAR_ESTATE");
+      this.$store.commit("CLEAR_LIKES");
+      this.$store.commit("CLEAR_STARS");
+    },
+  },
   data: () => ({
     isLoading: false,
     estates: [],
     search: null,
     select: null,
     iconSelected: "fas fa-map-marked-alt",
+    KAKAO_API: {
+      url: "https://dapi.kakao.com/v2/local/search/keyword.json",
+      groupCode: "AG2",
+      radius: 20000,
+    },
+    // Vuetify CSS style props
     searchProps: {
       clearable: true,
       color: "deep-orange",
@@ -55,49 +99,6 @@ export default {
       class: "white--text",
       color: "deep-orange",
     },
-    kakaoAPI: {
-      url: "https://dapi.kakao.com/v2/local/search/keyword.json",
-      groupCode: "AG2",
-      radius: 20000,
-    },
   }),
-  watch: {
-    async select(estate) {
-      if (!estate) return;
-      try {
-        await this.$store.dispatch("updateRealEstate", estate);
-        await this.$store.dispatch("getLikes", estate.id);
-        await this.$store.dispatch("getStars", estate.id);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    search(keyword) {
-      if (!keyword || keyword === this.select) return;
-      this.searchEstate(keyword);
-    },
-  },
-  methods: {
-    searchEstate(keyword) {
-      this.isLoading = true;
-      fetch(
-        `${this.kakaoAPI.url}?query=${keyword}&category_group_code=${this.kakaoAPI.groupCode}&radius=${this.kakaoAPI.radius}`,
-        {
-          headers: {
-            Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
-          },
-        }
-      )
-        .then((res) => res.clone().json())
-        .then((res) => (this.estates = res.documents))
-        .catch((err) => console.log(err))
-        .finally(() => (this.isLoading = false));
-    },
-    clear() {
-      this.$store.commit("CLEAR_ESTATE");
-      this.$store.commit("CLEAR_LIKES");
-      this.$store.commit("CLEAR_STARS");
-    },
-  },
 };
 </script>

@@ -8,9 +8,6 @@
 import BaseChkBox from "@/common/BaseChkBox.vue";
 
 export default {
-  components: {
-    BaseChkBox,
-  },
   props: {
     propKindness: {
       type: String,
@@ -27,5 +24,8 @@ export default {
     ],
     updateCmd: "UPDATE_KINDNESS",
   }),
+  components: {
+    BaseChkBox,
+  },
 };
 </script>

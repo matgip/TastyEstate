@@ -54,22 +54,6 @@ export default {
       user: "GET_USER",
     }),
   },
-  components: {
-    BaseButton,
-  },
-  data() {
-    return {
-      btnProps: {
-        color: "deep-orange",
-        depressed: true,
-        plain: true,
-        "x-small": true,
-      },
-      iconProps: {
-        left: true,
-      },
-    };
-  },
   methods: {
     gotoLogin() {
       this.$router.push({ path: "/login" });
@@ -106,6 +90,23 @@ export default {
     isloggedIn() {
       return this.user.id != undefined;
     },
+  },
+  data() {
+    return {
+      // Vuetify CSS style props
+      btnProps: {
+        color: "deep-orange",
+        depressed: true,
+        plain: true,
+        "x-small": true,
+      },
+      iconProps: {
+        left: true,
+      },
+    };
+  },
+  components: {
+    BaseButton,
   },
 };
 </script>

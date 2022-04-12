@@ -15,13 +15,6 @@ export default {
       user: "GET_USER",
     }),
   },
-  data: () => ({
-    btnProps: {
-      color: "blue darken-4",
-      text: true,
-      small: true,
-    },
-  }),
   methods: {
     gotoAllReviews() {
       if (this.isloggedIn() === false) {
@@ -38,5 +31,13 @@ export default {
       return this.user.id != undefined;
     },
   },
+  data: () => ({
+    // Vuetify CSS style props
+    btnProps: {
+      color: "blue darken-4",
+      text: true,
+      small: true,
+    },
+  }),
 };
 </script>

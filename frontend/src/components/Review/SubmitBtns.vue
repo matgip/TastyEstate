@@ -9,10 +9,16 @@
 import BaseButton from "@/common/BaseButton.vue";
 
 export default {
-  components: {
-    BaseButton,
+  methods: {
+    closeDiag() {
+      this.$store.commit("UPDATE_DIALOG", false);
+    },
+    submit() {
+      this.$emit("submitReview");
+    },
   },
   data: () => ({
+    // Vuetify CSS style props
     btnProps: {
       class: "ma-2",
       color: "deep-orange",
@@ -21,13 +27,8 @@ export default {
       text: true,
     },
   }),
-  methods: {
-    closeDiag() {
-      this.$store.commit("UPDATE_DIALOG", false);
-    },
-    submit() {
-      this.$emit("submitReview");
-    },
+  components: {
+    BaseButton,
   },
 };
 </script>
