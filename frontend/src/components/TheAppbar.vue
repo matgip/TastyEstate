@@ -1,29 +1,35 @@
 <template>
-  <v-app-bar app rounded elevate-on-scroll>
+  <nav id="navbar">
     <div id="title" @click="gotoHome">
       <img src="@/assets/logo.png" />
     </div>
 
-    <v-spacer />
+    <div class="navbar__menu">
+      <ul class="navbar__menu">
+        <li class="navbar__menu__item">
+          <AppbarBtn v-if="user.id == undefined" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
+          <AppbarBtn v-else :method="onLogout" :icon="'fas fa-sign-out-alt'" :button="'로그아웃'" />
+        </li>
+        <li class="navbar__menu__item">
+          <AppbarBtn :method="gotoHome" :icon="'fas fa-home'" :button="'홈'" />
+        </li>
+      </ul>
+    </div>
 
-    <MapSearch />
-    <v-spacer />
-
-    <AppbarBtn v-if="user.id == undefined" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
-    <AppbarBtn v-else :method="onLogout" :icon="'fas fa-sign-out-alt'" :button="'로그아웃'" />
-    <AppbarBtn :method="gotoHome" :icon="'fas fa-home'" :button="'홈'" />
-  </v-app-bar>
+    <!-- Toggle button -->
+    <button class="navbar__toggle-btn">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
 </template>
 
 <script>
-import MapSearch from "./Map/MapSearch.vue";
 import AppbarBtn from "./TheAppbarBtn.vue";
 
 import { mapGetters } from "vuex";
 
 export default {
   components: {
-    MapSearch,
     AppbarBtn,
   },
   computed: {
@@ -78,5 +84,55 @@ export default {
   font-style: oblique;
   font-size: 24px;
   font-weight: 500;
+}
+
+/* Navbar */
+#navbar {
+  /* position: fixed; */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: transparent;
+  align-items: center;
+  color: var(--color-light-white);
+  padding: 12px;
+  transition: all var(--animation-duration) ease-in-out;
+}
+
+.navbar__menu {
+  display: flex;
+}
+
+.navbar__menu__item {
+  padding: 12px 12px;
+  margin: 0px 4px;
+  cursor: pointer;
+  border-radius: var(--size-border-radius);
+}
+
+.navbar__toggle-btn {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  font-size: 24px;
+  color: var(--color-orange);
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar__toggle-btn {
+    display: block;
+  }
+
+  #navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar__menu {
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+  }
 }
 </style>

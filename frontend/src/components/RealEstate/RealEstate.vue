@@ -20,7 +20,7 @@ import ImageUpload from "@/components/RealEstate/ImageUpload.vue";
 import Title from "@/components/RealEstate/Title.vue";
 import Stars from "@/components/RealEstate/Stars.vue";
 import LikeButton from "@/components/RealEstate/LikeButton.vue";
-import ReviewButton from "./Review.vue";
+import ReviewButton from "../../views/Review.vue";
 import AllReviewsBtn from "@/components/RealEstate/AllReviewsBtn.vue";
 import EstateInfo from "@/components/RealEstate/EstateInfo.vue";
 

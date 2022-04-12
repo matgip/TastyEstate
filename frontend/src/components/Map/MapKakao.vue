@@ -1,16 +1,21 @@
 <template>
-  <div id="mapview"></div>
+  <div id="mapview">
+    <SideBar />
+  </div>
 </template>
 
 <script>
+import SideBar from "./MapSideBar.vue";
+
 import { $map } from "@/api/map/kakao";
 
 export default {
-  data: () => ({}),
   mounted() {
     $map.kakao.loadMap();
   },
-  methods: {},
+  components: {
+    SideBar,
+  },
 };
 </script>
 
