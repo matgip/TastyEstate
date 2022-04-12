@@ -60,6 +60,7 @@ export default {
     await this.constructReviews(allRange);
     this.$store.subscribe((mutation) => {
       if (mutation.type === "UPDATE_ESTATE") {
+        this.clear(); // Must clear the data to calculate correctly
         this.constructReviews(allRange);
       }
     });
