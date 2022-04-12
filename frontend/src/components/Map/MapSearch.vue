@@ -1,20 +1,21 @@
 <template>
   <div data-app>
     <v-autocomplete
+      v-bind="searchProps"
       v-model="select"
-      v-bind="autoCompleteProps"
       :items="estates"
       :loading="isLoading"
       :search-input.sync="search"
-      @click:clear="clearSelected"
+      @click:clear="clear"
     >
+      <!-- Selected estate -->
       <template #selection="{ attr, on, item, selected }">
         <v-chip v-bind="[chipProps, attr]" :input-value="selected" v-on="on">
-          <v-icon v-bind="iconProps">{{ selectedIcon }}</v-icon>
+          <v-icon v-bind="iconProps">{{ iconSelected }}</v-icon>
           <span v-text="item.place_name" />
         </v-chip>
       </template>
-
+      <!-- Searched estated -->
       <template #item="{ item }">
         <v-list-item-content>
           <v-list-item-title v-text="item.place_name" />
@@ -31,11 +32,9 @@ export default {
     isLoading: false,
     estates: [],
     search: null,
-
     select: null,
-    selectedIcon: "fas fa-map-marked-alt",
-
-    autoCompleteProps: {
+    iconSelected: "fas fa-map-marked-alt",
+    searchProps: {
       clearable: true,
       color: "deep-orange",
       class: "mx-4",
@@ -47,18 +46,15 @@ export default {
       "prepend-icon": "fas fa-search",
       "item-text": "place_name",
     },
-
     iconProps: {
       left: true,
       small: true,
     },
-
     chipProps: {
       small: true,
       class: "white--text",
       color: "deep-orange",
     },
-
     kakaoAPI: {
       url: "https://dapi.kakao.com/v2/local/search/keyword.json",
       groupCode: "AG2",
@@ -78,26 +74,26 @@ export default {
     },
     search(keyword) {
       if (!keyword || keyword === this.select) return;
-      this.searchKakao(keyword);
+      this.searchEstate(keyword);
     },
   },
   methods: {
-    searchKakao(keyword) {
+    searchEstate(keyword) {
       this.isLoading = true;
-      const headers = {
-        Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
-      };
-
       fetch(
         `${this.kakaoAPI.url}?query=${keyword}&category_group_code=${this.kakaoAPI.groupCode}&radius=${this.kakaoAPI.radius}`,
-        { headers }
+        {
+          headers: {
+            Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
+          },
+        }
       )
         .then((res) => res.clone().json())
         .then((res) => (this.estates = res.documents))
         .catch((err) => console.log(err))
         .finally(() => (this.isLoading = false));
     },
-    clearSelected() {
+    clear() {
       this.$store.commit("CLEAR_ESTATE");
       this.$store.commit("CLEAR_LIKES");
       this.$store.commit("CLEAR_STARS");

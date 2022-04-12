@@ -7,11 +7,31 @@
     <div class="navbar__menu">
       <ul class="navbar__menu">
         <li class="navbar__menu__item">
-          <AppbarBtn v-if="user.id == undefined" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
-          <AppbarBtn v-else :method="onLogout" :icon="'fas fa-sign-out-alt'" :button="'로그아웃'" />
+          <BaseButton
+            v-if="user.id == undefined"
+            :btnProps="btnProps"
+            :iconProps="iconProps"
+            :method="gotoLogin"
+            :icon="'fas fa-user-lock'"
+            :button="'로그인'"
+          />
+          <BaseButton
+            v-else
+            :btnProps="btnProps"
+            :iconProps="iconProps"
+            :method="onLogout"
+            :icon="'fas fa-sign-out-alt'"
+            :button="'로그아웃'"
+          />
         </li>
         <li class="navbar__menu__item">
-          <AppbarBtn :method="gotoHome" :icon="'fas fa-home'" :button="'홈'" />
+          <BaseButton
+            :btnProps="btnProps"
+            :iconProps="iconProps"
+            :method="gotoHome"
+            :icon="'fas fa-home'"
+            :button="'홈'"
+          />
         </li>
       </ul>
     </div>
@@ -24,18 +44,31 @@
 </template>
 
 <script>
-import AppbarBtn from "./TheAppbarBtn.vue";
+import BaseButton from "@/common/BaseButton.vue";
 
 import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    AppbarBtn,
-  },
   computed: {
     ...mapGetters({
       user: "GET_USER",
     }),
+  },
+  components: {
+    BaseButton,
+  },
+  data() {
+    return {
+      btnProps: {
+        color: "deep-orange",
+        depressed: true,
+        plain: true,
+        "x-small": true,
+      },
+      iconProps: {
+        left: true,
+      },
+    };
   },
   methods: {
     gotoLogin() {
@@ -88,7 +121,6 @@ export default {
 
 /* Navbar */
 #navbar {
-  /* position: fixed; */
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -112,7 +144,6 @@ export default {
 
 .navbar__toggle-btn {
   position: absolute;
-  top: 24px;
   right: 32px;
   font-size: 24px;
   color: var(--color-orange);
