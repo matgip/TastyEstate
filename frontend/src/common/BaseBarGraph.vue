@@ -52,6 +52,9 @@ export default {
             show: false,
           },
         },
+        yaxis: {
+          reversed: true,
+        },
         title: {
           text: this.title,
         },
