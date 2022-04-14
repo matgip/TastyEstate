@@ -4,40 +4,38 @@
       <img src="@/assets/logo.png" />
     </div>
 
-    <div class="navbar__menu">
-      <ul class="navbar__menu">
-        <li class="navbar__menu__item">
-          <BaseButton
-            v-if="user.id == undefined"
-            :btnProps="btnProps"
-            :iconProps="iconProps"
-            :method="gotoLogin"
-            :icon="'fas fa-user-lock'"
-            :button="'로그인'"
-          />
-          <BaseButton
-            v-else
-            :btnProps="btnProps"
-            :iconProps="iconProps"
-            :method="onLogout"
-            :icon="'fas fa-sign-out-alt'"
-            :button="'로그아웃'"
-          />
-        </li>
-        <li class="navbar__menu__item">
-          <BaseButton
-            :btnProps="btnProps"
-            :iconProps="iconProps"
-            :method="gotoHome"
-            :icon="'fas fa-home'"
-            :button="'홈'"
-          />
-        </li>
-      </ul>
-    </div>
+    <ul class="navbar__menu">
+      <li class="navbar__menu__item">
+        <BaseButton
+          v-if="user.id == undefined"
+          :btnProps="btnProps"
+          :iconProps="iconProps"
+          :method="gotoLogin"
+          :icon="'fas fa-user-lock'"
+          :button="'로그인'"
+        />
+        <BaseButton
+          v-else
+          :btnProps="btnProps"
+          :iconProps="iconProps"
+          :method="onLogout"
+          :icon="'fas fa-sign-out-alt'"
+          :button="'로그아웃'"
+        />
+      </li>
+      <li class="navbar__menu__item">
+        <BaseButton
+          :btnProps="btnProps"
+          :iconProps="iconProps"
+          :method="gotoHome"
+          :icon="'fas fa-home'"
+          :button="'홈'"
+        />
+      </li>
+    </ul>
 
     <!-- Toggle button -->
-    <button class="navbar__toggle-btn">
+    <button class="navbar__toggle-btn" @click="toggleNavbarMenu">
       <i class="fas fa-bars"></i>
     </button>
   </nav>
@@ -89,6 +87,10 @@ export default {
     },
     isloggedIn() {
       return this.user.id != undefined;
+    },
+    toggleNavbarMenu() {
+      const navbarMenu = document.querySelector(".navbar__menu");
+      navbarMenu.classList.toggle("open");
     },
   },
   data() {
@@ -165,6 +167,11 @@ export default {
     flex-direction: column;
     text-align: center;
     width: 100%;
+    display: none;
+  }
+
+  .navbar__menu.open {
+    display: block;
   }
 }
 </style>

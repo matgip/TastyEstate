@@ -10,9 +10,15 @@
   --animation-duration: 300ms;
 }
 
+/* Universal tags */
 body {
   font-family: "Open Sans", sans-serif;
   cursor: default;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0px;
 }
 
 .wrapper {

@@ -83,6 +83,7 @@ export default {
       color: "deep-orange",
       class: "mx-4",
       dense: true,
+      outlined: true,
       label: "지역 또는 단지명을 입력하세요.",
       "no-filter": true,
       "solo-inverted": true,
