@@ -126,6 +126,8 @@ class MapKakao {
       this.removeSelectedMarker();
       // Update selected estate
       await store.dispatch("updateRealEstate", place);
+      await store.dispatch("getLikes", place.id);
+      await store.dispatch("getStars", place.id);
     });
   }
 
