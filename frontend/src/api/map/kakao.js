@@ -134,9 +134,10 @@ class MapKakao {
       this.selectedMarker = m;
     }
     this.markerClstr.addMarker(m);
-    kakao.maps.event.addListener(m, "click", () => {
+    kakao.maps.event.addListener(m, "click", async () => {
       this.infoWindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>");
       this.infoWindow.open(window.map, m);
+      await store.dispatch("updateRealEstate", place);
     });
   }
 
