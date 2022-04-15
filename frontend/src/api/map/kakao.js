@@ -71,7 +71,7 @@ class MapKakao {
         this.addMarker({ place: e, image: this.imgSelected, isSelected: true });
       }
       if (mutation.type == "CLEAR_ESTATE") {
-        this.markerClstr.removeMarker(this.selectedMarker);
+        this.removeSelectedMarker();
       }
     });
   }
@@ -93,9 +93,8 @@ class MapKakao {
         const x = (lng + j / 100).toFixed(2);
         const y = (lat + i / 100).toFixed(2);
         if (this.isScanned(y, x)) continue;
-        this.setScanned(y, x);
+        this.cacheLatLng(y, x);
         this.placeSrch.categorySearch("AG2", this.callback.bind(this), { x: x, y: y, radius: 300 });
-        this.addCircle(y, x);
       }
     }
   }
@@ -103,25 +102,11 @@ class MapKakao {
   callback(places, status, pagination) {
     if (status === kakao.maps.services.Status.OK) {
       for (let p of places) {
-        this.setPlace(p);
+        this.cachePlace(p);
         this.addMarker({ place: p, image: this.imgMarker, isSelected: false });
       }
     }
     if (pagination.hasNextPage) pagination.nextPage();
-  }
-
-  addCircle(lat, lng) {
-    const cl = new kakao.maps.Circle({
-      center: new kakao.maps.LatLng(lat, lng),
-      radius: 300,
-      strokeWeight: 1,
-      strokeColor: "#FFFFFF",
-      strokeOpacity: 0.1,
-      strokeStyle: "dashed",
-      fillColor: "#757575",
-      fillOpacity: 0.5,
-    });
-    cl.setMap(window.map);
   }
 
   addMarker(markerInfo) {
@@ -137,8 +122,15 @@ class MapKakao {
     kakao.maps.event.addListener(m, "click", async () => {
       this.infoWindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>");
       this.infoWindow.open(window.map, m);
+      // Remove old selected estate
+      this.removeSelectedMarker();
+      // Update selected estate
       await store.dispatch("updateRealEstate", place);
     });
+  }
+
+  removeSelectedMarker() {
+    this.markerClstr.removeMarker(this.selectedMarker);
   }
 
   getRoundedLatLng() {
@@ -154,13 +146,13 @@ class MapKakao {
     return window.scannedLatlng[lat][lng] === this.SCANNED;
   }
 
-  setScanned(lat, lng) {
+  cacheLatLng(lat, lng) {
     window.scannedLatlng ??= new Array();
     window.scannedLatlng[lat] ??= new Array();
     window.scannedLatlng[lat][lng] = this.SCANNED;
   }
 
-  setPlace(place) {
+  cachePlace(place) {
     window.places ??= new Array();
     window.places[place.id] ??= place;
   }
