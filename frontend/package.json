@@ -13,6 +13,7 @@
     "axios": "^0.25.0",
     "core-js": "^3.6.5",
     "dotenv": "^8.6.0",
+    "load-script-once": "^2.0.1",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.2",
     "vue-file-agent": "^1.7.3",

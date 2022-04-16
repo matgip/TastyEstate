@@ -12,9 +12,6 @@ import RealEstate from "@/components/RealEstate/RealEstate.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    RealEstate,
-  },
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
@@ -28,10 +25,12 @@ export default {
       // Vuetify CSS style props
       navbarProps: {
         bottom: true,
-        temporary: true,
         width: 360,
       },
     };
+  },
+  components: {
+    RealEstate,
   },
 };
 </script>
