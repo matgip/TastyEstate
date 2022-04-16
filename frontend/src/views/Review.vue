@@ -46,8 +46,8 @@ export default {
             baseId: this.estate.id,
             data: {
               userId: this.user.id,
-              avatar: this.user.kakao_account.profile.profile_image_url,
-              nickname: this.user.kakao_account.profile.nickname,
+              avatar: this.user.avatar,
+              nickname: this.user.nickname,
               time: current.toLocaleDateString(),
               rating: this.rating,
               kindness: this.kindness,

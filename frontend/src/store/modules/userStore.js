@@ -1,9 +1,12 @@
 const GET_USER = "GET_USER";
 const UPDATE_USER = "UPDATE_USER";
 
+import { socialLoginApi, logoutApi } from "../../api/login/api"
+import kakaoLogin from "../../api/login/kakao";
+
 const userStore = {
   state: {
-    user: {},
+    user: localStorage.getItem("user"),
   },
   getters: {
     [GET_USER](state) {
@@ -13,23 +16,52 @@ const userStore = {
   mutations: {
     [UPDATE_USER](state, user) {
       state.user = user;
+      console.log("UPDATE_USER");
+      if (user == null)
+        localStorage.removeItem("user");
+      else
+        localStorage.setItem("user", user);
     },
   },
   actions: {
-    async updateUser({ commit }, user) {
-      let resp = await this.$api.users.get(user.id);
-      if (resp && resp.status === 204) {
-        // No contents
-        const post = {
-          id: user.id,
-          email: user.kakao_account.email,
-          nickname: user.kakao_account.profile.nickname,
-        };
-        await this.$api.users.post(post);
-        console.log({ message: "Created user", post: { ...post } });
+    async login({ commit }, social) {
+      let accessToken;
+      try {
+        if (social === "kakao") {
+          accessToken = await kakaoLogin.login();
+          localStorage.setItem("social", social);
+        }
+      } catch (err) {
+        alert("Login Failed. Check Social connection");
+        return;
       }
-      commit(UPDATE_USER, user);
+
+      try {
+        const user = await socialLoginApi(social, accessToken);
+        commit(UPDATE_USER, user);
+
+        localStorage.setItem("social", social);
+      } catch (err) {
+        alert("Login Failed. Check server connection");
+      }
     },
+
+    async logout({ commit }) {
+      const social = localStorage.getItem("social");
+      let accessToken;
+      if (social === "kakao") {
+        accessToken = window.Kakao.Auth.getAccessToken();
+      }
+      console.log("before");
+      try {
+        const logoutId = await logoutApi(social, accessToken);
+        console.log("logouted Id : " + logoutId);
+      } catch (err) {
+        alert("Logout Failed. Check server connection");
+      } finally {
+        commit("UPDATE_USER", null);
+      }
+    }
   },
 };
 

@@ -28,7 +28,7 @@ export default {
       this.$router.push({ path: "/login" });
     },
     isloggedIn() {
-      return this.user.id != undefined;
+      return this.user != null;
     },
   },
   data: () => ({

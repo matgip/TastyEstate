@@ -3,7 +3,7 @@
 import axios from "axios";
 
 class BaseAPI {
-  baseURL = "";
+  baseURL = "api";
   resource;
   api;
 
@@ -11,11 +11,11 @@ class BaseAPI {
     if (!resource) throw new Error("Resource is not provided");
     this.resource = resource;
     this.api = axios.create({
-      baseURL: this.baseURL,
+      // baseURL: this.baseURL,
     });
   }
 
-  getURL(id = "") {
+  getUrl(id = "") {
     return `${this.baseURL}/${this.resource}/${id}`;
   }
 
@@ -31,7 +31,7 @@ class ReadOnlyAPI extends BaseAPI {
 
   async fetch(config = {}) {
     try {
-      const resp = await this.api.fetch(this.getURL(), config);
+      const resp = await this.api.fetch(this.getUrl(), config);
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -41,7 +41,7 @@ class ReadOnlyAPI extends BaseAPI {
   async get(id) {
     try {
       if (!id) throw Error("id is not provided");
-      const resp = await this.api.get(this.getURL(id));
+      const resp = await this.api.get(this.getUrl(id));
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -49,14 +49,14 @@ class ReadOnlyAPI extends BaseAPI {
   }
 }
 
-class ModeAPI extends ReadOnlyAPI {
+export class ModeAPI extends ReadOnlyAPI {
   constructor(resource) {
     super(resource);
   }
 
   async post(data = {}) {
     try {
-      const resp = await this.api.post(this.getURL(), data);
+      const resp = await this.api.post(this.getUrl(), data);
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -66,7 +66,7 @@ class ModeAPI extends ReadOnlyAPI {
   async put(id, data = {}) {
     if (!id) throw Error("id is not provided");
     try {
-      const resp = await this.api.put(this.getURL(id), data);
+      const resp = await this.api.put(this.getUrl(id), data);
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -76,7 +76,7 @@ class ModeAPI extends ReadOnlyAPI {
   async delete(id) {
     if (!id) throw Error("id is not provided");
     try {
-      await this.api.delete(this.getURL(id));
+      await this.api.delete(this.getUrl(id));
       return true;
     } catch (err) {
       this.handleError(err);
@@ -93,7 +93,7 @@ class NestedAPI extends ModeAPI {
     this.subResources = subResources;
   }
 
-  getURL(baseId, subIds = [], range = "") {
+  getUrl(baseId, subIds = [], range = "") {
     if (!baseId) throw Error("base id is not provided");
     let url = `${this.baseURL}/${this.resource}/${baseId}`;
     this.subResources.forEach((subResource, idx) => {
@@ -110,7 +110,7 @@ class NestedAPI extends ModeAPI {
     try {
       const { baseId, subIds, range } = getEntity;
       if (!baseId) throw Error("id is not provided");
-      const resp = await this.api.get(this.getURL(baseId, subIds, range));
+      const resp = await this.api.get(this.getUrl(baseId, subIds, range));
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -121,7 +121,7 @@ class NestedAPI extends ModeAPI {
     try {
       const { baseId, subIds, data } = postEntity;
       if (!baseId) throw Error("base id is not provided");
-      const resp = await this.api.post(this.getURL(baseId, subIds), data);
+      const resp = await this.api.post(this.getUrl(baseId, subIds), data);
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -132,7 +132,7 @@ class NestedAPI extends ModeAPI {
     try {
       const { baseId, subIds, data } = putEntity;
       if (!baseId) throw Error("base id is not provided");
-      const resp = await this.api.put(this.getURL(baseId, subIds), data);
+      const resp = await this.api.put(this.getUrl(baseId, subIds), data);
       return resp;
     } catch (err) {
       this.handleError(err);
@@ -141,14 +141,14 @@ class NestedAPI extends ModeAPI {
 }
 
 export const $api = {
-  login: new ModeAPI("api/login"),
-  users: new ModeAPI("api/users"),
-  estates: new ModeAPI("api/estates"),
-  likes: new ModeAPI("api/likes"),
-  review: new NestedAPI("api/reviews", ["users"]),
-  reviewCount: new NestedAPI("api/reviews", ["count"]),
-  reviewRatings: new NestedAPI("api/reviews", ["ratings"]),
-  reviewUserLikes: new NestedAPI("api/reviews", ["users", "likes"]),
-  reviewLikesOrder: new NestedAPI("api/reviews", ["likes"]),
-  reviewTimeOrder: new NestedAPI("api/reviews", ["time"]),
+  // login: new ModeAPI("login"),
+  users: new ModeAPI("users"),
+  estates: new ModeAPI("estates"),
+  likes: new ModeAPI("likes"),
+  review: new NestedAPI("reviews", ["users"]),
+  reviewCount: new NestedAPI("reviews", ["count"]),
+  reviewRatings: new NestedAPI("reviews", ["ratings"]),
+  reviewUserLikes: new NestedAPI("reviews", ["users", "likes"]),
+  reviewLikesOrder: new NestedAPI("reviews", ["likes"]),
+  reviewTimeOrder: new NestedAPI("reviews", ["time"]),
 };

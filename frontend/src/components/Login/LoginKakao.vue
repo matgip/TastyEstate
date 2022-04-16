@@ -1,6 +1,8 @@
+<!-- @format -->
+
 <template>
   <div>
-    <LoginKakaoBtn :method="onClick" :icon="'fas fa-comment'" :button="'카카오 로그인'" />
+    <LoginKakaoBtn :method="onKakaoLogin" :icon="'fas fa-comment'" :button="'카카오 로그인'" />
   </div>
 </template>
 
@@ -9,63 +11,14 @@ import LoginKakaoBtn from "./LoginKakaoBtn.vue";
 
 export default {
   methods: {
-    async onClick() {
-      try {
-        const user = await this.getUser();
-        await this.$store.dispatch("updateUser", user);
-        console.log("Success to login");
-        this.$router.push({ path: "/" });
-      } catch (err) {
-        console.error(err);
-        console.log("Try to login to kakao...");
-        if (err.code === -401) {
-          // Unauthorized
-          await this.doLogin();
-        }
-      }
-    },
-    async doLogin() {
-      try {
-        const auth = await this.login();
-        const payload = {
-          token: auth.access_token,
-        };
-        await this.$api.login.post(payload);
-        await this.onClick();
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    login() {
-      return new Promise((resolve, reject) => {
-        window.Kakao.Auth.login({
-          scope: this.scope,
-          success(authObj) {
-            resolve(authObj);
-          },
-          fail(err) {
-            reject(err);
-          },
-        });
-      });
-    },
-    getUser() {
-      return new Promise((resolve, reject) => {
-        window.Kakao.API.request({
-          url: "/v2/user/me",
-          success(user) {
-            resolve(user);
-          },
-          fail(err) {
-            reject(err);
-          },
-        });
-      });
+    async onKakaoLogin() {
+      localStorage.setItem("redirect_location", "/");
+      // await loginController.login("kakao");
+      await this.$store.dispatch("login", "kakao");
+      this.$router.push({ path: localStorage.getItem("redirect_location") });
     },
   },
-  data: () => ({
-    scope: "profile_nickname, profile_image, account_email, gender",
-  }),
+  data: () => ({}),
   components: {
     LoginKakaoBtn,
   },
