@@ -27,7 +27,7 @@ export default {
 
 @media screen and (max-width: 768px) {
   #mapview {
-    height: 560px;
+    height: 700px;
   }
 }
 </style>
