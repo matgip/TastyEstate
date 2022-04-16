@@ -1,14 +1,8 @@
 <template>
-  <div id="mapview">
-    <div id="map__sidebar">
-      <SideBar />
-    </div>
-  </div>
+  <div id="mapview"></div>
 </template>
 
 <script>
-import SideBar from "./MapSideBar.vue";
-
 import MapKakao from "@/api/map/kakao";
 
 export default {
@@ -28,9 +22,6 @@ export default {
     return {
       map: null,
     };
-  },
-  components: {
-    SideBar,
   },
 };
 </script>
