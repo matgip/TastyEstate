@@ -1,0 +1,160 @@
+<!-- @format -->
+
+<template>
+  <nav id="navbar">
+    <div id="title" @click="gotoHome">
+      <img src="@/assets/logo.png" />
+    </div>
+
+    <ul class="navbar__menu">
+      <li class="navbar__menu__item">
+        <BaseButton
+          v-if="user == null"
+          :btnProps="btnProps"
+          :iconProps="iconProps"
+          :method="gotoLogin"
+          :icon="'fas fa-user-lock'"
+          :button="'로그인'"
+        />
+        <BaseButton
+          v-else
+          :btnProps="btnProps"
+          :iconProps="iconProps"
+          :method="onLogout"
+          :icon="'fas fa-sign-out-alt'"
+          :button="'로그아웃'"
+        />
+      </li>
+      <li class="navbar__menu__item">
+        <BaseButton
+          :btnProps="btnProps"
+          :iconProps="iconProps"
+          :method="gotoHome"
+          :icon="'fas fa-home'"
+          :button="'홈'"
+        />
+      </li>
+    </ul>
+
+    <!-- Toggle button -->
+    <button class="navbar__toggle-btn" @click="toggleNavbarMenu">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+</template>
+
+<script>
+import BaseButton from "@/common/BaseButton.vue";
+// import loginController from "../api/login"
+
+import { mapGetters } from "vuex";
+
+export default {
+  data() {
+    return {
+      // Vuetify CSS style props
+      btnProps: {
+        color: "deep-orange",
+        depressed: true,
+        plain: true,
+        "x-small": true,
+      },
+      iconProps: {
+        left: true,
+      },
+    };
+  },
+  components: {
+    BaseButton,
+  },
+  computed: {
+    ...mapGetters({
+      user: "GET_USER",
+    }),
+  },
+  methods: {
+    gotoLogin() {
+      this.$router.push({ path: "/login" });
+    },
+    gotoHome() {
+      this.$router.push({ path: "/" });
+    },
+    async onLogout() {
+      await this.$store.dispatch("logout", "kakao");
+      this.gotoHome();
+    },
+    toggleNavbarMenu() {
+      const navbarMenu = document.querySelector(".navbar__menu");
+      navbarMenu.classList.toggle("open");
+    },
+  },
+};
+</script>
+
+<style scoped>
+#title {
+  color: #ff5722;
+  cursor: pointer;
+  font-style: oblique;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* Navbar */
+#navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: transparent;
+  align-items: center;
+  color: var(--color-light-white);
+  padding: 12px;
+  transition: all var(--animation-duration) ease-in-out;
+}
+
+.navbar__menu {
+  display: flex;
+}
+
+.navbar__menu__item {
+  padding: 12px 12px;
+  margin: 0px 4px;
+  cursor: pointer;
+  border-radius: var(--size-border-radius);
+}
+
+.navbar__toggle-btn {
+  position: absolute;
+  right: 32px;
+  font-size: 24px;
+  color: var(--color-orange);
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar__toggle-btn {
+    display: block;
+  }
+
+  #navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar__menu {
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    display: none;
+  }
+
+  .navbar__menu.open {
+    display: block;
+  }
+
+  .navbar__menu__item {
+    border-top: 1px solid #e0e0e0;
+    border-radius: 0;
+  }
+}
+</style>
