@@ -1,20 +1,27 @@
 <template>
-  <div id="mapview">
-    <SideBar />
-  </div>
+  <div id="mapview"></div>
 </template>
 
 <script>
-import SideBar from "./MapSideBar.vue";
-
-import { $map } from "@/api/map/kakao";
+import MapKakao from "@/api/map/kakao";
 
 export default {
-  mounted() {
-    $map.kakao.loadMap();
+  async mounted() {
+    await this.initMap();
   },
-  components: {
-    SideBar,
+  methods: {
+    async initMap() {
+      if (!this.map) {
+        const map = new MapKakao();
+        await map.mount("mapview");
+        this.map = map;
+      }
+    },
+  },
+  data() {
+    return {
+      map: null,
+    };
   },
 };
 </script>
