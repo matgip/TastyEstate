@@ -1,6 +1,6 @@
 import { ModeAPI } from "../service";
 
-const _socialLoginApi = new ModeAPI("login/login")
+const _socialLoginApi = new ModeAPI("user/login")
 export const socialLoginApi = async (social, accessToken) => {
   const response = await _socialLoginApi.post({ social, accessToken });
   if (response === undefined) {
@@ -9,7 +9,7 @@ export const socialLoginApi = async (social, accessToken) => {
   return response.data;
 }
 
-const _logoutApi = new ModeAPI("login/logout")
+const _logoutApi = new ModeAPI("user/logout")
 export const logoutApi = async (social, accessToken) => {
   const response = await _logoutApi.post({ social, accessToken });
   if (response === undefined) {

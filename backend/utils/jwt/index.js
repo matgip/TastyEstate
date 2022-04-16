@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const generateAccessToken = (token) => {
-  return jwt.sign(token, process.env.TOKEN_SECRET, {
+const sign = (payload) => {
+  return jwt.sign(payload, process.env.TOKEN_SECRET, {
     expiresIn: "1800s",
   });
 };
@@ -18,7 +18,16 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+const verify = (token) => {
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    return decoded;
+  } catch (err) {
+    return undefined;
+  }
+};
+
 module.exports = {
-  generateAccessToken,
-  verifyToken,
+  sign,
+  verify,
 };
