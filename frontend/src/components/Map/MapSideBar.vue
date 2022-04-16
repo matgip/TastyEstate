@@ -1,6 +1,6 @@
 <template>
   <div id="map__sidebar">
-    <v-navigation-drawer class="map__sidebar" v-bind="navbarProps" :value="drawer">
+    <v-navigation-drawer :key="estate.id" class="map__sidebar" v-bind="navbarProps" :value="drawer">
       <RealEstate />
     </v-navigation-drawer>
   </div>
@@ -28,6 +28,7 @@ export default {
       // Vuetify CSS style props
       navbarProps: {
         bottom: true,
+        temporary: true,
         width: 360,
       },
     };
