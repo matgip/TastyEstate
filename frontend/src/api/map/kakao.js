@@ -78,7 +78,6 @@ class MapKakao {
 
   moveTo(estate) {
     const latlng = new kakao.maps.LatLng(estate.y, estate.x);
-    window.map.setLevel(3);
     window.map.setCenter(latlng);
   }
 
