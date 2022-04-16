@@ -16,7 +16,6 @@ const userStore = {
   mutations: {
     [UPDATE_USER](state, user) {
       state.user = user;
-      console.log("UPDATE_USER");
       if (user == null)
         localStorage.removeItem("user");
       else
@@ -52,10 +51,8 @@ const userStore = {
       if (social === "kakao") {
         accessToken = window.Kakao.Auth.getAccessToken();
       }
-      console.log("before");
       try {
-        const logoutId = await logoutApi(social, accessToken);
-        console.log("logouted Id : " + logoutId);
+        await logoutApi(social, accessToken);
       } catch (err) {
         alert("Logout Failed. Check server connection");
       } finally {

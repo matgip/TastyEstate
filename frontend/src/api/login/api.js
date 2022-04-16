@@ -12,7 +12,6 @@ export const socialLoginApi = async (social, accessToken) => {
 const _logoutApi = new ModeAPI("login/logout")
 export const logoutApi = async (social, accessToken) => {
   const response = await _logoutApi.post({ social, accessToken });
-  console.log(response);
   if (response === undefined) {
     throw new Error("Failed to logout");
   }
