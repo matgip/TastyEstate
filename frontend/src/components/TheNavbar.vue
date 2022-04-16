@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <template>
   <nav id="navbar">
     <div id="title" @click="gotoHome">
@@ -100,7 +98,6 @@ export default {
   font-weight: 500;
 }
 
-/* Navbar */
 #navbar {
   width: 100%;
   display: flex;
@@ -109,7 +106,8 @@ export default {
   align-items: center;
   color: var(--color-light-white);
   padding: 12px;
-  transition: all var(--animation-duration) ease-in-out;
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 0;
 }
 
 .navbar__menu {
