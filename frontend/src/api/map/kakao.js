@@ -51,8 +51,9 @@ class MapKakao {
         if (mutation.type == "UPDATE_ESTATE") {
           const e = store.getters.GET_ESTATE;
           if (Object.keys(e).length === 0) return;
-          this.moveTo(e);
           this.addMarker({ place: e, image: this.imgSelected, isSelected: true });
+          this.moveTo(e);
+          this.scan();
         }
       });
       MapKakao.cachedMaps[mapId] = this.map;

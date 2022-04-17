@@ -9,7 +9,7 @@ module.exports = class extends UserRepository {
 
   async persist(userEntity) {
     const { id, email, nickname, avatar } = userEntity;
-    await client.multi().HSET(`users:${id}`, "email", email).HSET(`users:${id}`, "nickname", nickname).HSET(`users:${id}`, "avatar", avatar).exec();
+    await client.multi().HSET(`users:${id}`, "id", id).HSET(`users:${id}`, "email", email).HSET(`users:${id}`, "nickname", nickname).HSET(`users:${id}`, "avatar", avatar).exec();
   }
 
   async get(userId) {
