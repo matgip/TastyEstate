@@ -40,7 +40,7 @@ class MapKakao {
 
       this.imgSelected = require("@/assets/images/marker_selected.png");
       this.imgMarker = require("@/assets/images/marker.png");
-      this.imgSize = new MapKakao.daum.maps.Size(45, 45);
+      this.imgSize = new MapKakao.daum.maps.Size(40, 45);
 
       this.iw = new MapKakao.daum.maps.InfoWindow({ zIndex: 1 });
 
