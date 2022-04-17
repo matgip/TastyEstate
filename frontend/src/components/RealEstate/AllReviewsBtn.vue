@@ -35,6 +35,7 @@ export default {
     // Vuetify CSS style props
     btnProps: {
       color: "blue darken-4",
+      class: "pa-0",
       text: true,
       small: true,
     },

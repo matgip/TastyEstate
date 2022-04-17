@@ -1,14 +1,10 @@
 <template>
-  <div>
-    <v-navigation-drawer
-      class="vuetify-sidebar"
-      style="top: 72px"
-      :key="estate.id"
-      v-bind="navbarProps"
-      :value="drawer"
-    >
-      <RealEstate />
-    </v-navigation-drawer>
+  <div id="styled__Sidebar">
+    <nav :key="estate.id" :value="drawer">
+      <ul>
+        <li><RealEstate /></li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -26,24 +22,22 @@ export default {
       return Object.keys(this.estate).length !== 0;
     },
   },
-  data() {
-    return {
-      // Vuetify CSS style props
-      navbarProps: {
-        bottom: true,
-        width: 360,
-      },
-    };
-  },
   components: {
     RealEstate,
   },
 };
 </script>
 
-<style scoped>
-.vuetify-sidebar {
+<style>
+#styled__Sidebar {
   position: absolute;
+  background-color: white;
+  width: 386px;
   z-index: 2;
+  top: 72px;
+}
+
+.v-application ul {
+  padding-left: 0px;
 }
 </style>

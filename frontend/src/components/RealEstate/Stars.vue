@@ -29,7 +29,7 @@ export default {
     // Vuetify CSS style props
     rowProps: {
       align: "center",
-      class: "mx-0",
+      class: "ma-0",
     },
     starProps: {
       size: 18,

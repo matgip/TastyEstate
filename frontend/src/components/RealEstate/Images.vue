@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-row>
-      <v-carousel v-bind="carouselProps">
-        <v-carousel-item v-for="i in images" :key="i" :src="getImgURL(estateID, i)" v-bind="carouselItemProps" />
-      </v-carousel>
-    </v-row>
+    <v-carousel v-bind="carouselProps" style="width: 140px; height: 168px;">
+      <v-carousel-item v-for="i in images" :key="i" v-bind="carouselItemProps">
+        <img :src="getImgURL(estateID, i)" style="width: 140px; height: 168px;" />
+      </v-carousel-item>
+    </v-carousel>
   </div>
 </template>
 

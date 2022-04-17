@@ -69,7 +69,6 @@ export default {
     },
 
     btnProps: {
-      class: "ma-2",
       color: "deep-orange",
       outlined: true,
       rounded: true,
