@@ -7,8 +7,8 @@
     </GraphsLayout>
 
     <RvwsBtnLayout>
-      <LikeButton slot="RvwsLikeBtn" @estateLikeBtnClicked="updateEstateLikes" />
-      <ReviewButton slot="SubmitRvwBtn" />
+      <EstateLikeBtn slot="RvwsLikeBtn" @estateLikeBtnClicked="updateEstateLikes" />
+      <SubmitRvwBtn slot="SubmitRvwBtn" />
     </RvwsBtnLayout>
 
     <Tabs @orderByLike="toLikeOrder" @orderByTime="toTimeOrder" />
@@ -32,8 +32,8 @@ import PriceGraph from "@/components/AllReviews/BarGraph/PriceGraph.vue";
 import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
 
 import RvwsBtnLayout from "@/layouts/RvwsBtnLayout.vue";
-import LikeButton from "@/components/RealEstate/LikeButton.vue";
-import ReviewButton from "@/views/Review.vue";
+import EstateLikeBtn from "@/components/AllReviews/Reviews/EstateLikeBtn.vue";
+import SubmitRvwBtn from "@/components/AllReviews/Reviews/SubmitRvwBtn.vue";
 
 import Tabs from "@/components/AllReviews/Reviews/Tabs.vue";
 
@@ -218,8 +218,8 @@ export default {
     ContractGraph,
 
     RvwsBtnLayout,
-    LikeButton,
-    ReviewButton,
+    EstateLikeBtn,
+    SubmitRvwBtn,
 
     Tabs,
 
