@@ -1,12 +1,9 @@
-
-const axios = require("axios");
-
 const { StatusCodes } = require("http-status-codes");
-
-const { generateAccessToken } = require("../../utils/jwt");
+const axios = require("axios");
 
 const UserRepository = require("../../infrastructure/repositories/users");
 
+const { sign, verify } = require("../../utils/jwt");
 
 const parseKakaoAccount = (data) => {
   return {
@@ -17,10 +14,9 @@ const parseKakaoAccount = (data) => {
   }
 };
 
-
 const socialLogin = async (req, res) => {
   console.log("login requested", req.body);
-  let socialUserInfo;
+  let userInfo;
 
   try { // fetch social user info
     if (req.body.social === "kakao") {
@@ -32,7 +28,7 @@ const socialLogin = async (req, res) => {
           "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
         }
       })
-      socialUserInfo = parseKakaoAccount(response.data);
+      userInfo = parseKakaoAccount(response.data);
     } else {
       res.sendStatus(StatusCodes.BAD_REQUEST);
     }
@@ -42,22 +38,17 @@ const socialLogin = async (req, res) => {
   }
 
   try { // always update user info
-    await UserRepository.persist(socialUserInfo);
+    await UserRepository.persist(userInfo);
   } catch (err) {
     console.error(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 
+  const token = sign(userInfo);
+  // TODO : save token to redis
 
-  console.log("response UserInfo", socialUserInfo);
-  res
-    .cookie("AccessToken", generateAccessToken({ token: req.body.token }), {
-      httpOnly: true,
-      expires: 0,
-    })
-    .json(socialUserInfo);
+  res.cookie("JWT", token, { httpOnly: true, expires: 0 }).json(userInfo);
 };
-
 
 const logout = async (req, res) => {
   try {
@@ -80,7 +71,28 @@ const logout = async (req, res) => {
   }
 }
 
+const get = async (req, res) => {
+  try {
+    const token = req.cookies["JWT"];
+    if (!token) return res.sendStatus(StatusCodes.FORBIDDEN);
+    const decoded = verify(token);
+    if (!decoded) return res.sendStatus(StatusCodes.FORBIDDEN);
+
+    const user = await UserRepository.get(decoded.id);
+    console.log("user", user)
+    if (UserRepository.isEmpty(user) === true) {
+      res.sendStatus(StatusCodes.NO_CONTENT);
+      return;
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};
 
 module.exports = {
-  socialLogin, logout
+  socialLogin,
+  logout,
+  get,
 };

@@ -1,7 +1,7 @@
 const GET_USER = "GET_USER";
 const UPDATE_USER = "UPDATE_USER";
 
-import { socialLoginApi, logoutApi } from "../../api/login/api"
+import { socialLoginApi, logoutApi, fetchMeApi } from "../../api/login/api"
 import kakaoLogin from "../../api/login/kakao";
 
 const userStore = {
@@ -57,6 +57,24 @@ const userStore = {
         alert("Logout Failed. Check server connection");
       } finally {
         commit("UPDATE_USER", null);
+        localStorage.removeItem("social");
+      }
+    },
+
+    async fetchUser({ commit }) {
+      console.log("fetchUser");
+      const social = localStorage.getItem("social");
+      console.log("social", social);
+      if (social == null) {
+        return;
+      }
+      try {
+        const user = await fetchMeApi();
+        commit(UPDATE_USER, user);
+      } catch (err) {
+        alert("Session expried. Please login again");
+        localStorage.removeItem("social");
+        commit(UPDATE_USER, null);
       }
     }
   },

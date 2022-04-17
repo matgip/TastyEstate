@@ -38,9 +38,8 @@ class ReadOnlyAPI extends BaseAPI {
     }
   }
 
-  async get(id) {
+  async get(id="") {
     try {
-      if (!id) throw Error("id is not provided");
       const resp = await this.api.get(this.getUrl(id));
       return resp;
     } catch (err) {
@@ -142,7 +141,6 @@ class NestedAPI extends ModeAPI {
 
 export const $api = {
   // login: new ModeAPI("login"),
-  users: new ModeAPI("users"),
   estates: new ModeAPI("estates"),
   likes: new ModeAPI("likes"),
   review: new NestedAPI("reviews", ["users"]),
