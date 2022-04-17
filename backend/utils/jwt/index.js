@@ -5,7 +5,7 @@ dotenv.config();
 
 const sign = (payload) => {
   return jwt.sign(payload, process.env.TOKEN_SECRET, {
-    expiresIn: "30m",
+    expiresIn: "10s",
   });
 };
 
@@ -22,12 +22,12 @@ const verify = (token) => {
 const jwtMiddleware = async (req, res, next) => {
   const token = req.cookies["JWT"];
   if (!token) res.sendStatus(StatusCodes.UNAUTHORIZED);
-
-  jwt.verify(token, process.env.TOKEN_SECRET, (err) => {
-    if (err)
-      return res.sendStatus(StatusCodes.UNAUTHORIZED);
+  try {
+    verify(token);
     next();
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 
 
