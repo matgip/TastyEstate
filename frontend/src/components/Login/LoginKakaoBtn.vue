@@ -26,4 +26,10 @@ export default {
 .v-btn {
   width: 400px;
 }
+
+@media screen and (max-width: 768px) {
+  .v-btn {
+    width: 300px;
+  }
+}
 </style>

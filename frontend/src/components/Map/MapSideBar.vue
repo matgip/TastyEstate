@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-navigation-drawer class="vuetify-sidebar" :style="top" :key="estate.id" v-bind="navbarProps" :value="drawer">
+    <v-navigation-drawer
+      class="vuetify-sidebar"
+      style="top: 72px"
+      :key="estate.id"
+      v-bind="navbarProps"
+      :value="drawer"
+    >
       <RealEstate />
     </v-navigation-drawer>
   </div>
@@ -18,10 +24,6 @@ export default {
     }),
     drawer() {
       return Object.keys(this.estate).length !== 0;
-    },
-    top() {
-      if (screen.width > 768) return "top: 72px";
-      else return "top: 300px";
     },
   },
   data() {

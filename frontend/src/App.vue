@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app>
-      <Appbar />
+      <Navbar />
 
       <v-main>
         <Search v-if="isNotInLoginPage()" id="search" />
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Appbar from "./components/TheAppbar.vue";
+import Navbar from "./components/TheNavbar.vue";
 import Search from "./components/Map/MapSearch.vue";
 import Footer from "./components/TheFooter.vue";
 export default {
@@ -25,7 +25,7 @@ export default {
     },
   },
   components: {
-    Appbar,
+    Navbar,
     Search,
     Footer,
   },

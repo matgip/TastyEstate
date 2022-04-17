@@ -3,7 +3,8 @@ import store from "@/store";
 
 class MapKakao {
   SCANNED = 1;
-  MIN_MAP_LEVEL = 5;
+  SCAN_MIN_LVL = 4;
+  CLSTR_MIN_LVL = 3;
 
   constructor() {
     this.map = null;
@@ -22,26 +23,26 @@ class MapKakao {
       // Create map
       this.map = new MapKakao.daum.maps.Map(document.getElementById(mapId), {
         center: new MapKakao.daum.maps.LatLng(37.2579324408187, 127.059981890576),
-        level: this.MIN_MAP_LEVEL,
+        level: this.SCAN_MIN_LVL,
       });
       this.placeSrch = new MapKakao.daum.maps.services.Places(this.map);
       this.markerClstr = new MapKakao.daum.maps.MarkerClusterer({
         map: this.map,
         averageCenter: true,
-        minLevel: this.MIN_MAP_LEVEL,
+        minLevel: this.CLSTR_MIN_LVL,
       });
 
       this.mapCtrl = new MapKakao.daum.maps.MapTypeControl();
       this.zoomCtrl = new MapKakao.daum.maps.ZoomControl();
-      this.map.addOverlayMapTypeId(MapKakao.daum.maps.MapTypeId.TERRAIN);
+
       this.map.addControl(this.mapCtrl, MapKakao.daum.maps.ControlPosition.TOPRIGHT);
       this.map.addControl(this.zoomCtrl, MapKakao.daum.maps.ControlPosition.RIGHT);
 
       this.imgSelected = require("@/assets/images/marker_selected.png");
       this.imgMarker = require("@/assets/images/marker.png");
-      this.imgSize = new MapKakao.daum.maps.Size(35, 45);
+      this.imgSize = new MapKakao.daum.maps.Size(45, 45);
 
-      this.infoWindow = new MapKakao.daum.maps.InfoWindow({ zIndex: 1 });
+      this.iw = new MapKakao.daum.maps.InfoWindow({ zIndex: 1 });
 
       MapKakao.daum.maps.event.addListener(this.map, "dragend", this.scan.bind(this));
       MapKakao.daum.maps.event.addListener(this.map, "zoom_changed", this.scan.bind(this));
@@ -53,9 +54,6 @@ class MapKakao {
           this.moveTo(e);
           this.addMarker({ place: e, image: this.imgSelected, isSelected: true });
         }
-        if (mutation.type == "CLEAR_ESTATE") {
-          this.removeSelectedMarker();
-        }
       });
       MapKakao.cachedMaps[mapId] = this.map;
     }
@@ -63,7 +61,9 @@ class MapKakao {
   }
 
   moveTo(estate) {
+    const currentLvl = this.map.getLevel();
     const latlng = new MapKakao.daum.maps.LatLng(estate.y, estate.x);
+    if (currentLvl > this.CLSTR_MIN_LVL) this.map.setLevel(this.CLSTR_MIN_LVL);
     this.map.setCenter(latlng);
   }
 
@@ -75,13 +75,13 @@ class MapKakao {
     });
     if (isSelected === true) {
       this.selectedMarker = m;
+      this.showInfoWindowOnMap(m, place.place_name);
     }
     this.markerClstr.addMarker(m);
     MapKakao.daum.maps.event.addListener(m, "click", async () => {
-      this.infoWindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>");
-      this.infoWindow.open(this.map, m);
+      this.showInfoWindowOnMap(m, place.place_name);
       // Remove old selected estate
-      this.removeSelectedMarker();
+      this.rmSelectedMarker();
       // Update selected estate
       await store.dispatch("updateRealEstate", place);
       await store.dispatch("getLikes", place.id);
@@ -89,17 +89,18 @@ class MapKakao {
     });
   }
 
-  clearMarkers() {
-    this.map.markerClstr.clear();
+  showInfoWindowOnMap(marker, placeName) {
+    this.iw.setContent('<div style="padding:5px;font-size:12px;">' + placeName + "</div>");
+    this.iw.open(this.map, marker);
   }
 
-  removeSelectedMarker() {
+  rmSelectedMarker() {
     this.markerClstr.removeMarker(this.selectedMarker);
   }
-
+  // Divide the map into 9 equal squares and scan.
   scan() {
     const lvl = this.map.getLevel();
-    if (lvl >= this.MIN_MAP_LEVEL) return;
+    if (lvl >= this.SCAN_MIN_LVL) return;
 
     const { lat, lng } = this.getRoundedLatLng();
 
