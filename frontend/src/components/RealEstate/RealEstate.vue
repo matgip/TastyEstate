@@ -1,8 +1,8 @@
 <template>
   <div>
     <RELayout v-if="Object.keys(estate).length !== 0">
-      <Images slot="REimg" :estateID="estate.id" />
-      <ImageUpload slot="REimgUpload" :estateID="estate.id" />
+      <Images slot="REimg" :estateId="estate.id" />
+      <ImageUpload slot="REimgUpload" :estateId="estate.id" />
       <Title slot="REName" :placeName="estate.place_name" />
       <Stars slot="REStars" :stars="stars" :likes="likes" />
       <LikeButton slot="RELikes" :likes="likes" @likeBtnClicked="onLikeBtnClicked" />
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     onLikeBtnClicked() {
-      this.$store.dispatch("updateLikes", { estateID: this.estate.id, userID: this.user.id });
+      this.$store.dispatch("updateLikes", { estateId: this.estate.id, userId: this.user.id });
     },
   },
   components: {

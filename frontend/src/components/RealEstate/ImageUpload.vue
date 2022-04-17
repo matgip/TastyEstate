@@ -21,7 +21,7 @@
 // Reference: https://madewithvuejs.com/vue-file-agent
 export default {
   props: {
-    estateID: {
+    estateId: {
       type: String,
       required: true,
       validator: function(value) {
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       fileRecords: [],
-      uploadUrl: `/api/upload/${this.estateID}`,
+      uploadUrl: `/api/upload/${this.estateId}`,
       uploadHeaders: { "X-Test-Header": "vue-file-agent" },
       fileRecordsForUpload: [], // maintain an upload queue
     };

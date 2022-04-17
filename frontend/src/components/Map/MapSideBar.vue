@@ -1,6 +1,6 @@
 <template>
-  <div id="styled__Sidebar">
-    <nav :key="estate.id" :value="drawer">
+  <div id="sidebar">
+    <nav :key="estate.id">
       <ul>
         <li><RealEstate /></li>
       </ul>
@@ -18,9 +18,6 @@ export default {
     ...mapGetters({
       estate: "GET_ESTATE",
     }),
-    drawer() {
-      return Object.keys(this.estate).length !== 0;
-    },
   },
   components: {
     RealEstate,
@@ -29,12 +26,12 @@ export default {
 </script>
 
 <style>
-#styled__Sidebar {
+#sidebar {
   position: absolute;
   background-color: white;
   width: 386px;
   z-index: 2;
-  top: 72px;
+  top: 67px;
 }
 
 .v-application ul {

@@ -31,7 +31,7 @@ export default {
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     btnProps: {
       class: "ml-4",
       depressed: true,

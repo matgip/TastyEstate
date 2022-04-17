@@ -29,7 +29,7 @@ export default {
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     paginationProps: {
       color: "deep-orange",
       circle: true,

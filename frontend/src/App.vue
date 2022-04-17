@@ -4,7 +4,7 @@
       <Navbar />
 
       <v-main>
-        <Search v-if="isNotInLoginPage()" id="search" />
+        <Search v-if="isNotInLoginPage()" />
         <router-view :key="$route.fullPath"></router-view>
       </v-main>
 
@@ -34,17 +34,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-#search {
-  padding: 0 300px;
-  margin-top: 10px;
-  margin-bottom: 0px;
-}
-
-@media screen and (max-width: 768px) {
-  #search {
-    padding: 0 30px;
-  }
-}
-</style>

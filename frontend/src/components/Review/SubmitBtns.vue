@@ -18,7 +18,7 @@ export default {
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     btnProps: {
       class: "ma-2",
       color: "deep-orange",

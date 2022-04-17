@@ -35,7 +35,7 @@ export default {
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     textProp: {
       class: "grey--text text-caption mr-2",
     },

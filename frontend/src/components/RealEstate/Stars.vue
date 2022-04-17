@@ -26,7 +26,7 @@ export default {
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     rowProps: {
       align: "center",
       class: "ma-0",

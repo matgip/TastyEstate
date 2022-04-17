@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      // Vuetify CSS style props
+      // Vuetify CSS Style & Props
       tabsProps: {
         left: true,
       },

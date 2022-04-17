@@ -24,7 +24,7 @@ export default {
   },
   data: () => ({
     likesIcon: "fas fa-heart",
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     btnProps: {
       color: "deep-orange",
       outlined: true,

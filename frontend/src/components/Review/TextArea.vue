@@ -47,7 +47,7 @@ export default {
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     titleProps: {
       filled: true,
       class: "mt-4",
