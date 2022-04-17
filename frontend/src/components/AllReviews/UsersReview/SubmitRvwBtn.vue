@@ -14,13 +14,13 @@
 
 <script>
 import ReviewLayout from "@/layouts/ReviewLayout.vue";
-import EstateName from "@/components/Review/EstateName.vue";
-import Rating from "@/components/Review/Rating.vue";
-import Kindness from "@/components/Review/Kindness.vue";
-import Price from "@/components/Review/Price.vue";
-import Contract from "@/components/Review/Contract.vue";
-import TextArea from "@/components/Review/TextArea.vue";
-import SubmitBtns from "@/components/Review/SubmitBtns.vue";
+import EstateName from "@/components/AllReviews/Review/EstateName.vue";
+import Rating from "@/components/AllReviews/Review/Rating.vue";
+import Kindness from "@/components/AllReviews/Review/Kindness.vue";
+import Price from "@/components/AllReviews/Review/Price.vue";
+import Contract from "@/components/AllReviews/Review/Contract.vue";
+import TextArea from "@/components/AllReviews/Review/TextArea.vue";
+import SubmitBtns from "@/components/AllReviews/Review/SubmitBtns.vue";
 
 import { mapGetters } from "vuex";
 
