@@ -1,7 +1,7 @@
 <template>
   <div>
     <ReviewLayout>
-      <EstateName slot="EstateName" :placeName="placeName" />
+      <EstateName slot="EstateName" :placeName="estate.place_name" />
       <Rating slot="rating" :propRating="rating" @ratingSelected="getRating" />
       <Kindness slot="kindness" :propKindness="kindness" />
       <Price slot="price" :propPrice="price" />
@@ -25,7 +25,6 @@ import SubmitBtns from "@/components/Review/SubmitBtns.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  props: ["placeName"],
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",

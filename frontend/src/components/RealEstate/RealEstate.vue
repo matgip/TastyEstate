@@ -5,8 +5,6 @@
       <ImageUpload slot="REimgUpload" :estateId="estate.id" />
       <Title slot="REName" :placeName="estate.place_name" />
       <Stars slot="REStars" :stars="stars" :likes="likes" />
-      <LikeButton slot="RELikes" :likes="likes" @likeBtnClicked="onLikeBtnClicked" />
-      <ReviewButton slot="REReview" :placeName="estate.place_name" />
       <AllReviewsBtn slot="REALLReviews" />
       <EstateInfo slot="REInfo" :estateInfo="estate" />
     </RELayout>
@@ -19,8 +17,6 @@ import Images from "@/components/RealEstate/Images.vue";
 import ImageUpload from "@/components/RealEstate/ImageUpload.vue";
 import Title from "@/components/RealEstate/Title.vue";
 import Stars from "@/components/RealEstate/Stars.vue";
-import LikeButton from "@/components/RealEstate/LikeButton.vue";
-import ReviewButton from "../../views/Review.vue";
 import AllReviewsBtn from "@/components/RealEstate/AllReviewsBtn.vue";
 import EstateInfo from "@/components/RealEstate/EstateInfo.vue";
 
@@ -35,19 +31,12 @@ export default {
       likes: "GET_LIKES",
     }),
   },
-  methods: {
-    onLikeBtnClicked() {
-      this.$store.dispatch("updateLikes", { estateId: this.estate.id, userId: this.user.id });
-    },
-  },
   components: {
     RELayout,
     Images,
     ImageUpload,
     Title,
     Stars,
-    LikeButton,
-    ReviewButton,
     AllReviewsBtn,
     EstateInfo,
   },

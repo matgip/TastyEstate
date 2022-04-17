@@ -1,13 +1,18 @@
 <template>
   <div>
-    <v-btn v-bind="btnProps" @click="likeBtnClicked">
-      <v-icon v-bind="iconProps"> {{ likesIcon }} </v-icon>
-      {{ likes }}
-    </v-btn>
+    <BaseButton
+      :btnProps="btnProps"
+      :iconProps="iconProps"
+      :method="likeBtnClicked"
+      :icon="'fas fa-thumbs-up'"
+      :button="likes"
+    />
   </div>
 </template>
 
 <script>
+import BaseButton from "@/common/BaseButton.vue";
+
 export default {
   props: {
     userId: {
@@ -42,7 +47,9 @@ export default {
       left: true,
       color: "deep-orange",
     },
-    likesIcon: "fas fa-thumbs-up",
   }),
+  components: {
+    BaseButton,
+  },
 };
 </script>

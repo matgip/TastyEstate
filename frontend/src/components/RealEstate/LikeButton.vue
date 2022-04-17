@@ -8,15 +8,6 @@
 import BaseButton from "@/common/BaseButton.vue";
 
 export default {
-  props: {
-    likes: {
-      type: Number,
-      required: true,
-      validator: function(value) {
-        return value >= 0;
-      },
-    },
-  },
   methods: {
     emitEvent() {
       this.$emit("likeBtnClicked");

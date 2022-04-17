@@ -46,8 +46,4 @@
 .v-application p {
   margin-bottom: 0px;
 }
-
-.v-card {
-  margin: 2px 2px;
-}
 </style>

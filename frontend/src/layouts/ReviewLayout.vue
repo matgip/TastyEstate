@@ -13,7 +13,7 @@
       <!-- Only can see if dialog is true -->
       <v-card>
         <v-card-title>
-          <slot name="realestateName" />
+          <slot name="EstateName" />
         </v-card-title>
 
         <v-divider />

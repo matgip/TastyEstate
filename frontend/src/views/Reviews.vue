@@ -6,6 +6,9 @@
       <ContractGraph :key="stats[2].count" :data="stats[2].data" slot="ContractGraph" />
     </GraphsLayout>
 
+    <LikeButton @likeBtnClicked="onLikeBtnClicked" />
+    <ReviewButton />
+
     <Tabs @orderByLike="toLikeOrder" @orderByTime="toTimeOrder" />
 
     <AllReviewsLayout v-for="(review, i) in reviews" :key="i">
@@ -25,6 +28,9 @@ import GraphsLayout from "@/layouts/GraphsLayout.vue";
 import KindnessGraph from "@/components/AllReviews/BarGraph/KindnessGraph.vue";
 import PriceGraph from "@/components/AllReviews/BarGraph/PriceGraph.vue";
 import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
+
+import LikeButton from "@/components/RealEstate/LikeButton.vue";
+import ReviewButton from "@/views/Review.vue";
 
 import Tabs from "@/components/AllReviews/Reviews/Tabs.vue";
 
@@ -55,6 +61,7 @@ export default {
     ...mapGetters({
       estate: "GET_ESTATE",
       user: "GET_USER",
+      likes: "GET_LIKES",
     }),
     reviews() {
       return this.order === "like" ? this.orderByLikes : this.orderByTimes;
@@ -64,6 +71,9 @@ export default {
     },
   },
   methods: {
+    onLikeBtnClicked() {
+      this.$store.dispatch("updateLikes", { estateId: this.estate.id, userId: this.user.id });
+    },
     async constructReviews(queryRange) {
       try {
         if (this.estate === undefined || this.estate.id === undefined) {
@@ -203,7 +213,12 @@ export default {
     KindnessGraph,
     PriceGraph,
     ContractGraph,
+
+    LikeButton,
+    ReviewButton,
+
     Tabs,
+
     AllReviewsLayout,
     UserProfile,
     Stars,
