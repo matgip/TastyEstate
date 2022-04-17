@@ -32,18 +32,18 @@ import PriceGraph from "@/components/AllReviews/BarGraph/PriceGraph.vue";
 import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
 
 import RvwsBtnLayout from "@/layouts/RvwsBtnLayout.vue";
-import EstateLikeBtn from "@/components/AllReviews/Reviews/EstateLikeBtn.vue";
-import SubmitRvwBtn from "@/components/AllReviews/Reviews/SubmitRvwBtn.vue";
+import EstateLikeBtn from "@/components/AllReviews/UsersReview/EstateLikeBtn.vue";
+import SubmitRvwBtn from "@/components/AllReviews/UsersReview/SubmitRvwBtn.vue";
 
-import Tabs from "@/components/AllReviews/Reviews/Tabs.vue";
+import Tabs from "@/components/AllReviews/UsersReview/Tabs.vue";
 
 import AllReviewsLayout from "@/layouts/AllReviewsLayout.vue";
-import UserProfile from "@/components/AllReviews/Reviews/UserProfile.vue";
-import Stars from "@/components/AllReviews/Reviews/Stars.vue";
-import Likes from "@/components/AllReviews/Reviews/Likes.vue";
-import Title from "@/components/AllReviews/Reviews/Title.vue";
-import Content from "@/components/AllReviews/Reviews/Content.vue";
-import Pagenation from "@/components/AllReviews/Reviews/Pagination.vue";
+import UserProfile from "@/components/AllReviews/UsersReview/UserProfile.vue";
+import Stars from "@/components/AllReviews/UsersReview/Stars.vue";
+import Likes from "@/components/AllReviews/UsersReview/Likes.vue";
+import Title from "@/components/AllReviews/UsersReview/Title.vue";
+import Content from "@/components/AllReviews/UsersReview/Content.vue";
+import Pagenation from "@/components/AllReviews/UsersReview/Pagination.vue";
 
 import { mapGetters } from "vuex";
 
