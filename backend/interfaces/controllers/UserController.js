@@ -3,7 +3,7 @@ const axios = require("axios");
 
 const UserRepository = require("../../infrastructure/repositories/users");
 
-const { sign } = require("../../utils/jwt");
+const { sign, verify } = require("../../utils/jwt");
 
 const parseKakaoAccount = (data) => {
   return {
@@ -73,7 +73,13 @@ const logout = async (req, res) => {
 
 const get = async (req, res) => {
   try {
-    const user = await UserRepository.get(req.params.id);
+    const token = req.cookies["JWT"];
+    if (!token) return res.sendStatus(StatusCodes.FORBIDDEN);
+    const decoded = verify(token);
+    if (!decoded) return res.sendStatus(StatusCodes.FORBIDDEN);
+
+    const user = await UserRepository.get(decoded.id);
+    console.log("user", user)
     if (UserRepository.isEmpty(user) === true) {
       res.sendStatus(StatusCodes.NO_CONTENT);
       return;

@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <nav id="navbar">
     <div id="title" @click="gotoHome">
@@ -6,31 +8,11 @@
 
     <ul class="navbar__menu">
       <li class="navbar__menu__item">
-        <BaseButton
-          v-if="user == null"
-          :btnProps="btnProps"
-          :iconProps="iconProps"
-          :method="gotoLogin"
-          :icon="'fas fa-user-lock'"
-          :button="'로그인'"
-        />
-        <BaseButton
-          v-else
-          :btnProps="btnProps"
-          :iconProps="iconProps"
-          :method="onLogout"
-          :icon="'fas fa-sign-out-alt'"
-          :button="'로그아웃'"
-        />
+        <BaseButton v-if="user == null" :btnProps="btnProps" :iconProps="iconProps" :method="gotoLogin" :icon="'fas fa-user-lock'" :button="'로그인'" />
+        <BaseButton v-else :btnProps="btnProps" :iconProps="iconProps" :method="onLogout" :icon="'fas fa-sign-out-alt'" :button="'로그아웃'" />
       </li>
       <li class="navbar__menu__item">
-        <BaseButton
-          :btnProps="btnProps"
-          :iconProps="iconProps"
-          :method="gotoHome"
-          :icon="'fas fa-home'"
-          :button="'홈'"
-        />
+        <BaseButton :btnProps="btnProps" :iconProps="iconProps" :method="gotoHome" :icon="'fas fa-home'" :button="'홈'" />
       </li>
     </ul>
 
@@ -43,7 +25,6 @@
 
 <script>
 import BaseButton from "@/common/BaseButton.vue";
-// import loginController from "../api/login"
 
 import { mapGetters } from "vuex";
 

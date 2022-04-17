@@ -19,6 +19,9 @@ import Search from "./components/Map/MapSearch.vue";
 import Footer from "./components/TheFooter.vue";
 export default {
   name: "App",
+  async mounted() {
+    await this.$store.dispatch("fetchUser");
+  },
   methods: {
     isNotInLoginPage() {
       return this.$router.history.current["path"] !== "/login";

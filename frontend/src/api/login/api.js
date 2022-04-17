@@ -17,3 +17,12 @@ export const logoutApi = async (social, accessToken) => {
   }
   return response.data;
 }
+
+const _fetchMeApi = new ModeAPI("user/me")
+export const fetchMeApi = async () => {
+  const response = await _fetchMeApi.get();
+  if (response === undefined) {
+    throw new Error("Failed to fetch user information");
+  }
+  return response.data;
+}
