@@ -17,7 +17,7 @@ import Images from "@/components/RealEstate/Images.vue";
 import ImageUpload from "@/components/RealEstate/ImageUpload.vue";
 import Title from "@/components/RealEstate/Title.vue";
 import Stars from "@/components/RealEstate/Stars.vue";
-import AllReviewsBtn from "@/components/RealEstate/AllReviewsBtn.vue";
+import AllReviewsBtn from "@/components/RealEstate/ReviewsBtn.vue";
 import EstateInfo from "@/components/RealEstate/EstateInfo.vue";
 
 import { mapGetters } from "vuex";

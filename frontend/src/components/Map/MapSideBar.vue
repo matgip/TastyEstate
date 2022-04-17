@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import RealEstate from "@/components/RealEstate/RealEstate.vue";
+import RealEstate from "@/components/RealEstate/TheRealEstate.vue";
 
 import { mapGetters } from "vuex";
 

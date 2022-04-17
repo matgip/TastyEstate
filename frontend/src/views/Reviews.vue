@@ -33,7 +33,7 @@ import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
 
 import RvwsBtnLayout from "@/layouts/RvwsBtnLayout.vue";
 import EstateLikeBtn from "@/components/AllReviews/UsersReview/EstateLikeBtn.vue";
-import SubmitRvwBtn from "@/components/AllReviews/UsersReview/SubmitRvwBtn.vue";
+import SubmitRvwBtn from "@/components/AllReviews/Review/TheReview.vue";
 
 import Tabs from "@/components/AllReviews/UsersReview/Tabs.vue";
 
