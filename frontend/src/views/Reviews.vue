@@ -6,8 +6,10 @@
       <ContractGraph :key="stats[2].count" :data="stats[2].data" slot="ContractGraph" />
     </GraphsLayout>
 
-    <LikeButton @estateLikeBtnClicked="updateEstateLikes" />
-    <ReviewButton />
+    <RvwsBtnLayout>
+      <LikeButton slot="RvwsLikeBtn" @estateLikeBtnClicked="updateEstateLikes" />
+      <ReviewButton slot="SubmitRvwBtn" />
+    </RvwsBtnLayout>
 
     <Tabs @orderByLike="toLikeOrder" @orderByTime="toTimeOrder" />
 
@@ -29,6 +31,7 @@ import KindnessGraph from "@/components/AllReviews/BarGraph/KindnessGraph.vue";
 import PriceGraph from "@/components/AllReviews/BarGraph/PriceGraph.vue";
 import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
 
+import RvwsBtnLayout from "@/layouts/RvwsBtnLayout.vue";
 import LikeButton from "@/components/RealEstate/LikeButton.vue";
 import ReviewButton from "@/views/Review.vue";
 
@@ -214,6 +217,7 @@ export default {
     PriceGraph,
     ContractGraph,
 
+    RvwsBtnLayout,
     LikeButton,
     ReviewButton,
 

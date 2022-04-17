@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs v-bind="tabsProps">
+    <v-tabs :style="tabsStyl" v-bind="tabsProps">
       <v-tab @click="orderByLike">좋아요 순</v-tab>
       <v-tab @click="orderByTime">최신 순</v-tab>
     </v-tabs>
@@ -20,6 +20,9 @@ export default {
   data() {
     return {
       // Vuetify CSS Style & Props
+      tabsStyl: {
+        margin: "0px 18px",
+      },
       tabsProps: {
         left: true,
       },

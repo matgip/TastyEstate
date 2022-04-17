@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" v-bind="dialogProps">
       <template #activator="{ on }">
-        <v-btn v-bind="btnProps" v-on="on" @click="onClicked">
+        <v-btn :style="btnStyl" v-bind="btnProps" v-on="on" @click="onClicked">
           <v-icon v-bind="iconProps">
             {{ icon }}
           </v-icon>
@@ -63,6 +63,10 @@ export default {
   },
   data: () => ({
     dialog: false,
+    // Vuetify CSS Style & Props
+    btnStyl: {
+      margin: "34px 0",
+    },
     dialogProps: {
       persistent: true,
       "max-width": "700px",
@@ -72,13 +76,11 @@ export default {
       color: "deep-orange",
       outlined: true,
       rounded: true,
-      "x-small": true,
     },
 
     icon: "fas fa-edit",
     iconProps: {
       left: true,
-      "x-small": true,
     },
   }),
   methods: {

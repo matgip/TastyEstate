@@ -1,9 +1,10 @@
 <template>
   <div>
     <BaseButton
+      :style="btnStyl"
       :btnProps="btnProps"
       :method="estateLikeBtnClicked"
-      :icon="likesIcon"
+      :icon="'fas fa-heart'"
       :iconProps="iconProps"
       :button="'좋아요'"
     />
@@ -20,17 +21,17 @@ export default {
     },
   },
   data: () => ({
-    likesIcon: "fas fa-heart",
     // Vuetify CSS Style & Props
+    btnStyl: {
+      margin: "34px 18px",
+    },
     btnProps: {
       color: "deep-orange",
       outlined: true,
       rounded: true,
-      "x-small": true,
     },
     iconProps: {
       left: true,
-      "x-small": true,
     },
   }),
   components: {
