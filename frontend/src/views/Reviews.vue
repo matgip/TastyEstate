@@ -6,7 +6,7 @@
       <ContractGraph :key="stats[2].count" :data="stats[2].data" slot="ContractGraph" />
     </GraphsLayout>
 
-    <LikeButton @likeBtnClicked="onLikeBtnClicked" />
+    <LikeButton @estateLikeBtnClicked="updateEstateLikes" />
     <ReviewButton />
 
     <Tabs @orderByLike="toLikeOrder" @orderByTime="toTimeOrder" />
@@ -14,7 +14,7 @@
     <AllReviewsLayout v-for="(review, i) in reviews" :key="i">
       <UserProfile slot="UserProfile" :avatarURL="review.avatar" :nickName="review.nickname" :timeStamp="review.time" />
       <Stars slot="Rating" :rating="review.rating" />
-      <Likes slot="Likes" :likes="review.likes" :userId="review.userId" @likeBtnClicked="addLike" />
+      <Likes slot="Likes" :likes="review.likes" :userId="review.userId" @rvwLikeBtnClicked="addLike" />
       <Title slot="Title" :title="review.title" />
       <Content slot="Content" :text="review.text" />
     </AllReviewsLayout>
@@ -71,7 +71,7 @@ export default {
     },
   },
   methods: {
-    onLikeBtnClicked() {
+    updateEstateLikes() {
       this.$store.dispatch("updateLikes", { estateId: this.estate.id, userId: this.user.id });
     },
     async constructReviews(queryRange) {

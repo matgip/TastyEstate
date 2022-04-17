@@ -3,7 +3,7 @@
     <BaseButton
       :btnProps="btnProps"
       :iconProps="iconProps"
-      :method="likeBtnClicked"
+      :method="rvwLikeBtnClicked"
       :icon="'fas fa-thumbs-up'"
       :button="likes"
     />
@@ -31,8 +31,8 @@ export default {
     },
   },
   methods: {
-    likeBtnClicked() {
-      this.$emit("likeBtnClicked", this.userId);
+    rvwLikeBtnClicked() {
+      this.$emit("rvwLikeBtnClicked", this.userId);
     },
   },
   data: () => ({

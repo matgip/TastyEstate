@@ -1,6 +1,12 @@
 <template>
   <div>
-    <BaseButton :btnProps="btnProps" :method="emitEvent" :icon="likesIcon" :iconProps="iconProps" :button="'좋아요'" />
+    <BaseButton
+      :btnProps="btnProps"
+      :method="estateLikeBtnClicked"
+      :icon="likesIcon"
+      :iconProps="iconProps"
+      :button="'좋아요'"
+    />
   </div>
 </template>
 
@@ -9,8 +15,8 @@ import BaseButton from "@/common/BaseButton.vue";
 
 export default {
   methods: {
-    emitEvent() {
-      this.$emit("likeBtnClicked");
+    estateLikeBtnClicked() {
+      this.$emit("estateLikeBtnClicked");
     },
   },
   data: () => ({
