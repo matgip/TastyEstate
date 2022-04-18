@@ -1,8 +1,8 @@
 <template>
   <div>
-    <BaseButton
-      :btnProps="btnProps"
-      :iconProps="iconProps"
+    <base-button
+      :btn-props="btnProps"
+      :icon-props="iconProps"
       :method="rvwLikeBtnClicked"
       :icon="'fas fa-thumbs-up'"
       :button="likes"

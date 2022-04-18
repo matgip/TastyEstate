@@ -1,11 +1,11 @@
 <template>
   <div>
-    <BaseButton
+    <base-button
       :style="btnStyl"
-      :btnProps="btnProps"
+      :btn-props="btnProps"
+      :icon-props="iconProps"
       :method="estateLikeBtnClicked"
       :icon="'fas fa-heart'"
-      :iconProps="iconProps"
       :button="'좋아요'"
     />
   </div>
