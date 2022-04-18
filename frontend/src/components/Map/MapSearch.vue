@@ -89,7 +89,7 @@ export default {
       label: "지역 또는 단지명을 입력하세요.",
       "no-filter": true,
       "return-object": true,
-      "prepend-icon": "fas fa-search",
+      "append-icon": "fas fa-search",
       "item-text": "place_name",
     },
     iconProps: {

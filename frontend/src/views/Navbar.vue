@@ -152,6 +152,7 @@ export default {
   }
 
   .navbar__menu__item {
+    margin-right: 20px;
     border-top: 1px solid #e0e0e0;
     border-radius: 0;
   }
