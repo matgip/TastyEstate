@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Navbar from "./components/TheNavbar.vue";
+import Navbar from "./views/Navbar.vue";
 import Search from "./components/Map/MapSearch.vue";
 export default {
   name: "App",
