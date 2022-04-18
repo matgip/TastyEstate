@@ -8,27 +8,27 @@
 
     <ul class="navbar__menu">
       <li class="navbar__menu__item">
-        <BaseButton
+        <base-button
           v-if="user == null"
-          :btnProps="btnProps"
-          :iconProps="iconProps"
+          :btn-props="btnProps"
+          :icon-props="iconProps"
           :method="gotoLogin"
           :icon="'fas fa-user-lock'"
           :button="'로그인'"
         />
-        <BaseButton
+        <base-button
           v-else
-          :btnProps="btnProps"
-          :iconProps="iconProps"
+          :btn-props="btnProps"
+          :icon-props="iconProps"
           :method="onLogout"
           :icon="'fas fa-sign-out-alt'"
           :button="'로그아웃'"
         />
       </li>
       <li class="navbar__menu__item">
-        <BaseButton
-          :btnProps="btnProps"
-          :iconProps="iconProps"
+        <base-button
+          :btn-props="btnProps"
+          :icon-props="iconProps"
           :method="gotoHome"
           :icon="'fas fa-home'"
           :button="'홈'"

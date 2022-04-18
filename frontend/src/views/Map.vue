@@ -1,18 +1,18 @@
 <template>
   <div>
-    <MapKakao />
-    <SideBar />
+    <map-kakao />
+    <map-side-bar />
   </div>
 </template>
 
 <script>
-import SideBar from "@/components/Map/MapSideBar.vue";
 import MapKakao from "@/components/Map/MapKakao.vue";
+import MapSideBar from "../components/Map/MapSideBar.vue";
 
 export default {
   components: {
     MapKakao,
-    SideBar,
+    MapSideBar,
   },
 };
 </script>
