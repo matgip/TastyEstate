@@ -1,31 +1,38 @@
 <template>
   <div>
-    <ReviewLayout>
-      <EstateName slot="EstateName" :placeName="placeName" />
-      <Rating slot="rating" :propRating="rating" @ratingSelected="getRating" />
-      <Kindness slot="kindness" :propKindness="kindness" />
-      <Price slot="price" :propPrice="price" />
-      <Contract slot="contract" :propContract="contract" />
-      <TextArea slot="text" :propTitle="title" :propText="text" @reviewTitle="getTitle" @reviewText="getText" />
-      <SubmitBtns slot="buttons" @submitReview="onSubmitReview" />
-    </ReviewLayout>
+    <review-layout>
+      <estate-name slot="estate-name" :place-name="estate.place_name" />
+      <rating slot="review-rating" :prop-rating="rating" @rating-selected="handleEventRating" />
+
+      <price-chk-box slot="review-price" :prop-price="price" />
+      <kindness-chk-box slot="review-kindness" :prop-kindness="kindness" />
+      <contract-chk-box slot="review-contract" :prop-contract="contract" />
+
+      <text-area
+        slot="review-title-and-text"
+        :prop-title="title"
+        :prop-text="text"
+        @review-title="handleEventTitle"
+        @review-text="handleEventText"
+      />
+      <submit-btns slot="review-buttons" @submit-review="handleEventSubmit" />
+    </review-layout>
   </div>
 </template>
 
 <script>
 import ReviewLayout from "@/layouts/ReviewLayout.vue";
-import EstateName from "@/components/Review/EstateName.vue";
-import Rating from "@/components/Review/Rating.vue";
-import Kindness from "@/components/Review/Kindness.vue";
-import Price from "@/components/Review/Price.vue";
-import Contract from "@/components/Review/Contract.vue";
-import TextArea from "@/components/Review/TextArea.vue";
-import SubmitBtns from "@/components/Review/SubmitBtns.vue";
+import EstateName from "./EstateName.vue";
+import Rating from "./Rating.vue";
+import KindnessChkBox from "./KindnessChkBox.vue";
+import PriceChkBox from "./PriceChkBox.vue";
+import ContractChkBox from "./ContractChkBox.vue";
+import TextArea from "./TextArea.vue";
+import SubmitBtns from "./SubmitBtns.vue";
 
 import { mapGetters } from "vuex";
 
 export default {
-  props: ["placeName"],
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
@@ -36,7 +43,7 @@ export default {
     }),
   },
   methods: {
-    async onSubmitReview() {
+    async handleEventSubmit() {
       try {
         const resp = await this.$api.review.get({ baseId: this.estate.id, subIds: [this.user.id] });
         if (resp && resp.status === 204) {
@@ -76,13 +83,13 @@ export default {
         console.error(err);
       }
     },
-    getRating(rating) {
+    handleEventRating(rating) {
       this.rating = rating;
     },
-    getTitle(title) {
+    handleEventTitle(title) {
       this.title = title;
     },
-    getText(text) {
+    handleEventText(text) {
       this.text = text;
     },
     clearReview() {
@@ -104,9 +111,9 @@ export default {
     ReviewLayout,
     EstateName,
     Rating,
-    Kindness,
-    Price,
-    Contract,
+    KindnessChkBox,
+    PriceChkBox,
+    ContractChkBox,
     TextArea,
     SubmitBtns,
   },

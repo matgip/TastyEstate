@@ -13,13 +13,6 @@
 
 <script>
 export default {
-  data: () => ({
-    addrIcon: "fas fa-map-marker-alt",
-    phoneIcon: "fas fa-book",
-    iconProps: {
-      "x-small": true,
-    },
-  }),
   props: {
     estateInfo: {
       type: Object,
@@ -31,6 +24,12 @@ export default {
       },
     },
   },
-  methods: {},
+  data: () => ({
+    addrIcon: "fas fa-map-marker-alt",
+    phoneIcon: "fas fa-book",
+    iconProps: {
+      "x-small": true,
+    },
+  }),
 };
 </script>

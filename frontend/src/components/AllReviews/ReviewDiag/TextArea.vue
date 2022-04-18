@@ -40,14 +40,14 @@ export default {
   },
   methods: {
     emitTitle(event) {
-      this.$emit("reviewTitle", event.target.value);
+      this.$emit("review-title", event.target.value);
     },
     emitText(event) {
-      this.$emit("reviewText", event.target.value);
+      this.$emit("review-text", event.target.value);
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     titleProps: {
       filled: true,
       class: "mt-4",

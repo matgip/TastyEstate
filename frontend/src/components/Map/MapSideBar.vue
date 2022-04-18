@@ -1,19 +1,15 @@
 <template>
-  <div>
-    <v-navigation-drawer
-      class="vuetify-sidebar"
-      style="top: 72px"
-      :key="estate.id"
-      v-bind="navbarProps"
-      :value="drawer"
-    >
-      <RealEstate />
-    </v-navigation-drawer>
+  <div id="sidebar">
+    <nav :key="estate.id">
+      <ul>
+        <li><the-real-estate /></li>
+      </ul>
+    </nav>
   </div>
 </template>
 
 <script>
-import RealEstate from "@/components/RealEstate/RealEstate.vue";
+import TheRealEstate from "@/components/RealEstate/TheRealEstate.vue";
 
 import { mapGetters } from "vuex";
 
@@ -22,28 +18,23 @@ export default {
     ...mapGetters({
       estate: "GET_ESTATE",
     }),
-    drawer() {
-      return Object.keys(this.estate).length !== 0;
-    },
-  },
-  data() {
-    return {
-      // Vuetify CSS style props
-      navbarProps: {
-        bottom: true,
-        width: 360,
-      },
-    };
   },
   components: {
-    RealEstate,
+    TheRealEstate,
   },
 };
 </script>
 
-<style scoped>
-.vuetify-sidebar {
+<style>
+#sidebar {
   position: absolute;
+  background-color: white;
+  width: 386px;
   z-index: 2;
+  top: 67px;
+}
+
+.v-application ul {
+  padding-left: 0px;
 }
 </style>

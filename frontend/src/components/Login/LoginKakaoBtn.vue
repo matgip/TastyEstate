@@ -1,5 +1,5 @@
 <template>
-  <BaseButton :btnProps="btnProps" :iconProps="iconProps" :icon="icon" :method="method" :button="button" />
+  <base-button :btn-props="btnProps" :icon-props="iconProps" :icon="icon" :method="method" :button="button" />
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import BaseButton from "@/common/BaseButton.vue";
 export default {
   props: ["method", "icon", "button"],
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     btnProps: {
       color: "yellow lighten-1",
     },

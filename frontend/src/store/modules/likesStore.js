@@ -30,7 +30,7 @@ const likesStore = {
       commit(UPDATE_LIKES, likes);
     },
     async updateLikes({ dispatch }, payLoad) {
-      const resp = await this.$api.likes.put(payLoad.estateID, { user_id: payLoad.userID });
+      const resp = await this.$api.likes.put(payLoad.estateId, { user_id: payLoad.userId });
       if (resp.data.result === "already-added") {
         alert("이미 좋아요를 누르셨습니다.");
         return;
@@ -38,7 +38,7 @@ const likesStore = {
       if (resp.data.result === "success") {
         alert("이 부동산을 좋아합니다.");
       }
-      await dispatch("getLikes", payLoad.estateID);
+      await dispatch("getLikes", payLoad.estateId);
     },
   },
 };

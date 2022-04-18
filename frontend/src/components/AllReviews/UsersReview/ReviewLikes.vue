@@ -1,13 +1,18 @@
 <template>
   <div>
-    <v-btn v-bind="btnProps" @click="likeBtnClicked">
-      <v-icon v-bind="iconProps"> {{ likesIcon }} </v-icon>
-      {{ likes }}
-    </v-btn>
+    <base-button
+      :btn-props="btnProps"
+      :icon-props="iconProps"
+      :method="rvwLikeBtnClicked"
+      :icon="'fas fa-thumbs-up'"
+      :button="likes"
+    />
   </div>
 </template>
 
 <script>
+import BaseButton from "@/common/BaseButton.vue";
+
 export default {
   props: {
     userId: {
@@ -26,12 +31,12 @@ export default {
     },
   },
   methods: {
-    likeBtnClicked() {
-      this.$emit("likeBtnClicked", this.userId);
+    rvwLikeBtnClicked() {
+      this.$emit("rvwLikeBtnClicked", this.userId);
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     btnProps: {
       class: "ml-4",
       depressed: true,
@@ -42,7 +47,9 @@ export default {
       left: true,
       color: "deep-orange",
     },
-    likesIcon: "fas fa-thumbs-up",
   }),
+  components: {
+    BaseButton,
+  },
 };
 </script>

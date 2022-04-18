@@ -1,6 +1,7 @@
 <template>
-  <div data-app>
+  <div data-app id="search">
     <v-autocomplete
+      :style="searchCss"
       v-bind="searchProps"
       v-model="select"
       :items="estates"
@@ -77,16 +78,16 @@ export default {
       groupCode: "AG2",
       radius: 20000,
     },
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
+    searchCss: {
+      width: "386px",
+      margin: "0px 8px",
+    },
     searchProps: {
       clearable: true,
       color: "deep-orange",
-      class: "mx-4",
-      dense: true,
-      outlined: true,
       label: "지역 또는 단지명을 입력하세요.",
       "no-filter": true,
-      "solo-inverted": true,
       "return-object": true,
       "prepend-icon": "fas fa-search",
       "item-text": "place_name",
@@ -103,3 +104,14 @@ export default {
   }),
 };
 </script>
+
+<style scoped>
+#search {
+  border-bottom: 1px solid #bdbdbd;
+}
+@media screen and (max-width: 768px) {
+  #search {
+    padding: 0 30px;
+  }
+}
+</style>

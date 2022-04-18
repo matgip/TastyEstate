@@ -30,12 +30,12 @@ export default {
         return this.propRating;
       },
       set(newRating) {
-        this.$emit("ratingSelected", newRating);
+        this.$emit("rating-selected", newRating);
       },
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     textProp: {
       class: "grey--text text-caption mr-2",
     },

@@ -1,28 +1,28 @@
 <template>
   <div>
     <v-avatar v-bind="avatarProps">
-      <img v-if="avatarURL" :src="avatarURL" />
+      <img v-if="avatarUrl" :src="avatarUrl" />
       <v-icon v-else v-text="avatarIcon" />
     </v-avatar>
-    {{ nickName }}
-    <span id="time">{{ timeStamp }}</span>
+    {{ nickname }}
+    <span id="time">{{ timestamp }}</span>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    avatarURL: {
+    avatarUrl: {
       type: String,
     },
-    nickName: {
+    nickname: {
       type: String,
       required: true,
       validator: function(value) {
         return value !== null;
       },
     },
-    timeStamp: {
+    timestamp: {
       type: String,
       required: true,
       validator: function(value) {
@@ -31,7 +31,7 @@ export default {
     },
   },
   data: () => ({
-    // Vuetify CSS style props
+    // Vuetify CSS Style & Props
     avatarProps: {
       size: "36px",
     },

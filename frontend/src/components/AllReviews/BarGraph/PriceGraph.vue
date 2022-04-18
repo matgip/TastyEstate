@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BaseBarGraph :data="data" :categories="categories" :title="title" :colors="colors" />
+    <base-bar-graph :data="data" :categories="categories" :title="title" :colors="colors" />
   </div>
 </template>
 
@@ -8,9 +8,6 @@
 import BaseBarGraph from "@/common/BaseBarGraph.vue";
 
 export default {
-  components: {
-    BaseBarGraph,
-  },
   props: {
     data: {
       type: Array,
@@ -23,6 +20,9 @@ export default {
       title: "가격",
       colors: ["#BA68C8"],
     };
+  },
+  components: {
+    BaseBarGraph,
   },
 };
 </script>

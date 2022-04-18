@@ -1,25 +1,25 @@
 <template>
   <div>
-    <v-row>
-      <v-carousel v-bind="carouselProps">
-        <v-carousel-item v-for="i in images" :key="i" :src="getImgURL(estateID, i)" v-bind="carouselItemProps" />
-      </v-carousel>
-    </v-row>
+    <v-carousel v-bind="cruslProps" style="width: 140px; height: 168px;">
+      <v-carousel-item v-for="i in images" :key="i" v-bind="carouselItemProps">
+        <img :src="getImgUrl(estateId, i)" style="width: 140px; height: 168px;" />
+      </v-carousel-item>
+    </v-carousel>
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    getImgURL(estateID, imgNum) {
-      return `/api/upload/${estateID}?image=${imgNum}`;
+    getImgUrl(estateId, imgNum) {
+      return `/api/upload/${estateId}?image=${imgNum}`;
     },
   },
   data: () => ({
     images: [1, 2, 3, 4, 5, 6],
-    // Vuetify CSS style props
-    carouselProps: {
-      height: "400px",
+    // Vuetify CSS Style & Props
+    cruslStyle: {},
+    cruslProps: {
       "hide-delimiters": true,
       "show-arrows-on-hover": true,
     },
@@ -29,7 +29,7 @@ export default {
     },
   }),
   props: {
-    estateID: {
+    estateId: {
       type: String,
       required: true,
       validator: function(value) {
