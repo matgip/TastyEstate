@@ -3,9 +3,11 @@
     <review-layout>
       <estate-name slot="estate-name" :place-name="estate.place_name" />
       <rating slot="review-rating" :prop-rating="rating" @rating-selected="handleEventRating" />
-      <kindness slot="review-kindness" :prop-kindness="kindness" />
-      <price slot="review-price" :prop-price="price" />
-      <contract slot="review-contract" :prop-contract="contract" />
+
+      <price-chk-box slot="review-price" :prop-price="price" />
+      <kindness-chk-box slot="review-kindness" :prop-kindness="kindness" />
+      <contract-chk-box slot="review-contract" :prop-contract="contract" />
+
       <text-area
         slot="review-title-and-text"
         :prop-title="title"
@@ -20,13 +22,13 @@
 
 <script>
 import ReviewLayout from "@/layouts/ReviewLayout.vue";
-import EstateName from "@/components/AllReviews/Review/EstateName.vue";
-import Rating from "@/components/AllReviews/Review/Rating.vue";
-import Kindness from "@/components/AllReviews/Review/Kindness.vue";
-import Price from "@/components/AllReviews/Review/Price.vue";
-import Contract from "@/components/AllReviews/Review/Contract.vue";
-import TextArea from "@/components/AllReviews/Review/TextArea.vue";
-import SubmitBtns from "@/components/AllReviews/Review/SubmitBtns.vue";
+import EstateName from "./EstateName.vue";
+import Rating from "./Rating.vue";
+import KindnessChkBox from "./KindnessChkBox.vue";
+import PriceChkBox from "./PriceChkBox.vue";
+import ContractChkBox from "./ContractChkBox.vue";
+import TextArea from "./TextArea.vue";
+import SubmitBtns from "./SubmitBtns.vue";
 
 import { mapGetters } from "vuex";
 
@@ -109,9 +111,9 @@ export default {
     ReviewLayout,
     EstateName,
     Rating,
-    Kindness,
-    Price,
-    Contract,
+    KindnessChkBox,
+    PriceChkBox,
+    ContractChkBox,
     TextArea,
     SubmitBtns,
   },

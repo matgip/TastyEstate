@@ -5,15 +5,15 @@
     <v-container>
       <v-row>
         <v-col>
-          <slot name="KindnessGraph" />
+          <slot name="kindness-graph" />
         </v-col>
 
         <v-col>
-          <slot name="PriceGraph" />
+          <slot name="price-graph" />
         </v-col>
 
         <v-col>
-          <slot name="ContractGraph" />
+          <slot name="contract-graph" />
         </v-col>
       </v-row>
     </v-container>

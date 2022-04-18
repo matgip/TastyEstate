@@ -1,7 +1,7 @@
 <template>
   <div id="rvws__btn">
-    <slot name="RvwsLikeBtn" />
-    <slot name="SubmitRvwBtn" />
+    <slot name="estate-like-btn" />
+    <slot name="submit-review-btn" />
   </div>
 </template>
 

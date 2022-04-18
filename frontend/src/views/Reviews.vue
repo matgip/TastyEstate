@@ -1,27 +1,32 @@
 <template>
   <div class="wrapper">
-    <GraphsLayout>
-      <PriceGraph :key="stats[0].count" :data="stats[0].data" slot="PriceGraph" />
-      <KindnessGraph :key="stats[1].count" :data="stats[1].data" slot="KindnessGraph" />
-      <ContractGraph :key="stats[2].count" :data="stats[2].data" slot="ContractGraph" />
-    </GraphsLayout>
+    <graphs-layout>
+      <price-graph slot="price-graph" :key="stats[0].count" :data="stats[0].data" />
+      <kindness-graph slot="kindness-graph" :key="stats[1].count" :data="stats[1].data" />
+      <contract-graph slot="contract-graph" :key="stats[2].count" :data="stats[2].data" />
+    </graphs-layout>
 
-    <RvwsBtnLayout>
-      <EstateLikeBtn slot="RvwsLikeBtn" @estateLikeBtnClicked="updateEstateLikes" />
-      <SubmitRvwBtn slot="SubmitRvwBtn" />
-    </RvwsBtnLayout>
+    <rvws-btn-layout>
+      <estate-like-btn slot="estate-like-btn" @like-estate="handleEventEstateLike" />
+      <submit-rvw-btn slot="submit-review-btn" />
+    </rvws-btn-layout>
 
-    <Tabs @orderByLike="toLikeOrder" @orderByTime="toTimeOrder" />
+    <Tabs @order-by-like="toLikeOrder" @order-by-time="toTimeOrder" />
 
-    <AllReviewsLayout v-for="(review, i) in reviews" :key="i">
-      <UserProfile slot="UserProfile" :avatarURL="review.avatar" :nickName="review.nickname" :timeStamp="review.time" />
-      <Stars slot="Rating" :rating="review.rating" />
-      <Likes slot="Likes" :likes="review.likes" :userId="review.userId" @rvwLikeBtnClicked="addLike" />
-      <Title slot="Title" :title="review.title" />
-      <Content slot="Content" :text="review.text" />
-    </AllReviewsLayout>
+    <all-reviews-layout v-for="(review, i) in reviews" :key="i">
+      <user-profile
+        slot="user-profile"
+        :avatar-url="review.avatar"
+        :nickname="review.nickname"
+        :timestamp="review.time"
+      />
+      <review-stars slot="review-stars" :rating="review.rating" />
+      <review-likes slot="review-likes" :likes="review.likes" :user-id="review.userId" @rvwLikeBtnClicked="addLike" />
+      <review-title slot="review-title" :title="review.title" />
+      <review-contents slot="review-contents" :text="review.text" />
+    </all-reviews-layout>
 
-    <Pagenation :page="page" :totalCount="totalCount" />
+    <reviews-pagenation :page="page" :total-count="totalCount" />
   </div>
 </template>
 
@@ -33,17 +38,17 @@ import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
 
 import RvwsBtnLayout from "@/layouts/RvwsBtnLayout.vue";
 import EstateLikeBtn from "@/components/AllReviews/UsersReview/EstateLikeBtn.vue";
-import SubmitRvwBtn from "@/components/AllReviews/Review/TheReview.vue";
+import SubmitRvwBtn from "@/components/AllReviews/ReviewDiag/TheReview.vue";
 
 import Tabs from "@/components/AllReviews/UsersReview/Tabs.vue";
 
 import AllReviewsLayout from "@/layouts/AllReviewsLayout.vue";
 import UserProfile from "@/components/AllReviews/UsersReview/UserProfile.vue";
-import Stars from "@/components/AllReviews/UsersReview/Stars.vue";
-import Likes from "@/components/AllReviews/UsersReview/Likes.vue";
-import Title from "@/components/AllReviews/UsersReview/Title.vue";
-import Content from "@/components/AllReviews/UsersReview/Content.vue";
-import Pagenation from "@/components/AllReviews/UsersReview/Pagination.vue";
+import ReviewStars from "@/components/AllReviews/UsersReview/ReviewStars.vue";
+import ReviewLikes from "@/components/AllReviews/UsersReview/ReviewLikes.vue";
+import ReviewTitle from "@/components/AllReviews/UsersReview/ReviewTitle.vue";
+import ReviewContents from "@/components/AllReviews/UsersReview/ReviewContents.vue";
+import ReviewsPagenation from "@/components/AllReviews/UsersReview/ReviewsPagenation.vue";
 
 import { mapGetters } from "vuex";
 
@@ -74,7 +79,7 @@ export default {
     },
   },
   methods: {
-    updateEstateLikes() {
+    handleEventEstateLike() {
       this.$store.dispatch("updateLikes", { estateId: this.estate.id, userId: this.user.id });
     },
     async constructReviews(queryRange) {
@@ -225,11 +230,11 @@ export default {
 
     AllReviewsLayout,
     UserProfile,
-    Stars,
-    Likes,
-    Title,
-    Content,
-    Pagenation,
+    ReviewStars,
+    ReviewLikes,
+    ReviewTitle,
+    ReviewContents,
+    ReviewsPagenation,
   },
 };
 </script>

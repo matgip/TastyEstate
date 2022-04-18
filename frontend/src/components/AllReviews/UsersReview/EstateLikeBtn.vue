@@ -17,7 +17,7 @@ import BaseButton from "@/common/BaseButton.vue";
 export default {
   methods: {
     estateLikeBtnClicked() {
-      this.$emit("estateLikeBtnClicked");
+      this.$emit("like-estate");
     },
   },
   data: () => ({

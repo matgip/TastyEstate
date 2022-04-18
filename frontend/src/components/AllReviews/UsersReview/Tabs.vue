@@ -11,10 +11,10 @@
 export default {
   methods: {
     orderByLike() {
-      this.$emit("orderByLike");
+      this.$emit("order-by-like");
     },
     orderByTime() {
-      this.$emit("orderByTime");
+      this.$emit("order-by-time");
     },
   },
   data() {

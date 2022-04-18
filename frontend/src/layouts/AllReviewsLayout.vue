@@ -4,22 +4,22 @@
       <v-divider />
 
       <v-card-text>
-        <slot name="UserProfile" />
+        <slot name="user-profile" />
       </v-card-text>
 
       <v-card-text>
         <v-row align="center">
-          <slot name="Rating" />
-          <slot name="Likes" />
+          <slot name="review-stars" />
+          <slot name="review-likes" />
         </v-row>
       </v-card-text>
 
       <v-card-title>
-        <slot name="Title" />
+        <slot name="review-title" />
       </v-card-title>
 
       <v-card-text>
-        <slot name="Content" />
+        <slot name="review-contents" />
       </v-card-text>
 
       <v-divider />
