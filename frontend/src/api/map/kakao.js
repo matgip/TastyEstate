@@ -44,7 +44,7 @@ class MapKakao {
     return this;
   }
 
-  setImgMarker(imgMarker, imgMarkerSize) {
+  setMarker(imgMarker, imgMarkerSize) {
     this.imgMarker = imgMarker;
     const { width, height } = imgMarkerSize;
     this.imgMarkerSize = new MapKakao.daum.maps.Size(width, height);
