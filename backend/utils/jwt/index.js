@@ -23,8 +23,8 @@ const jwtMiddleware = async (req, res, next) => {
   const token = req.cookies["JWT"];
   if (!token) res.sendStatus(StatusCodes.UNAUTHORIZED);
   try {
-    verify(token);
-    next();
+    const decoded = verify(token);
+    if (decoded != undefined) next();
   } catch (err) {
     res.json(err);
   }
