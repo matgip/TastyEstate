@@ -1,5 +1,5 @@
 <template>
-  <BaseButton :btnProps="btnProps" :iconProps="iconProps" :icon="icon" :method="method" :button="button" />
+  <base-button :btn-props="btnProps" :icon-props="iconProps" :icon="icon" :method="method" :button="button" />
 </template>
 
 <script>

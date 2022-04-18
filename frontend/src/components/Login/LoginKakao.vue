@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <LoginKakaoBtn :method="onKakaoLogin" :icon="'fas fa-comment'" :button="'카카오 로그인'" />
+    <login-kakao-btn :method="onKakaoLogin" :icon="'fas fa-comment'" :button="'카카오 로그인'" />
   </div>
 </template>
 

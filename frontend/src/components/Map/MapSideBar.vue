@@ -2,14 +2,14 @@
   <div id="sidebar">
     <nav :key="estate.id">
       <ul>
-        <li><RealEstate /></li>
+        <li><the-real-estate /></li>
       </ul>
     </nav>
   </div>
 </template>
 
 <script>
-import RealEstate from "@/components/RealEstate/TheRealEstate.vue";
+import TheRealEstate from "@/components/RealEstate/TheRealEstate.vue";
 
 import { mapGetters } from "vuex";
 
@@ -20,7 +20,7 @@ export default {
     }),
   },
   components: {
-    RealEstate,
+    TheRealEstate,
   },
 };
 </script>
