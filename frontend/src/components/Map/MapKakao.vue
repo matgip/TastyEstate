@@ -29,12 +29,12 @@ export default {
 <style scoped>
 #mapview {
   width: 100%;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 142px);
 }
 
 @media screen and (max-width: 768px) {
   #mapview {
-    height: 700px;
+    height: 780px;
   }
 }
 </style>
