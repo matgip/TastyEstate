@@ -1,12 +1,12 @@
 <template>
   <div>
     <real-estate-layout v-if="Object.keys(estate).length !== 0">
-      <images slot="REimg" :estateId="estate.id" />
-      <image-upload slot="REimgUpload" :estateId="estate.id" />
-      <estate-title slot="REName" :placeName="estate.place_name" />
-      <stars slot="REStars" :stars="stars" :likes="likes" />
-      <all-reviews-btn slot="REALLReviews" />
-      <estate-info slot="REInfo" :estateInfo="estate" />
+      <images slot="estate-image" :estateId="estate.id" />
+      <image-upload slot="estate-image-upload" :estateId="estate.id" />
+      <estate-title slot="estate-title" :placeName="estate.place_name" />
+      <estate-stars slot="estate-stars" :stars="stars" :likes="likes" />
+      <all-reviews-btn slot="estate-review-btn" />
+      <estate-info slot="estate-info" :estateInfo="estate" />
     </real-estate-layout>
   </div>
 </template>
@@ -16,7 +16,7 @@ import RealEstateLayout from "@/layouts/RealEstateLayout.vue";
 import Images from "@/components/RealEstate/Images.vue";
 import ImageUpload from "@/components/RealEstate/ImageUpload.vue";
 import EstateTitle from "@/components/RealEstate/EstateTitle.vue";
-import Stars from "@/components/RealEstate/Stars.vue";
+import EstateStars from "@/components/RealEstate/EstateStars.vue";
 import AllReviewsBtn from "@/components/RealEstate/ReviewsBtn.vue";
 import EstateInfo from "@/components/RealEstate/EstateInfo.vue";
 
@@ -36,7 +36,7 @@ export default {
     Images,
     ImageUpload,
     EstateTitle,
-    Stars,
+    EstateStars,
     AllReviewsBtn,
     EstateInfo,
   },

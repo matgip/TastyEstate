@@ -1,19 +1,19 @@
 <template>
   <div>
     <review-layout>
-      <estate-name slot="EstateName" :place-name="estate.place_name" />
-      <rating slot="rating" :prop-rating="rating" @rating-selected="handleEventRating" />
-      <kindness slot="kindness" :prop-kindness="kindness" />
-      <price slot="price" :prop-price="price" />
-      <contract slot="contract" :prop-contract="contract" />
+      <estate-name slot="estate-name" :place-name="estate.place_name" />
+      <rating slot="review-rating" :prop-rating="rating" @rating-selected="handleEventRating" />
+      <kindness slot="review-kindness" :prop-kindness="kindness" />
+      <price slot="review-price" :prop-price="price" />
+      <contract slot="review-contract" :prop-contract="contract" />
       <text-area
-        slot="text"
+        slot="review-title-and-text"
         :prop-title="title"
         :prop-text="text"
         @review-title="handleEventTitle"
         @review-text="handleEventText"
       />
-      <submit-btns slot="buttons" @submit-review="handleEventSubmit" />
+      <submit-btns slot="review-buttons" @submit-review="handleEventSubmit" />
     </review-layout>
   </div>
 </template>

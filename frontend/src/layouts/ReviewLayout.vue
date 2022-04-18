@@ -13,32 +13,32 @@
       <!-- Only can see if dialog is true -->
       <v-card>
         <v-card-title>
-          <slot name="EstateName" />
+          <slot name="estate-name" />
         </v-card-title>
 
         <v-divider />
 
-        <slot name="rating" />
+        <slot name="review-rating" />
 
         <v-divider />
 
-        <slot name="kindness" />
+        <slot name="review-kindness" />
 
         <v-divider />
 
-        <slot name="price" />
+        <slot name="review-price" />
 
         <v-divider />
 
-        <slot name="contract" />
+        <slot name="review-contract" />
 
         <v-divider />
 
-        <slot name="text" />
+        <slot name="review-title-and-text" />
 
         <v-card-actions>
           <v-spacer />
-          <slot name="buttons" />
+          <slot name="review-buttons" />
         </v-card-actions>
       </v-card>
     </v-dialog>

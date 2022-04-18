@@ -1,13 +1,13 @@
 <template>
   <div class="styled__EstateCard">
-    <span><slot name="REimg"/></span>
+    <span><slot name="estate-image"/></span>
     <span>
-      <h3 class="styled__EstTitle"><slot name="REName" /></h3>
+      <h3 class="styled__EstTitle"><slot name="estate-title" /></h3>
       <div class="styled__Divider"></div>
-      <p class="styled__EstStar"><slot name="REStars" /></p>
-      <p class="styled__EstInfo"><slot name="REInfo" /></p>
+      <p class="styled__EstStar"><slot name="estate-stars" /></p>
+      <p class="styled__EstInfo"><slot name="estate-info" /></p>
       <div class="styled__Divider"></div>
-      <p class="styled__EstReview"><slot name="REALLReviews" /></p>
+      <p class="styled__EstReview"><slot name="estate-review-btn" /></p>
     </span>
   </div>
 </template>
