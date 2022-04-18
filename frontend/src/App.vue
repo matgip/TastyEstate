@@ -7,8 +7,6 @@
         <Search v-if="isNotInLoginPage()" />
         <router-view :key="$route.fullPath"></router-view>
       </v-main>
-
-      <Footer />
     </v-app>
   </div>
 </template>
@@ -16,7 +14,6 @@
 <script>
 import Navbar from "./components/TheNavbar.vue";
 import Search from "./components/Map/MapSearch.vue";
-import Footer from "./components/TheFooter.vue";
 export default {
   name: "App",
   async mounted() {
@@ -30,7 +27,6 @@ export default {
   components: {
     Navbar,
     Search,
-    Footer,
   },
 };
 </script>
