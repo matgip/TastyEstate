@@ -1,7 +1,7 @@
 <template>
   <div>
-    <BaseButton :btnProps="btnProps" :method="closeDiag" :button="'닫기'" />
-    <BaseButton :btnProps="btnProps" :method="submit" :button="'리뷰 등록하기'" />
+    <base-button :btn-props="btnProps" :method="closeDiag" :button="'닫기'" />
+    <base-button :btn-props="btnProps" :method="submit" :button="'리뷰 등록하기'" />
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
       this.$store.commit("UPDATE_DIALOG", false);
     },
     submit() {
-      this.$emit("submitReview");
+      this.$emit("submit-review");
     },
   },
   data: () => ({

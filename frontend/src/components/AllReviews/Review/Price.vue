@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BaseChkBox :title="title" :propSelect="propPrice" :items="items" :updateCmd="updateCmd" />
+    <base-chk-box :title="title" :prop-select="propPrice" :items="items" :update-cmd="updateCmd" />
   </div>
 </template>
 

@@ -30,7 +30,7 @@ export default {
         return this.propRating;
       },
       set(newRating) {
-        this.$emit("ratingSelected", newRating);
+        this.$emit("rating-selected", newRating);
       },
     },
   },

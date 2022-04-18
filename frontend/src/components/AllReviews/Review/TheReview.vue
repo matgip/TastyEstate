@@ -1,14 +1,20 @@
 <template>
   <div>
-    <ReviewLayout>
-      <EstateName slot="EstateName" :placeName="estate.place_name" />
-      <Rating slot="rating" :propRating="rating" @ratingSelected="getRating" />
-      <Kindness slot="kindness" :propKindness="kindness" />
-      <Price slot="price" :propPrice="price" />
-      <Contract slot="contract" :propContract="contract" />
-      <TextArea slot="text" :propTitle="title" :propText="text" @reviewTitle="getTitle" @reviewText="getText" />
-      <SubmitBtns slot="buttons" @submitReview="onSubmitReview" />
-    </ReviewLayout>
+    <review-layout>
+      <estate-name slot="EstateName" :place-name="estate.place_name" />
+      <rating slot="rating" :prop-rating="rating" @rating-selected="handleEventRating" />
+      <kindness slot="kindness" :prop-kindness="kindness" />
+      <price slot="price" :prop-price="price" />
+      <contract slot="contract" :prop-contract="contract" />
+      <text-area
+        slot="text"
+        :prop-title="title"
+        :prop-text="text"
+        @review-title="handleEventTitle"
+        @review-text="handleEventText"
+      />
+      <submit-btns slot="buttons" @submit-review="handleEventSubmit" />
+    </review-layout>
   </div>
 </template>
 
@@ -35,7 +41,7 @@ export default {
     }),
   },
   methods: {
-    async onSubmitReview() {
+    async handleEventSubmit() {
       try {
         const resp = await this.$api.review.get({ baseId: this.estate.id, subIds: [this.user.id] });
         if (resp && resp.status === 204) {
@@ -75,13 +81,13 @@ export default {
         console.error(err);
       }
     },
-    getRating(rating) {
+    handleEventRating(rating) {
       this.rating = rating;
     },
-    getTitle(title) {
+    handleEventTitle(title) {
       this.title = title;
     },
-    getText(text) {
+    handleEventText(text) {
       this.text = text;
     },
     clearReview() {
