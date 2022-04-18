@@ -37,4 +37,11 @@ export default {
 .v-application ul {
   padding-left: 0px;
 }
+
+@media screen and (max-width: 768px) {
+  #sidebar {
+    width: 100%;
+    top: 322px;
+  }
+}
 </style>

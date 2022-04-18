@@ -11,7 +11,7 @@
       <submit-rvw-btn slot="submit-review-btn" />
     </rvws-btn-layout>
 
-    <Tabs @order-by-like="toLikeOrder" @order-by-time="toTimeOrder" />
+    <tabs @order-by-like="toLikeOrder" @order-by-time="toTimeOrder" />
 
     <all-reviews-layout v-for="(review, i) in reviews" :key="i">
       <user-profile
