@@ -29,6 +29,43 @@
 
 <script>
 export default {
+  data: () => ({
+    isLoading: false,
+    estates: [],
+    search: null,
+    select: null,
+    iconSelected: "fas fa-map-marked-alt",
+    KAKAO_API: {
+      url: "https://dapi.kakao.com/v2/local/search/keyword.json",
+      groupCode: "AG2",
+      radius: 20000,
+    },
+
+    // Vuetify CSS Style & Props
+    searchCss: {
+      width: "386px",
+      margin: "0px 8px",
+    },
+    searchProps: {
+      clearable: true,
+      color: "deep-orange",
+      label: "지역 또는 단지명을 입력하세요.",
+      "no-filter": true,
+      "return-object": true,
+      "append-icon": "fas fa-search",
+      "item-text": "place_name",
+    },
+    iconProps: {
+      left: true,
+      small: true,
+    },
+    chipProps: {
+      small: true,
+      class: "white--text",
+      color: "deep-orange",
+    },
+  }),
+
   watch: {
     async select(estate) {
       if (!estate) return;
@@ -70,43 +107,6 @@ export default {
       this.$store.commit("CLEAR_STARS");
     },
   },
-
-  data: () => ({
-    isLoading: false,
-    estates: [],
-    search: null,
-    select: null,
-    iconSelected: "fas fa-map-marked-alt",
-    KAKAO_API: {
-      url: "https://dapi.kakao.com/v2/local/search/keyword.json",
-      groupCode: "AG2",
-      radius: 20000,
-    },
-
-    // Vuetify CSS Style & Props
-    searchCss: {
-      width: "386px",
-      margin: "0px 8px",
-    },
-    searchProps: {
-      clearable: true,
-      color: "deep-orange",
-      label: "지역 또는 단지명을 입력하세요.",
-      "no-filter": true,
-      "return-object": true,
-      "append-icon": "fas fa-search",
-      "item-text": "place_name",
-    },
-    iconProps: {
-      left: true,
-      small: true,
-    },
-    chipProps: {
-      small: true,
-      class: "white--text",
-      color: "deep-orange",
-    },
-  }),
 };
 </script>
 

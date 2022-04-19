@@ -6,7 +6,10 @@
 import BaseButton from "@/common/BaseButton.vue";
 
 export default {
-  props: ["method", "icon", "button"],
+  components: {
+    BaseButton,
+  },
+
   data: () => ({
     // Vuetify CSS Style & Props
     btnProps: {
@@ -16,9 +19,8 @@ export default {
       left: true,
     },
   }),
-  components: {
-    BaseButton,
-  },
+
+  props: ["method", "icon", "button"],
 };
 </script>
 

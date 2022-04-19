@@ -18,6 +18,12 @@ const imgMarker = require("@/assets/images/marker.png");
 const imgSize = { width: 40, height: 45 };
 
 export default {
+  data() {
+    return {
+      map: null,
+    };
+  },
+
   async mounted() {
     await this.initMap();
 
@@ -32,6 +38,12 @@ export default {
         this.scanEstate();
       }
     });
+  },
+
+  computed: {
+    ...mapGetters({
+      estate: "GET_ESTATE",
+    }),
   },
 
   methods: {
@@ -71,18 +83,6 @@ export default {
     zoomOut() {
       this.map.zoomOut();
     },
-  },
-
-  computed: {
-    ...mapGetters({
-      estate: "GET_ESTATE",
-    }),
-  },
-
-  data() {
-    return {
-      map: null,
-    };
   },
 };
 </script>

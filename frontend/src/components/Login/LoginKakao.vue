@@ -10,6 +10,10 @@
 import LoginKakaoBtn from "./LoginKakaoBtn.vue";
 
 export default {
+  components: {
+    LoginKakaoBtn,
+  },
+
   methods: {
     async onKakaoLogin() {
       localStorage.setItem("redirect_location", "/");
@@ -17,10 +21,6 @@ export default {
       await this.$store.dispatch("login", "kakao");
       this.$router.push({ path: localStorage.getItem("redirect_location") });
     },
-  },
-  data: () => ({}),
-  components: {
-    LoginKakaoBtn,
   },
 };
 </script>
