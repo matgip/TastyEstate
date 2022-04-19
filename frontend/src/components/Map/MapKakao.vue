@@ -53,19 +53,19 @@ export default {
     },
 
     async addMarker(markerEntity) {
-      return this.map.addMarker(markerEntity);
+      return await this.map.addMarker(markerEntity);
     },
 
     async addClickHandler(marker, estate) {
-      this.map.onEstateClicked(marker, estate);
+      await this.map.onEstateClicked(marker, estate);
     },
 
     async scanEstate() {
-      this.map.scan();
+      await this.map.scan();
     },
 
     async moveTo(estate) {
-      this.map.moveTo(estate);
+      await this.map.moveTo(estate);
     },
 
     zoomIn() {
