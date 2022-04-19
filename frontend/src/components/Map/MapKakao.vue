@@ -26,7 +26,7 @@ export default {
         const estate = this.estate;
         if (Object.keys(estate).length === 0) return;
 
-        const marker = this.addMarker({ place: estate, image: imgSelected, isSelected: true });
+        const marker = this.addMarker({ place: estate, isSelected: true });
         this.addClickHandler(marker, estate);
         this.moveTo(estate);
         this.scanEstate();
@@ -42,7 +42,7 @@ export default {
         const map = new MapKakao();
         await map.mount("mapview");
         this.map = map;
-        this.map.setMarker(imgMarker, imgSize);
+        this.map.setMarkerImage(imgMarker, imgSelected, imgSize);
       } catch (err) {
         console.error(err);
       }
