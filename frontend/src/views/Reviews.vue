@@ -1,48 +1,73 @@
 <template>
   <div class="wrapper">
-    <graphs-layout>
-      <price-graph slot="price-graph" :key="stats[0].count" :data="stats[0].data" />
-      <kindness-graph slot="kindness-graph" :key="stats[1].count" :data="stats[1].data" />
-      <contract-graph slot="contract-graph" :key="stats[2].count" :data="stats[2].data" />
-    </graphs-layout>
+    <div>
+      <v-divider />
 
-    <rvws-btn-layout>
-      <estate-like-btn slot="estate-like-btn" @like-estate="handleEventEstateLike" />
-      <submit-rvw-btn slot="submit-review-btn" />
-    </rvws-btn-layout>
+      <v-container>
+        <v-row>
+          <v-col>
+            <price-graph :key="stats[0].count" :data="stats[0].data" />
+          </v-col>
+
+          <v-col>
+            <kindness-graph :key="stats[1].count" :data="stats[1].data" />
+          </v-col>
+
+          <v-col>
+            <contract-graph :key="stats[2].count" :data="stats[2].data" />
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
+
+    <div id="rvws__btn">
+      <estate-like-btn @like-estate="handleEventEstateLike" />
+      <submit-rvw-btn />
+    </div>
 
     <tabs @order-by-like="toLikeOrder" @order-by-time="toTimeOrder" />
 
-    <all-reviews-layout v-for="(review, i) in reviews" :key="i">
-      <user-profile
-        slot="user-profile"
-        :avatar-url="review.avatar"
-        :nickname="review.nickname"
-        :timestamp="review.time"
-      />
-      <review-stars slot="review-stars" :rating="review.rating" />
-      <review-likes slot="review-likes" :likes="review.likes" :user-id="review.userId" @rvwLikeBtnClicked="addLike" />
-      <review-title slot="review-title" :title="review.title" />
-      <review-contents slot="review-contents" :text="review.text" />
-    </all-reviews-layout>
+    <div v-for="(review, i) in reviews" :key="i">
+      <v-card>
+        <v-divider />
+
+        <v-card-text>
+          <user-profile :avatar-url="review.avatar" :nickname="review.nickname" :timestamp="review.time" />
+        </v-card-text>
+
+        <v-card-text>
+          <v-row align="center">
+            <review-stars :rating="review.rating" />
+            <review-likes :likes="review.likes" :user-id="review.userId" @rvwLikeBtnClicked="addLike" />
+          </v-row>
+        </v-card-text>
+
+        <v-card-title>
+          <review-title :title="review.title" />
+        </v-card-title>
+
+        <v-card-text>
+          <review-contents :text="review.text" />
+        </v-card-text>
+
+        <v-divider />
+      </v-card>
+    </div>
 
     <reviews-pagenation :page="page" :total-count="totalCount" />
   </div>
 </template>
 
 <script>
-import GraphsLayout from "@/layouts/GraphsLayout.vue";
 import KindnessGraph from "@/components/AllReviews/BarGraph/KindnessGraph.vue";
 import PriceGraph from "@/components/AllReviews/BarGraph/PriceGraph.vue";
 import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
 
-import RvwsBtnLayout from "@/layouts/RvwsBtnLayout.vue";
 import EstateLikeBtn from "@/components/AllReviews/UsersReview/EstateLikeBtn.vue";
 import SubmitRvwBtn from "@/components/AllReviews/ReviewDiag/TheReview.vue";
 
 import Tabs from "@/components/AllReviews/UsersReview/Tabs.vue";
 
-import AllReviewsLayout from "@/layouts/AllReviewsLayout.vue";
 import UserProfile from "@/components/AllReviews/UsersReview/UserProfile.vue";
 import ReviewStars from "@/components/AllReviews/UsersReview/ReviewStars.vue";
 import ReviewLikes from "@/components/AllReviews/UsersReview/ReviewLikes.vue";
@@ -53,6 +78,68 @@ import ReviewsPagenation from "@/components/AllReviews/UsersReview/ReviewsPagena
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    // Graphs
+    KindnessGraph,
+    PriceGraph,
+    ContractGraph,
+    // Buttons
+    EstateLikeBtn,
+    SubmitRvwBtn,
+    // Review order table
+    Tabs,
+    // Review
+    UserProfile,
+    ReviewStars,
+    ReviewLikes,
+    ReviewTitle,
+    ReviewContents,
+    ReviewsPagenation,
+  },
+
+  data: () => ({
+    page: 0,
+    order: "like",
+    stats: [
+      {
+        name: "price",
+        count: 0,
+        data: [0, 0, 0, 0, 0],
+        fields: ["veryCheap", "cheap", "avgPrice", "expensive", "veryExpensive"],
+      },
+      {
+        name: "kindness",
+        count: 0,
+        data: [0, 0, 0, 0, 0],
+        fields: ["veryKind", "kind", "soso", "unKind", "veryUnkind"],
+      },
+      {
+        name: "contract",
+        count: 0,
+        data: [0, 0],
+        fields: ["true", "false"],
+      },
+    ],
+    orderByLikes: [],
+    orderByTimes: [],
+  }),
+
+  computed: {
+    ...mapGetters({
+      estate: "GET_ESTATE",
+      user: "GET_USER",
+      likes: "GET_LIKES",
+    }),
+
+    reviews() {
+      return this.order === "like" ? this.orderByLikes : this.orderByTimes;
+    },
+
+    totalCount() {
+      return this.reviews.length;
+    },
+  },
+
   async mounted() {
     this.clear(); // Must clear the data to calculate correctly
     this.page = 1;
@@ -65,23 +152,12 @@ export default {
       }
     });
   },
-  computed: {
-    ...mapGetters({
-      estate: "GET_ESTATE",
-      user: "GET_USER",
-      likes: "GET_LIKES",
-    }),
-    reviews() {
-      return this.order === "like" ? this.orderByLikes : this.orderByTimes;
-    },
-    totalCount() {
-      return this.reviews.length;
-    },
-  },
+
   methods: {
     handleEventEstateLike() {
       this.$store.dispatch("updateLikes", { estateId: this.estate.id, userId: this.user.id });
     },
+
     async constructReviews(queryRange) {
       try {
         if (this.estate === undefined || this.estate.id === undefined) {
@@ -121,18 +197,21 @@ export default {
         console.error(err);
       }
     },
+
     preProcessReview(review, userId, likes) {
       review.userId = userId; // To find user to increase review likes count if like button clicked
       review.likes = likes;
       review.rating = parseFloat(review.rating);
       return review;
     },
+
     calcStats(review) {
       for (let stat of this.stats) {
         this.calcStatData(stat, review[stat.name]);
         this.toPercentage(stat);
       }
     },
+
     calcStatData(stat, dataFromDb) {
       if (!dataFromDb) return;
       stat.count += 1;
@@ -140,21 +219,26 @@ export default {
         if (dataFromDb === field) stat.data[stat.fields.indexOf(field)]++;
       }
     },
+
     toPercentage(stat) {
       if (stat.count === 0) return;
       for (let i = 0; i < stat.data.length; i++) {
         stat.data[i] = ((stat.data[i] / stat.count) * 100).toFixed(2);
       }
     },
+
     gotoHome() {
       this.$router.push({ path: "/" });
     },
+
     toLikeOrder() {
       this.order = "like";
     },
+
     toTimeOrder() {
       this.order = "time";
     },
+
     clear() {
       this.orderByLikes = [];
       this.orderByTimes = [];
@@ -165,6 +249,7 @@ export default {
       this.stats[1].data = [0, 0, 0, 0, 0];
       this.stats[2].data = [0, 0];
     },
+
     async addLike(userId) {
       try {
         const resp = await this.$api.reviewUserLikes.post({
@@ -190,51 +275,11 @@ export default {
       }
     },
   },
-  data: () => ({
-    page: 0,
-    order: "like",
-    stats: [
-      {
-        name: "price",
-        count: 0,
-        data: [0, 0, 0, 0, 0],
-        fields: ["veryCheap", "cheap", "avgPrice", "expensive", "veryExpensive"],
-      },
-      {
-        name: "kindness",
-        count: 0,
-        data: [0, 0, 0, 0, 0],
-        fields: ["veryKind", "kind", "soso", "unKind", "veryUnkind"],
-      },
-      {
-        name: "contract",
-        count: 0,
-        data: [0, 0],
-        fields: ["true", "false"],
-      },
-    ],
-    orderByLikes: [],
-    orderByTimes: [],
-  }),
-  components: {
-    GraphsLayout,
-    KindnessGraph,
-    PriceGraph,
-    ContractGraph,
-
-    RvwsBtnLayout,
-    EstateLikeBtn,
-    SubmitRvwBtn,
-
-    Tabs,
-
-    AllReviewsLayout,
-    UserProfile,
-    ReviewStars,
-    ReviewLikes,
-    ReviewTitle,
-    ReviewContents,
-    ReviewsPagenation,
-  },
 };
 </script>
+
+<style>
+#rvws__btn {
+  display: flex;
+}
+</style>

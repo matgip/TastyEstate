@@ -1,27 +1,56 @@
 <template>
   <div>
-    <review-layout>
-      <estate-name slot="estate-name" :place-name="estate.place_name" />
-      <rating slot="review-rating" :prop-rating="rating" @rating-selected="handleEventRating" />
+    <v-dialog v-model="dialog" v-bind="dialogProps">
+      <template #activator="{ on }">
+        <v-btn :style="btnStyl" v-bind="btnProps" v-on="on" @click="onClicked">
+          <v-icon v-bind="iconProps">
+            {{ icon }}
+          </v-icon>
+          리뷰 작성
+        </v-btn>
+      </template>
 
-      <price-chk-box slot="review-price" :prop-price="price" />
-      <kindness-chk-box slot="review-kindness" :prop-kindness="kindness" />
-      <contract-chk-box slot="review-contract" :prop-contract="contract" />
+      <!-- Only can see if dialog is true -->
+      <v-card>
+        <v-card-title>
+          <estate-name :place-name="estate.place_name" />
+        </v-card-title>
 
-      <text-area
-        slot="review-title-and-text"
-        :prop-title="title"
-        :prop-text="text"
-        @review-title="handleEventTitle"
-        @review-text="handleEventText"
-      />
-      <submit-btns slot="review-buttons" @submit-review="handleEventSubmit" />
-    </review-layout>
+        <v-divider />
+
+        <rating :prop-rating="rating" @rating-selected="handleEventRating" />
+
+        <v-divider />
+
+        <kindness-chk-box :prop-kindness="kindness" />
+
+        <v-divider />
+
+        <price-chk-box :prop-price="price" />
+
+        <v-divider />
+
+        <contract-chk-box :prop-contract="contract" />
+
+        <v-divider />
+
+        <text-area
+          :prop-title="title"
+          :prop-text="text"
+          @review-title="handleEventTitle"
+          @review-text="handleEventText"
+        />
+
+        <v-card-actions>
+          <v-spacer />
+          <submit-btns slot="review-buttons" @submit-review="handleEventSubmit" />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import ReviewLayout from "@/layouts/ReviewLayout.vue";
 import EstateName from "./EstateName.vue";
 import Rating from "./Rating.vue";
 import KindnessChkBox from "./KindnessChkBox.vue";
@@ -33,6 +62,42 @@ import SubmitBtns from "./SubmitBtns.vue";
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    EstateName,
+    Rating,
+    KindnessChkBox,
+    PriceChkBox,
+    ContractChkBox,
+    TextArea,
+    SubmitBtns,
+  },
+
+  data: () => ({
+    rating: 0.0,
+    title: "",
+    text: "",
+    dialog: false,
+    // Vuetify CSS Style & Props
+    btnStyl: {
+      margin: "34px 0",
+    },
+    dialogProps: {
+      persistent: true,
+      "max-width": "700px",
+    },
+
+    btnProps: {
+      color: "deep-orange",
+      outlined: true,
+      rounded: true,
+    },
+
+    icon: "fas fa-edit",
+    iconProps: {
+      left: true,
+    },
+  }),
+
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
@@ -42,6 +107,15 @@ export default {
       contract: "GET_CONTRACT",
     }),
   },
+
+  mounted() {
+    this.$store.subscribe((mutation) => {
+      if (mutation.type == "UPDATE_DIALOG") {
+        this.dialog = this.$store.getters.GET_DIALOG;
+      }
+    });
+  },
+
   methods: {
     async handleEventSubmit() {
       try {
@@ -83,15 +157,19 @@ export default {
         console.error(err);
       }
     },
+
     handleEventRating(rating) {
       this.rating = rating;
     },
+
     handleEventTitle(title) {
       this.title = title;
     },
+
     handleEventText(text) {
       this.text = text;
     },
+
     clearReview() {
       this.rating = 0.0;
       this.title = "";
@@ -101,21 +179,22 @@ export default {
       this.$store.commit("UPDATE_CONTRACT", null);
       this.$store.commit("UPDATE_DIALOG", false);
     },
-  },
-  data: () => ({
-    rating: 0.0,
-    title: "",
-    text: "",
-  }),
-  components: {
-    ReviewLayout,
-    EstateName,
-    Rating,
-    KindnessChkBox,
-    PriceChkBox,
-    ContractChkBox,
-    TextArea,
-    SubmitBtns,
+
+    onClicked() {
+      if (this.isloggedIn() === false) {
+        alert("로그인 후, 사용 가능합니다.");
+        this.gotoLogin();
+        return;
+      }
+    },
+
+    gotoLogin() {
+      this.$router.push({ path: "/login" });
+    },
+
+    isloggedIn() {
+      return this.user != null;
+    },
   },
 };
 </script>
