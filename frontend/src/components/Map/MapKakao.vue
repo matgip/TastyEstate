@@ -21,15 +21,19 @@ export default {
   async mounted() {
     await this.initMap();
 
-    this.$store.subscribe((mutation) => {
+    this.$store.subscribe(async (mutation) => {
       if (mutation.type == "UPDATE_ESTATE") {
-        const estate = this.estate;
-        if (Object.keys(estate).length === 0) return;
+        try {
+          const estate = this.estate;
+          if (Object.keys(estate).length === 0) return;
 
-        const marker = this.addMarker({ place: estate, image: imgSelected, isSelected: true });
-        this.addClickHandler(marker, estate);
-        this.moveTo(estate);
-        this.scanEstate();
+          const marker = await this.addMarker({ place: estate, image: imgSelected, isSelected: true });
+          await this.addClickHandler(marker, estate);
+          await this.moveTo(estate);
+          await this.scanEstate();
+        } catch (err) {
+          console.error(err);
+        }
       }
     });
   },
@@ -48,19 +52,19 @@ export default {
       }
     },
 
-    addMarker(markerEntity) {
+    async addMarker(markerEntity) {
       return this.map.addMarker(markerEntity);
     },
 
-    addClickHandler(marker, estate) {
+    async addClickHandler(marker, estate) {
       this.map.onEstateClicked(marker, estate);
     },
 
-    scanEstate() {
+    async scanEstate() {
       this.map.scan();
     },
 
-    moveTo(estate) {
+    async moveTo(estate) {
       this.map.moveTo(estate);
     },
 
