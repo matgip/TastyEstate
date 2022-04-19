@@ -8,6 +8,7 @@ class MapKakao {
 
   constructor() {
     this.map = null;
+    this.imgSelected = null;
     this.imgMarker = null;
     this.imgMarkerSize = null;
     MapKakao.initialize();
@@ -15,9 +16,16 @@ class MapKakao {
 
   async mount(mapId) {
     await MapKakao.initialize();
+
     // Re-use map
     if (MapKakao.cachedMaps[mapId]) {
-      this.map = MapKakao.cachedMaps[mapId];
+      const { map, ps, mc, iw } = MapKakao.cachedMaps[mapId];
+      // this.map = MapKakao.cachedMaps[mapId];
+      this.map = map;
+      this.placeSrch = ps;
+      this.markerClstr = mc;
+      this.iw = iw;
+
       const oElem = this.map.getNode();
       const nElem = document.getElementById(mapId);
       nElem.parentNode.replaceChild(oElem, nElem);
@@ -39,66 +47,48 @@ class MapKakao {
       MapKakao.daum.maps.event.addListener(this.map, "dragend", this.scan.bind(this));
       MapKakao.daum.maps.event.addListener(this.map, "zoom_changed", this.scan.bind(this));
 
-      MapKakao.cachedMaps[mapId] = this.map;
+      MapKakao.cachedMaps[mapId] = { map: this.map, ps: this.placeSrch, mc: this.markerClstr, iw: this.iw };
     }
     return this;
   }
 
-  setMarker(imgMarker, imgMarkerSize) {
-    this.imgMarker = imgMarker;
+  setMarkerImage(imgMarker, imgSelected, imgMarkerSize) {
     const { width, height } = imgMarkerSize;
     this.imgMarkerSize = new MapKakao.daum.maps.Size(width, height);
-  }
-
-  moveTo(estate) {
-    const currentLvl = this.map.getLevel();
-    const latlng = new MapKakao.daum.maps.LatLng(estate.y, estate.x);
-    if (currentLvl > this.CLSTR_MIN_LVL) this.map.setLevel(this.CLSTR_MIN_LVL);
-    this.map.setCenter(latlng);
-  }
-
-  zoomIn() {
-    this.map.setLevel(this.map.getLevel() - 1);
-  }
-
-  zoomOut() {
-    this.map.setLevel(this.map.getLevel() + 1);
+    this.imgMarker = new MapKakao.daum.maps.MarkerImage(imgMarker, this.imgMarkerSize);
+    this.imgSelected = new MapKakao.daum.maps.MarkerImage(imgSelected, this.imgMarkerSize);
   }
 
   addMarker(markerEntity) {
-    const { place, image, isSelected } = markerEntity;
-    const marker = new MapKakao.daum.maps.Marker({
-      position: new MapKakao.daum.maps.LatLng(place.y, place.x),
-      image: new MapKakao.daum.maps.MarkerImage(image, this.imgMarkerSize),
-    });
+    const { place, isSelected } = markerEntity;
+    let marker = this._getCachedMarker(place);
+    if (!marker) {
+      marker = new MapKakao.daum.maps.Marker({
+        position: new MapKakao.daum.maps.LatLng(place.y, place.x),
+      });
+      this.markerClstr.addMarker(marker);
+      this._cacheMarker(place, marker);
+    }
     if (isSelected === true) {
+      marker.setImage(this.imgSelected);
       this.selectedMarker = marker;
       this._showInfoWindowOnMap(marker, place.place_name);
+    } else {
+      marker.setImage(this.imgMarker);
     }
-    this.markerClstr.addMarker(marker);
     return marker;
   }
 
   onEstateClicked(marker, estate) {
     MapKakao.daum.maps.event.addListener(marker, "click", async () => {
-      this._showInfoWindowOnMap(marker, estate.place_name);
-      // Remove old selected estate
-      this._removeSelected();
       // Update selected estate
       await store.dispatch("updateRealEstate", estate);
       await store.dispatch("getLikes", estate.id);
       await store.dispatch("getStars", estate.id);
+      this._showInfoWindowOnMap(marker, estate.place_name);
     });
   }
 
-  _showInfoWindowOnMap(marker, placeName) {
-    this.iw.setContent('<div style="padding:5px;font-size:12px;">' + placeName + "</div>");
-    this.iw.open(this.map, marker);
-  }
-
-  _removeSelected() {
-    this.markerClstr.removeMarker(this.selectedMarker);
-  }
   // Divide the map into 9 equal squares and scan.
   scan() {
     const lvl = this.map.getLevel();
@@ -117,12 +107,31 @@ class MapKakao {
     }
   }
 
+  moveTo(estate) {
+    const currentLvl = this.map.getLevel();
+    const latlng = new MapKakao.daum.maps.LatLng(estate.y, estate.x);
+    if (currentLvl > this.CLSTR_MIN_LVL) this.map.setLevel(this.CLSTR_MIN_LVL);
+    this.map.setCenter(latlng);
+  }
+
+  zoomIn() {
+    this.map.setLevel(this.map.getLevel() - 1);
+  }
+
+  zoomOut() {
+    this.map.setLevel(this.map.getLevel() + 1);
+  }
+
+  _showInfoWindowOnMap(marker, placeName) {
+    this.iw.setContent('<div style="padding:5px;font-size:12px;">' + placeName + "</div>");
+    this.iw.open(this.map, marker);
+  }
+
   _callback(places, status, pagination) {
     if (status === MapKakao.daum.maps.services.Status.OK) {
       for (let p of places) {
-        this._cachePlace(p);
-        const marker = this.addMarker({ place: p, image: this.imgMarker, isSelected: false });
-        this.onEstateClicked(marker, p);
+        const m = this.addMarker({ place: p, image: this.imgMarker, isSelected: false });
+        this.onEstateClicked(m, p);
       }
     }
     if (pagination.hasNextPage) pagination.nextPage();
@@ -147,9 +156,14 @@ class MapKakao {
     window.cachedLatLng[lat][lng] = this.SCANNED;
   }
 
-  _cachePlace(place) {
-    window.cachedPlaces ??= new Array();
-    window.cachedPlaces[place.id] ??= place;
+  _cacheMarker(place, marker) {
+    window.cachedPlaces ??= new Map();
+    window.cachedPlaces.set(place.id, marker);
+  }
+
+  _getCachedMarker(place) {
+    if (!window.cachedPlaces) return undefined;
+    return window.cachedPlaces.get(place.id);
   }
 }
 
