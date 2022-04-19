@@ -22,6 +22,7 @@ export default {
         return value !== null;
       },
     },
+
     likes: {
       type: Number,
       required: true,
@@ -30,11 +31,13 @@ export default {
       },
     },
   },
+
   methods: {
     rvwLikeBtnClicked() {
       this.$emit("rvwLikeBtnClicked", this.userId);
     },
   },
+
   data: () => ({
     // Vuetify CSS Style & Props
     btnProps: {
@@ -48,6 +51,7 @@ export default {
       color: "deep-orange",
     },
   }),
+
   components: {
     BaseButton,
   },

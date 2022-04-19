@@ -40,11 +40,13 @@ export default {
         console.error(err);
       }
     },
+
     search(keyword) {
       if (!keyword || keyword === this.select) return;
       this.searchEstate(keyword);
     },
   },
+
   methods: {
     searchEstate(keyword) {
       this.isLoading = true;
@@ -61,12 +63,14 @@ export default {
         .catch((err) => console.log(err))
         .finally(() => (this.isLoading = false));
     },
+
     clear() {
       this.$store.commit("CLEAR_ESTATE");
       this.$store.commit("CLEAR_LIKES");
       this.$store.commit("CLEAR_STARS");
     },
   },
+
   data: () => ({
     isLoading: false,
     estates: [],
@@ -78,6 +82,7 @@ export default {
       groupCode: "AG2",
       radius: 20000,
     },
+
     // Vuetify CSS Style & Props
     searchCss: {
       width: "386px",
