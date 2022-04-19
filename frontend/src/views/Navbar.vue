@@ -49,6 +49,31 @@ import BaseButton from "@/common/BaseButton.vue";
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    BaseButton,
+  },
+
+  data() {
+    return {
+      // Vuetify CSS Style & Props
+      btnProps: {
+        color: "deep-orange",
+        depressed: true,
+        plain: true,
+        "x-small": true,
+      },
+      iconProps: {
+        left: true,
+      },
+    };
+  },
+
+  computed: {
+    ...mapGetters({
+      user: "GET_USER",
+    }),
+  },
+
   methods: {
     gotoLogin() {
       this.$router.push({ path: "/login" });
@@ -64,28 +89,6 @@ export default {
       const navbarMenu = document.querySelector(".navbar__menu");
       navbarMenu.classList.toggle("open");
     },
-  },
-  computed: {
-    ...mapGetters({
-      user: "GET_USER",
-    }),
-  },
-  data() {
-    return {
-      // Vuetify CSS Style & Props
-      btnProps: {
-        color: "deep-orange",
-        depressed: true,
-        plain: true,
-        "x-small": true,
-      },
-      iconProps: {
-        left: true,
-      },
-    };
-  },
-  components: {
-    BaseButton,
   },
 };
 </script>
