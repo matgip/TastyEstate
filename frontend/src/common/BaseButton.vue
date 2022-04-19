@@ -24,10 +24,7 @@ export default {
       },
     },
     button: {
-      required: true,
-      validator: function(value) {
-        return value !== null;
-      },
+      type: String,
     },
     btnProps: {
       type: Object,

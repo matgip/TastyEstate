@@ -2,8 +2,8 @@
   <div id="mapview">
     <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
     <div class="custom_zoomcontrol radius_border">
-      <span @click="zoomIn"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"/></span>
-      <span @click="zoomOut"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"/></span>
+      <span @click="zoomIn"><i class="fa-solid fa-plus"></i></span>
+      <span @click="zoomOut"><i class="fa-solid fa-minus"></i></span>
     </div>
   </div>
 </template>
@@ -97,11 +97,11 @@ export default {
   position: absolute;
   top: 50px;
   right: 10px;
-  width: 36px;
+  width: 38px;
   height: 80px;
   overflow: hidden;
   z-index: 1;
-  background-color: #f5f5f5;
+  background-color: #ff5722;
 }
 .custom_zoomcontrol span {
   display: block;
@@ -110,18 +110,19 @@ export default {
   text-align: center;
   cursor: pointer;
 }
-.custom_zoomcontrol span img {
+.custom_zoomcontrol span i {
   width: 15px;
   height: 15px;
   padding: 12px 0;
+  color: white;
   border: none;
 }
 .custom_zoomcontrol span:first-child {
-  border-bottom: 1px solid #bfbfbf;
+  border-bottom: 2px solid white;
 }
 
 .radius_border {
-  border: 1px solid #919191;
+  border: 2px solid white;
   border-radius: 5px;
   z-index: 2;
 }
