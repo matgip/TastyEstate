@@ -28,9 +28,9 @@ export default {
           if (Object.keys(estate).length === 0) return;
 
           const marker = await this.addMarker({ place: estate, image: imgSelected, isSelected: true });
-          await this.addClickHandler(marker, estate);
-          await this.moveTo(estate);
-          await this.scanEstate();
+          this.addClickHandler(marker, estate);
+          this.moveTo(estate);
+          this.scanEstate();
         } catch (err) {
           console.error(err);
         }
@@ -46,26 +46,26 @@ export default {
         const map = new MapKakao();
         await map.mount("mapview");
         this.map = map;
-        await this.map.setMarker(imgMarker, imgSize);
+        this.map.setMarker(imgMarker, imgSize);
       } catch (err) {
         console.error(err);
       }
     },
 
-    async addMarker(markerEntity) {
-      return await this.map.addMarker(markerEntity);
+    addMarker(markerEntity) {
+      return this.map.addMarker(markerEntity);
     },
 
-    async addClickHandler(marker, estate) {
-      await this.map.onEstateClicked(marker, estate);
+    addClickHandler(marker, estate) {
+      this.map.onEstateClicked(marker, estate);
     },
 
-    async scanEstate() {
-      await this.map.scan();
+    scanEstate() {
+      this.map.scan();
     },
 
-    async moveTo(estate) {
-      await this.map.moveTo(estate);
+    moveTo(estate) {
+      this.map.moveTo(estate);
     },
 
     zoomIn() {
