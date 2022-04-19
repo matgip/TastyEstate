@@ -20,6 +20,15 @@
 <script>
 // Reference: https://madewithvuejs.com/vue-file-agent
 export default {
+  data() {
+    return {
+      fileRecords: [],
+      uploadUrl: `/api/upload/${this.estateId}`,
+      uploadHeaders: { "X-Test-Header": "vue-file-agent" },
+      fileRecordsForUpload: [], // maintain an upload queue
+    };
+  },
+
   props: {
     estateId: {
       type: String,
@@ -29,6 +38,7 @@ export default {
       },
     },
   },
+
   methods: {
     uploadFiles() {
       // Using the default uploader. You may use another uploader instead.
@@ -53,14 +63,6 @@ export default {
         this.deleteUploadedFile(fileRecord);
       }
     },
-  },
-  data() {
-    return {
-      fileRecords: [],
-      uploadUrl: `/api/upload/${this.estateId}`,
-      uploadHeaders: { "X-Test-Header": "vue-file-agent" },
-      fileRecordsForUpload: [], // maintain an upload queue
-    };
   },
 };
 </script>

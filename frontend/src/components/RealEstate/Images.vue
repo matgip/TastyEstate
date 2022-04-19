@@ -10,11 +10,6 @@
 
 <script>
 export default {
-  methods: {
-    getImgUrl(estateId, imgNum) {
-      return `/api/upload/${estateId}?image=${imgNum}`;
-    },
-  },
   data: () => ({
     images: [1, 2, 3, 4, 5, 6],
     // Vuetify CSS Style & Props
@@ -28,6 +23,7 @@ export default {
       "reverse-transition": "fade-transition",
     },
   }),
+
   props: {
     estateId: {
       type: String,
@@ -35,6 +31,12 @@ export default {
       validator: function(value) {
         return value != null;
       },
+    },
+  },
+
+  methods: {
+    getImgUrl(estateId, imgNum) {
+      return `/api/upload/${estateId}?image=${imgNum}`;
     },
   },
 };

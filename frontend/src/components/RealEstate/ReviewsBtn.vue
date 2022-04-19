@@ -10,11 +10,22 @@
 import { mapGetters } from "vuex";
 
 export default {
+  data: () => ({
+    // Vuetify CSS Style & Props
+    btnProps: {
+      color: "blue darken-4",
+      class: "pa-0",
+      text: true,
+      small: true,
+    },
+  }),
+
   computed: {
     ...mapGetters({
       user: "GET_USER",
     }),
   },
+
   methods: {
     gotoAllReviews() {
       if (this.isloggedIn() === false) {
@@ -31,14 +42,5 @@ export default {
       return this.user != null;
     },
   },
-  data: () => ({
-    // Vuetify CSS Style & Props
-    btnProps: {
-      color: "blue darken-4",
-      class: "pa-0",
-      text: true,
-      small: true,
-    },
-  }),
 };
 </script>

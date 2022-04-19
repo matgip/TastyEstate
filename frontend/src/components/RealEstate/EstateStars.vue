@@ -9,6 +9,21 @@
 
 <script>
 export default {
+  data: () => ({
+    // Vuetify CSS Style & Props
+    rowProps: {
+      align: "center",
+      class: "ma-0",
+    },
+    starProps: {
+      size: 18,
+      color: "amber",
+      dense: true,
+      readonly: true,
+      "half-increments": true,
+    },
+  }),
+
   props: {
     stars: {
       type: Number,
@@ -25,20 +40,5 @@ export default {
       },
     },
   },
-  data: () => ({
-    // Vuetify CSS Style & Props
-    rowProps: {
-      align: "center",
-      class: "ma-0",
-    },
-    starProps: {
-      size: 18,
-      color: "amber",
-      dense: true,
-      readonly: true,
-      "half-increments": true,
-    },
-  }),
-  methods: {},
 };
 </script>
