@@ -21,19 +21,15 @@ export default {
   async mounted() {
     await this.initMap();
 
-    this.$store.subscribe(async (mutation) => {
+    this.$store.subscribe((mutation) => {
       if (mutation.type == "UPDATE_ESTATE") {
-        try {
-          const estate = this.estate;
-          if (Object.keys(estate).length === 0) return;
+        const estate = this.estate;
+        if (Object.keys(estate).length === 0) return;
 
-          const marker = await this.addMarker({ place: estate, image: imgSelected, isSelected: true });
-          this.addClickHandler(marker, estate);
-          this.moveTo(estate);
-          this.scanEstate();
-        } catch (err) {
-          console.error(err);
-        }
+        const marker = this.addMarker({ place: estate, image: imgSelected, isSelected: true });
+        this.addClickHandler(marker, estate);
+        this.moveTo(estate);
+        this.scanEstate();
       }
     });
   },
