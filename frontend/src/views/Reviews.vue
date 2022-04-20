@@ -33,30 +33,7 @@
     <tabs :onclick="changeOrder" />
 
     <div v-for="(review, i) in currReviews" :key="i">
-      <v-card>
-        <v-divider />
-
-        <v-card-text>
-          <user-profile :avatar-url="review.avatar" :nickname="review.nickname" :timestamp="review.time" />
-        </v-card-text>
-
-        <v-card-text>
-          <v-row align="center">
-            <review-stars :rating="review.rating" />
-            <review-likes :likes="review.likes" :user-id="review.userId" @like-review="handleLikeReview" />
-          </v-row>
-        </v-card-text>
-
-        <v-card-title>
-          <review-title :title="review.title" />
-        </v-card-title>
-
-        <v-card-text>
-          <review-contents :text="review.text" />
-        </v-card-text>
-
-        <v-divider />
-      </v-card>
+      <user-review :review="review" />
     </div>
 
     <reviews-pagenation :page="page" :total-count="totalCount" />
@@ -70,11 +47,7 @@ import ReviewButton from "@/components/Reviews/ReviewDiag/Review.vue";
 
 import Tabs from "@/components/Reviews/UsersReview/Tabs.vue";
 
-import UserProfile from "@/components/Reviews/UsersReview/UserProfile.vue";
-import ReviewStars from "@/components/Reviews/UsersReview/ReviewStars.vue";
-import ReviewLikes from "@/components/Reviews/UsersReview/ReviewLikes.vue";
-import ReviewTitle from "@/components/Reviews/UsersReview/ReviewTitle.vue";
-import ReviewContents from "@/components/Reviews/UsersReview/ReviewContents.vue";
+import UserReview from "../components/Reviews/UsersReview/UserReview.vue";
 import ReviewsPagenation from "@/components/Reviews/UsersReview/ReviewsPagenation.vue";
 
 import { mapGetters } from "vuex";
@@ -85,11 +58,7 @@ export default {
     BaseButton,
     ReviewButton,
     Tabs,
-    UserProfile,
-    ReviewStars,
-    ReviewLikes,
-    ReviewTitle,
-    ReviewContents,
+    UserReview,
     ReviewsPagenation,
   },
 
@@ -220,6 +189,7 @@ export default {
           const userId = d.value.split(":")[1];
           const likeCnt = d.score;
           mapUserLikeCnt.set(`user:${userId}`, likeCnt);
+
           const resp = await this.$api.review.get({
             baseId: this.estate.id,
             subIds: [userId],
@@ -241,6 +211,7 @@ export default {
 
         reviewsByTime.data.forEach(async (d) => {
           const userId = d.value.split(":")[1];
+
           const resp = await this.$api.review.get({
             baseId: this.estate.id,
             subIds: [userId],
