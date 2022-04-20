@@ -5,29 +5,34 @@
 
       <v-container>
         <v-row>
-          <v-col>
-            <price-graph :key="stats[0].count" :data="stats[0].data" />
-          </v-col>
-
-          <v-col>
-            <kindness-graph :key="stats[1].count" :data="stats[1].data" />
-          </v-col>
-
-          <v-col>
-            <contract-graph :key="stats[2].count" :data="stats[2].data" />
+          <v-col v-for="stat in stats" :key="stat.title">
+            <base-bar-graph
+              :key="stat.count"
+              :data="stat.data"
+              :categories="stat.categories"
+              :title="stat.title"
+              :colors="stat.colors"
+            />
           </v-col>
         </v-row>
       </v-container>
     </div>
 
-    <div id="rvws__btn">
-      <estate-like-btn @like-estate="handleEventEstateLike" />
-      <submit-rvw-btn />
+    <div class="review-btns">
+      <base-button
+        :style="btnStyl"
+        :btn-props="btnProps"
+        :icon-props="iconProps"
+        :method="handleLikeEstate"
+        :icon="'fas fa-heart'"
+        :button="'좋아요'"
+      />
+      <review-button />
     </div>
 
-    <tabs @order-by-like="toLikeOrder" @order-by-time="toTimeOrder" />
+    <tabs :onclick="changeOrder" />
 
-    <div v-for="(review, i) in reviews" :key="i">
+    <div v-for="(review, i) in currReviews" :key="i">
       <v-card>
         <v-divider />
 
@@ -38,7 +43,7 @@
         <v-card-text>
           <v-row align="center">
             <review-stars :rating="review.rating" />
-            <review-likes :likes="review.likes" :user-id="review.userId" @rvwLikeBtnClicked="addLike" />
+            <review-likes :likes="review.likes" :user-id="review.userId" @like-review="handleLikeReview" />
           </v-row>
         </v-card-text>
 
@@ -59,12 +64,9 @@
 </template>
 
 <script>
-import KindnessGraph from "@/components/AllReviews/BarGraph/KindnessGraph.vue";
-import PriceGraph from "@/components/AllReviews/BarGraph/PriceGraph.vue";
-import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
-
-import EstateLikeBtn from "@/components/AllReviews/UsersReview/EstateLikeBtn.vue";
-import SubmitRvwBtn from "@/components/AllReviews/ReviewDiag/Review.vue";
+import BaseBarGraph from "../common/BaseBarGraph.vue";
+import BaseButton from "../common/BaseButton.vue";
+import ReviewButton from "@/components/AllReviews/ReviewDiag/Review.vue";
 
 import Tabs from "@/components/AllReviews/UsersReview/Tabs.vue";
 
@@ -79,16 +81,10 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    // Graphs
-    KindnessGraph,
-    PriceGraph,
-    ContractGraph,
-    // Buttons
-    EstateLikeBtn,
-    SubmitRvwBtn,
-    // Review order table
+    BaseBarGraph,
+    BaseButton,
+    ReviewButton,
     Tabs,
-    // Review
     UserProfile,
     ReviewStars,
     ReviewLikes,
@@ -99,110 +95,164 @@ export default {
 
   data: () => ({
     page: 0,
-    order: "like",
+    orderBy: "like",
     stats: [
       {
+        count: 0,
+        data: [0, 0, 0, 0, 0],
         name: "price",
-        count: 0,
-        data: [0, 0, 0, 0, 0],
+        title: "가격",
+        colors: ["#BA68C8"],
         fields: ["veryCheap", "cheap", "avgPrice", "expensive", "veryExpensive"],
+        categories: ["10% 이상 쌈", "5~10% 더 쌈", "평균 가격", "5~10% 더 비쌈", "10% 이상 비쌈"],
       },
       {
-        name: "kindness",
         count: 0,
         data: [0, 0, 0, 0, 0],
+        name: "kindness",
+        title: "친절함",
+        colors: ["#4DD0E1"],
         fields: ["veryKind", "kind", "soso", "unKind", "veryUnkind"],
+        categories: ["매우 친절", "친절", "보통", "불친절", "매우 불친절"],
       },
       {
-        name: "contract",
         count: 0,
         data: [0, 0],
+        name: "contract",
+        title: "계약률",
+        colors: ["#81C784"],
+        categories: ["여기서 계약했어요", "여기서 계약 안했어요"],
         fields: ["true", "false"],
       },
     ],
-    orderByLikes: [],
-    orderByTimes: [],
+    reviews: {
+      like: [],
+      time: [],
+    },
+    // Vuetify CSS Style & Props
+    btnStyl: {
+      margin: "34px 18px",
+    },
+    btnProps: {
+      color: "deep-orange",
+      outlined: true,
+      rounded: true,
+    },
+    iconProps: {
+      left: true,
+    },
   }),
 
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
       user: "GET_USER",
-      likes: "GET_LIKES",
     }),
 
-    reviews() {
-      return this.order === "like" ? this.orderByLikes : this.orderByTimes;
+    currReviews() {
+      return this.reviews[this.orderBy];
     },
 
     totalCount() {
-      return this.reviews.length;
+      return this.reviews[this.orderBy].length;
     },
   },
 
   async mounted() {
-    this.clear(); // Must clear the data to calculate correctly
     this.page = 1;
     const allRange = "0~-1";
-    await this.constructReviews(allRange);
-    this.$store.subscribe((mutation) => {
+    this.clear();
+    await this.makeReviews(allRange);
+    this.$store.subscribe(async (mutation) => {
       if (mutation.type === "UPDATE_ESTATE") {
-        this.clear(); // Must clear the data to calculate correctly
-        this.constructReviews(allRange);
+        this.clear();
+        await this.makeReviews(allRange);
       }
     });
   },
 
   methods: {
-    handleEventEstateLike() {
+    handleLikeEstate() {
       this.$store.dispatch("updateLikes", { estateId: this.estate.id, userId: this.user.id });
     },
 
-    async constructReviews(queryRange) {
+    async handleLikeReview(userId) {
+      try {
+        const resp = await this.$api.reviewUserLikes.post({
+          baseId: this.estate.id,
+          subIds: [userId],
+          data: {
+            user: this.user.id,
+          },
+        });
+        if (resp.data.result === "already-added") {
+          alert("이미 이 리뷰를 좋아합니다.");
+          return;
+        }
+        if (resp.data.result === "success") {
+          alert("이 리뷰를 좋아합니다.");
+        }
+        await this.$api.reviewsByLike.put({
+          baseId: this.estate.id,
+          data: { user: userId, count: 1 },
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    async makeReviews(queryRange) {
       try {
         if (this.estate === undefined || this.estate.id === undefined) {
           // When page is refreshed...
           this.gotoHome();
           return;
         }
-        const userLike = new Map();
-        const likesOrder = await this.$api.reviewLikesOrder.get({
+
+        const mapUserLikeCnt = new Map();
+        const reviewsByLike = await this.$api.reviewsByLike.get({
           baseId: this.estate.id,
           range: queryRange,
         });
-        const timeOrder = await this.$api.reviewTimeOrder.get({
+
+        reviewsByLike.data.forEach(async (d, i) => {
+          const userId = d.value.split(":")[1];
+          const likeCnt = d.score;
+          mapUserLikeCnt.set(`user:${userId}`, likeCnt);
+          const resp = await this.$api.review.get({
+            baseId: this.estate.id,
+            subIds: [userId],
+          });
+          const review = resp.data;
+          review.userId = userId;
+          review.likes = likeCnt;
+          review.rating = parseFloat(review.rating);
+
+          this.reviews["like"].push(review);
+          this.calcStats(this.reviews["like"][i]);
+        });
+
+        const reviewsByTime = await this.$api.reviewsByTime.get({
           baseId: this.estate.id,
           range: queryRange,
         });
-        for (let d of likesOrder.data) {
+
+        reviewsByTime.data.forEach(async (d) => {
           const userId = d.value.split(":")[1];
-          const likes = d.score;
-          userLike.set(`user:${userId}`, likes);
-          const review = await this.$api.review.get({
+          const resp = await this.$api.review.get({
             baseId: this.estate.id,
             subIds: [userId],
           });
-          this.orderByLikes.push(this.preProcessReview(review.data, userId, likes));
-          this.calcStats(this.orderByLikes[likesOrder.data.indexOf(d)]);
-        }
-        for (let d of timeOrder.data) {
-          const userId = d.value.split(":")[1];
-          const review = await this.$api.review.get({
-            baseId: this.estate.id,
-            subIds: [userId],
-          });
-          this.orderByTimes.push(this.preProcessReview(review.data, userId, userLike.get(`user:${userId}`)));
-        }
+          const review = resp.data;
+          review.userId = userId;
+          review.likes = mapUserLikeCnt.get(`user:${userId}`);
+          review.rating = parseFloat(review.rating);
+
+          this.reviews["time"].push(review);
+        });
       } catch (err) {
         console.error(err);
       }
-    },
-
-    preProcessReview(review, userId, likes) {
-      review.userId = userId; // To find user to increase review likes count if like button clicked
-      review.likes = likes;
-      review.rating = parseFloat(review.rating);
-      return review;
     },
 
     calcStats(review) {
@@ -231,47 +281,16 @@ export default {
       this.$router.push({ path: "/" });
     },
 
-    toLikeOrder() {
-      this.order = "like";
-    },
-
-    toTimeOrder() {
-      this.order = "time";
+    changeOrder(event) {
+      this.orderBy = event.currentTarget.id;
     },
 
     clear() {
-      this.orderByLikes = [];
-      this.orderByTimes = [];
-      this.stats[0].count = 0;
-      this.stats[1].count = 0;
-      this.stats[2].count = 0;
-      this.stats[0].data = [0, 0, 0, 0, 0];
-      this.stats[1].data = [0, 0, 0, 0, 0];
-      this.stats[2].data = [0, 0];
-    },
-
-    async addLike(userId) {
-      try {
-        const resp = await this.$api.reviewUserLikes.post({
-          baseId: this.estate.id,
-          subIds: [userId],
-          data: {
-            user: this.user.id,
-          },
-        });
-        if (resp.data.result === "already-added") {
-          alert("이미 이 리뷰를 좋아합니다.");
-          return;
-        }
-        if (resp.data.result === "success") {
-          alert("이 리뷰를 좋아합니다.");
-        }
-        await this.$api.reviewLikesOrder.put({
-          baseId: this.estate.id,
-          data: { user: userId, count: 1 },
-        });
-      } catch (err) {
-        console.error(err);
+      this.reviews["like"] = [];
+      this.reviews["time"] = [];
+      for (let stat of this.stats) {
+        stat.count = 0;
+        stat.data.fill(0, 0, stat.fields.length);
       }
     },
   },
@@ -279,7 +298,7 @@ export default {
 </script>
 
 <style>
-#rvws__btn {
+.review-btns {
   display: flex;
 }
 </style>

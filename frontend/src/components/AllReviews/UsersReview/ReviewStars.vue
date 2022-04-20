@@ -14,7 +14,7 @@ export default {
       type: Number,
       required: true,
       validator: function(value) {
-        return value >= 0;
+        return value !== null;
       },
     },
   },

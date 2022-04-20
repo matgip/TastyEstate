@@ -1,22 +1,24 @@
 <template>
   <div>
     <v-tabs :style="tabsStyl" v-bind="tabsProps">
-      <v-tab @click="orderByLike">좋아요 순</v-tab>
-      <v-tab @click="orderByTime">최신 순</v-tab>
+      <v-tab id="like" @click="onclick">좋아요 순</v-tab>
+      <v-tab id="time" @click="onclick">최신 순</v-tab>
     </v-tabs>
   </div>
 </template>
 
 <script>
 export default {
-  methods: {
-    orderByLike() {
-      this.$emit("order-by-like");
-    },
-    orderByTime() {
-      this.$emit("order-by-time");
+  props: {
+    onclick: {
+      type: Function,
+      required: true,
+      validator: function(value) {
+        return value !== null;
+      },
     },
   },
+
   data() {
     return {
       // Vuetify CSS Style & Props

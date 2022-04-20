@@ -24,7 +24,7 @@ export default {
       },
     },
     button: {
-      type: String,
+      required: true,
     },
     btnProps: {
       type: Object,

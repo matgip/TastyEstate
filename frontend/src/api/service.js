@@ -38,7 +38,7 @@ class ReadOnlyAPI extends BaseAPI {
     }
   }
 
-  async get(id="") {
+  async get(id = "") {
     try {
       const resp = await this.api.get(this.getUrl(id));
       return resp;
@@ -147,6 +147,6 @@ export const $api = {
   reviewCount: new NestedAPI("reviews", ["count"]),
   reviewRatings: new NestedAPI("reviews", ["ratings"]),
   reviewUserLikes: new NestedAPI("reviews", ["users", "likes"]),
-  reviewLikesOrder: new NestedAPI("reviews", ["likes"]),
-  reviewTimeOrder: new NestedAPI("reviews", ["time"]),
+  reviewsByLike: new NestedAPI("reviews", ["likes"]),
+  reviewsByTime: new NestedAPI("reviews", ["time"]),
 };

@@ -142,11 +142,11 @@ export default {
             baseId: this.estate.id,
             data: { rating: this.rating },
           });
-          await this.$api.reviewLikesOrder.post({
+          await this.$api.reviewsByLike.post({
             baseId: this.estate.id,
             data: { user: this.user.id },
           });
-          await this.$api.reviewTimeOrder.post({
+          await this.$api.reviewsByTime.post({
             baseId: this.estate.id,
             data: { user: this.user.id },
           });
