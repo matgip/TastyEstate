@@ -1,5 +1,5 @@
 <template>
-  <v-btn v-bind="btnProps" @click="method">
+  <v-btn v-bind="btnProps" @click="onClick">
     <v-icon v-bind="iconProps">{{ icon }}</v-icon>
     {{ button }}
   </v-btn>
@@ -8,7 +8,7 @@
 <script>
 export default {
   props: {
-    method: {
+    onClick: {
       type: Function,
       required: true,
       validator: function(value) {

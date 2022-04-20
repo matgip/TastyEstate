@@ -7,7 +7,7 @@
       <p class="estate-stars"><estate-stars :stars="stars" :likes="likes" /></p>
       <p class="estate-info"><estate-info :estateInfo="estate" /></p>
       <div class="estate-divider"></div>
-      <p class="estate-review"><all-reviews-btn /></p>
+      <p class="estate-review"><reviews-btn /></p>
     </span>
     <!-- <image-upload slot="estate-image-upload" :estateId="estate.id" /> -->
   </div>
@@ -18,7 +18,7 @@ import Images from "./components/Images.vue";
 // import ImageUpload from "@/components/RealEstate/ImageUpload.vue";
 import EstateTitle from "./components/EstateTitle.vue";
 import EstateStars from "./components/EstateStars.vue";
-import AllReviewsBtn from "./components/ReviewsBtn.vue";
+import ReviewsBtn from "./components/ReviewsBtn.vue";
 import EstateInfo from "./components/EstateInfo.vue";
 
 import { mapGetters } from "vuex";
@@ -29,7 +29,7 @@ export default {
     // ImageUpload,
     EstateTitle,
     EstateStars,
-    AllReviewsBtn,
+    ReviewsBtn,
     EstateInfo,
   },
 

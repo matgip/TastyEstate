@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn v-bind="btnProps" @click="gotoAllReviews">
+    <v-btn v-bind="btnProps" @click="gotoReviews">
       다른 사람들의 리뷰를 확인해보세요!
     </v-btn>
   </div>
@@ -27,7 +27,7 @@ export default {
   },
 
   methods: {
-    gotoAllReviews() {
+    gotoReviews() {
       if (this.isloggedIn() === false) {
         alert("로그인 후, 사용 가능합니다.");
         this.gotoLogin();

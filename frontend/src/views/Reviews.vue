@@ -23,7 +23,7 @@
         :style="btnStyl"
         :btn-props="btnProps"
         :icon-props="iconProps"
-        :method="handleLikeEstate"
+        :onClick="handleLikeEstate"
         :icon="'fas fa-heart'"
         :button="'좋아요'"
       />
@@ -66,16 +66,16 @@
 <script>
 import BaseBarGraph from "../common/BaseBarGraph.vue";
 import BaseButton from "../common/BaseButton.vue";
-import ReviewButton from "@/components/AllReviews/ReviewDiag/Review.vue";
+import ReviewButton from "@/components/Reviews/ReviewDiag/Review.vue";
 
-import Tabs from "@/components/AllReviews/UsersReview/Tabs.vue";
+import Tabs from "@/components/Reviews/UsersReview/Tabs.vue";
 
-import UserProfile from "@/components/AllReviews/UsersReview/UserProfile.vue";
-import ReviewStars from "@/components/AllReviews/UsersReview/ReviewStars.vue";
-import ReviewLikes from "@/components/AllReviews/UsersReview/ReviewLikes.vue";
-import ReviewTitle from "@/components/AllReviews/UsersReview/ReviewTitle.vue";
-import ReviewContents from "@/components/AllReviews/UsersReview/ReviewContents.vue";
-import ReviewsPagenation from "@/components/AllReviews/UsersReview/ReviewsPagenation.vue";
+import UserProfile from "@/components/Reviews/UsersReview/UserProfile.vue";
+import ReviewStars from "@/components/Reviews/UsersReview/ReviewStars.vue";
+import ReviewLikes from "@/components/Reviews/UsersReview/ReviewLikes.vue";
+import ReviewTitle from "@/components/Reviews/UsersReview/ReviewTitle.vue";
+import ReviewContents from "@/components/Reviews/UsersReview/ReviewContents.vue";
+import ReviewsPagenation from "@/components/Reviews/UsersReview/ReviewsPagenation.vue";
 
 import { mapGetters } from "vuex";
 
@@ -192,6 +192,7 @@ export default {
         if (resp.data.result === "success") {
           alert("이 리뷰를 좋아합니다.");
         }
+
         await this.$api.reviewsByLike.put({
           baseId: this.estate.id,
           data: { user: userId, count: 1 },
@@ -229,6 +230,7 @@ export default {
           review.rating = parseFloat(review.rating);
 
           this.reviews["like"].push(review);
+          // Calculate review statistics
           this.calcStats(this.reviews["like"][i]);
         });
 

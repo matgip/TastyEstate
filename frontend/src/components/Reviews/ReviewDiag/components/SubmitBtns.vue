@@ -1,7 +1,7 @@
 <template>
   <div>
-    <base-button :btn-props="btnProps" :method="closeDiag" :button="'닫기'" />
-    <base-button :btn-props="btnProps" :method="submit" :button="'리뷰 등록하기'" />
+    <base-button :btn-props="btnProps" :onClick="closeDiag" :button="'닫기'" />
+    <base-button :btn-props="btnProps" :onClick="submit" :button="'리뷰 등록하기'" />
   </div>
 </template>
 

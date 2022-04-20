@@ -3,7 +3,7 @@
     <base-button
       :btn-props="btnProps"
       :icon-props="iconProps"
-      :method="handleLikeReview"
+      :onClick="handleLikeReview"
       :icon="'fas fa-thumbs-up'"
       :button="likes"
     />
