@@ -29,7 +29,7 @@
             <base-button
               :btn-props="btnProps"
               :icon-props="iconProps"
-              :onClick="handleLikeReview"
+              :onClick="sendLikeEvent"
               :icon="'fas fa-thumbs-up'"
               :button="review.likes"
             />
@@ -45,7 +45,6 @@
       <!-- review contents -->
       <v-card-text>
         <div>{{ review.text }}</div>
-        <review-contents :text="review.text" />
       </v-card-text>
 
       <v-divider />
@@ -98,7 +97,7 @@ export default {
       type: Object,
       required: true,
       validator: function(review) {
-        if (!review.nickname || !review.time || !review.rating || !review.likes || !review.title || !review.text)
+        if (!review.nickname && !review.time && !review.rating && !review.likes && !review.title && !review.text)
           return false;
         return true;
       },
@@ -106,8 +105,8 @@ export default {
   },
 
   methods: {
-    handleLikeReview() {
-      this.$emit("like-review", this.userId);
+    sendLikeEvent() {
+      this.$emit("like-review", this.review.userId);
     },
   },
 };

@@ -33,7 +33,7 @@
     <tabs :onclick="changeOrder" />
 
     <div v-for="(review, i) in currReviews" :key="i">
-      <user-review :review="review" />
+      <user-review :review="review" @like-review="handleLikeReview" />
     </div>
 
     <reviews-pagenation :page="page" :total-count="totalCount" />
