@@ -1,12 +1,10 @@
-<!-- @format -->
-
 <template>
   <div>
     <base-button
       :btn-props="btnProps"
       :icon-props="iconProps"
       :icon="'fas fa-comment'"
-      :onClick="onKakaoLogin"
+      :onClick="handleKakaoLogin"
       :button="'카카오 로그인'"
     />
   </div>
@@ -31,7 +29,7 @@ export default {
   }),
 
   methods: {
-    async onKakaoLogin() {
+    async handleKakaoLogin() {
       localStorage.setItem("redirect_location", "/");
       // await loginController.login("kakao");
       await this.$store.dispatch("login", "kakao");

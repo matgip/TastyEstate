@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style>
+.v-application ul {
+  padding-left: 0px;
+}
+
 #sidebar {
   position: absolute;
   background-color: white;
@@ -35,14 +39,18 @@ export default {
   top: 67px;
 }
 
-.v-application ul {
-  padding-left: 0px;
+#sidebar:hover {
+  background-color: #cfd8dc;
 }
 
 @media screen and (max-width: 768px) {
   #sidebar {
     width: 100%;
-    top: 322px;
+    top: 422px;
+  }
+
+  #sidebar:hover {
+    background-color: #cfd8dc;
   }
 }
 </style>

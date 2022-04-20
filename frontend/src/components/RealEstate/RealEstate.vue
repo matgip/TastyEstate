@@ -29,8 +29,8 @@ export default {
     // ImageUpload,
     EstateTitle,
     EstateStars,
-    ReviewsBtn,
     EstateInfo,
+    ReviewsBtn,
   },
 
   computed: {
