@@ -2,17 +2,33 @@
 
 <template>
   <div>
-    <login-kakao-btn :method="onKakaoLogin" :icon="'fas fa-comment'" :button="'카카오 로그인'" />
+    <base-button
+      :btn-props="btnProps"
+      :icon-props="iconProps"
+      :icon="'fas fa-comment'"
+      :method="onKakaoLogin"
+      :button="'카카오 로그인'"
+    />
   </div>
 </template>
 
 <script>
-import LoginKakaoBtn from "./LoginKakaoBtn.vue";
+import BaseButton from "@/common/BaseButton.vue";
 
 export default {
   components: {
-    LoginKakaoBtn,
+    BaseButton,
   },
+
+  data: () => ({
+    // Vuetify CSS Style & Props
+    btnProps: {
+      color: "yellow lighten-1",
+    },
+    iconProps: {
+      left: true,
+    },
+  }),
 
   methods: {
     async onKakaoLogin() {
@@ -24,3 +40,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.v-btn {
+  width: 400px;
+}
+
+@media screen and (max-width: 768px) {
+  .v-btn {
+    width: 300px;
+  }
+}
+</style>

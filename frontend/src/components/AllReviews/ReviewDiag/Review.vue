@@ -51,13 +51,13 @@
 </template>
 
 <script>
-import EstateName from "./EstateName.vue";
-import Rating from "./Rating.vue";
-import KindnessChkBox from "./KindnessChkBox.vue";
-import PriceChkBox from "./PriceChkBox.vue";
-import ContractChkBox from "./ContractChkBox.vue";
-import TextArea from "./TextArea.vue";
-import SubmitBtns from "./SubmitBtns.vue";
+import EstateName from "./components/EstateName.vue";
+import Rating from "./components/Rating.vue";
+import KindnessChkBox from "./components/KindnessChkBox.vue";
+import PriceChkBox from "./components/PriceChkBox.vue";
+import ContractChkBox from "./components/ContractChkBox.vue";
+import TextArea from "./components/TextArea.vue";
+import SubmitBtns from "./components/SubmitBtns.vue";
 
 import { mapGetters } from "vuex";
 

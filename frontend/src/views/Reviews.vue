@@ -64,7 +64,7 @@ import PriceGraph from "@/components/AllReviews/BarGraph/PriceGraph.vue";
 import ContractGraph from "@/components/AllReviews/BarGraph/ContractGraph.vue";
 
 import EstateLikeBtn from "@/components/AllReviews/UsersReview/EstateLikeBtn.vue";
-import SubmitRvwBtn from "@/components/AllReviews/ReviewDiag/TheReview.vue";
+import SubmitRvwBtn from "@/components/AllReviews/ReviewDiag/Review.vue";
 
 import Tabs from "@/components/AllReviews/UsersReview/Tabs.vue";
 

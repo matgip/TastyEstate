@@ -2,25 +2,26 @@
   <div id="sidebar">
     <nav :key="estate.id">
       <ul>
-        <li><the-real-estate /></li>
+        <li><real-estate /></li>
       </ul>
     </nav>
   </div>
 </template>
 
 <script>
-import TheRealEstate from "@/components/RealEstate/TheRealEstate.vue";
+import RealEstate from "@/components/RealEstate/RealEstate.vue";
 
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    RealEstate,
+  },
+
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
     }),
-  },
-  components: {
-    TheRealEstate,
   },
 };
 </script>
