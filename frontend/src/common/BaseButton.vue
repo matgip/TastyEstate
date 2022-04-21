@@ -11,15 +11,15 @@ export default {
     onClick: {
       type: Function,
       required: true,
-      validator: function(value) {
-        return value !== null;
+      validator: function(func) {
+        return func !== null;
       },
     },
     icon: {
       type: String,
-      validator: function(value) {
-        if (value.indexOf("fas") !== -1) return true;
-        if (value.indexOf("mdi") !== -1) return true;
+      validator: function(icon) {
+        if (icon.indexOf("fas") !== -1) return true;
+        if (icon.indexOf("mdi") !== -1) return true;
         return false;
       },
     },

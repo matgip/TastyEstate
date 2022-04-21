@@ -80,12 +80,12 @@ export default {
 
     search(keyword) {
       if (!keyword || keyword === this.select) return;
-      this.searchEstate(keyword);
+      this._searchEstate(keyword);
     },
   },
 
   methods: {
-    searchEstate(keyword) {
+    _searchEstate(keyword) {
       this.isLoading = true;
       fetch(
         `${this.KAKAO_API.url}?query=${keyword}&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}`,

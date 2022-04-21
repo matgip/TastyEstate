@@ -15,10 +15,6 @@ import estateStore from "./modules/estateStore";
 import userStore from "./modules/userStore";
 import likesStore from "./modules/likesStore";
 import starsStore from "./modules/starsStore";
-import kindnessStore from "./modules/kindnessStore";
-import priceStore from "./modules/priceStore";
-import contractStore from "./modules/contractStore";
-import dialogStore from "./modules/dialogStore";
 
 const store = new Vuex.Store({
   modules: {
@@ -26,10 +22,6 @@ const store = new Vuex.Store({
     userStore: userStore,
     likesStore: likesStore,
     starsStore: starsStore,
-    kindnessStore: kindnessStore,
-    priceStore: priceStore,
-    contractStore: contractStore,
-    dialogStore: dialogStore,
   },
   plugins: [
     createPersistedState({

@@ -23,17 +23,17 @@
         :style="btnStyl"
         :btn-props="btnProps"
         :icon-props="iconProps"
-        :onClick="handleLikeEstate"
+        :on-click="onLikeEstate"
         :icon="'fas fa-heart'"
         :button="'좋아요'"
       />
-      <review-button />
+      <review-dialog-button />
     </div>
 
-    <review-order-tab :onclick="changeOrder" />
+    <review-order-tab :on-click="onChangeOrder" />
 
     <div v-for="(review, i) in currReviews" :key="i">
-      <user-review :review="review" @like-review="handleLikeReview" />
+      <user-review :review="review" @like-review="onLikeReview" />
     </div>
 
     <reviews-pagenation :page="page" :total-count="totalCount" />
@@ -43,7 +43,7 @@
 <script>
 import BaseBarGraph from "../common/BaseBarGraph.vue";
 import BaseButton from "../common/BaseButton.vue";
-import ReviewButton from "@/components/Reviews/ReviewDiag/Review.vue";
+import ReviewDialogButton from "@/components/Reviews/ReviewDiag/ReviewDialogButton.vue";
 
 import ReviewOrderTab from "../components/Reviews/UsersReview/ReviewOrderTab.vue";
 import UserReview from "../components/Reviews/UsersReview/UserReview.vue";
@@ -55,7 +55,7 @@ export default {
   components: {
     BaseBarGraph,
     BaseButton,
-    ReviewButton,
+    ReviewDialogButton,
     ReviewOrderTab,
     UserReview,
     ReviewsPagenation,
@@ -129,22 +129,23 @@ export default {
   async mounted() {
     this.page = 1;
     const allRange = "0~-1";
-    this.clear();
-    await this.makeReviews(allRange);
+    this._clear();
+    await this._makeReview(allRange);
+
     this.$store.subscribe(async (mutation) => {
       if (mutation.type === "UPDATE_ESTATE") {
-        this.clear();
-        await this.makeReviews(allRange);
+        this._clear();
+        await this._makeReview(allRange);
       }
     });
   },
 
   methods: {
-    handleLikeEstate() {
+    onLikeEstate() {
       this.$store.dispatch("updateLikes", { estateId: this.estate.id, userId: this.user.id });
     },
 
-    async handleLikeReview(userId) {
+    async onLikeReview(userId) {
       try {
         const resp = await this.$api.reviewUserLikes.post({
           baseId: this.estate.id,
@@ -170,11 +171,15 @@ export default {
       }
     },
 
-    async makeReviews(queryRange) {
+    onChangeOrder(event) {
+      this.orderBy = event.currentTarget.id;
+    },
+
+    async _makeReview(queryRange) {
       try {
         if (this.estate === undefined || this.estate.id === undefined) {
           // When page is refreshed...
-          this.gotoHome();
+          this._gotoHome();
           return;
         }
 
@@ -200,7 +205,7 @@ export default {
 
           this.reviews["like"].push(review);
           // Calculate review statistics
-          this.calcStats(this.reviews["like"][i]);
+          this._calcStats(this.reviews["like"][i]);
         });
 
         const reviewsByTime = await this.$api.reviewsByTime.get({
@@ -227,14 +232,14 @@ export default {
       }
     },
 
-    calcStats(review) {
+    _calcStats(review) {
       for (let stat of this.stats) {
-        this.calcStatData(stat, review[stat.name]);
-        this.toPercentage(stat);
+        this._calcStatData(stat, review[stat.name]);
+        this._toPercentage(stat);
       }
     },
 
-    calcStatData(stat, dataFromDb) {
+    _calcStatData(stat, dataFromDb) {
       if (!dataFromDb) return;
       stat.count += 1;
       for (let field of stat.fields) {
@@ -242,22 +247,18 @@ export default {
       }
     },
 
-    toPercentage(stat) {
+    _toPercentage(stat) {
       if (stat.count === 0) return;
       for (let i = 0; i < stat.data.length; i++) {
         stat.data[i] = ((stat.data[i] / stat.count) * 100).toFixed(2);
       }
     },
 
-    gotoHome() {
+    _gotoHome() {
       this.$router.push({ path: "/" });
     },
 
-    changeOrder(event) {
-      this.orderBy = event.currentTarget.id;
-    },
-
-    clear() {
+    _clear() {
       this.reviews["like"] = [];
       this.reviews["time"] = [];
       for (let stat of this.stats) {
