@@ -53,8 +53,8 @@
         <v-card-actions>
           <v-spacer />
           <div>
-            <base-button :btn-props="submitBtnProps" :onClick="closeDiag" :button="'닫기'" />
-            <base-button :btn-props="submitBtnProps" :onClick="onSubmit" :button="'리뷰 등록하기'" />
+            <base-button :btn-props="submitBtnProps" :on-click="closeDiag" :button="'닫기'" />
+            <base-button :btn-props="submitBtnProps" :on-click="onSubmit" :button="'리뷰 등록하기'" />
           </div>
         </v-card-actions>
       </v-card>

@@ -12,7 +12,7 @@
           v-if="user == null"
           :btn-props="btnProps"
           :icon-props="iconProps"
-          :onClick="gotoLogin"
+          :on-click="gotoLogin"
           :icon="'fas fa-user-lock'"
           :button="'로그인'"
         />
@@ -20,7 +20,7 @@
           v-else
           :btn-props="btnProps"
           :icon-props="iconProps"
-          :onClick="onLogout"
+          :on-click="onLogout"
           :icon="'fas fa-sign-out-alt'"
           :button="'로그아웃'"
         />
@@ -29,7 +29,7 @@
         <base-button
           :btn-props="btnProps"
           :icon-props="iconProps"
-          :onClick="gotoHome"
+          :on-click="gotoHome"
           :icon="'fas fa-home'"
           :button="'홈'"
         />

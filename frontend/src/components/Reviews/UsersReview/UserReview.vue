@@ -29,7 +29,7 @@
             <base-button
               :btn-props="btnProps"
               :icon-props="iconProps"
-              :onClick="sendLikeEvent"
+              :on-click="sendLikeEvent"
               :icon="'fas fa-thumbs-up'"
               :button="review.likes"
             />

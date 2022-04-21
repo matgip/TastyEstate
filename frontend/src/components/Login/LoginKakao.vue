@@ -4,7 +4,7 @@
       :btn-props="btnProps"
       :icon-props="iconProps"
       :icon="'fas fa-comment'"
-      :onClick="handleKakaoLogin"
+      :on-click="handleKakaoLogin"
       :button="'카카오 로그인'"
     />
   </div>
