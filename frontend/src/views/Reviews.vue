@@ -30,10 +30,10 @@
       <review-dialog-button />
     </div>
 
-    <review-order-tab :on-click="onChangeOrder" />
+    <review-order-table :on-click="onChangeOrder" />
 
     <div v-for="(review, i) in currReviews" :key="i">
-      <user-review :review="review" @like-review="onLikeReview" />
+      <review :review="review" @like-review="onLikeReview" />
     </div>
 
     <reviews-pagenation :page="page" :total-count="totalCount" />
@@ -44,10 +44,9 @@
 import BaseBarGraph from "../common/BaseBarGraph.vue";
 import BaseButton from "../common/BaseButton.vue";
 import ReviewDialogButton from "@/components/Reviews/ReviewDiag/ReviewDialogButton.vue";
-
-import ReviewOrderTab from "../components/Reviews/UsersReview/ReviewOrderTab.vue";
-import UserReview from "../components/Reviews/UsersReview/UserReview.vue";
-import ReviewsPagenation from "@/components/Reviews/UsersReview/ReviewsPagenation.vue";
+import ReviewOrderTable from "../components/Reviews/Review/ReviewOrderTable.vue";
+import Review from "../components/Reviews/Review/Review.vue";
+import ReviewsPagenation from "@/components/Reviews/Review/ReviewsPagenation.vue";
 
 import { mapGetters } from "vuex";
 
@@ -56,8 +55,8 @@ export default {
     BaseBarGraph,
     BaseButton,
     ReviewDialogButton,
-    ReviewOrderTab,
-    UserReview,
+    ReviewOrderTable,
+    Review,
     ReviewsPagenation,
   },
 
