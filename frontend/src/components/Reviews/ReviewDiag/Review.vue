@@ -11,14 +11,27 @@
       </template>
 
       <!-- Only can see if dialog is true -->
+
       <v-card>
         <v-card-title>
-          <estate-name :place-name="estate.place_name" />
+          <div>🏠 {{ estate.place_name }}</div>
         </v-card-title>
 
         <v-divider />
 
-        <rating :prop-rating="rating" @rating-selected="handleEventRating" />
+        <!-- Rating -->
+        <div>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>🌟 평점을 남겨주세요</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item>
+            <v-rating v-bind="starProps" v-model="rating"></v-rating>
+            <span v-bind="textProp"> ({{ rating }}) </span>
+          </v-list-item>
+        </div>
 
         <v-divider />
 
@@ -51,8 +64,6 @@
 </template>
 
 <script>
-import EstateName from "./components/EstateName.vue";
-import Rating from "./components/Rating.vue";
 import KindnessChkBox from "./components/KindnessChkBox.vue";
 import PriceChkBox from "./components/PriceChkBox.vue";
 import ContractChkBox from "./components/ContractChkBox.vue";
@@ -63,8 +74,6 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    EstateName,
-    Rating,
     KindnessChkBox,
     PriceChkBox,
     ContractChkBox,
@@ -85,16 +94,23 @@ export default {
       persistent: true,
       "max-width": "700px",
     },
-
     btnProps: {
       color: "deep-orange",
       outlined: true,
       rounded: true,
     },
-
     icon: "fas fa-edit",
     iconProps: {
       left: true,
+    },
+    textProp: {
+      class: "grey--text text-caption mr-2",
+    },
+    starProps: {
+      size: 18,
+      color: "amber",
+      dense: true,
+      "half-increments": true,
     },
   }),
 
@@ -156,10 +172,6 @@ export default {
       } catch (err) {
         console.error(err);
       }
-    },
-
-    handleEventRating(rating) {
-      this.rating = rating;
     },
 
     handleEventTitle(title) {

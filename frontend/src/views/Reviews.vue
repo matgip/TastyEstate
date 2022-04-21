@@ -30,7 +30,7 @@
       <review-button />
     </div>
 
-    <tabs :onclick="changeOrder" />
+    <review-order-tab :onclick="changeOrder" />
 
     <div v-for="(review, i) in currReviews" :key="i">
       <user-review :review="review" @like-review="handleLikeReview" />
@@ -45,8 +45,7 @@ import BaseBarGraph from "../common/BaseBarGraph.vue";
 import BaseButton from "../common/BaseButton.vue";
 import ReviewButton from "@/components/Reviews/ReviewDiag/Review.vue";
 
-import Tabs from "@/components/Reviews/UsersReview/Tabs.vue";
-
+import ReviewOrderTab from "../components/Reviews/UsersReview/ReviewOrderTab.vue";
 import UserReview from "../components/Reviews/UsersReview/UserReview.vue";
 import ReviewsPagenation from "@/components/Reviews/UsersReview/ReviewsPagenation.vue";
 
@@ -57,7 +56,7 @@ export default {
     BaseBarGraph,
     BaseButton,
     ReviewButton,
-    Tabs,
+    ReviewOrderTab,
     UserReview,
     ReviewsPagenation,
   },
