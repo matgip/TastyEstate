@@ -128,7 +128,6 @@ export default {
   async mounted() {
     this.page = 1;
     const allRange = "0~-1";
-    this._clear();
     await this._makeReview(allRange);
 
     this.$store.subscribe(async (mutation) => {
@@ -137,6 +136,10 @@ export default {
         await this._makeReview(allRange);
       }
     });
+  },
+
+  destroyed() {
+    this._clear();
   },
 
   methods: {
