@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app>
-      <Navbar />
+      <Masthead />
 
       <v-main>
         <Search v-if="isNotInLoginPage()" />
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Navbar from "./views/Navbar.vue";
+import Masthead from "./components/layouts/TheMasthead.vue";
 import Search from "./components/Map/MapSearch.vue";
 export default {
   name: "App",
@@ -25,7 +25,7 @@ export default {
     },
   },
   components: {
-    Navbar,
+    Masthead,
     Search,
   },
 };

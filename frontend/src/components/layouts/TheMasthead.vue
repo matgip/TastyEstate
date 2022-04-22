@@ -1,13 +1,13 @@
 <!-- @format -->
 
 <template>
-  <nav id="navbar">
+  <nav id="masthead">
     <div id="title" @click="gotoHome">
       <img src="@/assets/logo.png" />
     </div>
 
-    <ul class="navbar__menu">
-      <li class="navbar__menu__item">
+    <ul class="masthead__menu">
+      <li class="masthead__menu__item">
         <base-button
           v-if="user == null"
           :btn-props="btnProps"
@@ -25,7 +25,7 @@
           :button="'로그아웃'"
         />
       </li>
-      <li class="navbar__menu__item">
+      <li class="masthead__menu__item">
         <base-button
           :btn-props="btnProps"
           :icon-props="iconProps"
@@ -37,7 +37,7 @@
     </ul>
 
     <!-- Toggle button -->
-    <button class="navbar__toggle-btn" @click="toggleNavbarMenu">
+    <button class="masthead__toggle-btn" @click="toggleMastheadMenu">
       <i class="fas fa-bars"></i>
     </button>
   </nav>
@@ -85,9 +85,9 @@ export default {
       await this.$store.dispatch("logout", "kakao");
       this.gotoHome();
     },
-    toggleNavbarMenu() {
-      const navbarMenu = document.querySelector(".navbar__menu");
-      navbarMenu.classList.toggle("open");
+    toggleMastheadMenu() {
+      const mastheadMenu = document.querySelector(".masthead__menu");
+      mastheadMenu.classList.toggle("open");
     },
   },
 };
@@ -102,7 +102,7 @@ export default {
   font-weight: 500;
 }
 
-#navbar {
+#masthead {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -114,18 +114,18 @@ export default {
   border-radius: 0;
 }
 
-.navbar__menu {
+.masthead__menu {
   display: flex;
 }
 
-.navbar__menu__item {
+.masthead__menu__item {
   padding: 12px 12px;
   margin: 0px 4px;
   cursor: pointer;
   border-radius: var(--size-border-radius);
 }
 
-.navbar__toggle-btn {
+.masthead__toggle-btn {
   position: absolute;
   right: 32px;
   font-size: 24px;
@@ -134,27 +134,27 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-  .navbar__toggle-btn {
+  .masthead__toggle-btn {
     display: block;
   }
 
-  #navbar {
+  #masthead {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .navbar__menu {
+  .masthead__menu {
     flex-direction: column;
     text-align: center;
     width: 100%;
     display: none;
   }
 
-  .navbar__menu.open {
+  .masthead__menu.open {
     display: block;
   }
 
-  .navbar__menu__item {
+  .masthead__menu__item {
     margin-right: 20px;
     border-top: 1px solid #e0e0e0;
     border-radius: 0;
