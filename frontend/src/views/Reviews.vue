@@ -24,7 +24,7 @@
       <review-dialog-button />
     </div>
 
-    <v-tabs :style="tabsStyl" v-bind="tabsProps">
+    <v-tabs :style="tabsStyle" v-bind="tabsProps">
       <v-tab id="like" @click="onChangeOrder">좋아요 순</v-tab>
       <v-tab id="time" @click="onChangeOrder">최신 순</v-tab>
     </v-tabs>
@@ -101,7 +101,7 @@ export default {
     iconProps: {
       left: true,
     },
-    tabsStyl: {
+    tabsStyle: {
       margin: "0px 18px",
     },
     tabsProps: {

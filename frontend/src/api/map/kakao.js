@@ -8,23 +8,29 @@ class MapKakao {
 
   constructor() {
     this.map = null;
+    this.placeSrch = null;
+    this.markerClstr = null;
+    this.iw = null;
     this.imgSelected = null;
     this.imgMarker = null;
     this.imgMarkerSize = null;
     MapKakao.initialize();
   }
 
-  async mount(mapId) {
+  async mount(mapId, imgEntity) {
     await MapKakao.initialize();
 
     // Re-use map
     if (MapKakao.cachedMaps[mapId]) {
-      const { map, ps, mc, iw } = MapKakao.cachedMaps[mapId];
+      const { map, ps, mc, iw, isz, im, is } = MapKakao.cachedMaps[mapId];
       // this.map = MapKakao.cachedMaps[mapId];
       this.map = map;
       this.placeSrch = ps;
       this.markerClstr = mc;
       this.iw = iw;
+      this.imgMarkerSize = isz;
+      this.imgMarker = im;
+      this.imgSelected = is;
 
       const oElem = this.map.getNode();
       const nElem = document.getElementById(mapId);
@@ -41,23 +47,36 @@ class MapKakao {
         averageCenter: true,
         minLevel: this.CLSTR_MIN_LVL,
       });
+      const { imgMarker, imgSelected, imgSize } = imgEntity;
+      const { width, height } = imgSize;
+      this.imgMarkerSize = new MapKakao.daum.maps.Size(width, height);
+      this.imgMarker = new MapKakao.daum.maps.MarkerImage(imgMarker, this.imgMarkerSize);
+      this.imgSelected = new MapKakao.daum.maps.MarkerImage(imgSelected, this.imgMarkerSize);
 
       this.iw = new MapKakao.daum.maps.InfoWindow({ zIndex: 1 });
 
       MapKakao.daum.maps.event.addListener(this.map, "dragend", this.scan.bind(this));
       MapKakao.daum.maps.event.addListener(this.map, "zoom_changed", this.scan.bind(this));
 
-      MapKakao.cachedMaps[mapId] = { map: this.map, ps: this.placeSrch, mc: this.markerClstr, iw: this.iw };
+      MapKakao.cachedMaps[mapId] = {
+        map: this.map,
+        ps: this.placeSrch,
+        mc: this.markerClstr,
+        iw: this.iw,
+        isz: this.imgMarkerSize,
+        im: this.imgMarker,
+        is: this.imgSelected,
+      };
     }
     return this;
   }
 
-  setMarkerImage(imgMarker, imgSelected, imgMarkerSize) {
-    const { width, height } = imgMarkerSize;
-    this.imgMarkerSize = new MapKakao.daum.maps.Size(width, height);
-    this.imgMarker = new MapKakao.daum.maps.MarkerImage(imgMarker, this.imgMarkerSize);
-    this.imgSelected = new MapKakao.daum.maps.MarkerImage(imgSelected, this.imgMarkerSize);
-  }
+  // setMarkerImage(imgMarker, imgSelected, imgMarkerSize) {
+  //   const { width, height } = imgMarkerSize;
+  //   this.imgMarkerSize = new MapKakao.daum.maps.Size(width, height);
+  //   this.imgMarker = new MapKakao.daum.maps.MarkerImage(imgMarker, this.imgMarkerSize);
+  //   this.imgSelected = new MapKakao.daum.maps.MarkerImage(imgSelected, this.imgMarkerSize);
+  // }
 
   addMarker(markerEntity) {
     const { place, isSelected } = markerEntity;
@@ -79,7 +98,7 @@ class MapKakao {
     return marker;
   }
 
-  onEstateClicked(marker, estate) {
+  onMarkerClicked(marker, estate) {
     MapKakao.daum.maps.event.addListener(marker, "click", async () => {
       // Update selected estate
       await store.dispatch("updateRealEstate", estate);
@@ -131,7 +150,7 @@ class MapKakao {
     if (status === MapKakao.daum.maps.services.Status.OK) {
       for (let p of places) {
         const m = this.addMarker({ place: p, image: this.imgMarker, isSelected: false });
-        this.onEstateClicked(m, p);
+        this.onMarkerClicked(m, p);
       }
     }
     if (pagination.hasNextPage) pagination.nextPage();
@@ -145,30 +164,32 @@ class MapKakao {
   }
 
   _isScanned(lat, lng) {
-    if (window.cachedLatLng === undefined) return false;
-    if (window.cachedLatLng[lat] === undefined) return false;
-    return window.cachedLatLng[lat][lng] === this.SCANNED;
+    if (MapKakao.cachedLatLng === undefined) return false;
+    if (MapKakao.cachedLatLng[lat] === undefined) return false;
+    return MapKakao.cachedLatLng[lat][lng] === this.SCANNED;
   }
 
   _cacheLatLng(lat, lng) {
-    window.cachedLatLng ??= new Array();
-    window.cachedLatLng[lat] ??= new Array();
-    window.cachedLatLng[lat][lng] = this.SCANNED;
+    MapKakao.cachedLatLng ??= new Array();
+    MapKakao.cachedLatLng[lat] ??= new Array();
+    MapKakao.cachedLatLng[lat][lng] = this.SCANNED;
   }
 
   _cacheMarker(place, marker) {
-    window.cachedPlaces ??= new Map();
-    window.cachedPlaces.set(place.id, marker);
+    MapKakao.cachedPlaces ??= new Map();
+    MapKakao.cachedPlaces.set(place.id, marker);
   }
 
   _getCachedMarker(place) {
-    if (!window.cachedPlaces) return undefined;
-    return window.cachedPlaces.get(place.id);
+    if (!MapKakao.cachedPlaces) return undefined;
+    return MapKakao.cachedPlaces.get(place.id);
   }
 }
 
 MapKakao.cachedMaps = {};
 MapKakao.daum = null;
+MapKakao.cachedLatLng = null;
+MapKakao.cachedPlaces = null;
 MapKakao.initialize = function() {
   return new Promise((resolve, reject) => {
     loadScriptOnce(
@@ -176,6 +197,8 @@ MapKakao.initialize = function() {
       (err) => {
         if (err) return reject(err);
         MapKakao.daum = window.daum;
+        MapKakao.cachedLatLng = window.cachedLatLng;
+        MapKakao.cachedPlaces = window.cachedPlaces;
         MapKakao.daum.maps.load(() => resolve());
       }
     );

@@ -1,9 +1,7 @@
 <template>
   <div id="sidebar">
     <nav :key="estate.id">
-      <ul>
-        <li><real-estate /></li>
-      </ul>
+      <real-estate />
     </nav>
   </div>
 </template>

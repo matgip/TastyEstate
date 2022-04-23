@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data: () => ({
     isLoading: false,
@@ -78,27 +80,39 @@ export default {
       }
     },
 
-    search(keyword) {
+    async search(keyword) {
       if (!keyword || keyword === this.select) return;
-      this._searchEstate(keyword);
+      await this._searchEstate(keyword);
     },
   },
 
   methods: {
-    _searchEstate(keyword) {
-      this.isLoading = true;
-      fetch(
-        `${this.KAKAO_API.url}?query=${keyword}&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}`,
-        {
-          headers: {
-            Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
-          },
+    async _searchEstate(keyword) {
+      try {
+        this.isLoading = true;
+        this.estates = [];
+        let page = 1;
+        let isEnd = false;
+        // Kakao map APIs provides up to 45 datas per request.
+        // By increasing page count on every request rest API,
+        // get total datas until is end.
+        while (!isEnd) {
+          const url = `${this.KAKAO_API.url}?query=${keyword}&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}&page=${page}&size=15`;
+          const headers = {
+            headers: {
+              Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
+            },
+          };
+          let resp = await axios.get(encodeURI(url), headers);
+          this.estates = this.estates.concat(resp.data.documents);
+          page += 1;
+          isEnd = resp.data.meta.is_end;
         }
-      )
-        .then((res) => res.clone().json())
-        .then((res) => (this.estates = res.documents))
-        .catch((err) => console.log(err))
-        .finally(() => (this.isLoading = false));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.isLoading = false;
+      }
     },
 
     clear() {

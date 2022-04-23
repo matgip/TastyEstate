@@ -52,9 +52,9 @@ export default {
 
       try {
         const map = new MapKakao();
-        await map.mount("mapview");
+        await map.mount("mapview", { imgMarker: imgMarker, imgSelected: imgSelected, imgSize: imgSize });
         this.map = map;
-        this.map.setMarkerImage(imgMarker, imgSelected, imgSize);
+        // this.map.setMarkerImage(imgMarker, imgSelected, imgSize);
       } catch (err) {
         console.error(err);
       }
@@ -65,7 +65,7 @@ export default {
     },
 
     addClickHandler(marker, estate) {
-      this.map.onEstateClicked(marker, estate);
+      this.map.onMarkerClicked(marker, estate);
     },
 
     scanEstate() {
