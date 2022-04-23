@@ -31,9 +31,9 @@
         </div>
 
         <!-- check-box -->
-        <div v-for="(chkbox, i) in chkBoxes" :key="chkbox.name">
+        <div v-for="chkbox in chkBoxes" :key="chkbox.name">
           <v-divider />
-          <base-check-box :index="i" :title="chkbox.title" :items="chkbox.items" :on-change="onChangeCheckbox" />
+          <base-check-box :check-box-object="chkbox" :on-change="onChangeCheckbox" />
         </div>
         <v-divider />
 
@@ -210,7 +210,10 @@ export default {
       }
     },
 
-    onChangeCheckbox(index, newSelect) {
+    onChangeCheckbox(name, newSelect) {
+      const index = this.chkBoxes.findIndex((chkBox) => {
+        return chkBox.name === name;
+      });
       this.chkBoxes[index].select = newSelect;
     },
 

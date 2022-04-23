@@ -3,13 +3,13 @@
     <!-- check box title -->
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title>{{ title }}</v-list-item-title>
+        <v-list-item-title>{{ checkBoxObject.title }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
 
     <!-- check box list -->
     <v-list-item-group v-model="select">
-      <template v-for="(item, i) in items">
+      <template v-for="(item, i) in checkBoxObject.items">
         <v-list-item v-bind="listItemProps" :key="`item-${i}`" :value="item.value">
           <template #default="{ active }">
             <v-list-item-action>
@@ -25,22 +25,11 @@
 <script>
 export default {
   props: {
-    index: {
-      type: Number,
-    },
-    title: {
-      type: String,
+    checkBoxObject: {
+      type: Object,
       required: true,
-    },
-    items: {
-      type: Array,
-      required: true,
-      validator: function(items) {
-        if (items.length === 0) return false;
-        for (let item of items) {
-          if (item.value === undefined) return false;
-          if (item.text === undefined) return false;
-        }
+      validator: function(obj) {
+        if (!obj.title || !obj.items || !obj.name) return false;
         return true;
       },
     },
@@ -67,9 +56,9 @@ export default {
   },
 
   watch: {
-    select(value) {
-      if (value === undefined) return;
-      this.onChange(this.index, value);
+    select(selected) {
+      if (selected === undefined) return;
+      this.onChange(this.checkBoxObject.name, selected);
     },
   },
 };
