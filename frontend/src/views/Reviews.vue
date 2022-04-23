@@ -6,13 +6,7 @@
       <v-container>
         <v-row>
           <v-col v-for="stat in stats" :key="stat.title">
-            <base-bar-graph
-              :key="stat.count"
-              :data="stat.data"
-              :categories="stat.categories"
-              :title="stat.title"
-              :colors="stat.colors"
-            />
+            <base-bar-graph :key="stat.count" :stat="stat" />
           </v-col>
         </v-row>
       </v-container>
@@ -68,7 +62,7 @@ export default {
         data: [0, 0, 0, 0, 0],
         name: "price",
         title: "가격",
-        colors: ["#BA68C8"],
+        color: "#BA68C8",
         fields: ["veryCheap", "cheap", "avgPrice", "expensive", "veryExpensive"],
         categories: ["10% 이상 쌈", "5~10% 더 쌈", "평균 가격", "5~10% 더 비쌈", "10% 이상 비쌈"],
       },
@@ -77,7 +71,7 @@ export default {
         data: [0, 0, 0, 0, 0],
         name: "kindness",
         title: "친절함",
-        colors: ["#4DD0E1"],
+        color: "#4DD0E1",
         fields: ["veryKind", "kind", "soso", "unKind", "veryUnkind"],
         categories: ["매우 친절", "친절", "보통", "불친절", "매우 불친절"],
       },
@@ -86,7 +80,7 @@ export default {
         data: [0, 0],
         name: "contract",
         title: "계약률",
-        colors: ["#81C784"],
+        color: "#81C784",
         categories: ["여기서 계약했어요", "여기서 계약 안했어요"],
         fields: ["true", "false"],
       },
@@ -250,7 +244,7 @@ export default {
     _calcStats(review) {
       for (let stat of this.stats) {
         this._calcStatData(stat, review[stat.name]);
-        this._toPercentage(stat);
+        this._toPercent(stat);
       }
     },
 
@@ -262,10 +256,10 @@ export default {
       }
     },
 
-    _toPercentage(stat) {
+    _toPercent(stat) {
       if (stat.count === 0) return;
       for (let i = 0; i < stat.data.length; i++) {
-        stat.data[i] = ((stat.data[i] / stat.count) * 100).toFixed(2);
+        stat.data[i] = Math.floor((stat.data[i] / stat.count) * 100);
       }
     },
 

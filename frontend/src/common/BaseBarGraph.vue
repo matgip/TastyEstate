@@ -1,90 +1,101 @@
 <template>
   <div>
-    <apexchart ref="barChart" type="bar" height="200" width="300" :options="chartOptions" :series="series" />
+    <header class="title">{{ stat.title }}</header>
+    <ul class="section-list" v-for="(category, i) in stat.categories" :key="i">
+      <li class="section-list-item">
+        <div class="section-list-item-category">{{ category }}</div>
+        <div class="section-list-item-graph">
+          <div class="section-list-item-graph-background">
+            <div class="section-list-item-graph-bar" :style="`--color: ${stat.color}; width: ${stat.data[i]}%`"></div>
+          </div>
+        </div>
+        <div class="section-list-item-graph-percent">{{ stat.data[i] }}%</div>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import VueApexCharts from "vue-apexcharts";
-
 export default {
-  components: {
-    apexchart: VueApexCharts,
-  },
   props: {
-    data: {
-      type: Array,
+    stat: {
+      type: Object,
       required: true,
-    },
-    categories: {
-      type: Array,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    colors: {
-      default: () => {
-        return [];
+      validator: function(obj) {
+        if (!obj.data || !obj.categories || !obj.title || !obj.color) return false;
+        return true;
       },
-      type: Array,
-      required: true,
     },
   },
   data() {
-    return {
-      series: [
-        {
-          data: this.data,
-        },
-      ],
-      chartOptions: {
-        chart: {
-          type: "bar",
-          toolbar: {
-            show: false,
-          },
-        },
-        xaxis: {
-          categories: this.categories,
-          labels: {
-            show: false,
-          },
-        },
-        yaxis: {
-          reversed: true,
-        },
-        title: {
-          text: this.title,
-        },
-        colors: this.colors,
-        tooltip: {
-          y: {
-            formatter: (val) => {
-              return val + "%";
-            },
-            title: {
-              formatter: (seriesName) => {
-                return seriesName.split(" ")[1];
-              },
-            },
-          },
-        },
-        dataLabels: {
-          enabled: true,
-          formatter: function(val) {
-            return val + "%";
-          },
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 4,
-            horizontal: true,
-          },
-        },
-      },
-    };
+    return {};
   },
 };
 </script>
+
+<style scoped>
+.v-application .title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.title {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.section-list {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0 8px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.section-list-item {
+  display: table-row;
+}
+
+.section-list-item-category {
+  display: table-cell;
+  font-size: 12px;
+  margin-right: 12px;
+  width: 116px;
+}
+
+.section-list-item-graph {
+  display: table-cell;
+  width: 144px;
+  padding-left: 12px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.section-list-item-graph-background {
+  height: 10px;
+  background: #eee;
+}
+
+.section-list-item-graph-bar {
+  position: relative;
+  height: 10px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  text-align: right;
+  font-weight: 100;
+  letter-spacing: 0ch;
+  background-color: var(--color);
+  width: var(--width);
+}
+
+.section-list-item-graph-percent {
+  display: table-cell;
+  font-size: 12px;
+  color: #111;
+  vertical-align: middle;
+  padding-left: 6px;
+  padding-right: 1px;
+  text-align: right;
+}
+</style>
