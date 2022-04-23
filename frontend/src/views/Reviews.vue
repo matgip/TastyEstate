@@ -30,23 +30,24 @@
       <review-dialog-button />
     </div>
 
-    <review-order-table :on-click="onChangeOrder" />
+    <v-tabs :style="tabsStyl" v-bind="tabsProps">
+      <v-tab id="like" @click="onChangeOrder">좋아요 순</v-tab>
+      <v-tab id="time" @click="onChangeOrder">최신 순</v-tab>
+    </v-tabs>
 
     <div v-for="(review, i) in currReviews" :key="i">
       <review :review="review" @like-review="onLikeReview" />
     </div>
 
-    <reviews-pagenation :page="page" :total-count="totalCount" />
+    <v-pagination v-bind="paginationProps" v-model="page" :length="pageCount" :total-visible="7" />
   </div>
 </template>
 
 <script>
 import BaseBarGraph from "../common/BaseBarGraph.vue";
 import BaseButton from "../common/BaseButton.vue";
-import ReviewDialogButton from "@/components/Reviews/ReviewDiag/ReviewDialogButton.vue";
-import ReviewOrderTable from "../components/Reviews/Review/ReviewOrderTable.vue";
-import Review from "../components/Reviews/Review/Review.vue";
-import ReviewsPagenation from "@/components/Reviews/Review/ReviewsPagenation.vue";
+import ReviewDialogButton from "@/components/Review/ReviewDialogButton.vue";
+import Review from "../components/Review/Review.vue";
 
 import { mapGetters } from "vuex";
 
@@ -55,9 +56,7 @@ export default {
     BaseBarGraph,
     BaseButton,
     ReviewDialogButton,
-    ReviewOrderTable,
     Review,
-    ReviewsPagenation,
   },
 
   data: () => ({
@@ -108,6 +107,17 @@ export default {
     iconProps: {
       left: true,
     },
+    tabsStyl: {
+      margin: "0px 18px",
+    },
+    tabsProps: {
+      left: true,
+    },
+    paginationProps: {
+      color: "deep-orange",
+      circle: true,
+      class: "mt-10",
+    },
   }),
 
   computed: {
@@ -120,8 +130,10 @@ export default {
       return this.reviews[this.orderBy];
     },
 
-    totalCount() {
-      return this.reviews[this.orderBy].length;
+    pageCount() {
+      const reviewCnt = this.reviews[this.orderBy].length;
+      if (reviewCnt <= 7) return 1;
+      return Math.trunc(reviewCnt / 7 + 1);
     },
   },
 
@@ -160,14 +172,14 @@ export default {
           alert("이미 이 리뷰를 좋아합니다.");
           return;
         }
-        if (resp.data.result === "success") {
-          alert("이 리뷰를 좋아합니다.");
-        }
 
         await this.$api.reviewsByLike.put({
           baseId: this.estate.id,
           data: { user: userId, count: 1 },
         });
+        if (resp.data.result === "success") {
+          alert("이 리뷰를 좋아합니다.");
+        }
       } catch (err) {
         console.error(err);
       }

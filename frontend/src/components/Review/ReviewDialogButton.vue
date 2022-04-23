@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import BaseCheckBox from "../../../common/BaseCheckBox.vue";
-import BaseButton from "../../../common/BaseButton.vue";
+import BaseCheckBox from "../../common/BaseCheckBox.vue";
+import BaseButton from "../../common/BaseButton.vue";
 
 import { mapGetters } from "vuex";
 
