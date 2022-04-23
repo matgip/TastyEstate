@@ -86,7 +86,6 @@ export default {
   font-weight: 100;
   letter-spacing: 0ch;
   background-color: var(--color);
-  width: var(--width);
 }
 
 .section-list-item-graph-percent {
