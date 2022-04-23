@@ -20,6 +20,9 @@ module.exports = class extends ReviewRepository {
       .HSET(`reviews:${estateId}:users:${userId}`, "contract", contract)
       .HSET(`reviews:${estateId}:users:${userId}`, "title", title)
       .HSET(`reviews:${estateId}:users:${userId}`, "text", text)
+      .INCRBYFLOAT(`reviews:${estateId}:ratings`, rating)
+      .ZADD(`reviews:${estateId}:likes`, [{ score: 0, value: `user:${userId}` }])
+      .ZADD(`reviews:${estateId}:time`, [{ score: Math.floor(new Date().getTime() / 1000), value: `user:${userId}` }])
       .exec();
   }
 

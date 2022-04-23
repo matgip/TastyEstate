@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-tabs :style="tabsStyl" v-bind="tabsProps">
-      <v-tab @click="onClick">좋아요 순</v-tab>
-      <v-tab @click="onClick">최신 순</v-tab>
+      <v-tab id="like" @click="onClick">좋아요 순</v-tab>
+      <v-tab id="time" @click="onClick">최신 순</v-tab>
     </v-tabs>
   </div>
 </template>

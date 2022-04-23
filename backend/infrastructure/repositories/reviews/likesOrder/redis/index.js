@@ -7,16 +7,6 @@ module.exports = class extends ReviewLikeOrderRepository {
     super();
   }
 
-  async persist(estateId, likeOrderEntity) {
-    const { user } = likeOrderEntity;
-    await client.ZADD(`reviews:${estateId}:likes`, [
-      {
-        score: 0,
-        value: `user:${user}`,
-      },
-    ]);
-  }
-
   async update(estateId, userId) {
     const { user, count } = userId;
     await client.ZINCRBY(`reviews:${estateId}:likes`, count, `user:${user}`);

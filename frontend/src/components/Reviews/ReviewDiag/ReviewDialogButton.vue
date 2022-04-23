@@ -190,18 +190,6 @@ export default {
               text: this.comments,
             },
           });
-          await this.$api.reviewRatings.put({
-            baseId: this.estate.id,
-            data: { rating: this.rating },
-          });
-          await this.$api.reviewsByLike.post({
-            baseId: this.estate.id,
-            data: { user: this.user.id },
-          });
-          await this.$api.reviewsByTime.post({
-            baseId: this.estate.id,
-            data: { user: this.user.id },
-          });
           this.$store.dispatch("getStars", this.estate.id);
         }
         await this._clear();

@@ -7,11 +7,6 @@ module.exports = class extends ReviewRatingRepository {
     super();
   }
 
-  async persist(estateId, ratingEntity) {
-    const { rating } = ratingEntity;
-    await client.INCRBYFLOAT(`reviews:${estateId}:ratings`, rating);
-  }
-
   async get(estateId) {
     const totRatings = await client.GET(`reviews:${estateId}:ratings`);
     return totRatings;
