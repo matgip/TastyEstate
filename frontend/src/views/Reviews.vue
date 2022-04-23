@@ -112,6 +112,7 @@ export default {
     },
     tabsProps: {
       left: true,
+      color: "deep-orange",
     },
     paginationProps: {
       color: "deep-orange",
