@@ -102,7 +102,6 @@ class MapKakao {
       // Bug fix: Do not add on-click listener if already added
       return;
     }
-    this._cacheMarker(estate, marker);
     MapKakao.daum.maps.event.addListener(marker, "click", async () => {
       // Update selected estate
       await store.dispatch("updateRealEstate", estate);
@@ -110,6 +109,7 @@ class MapKakao {
       await store.dispatch("getStars", estate.id);
       this._showInfoWindowOnMap(marker, estate.place_name);
     });
+    this._cacheMarker(estate, marker);
   }
 
   // Divide the map into 9 equal squares and scan.
