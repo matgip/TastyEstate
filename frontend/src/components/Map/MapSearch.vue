@@ -45,12 +45,14 @@ import axios from "axios";
 export default {
   data: () => ({
     isLoading: false,
+    // selected: null,
     estates: [],
     search: null,
     select: null,
 
     KAKAO_API: {
-      url: "https://dapi.kakao.com/v2/local/search/keyword.json",
+      keywordUrl: "https://dapi.kakao.com/v2/local/search/keyword.json",
+      categoryUrl: "https://dapi.kakao.com/v2/local/search/category.json",
       groupCode: "AG2",
       radius: 300,
     },
@@ -82,6 +84,7 @@ export default {
     async select(estate) {
       if (!estate) return;
       try {
+        // this.selected = estate;
         await this.$store.dispatch("updateRealEstate", estate);
         await this.$store.dispatch("getLikes", estate.id);
         await this.$store.dispatch("getStars", estate.id);
@@ -97,7 +100,18 @@ export default {
   },
 
   methods: {
-    async _searchEstate(keyword) {
+    async onNearByClicked() {
+      console.log(this.select);
+      const latLng = { y: this.select.y, x: this.select.x };
+      await this._searchEstate("", latLng);
+      console.log(this.estates);
+    },
+
+    onBestClicked() {
+      console.log("Best clicked");
+    },
+
+    async _searchEstate(keyword = "", latLng = {}) {
       try {
         this.isLoading = true;
         this.estates = [];
@@ -107,7 +121,7 @@ export default {
         // By increasing page count on every request rest API,
         // get total datas until is end.
         while (!isEnd) {
-          const url = `${this.KAKAO_API.url}?query=${keyword}&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}&page=${page}&size=15`;
+          const url = this._getUrl(keyword, page, latLng);
           const headers = {
             headers: {
               Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
@@ -125,12 +139,22 @@ export default {
       }
     },
 
-    onNearByClicked() {
-      console.log("Nearby clicked");
-    },
+    _getUrl(keyword = "", pageCnt, latLng = {}) {
+      let url = "";
+      if (keyword !== "") {
+        // keyword search
+        url += `${this.KAKAO_API.keywordUrl}?query=${keyword}`;
+      } else if (latLng.y && latLng.x) {
+        // category search
+        url += `${this.KAKAO_API.categoryUrl}?&y=${latLng.y}&x=${latLng.x}`;
+      } else {
+        console.error("Invalid url... try again");
+        return "";
+      }
 
-    onBestClicked() {
-      console.log("Best clicked");
+      url += `&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}&page=${pageCnt}&size=15`;
+
+      return url;
     },
 
     clear() {
@@ -150,10 +174,6 @@ export default {
   margin-top: 0px;
   min-height: 4px;
 }
-
-/* .v-input__slot {
-  margin-bottom: 0px;
-} */
 
 #search-group {
   position: absolute;
