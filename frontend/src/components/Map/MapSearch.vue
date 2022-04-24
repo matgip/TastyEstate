@@ -47,7 +47,6 @@ import { mapGetters } from "vuex";
 export default {
   data: () => ({
     isLoading: false,
-    // selected: null,
     estates: [],
     search: null,
     select: null,
@@ -92,7 +91,6 @@ export default {
     async select(estate) {
       if (!estate) return;
       try {
-        // this.selected = estate;
         await this.$store.dispatch("updateRealEstate", estate);
         await this.$store.dispatch("getLikes", estate.id);
         await this.$store.dispatch("getStars", estate.id);
