@@ -86,7 +86,6 @@ class MapKakao {
         position: new MapKakao.daum.maps.LatLng(place.y, place.x),
       });
       this.markerClstr.addMarker(marker);
-      this._cacheMarker(place, marker);
     }
     if (isSelected === true) {
       marker.setImage(this.imgSelected);
@@ -99,6 +98,11 @@ class MapKakao {
   }
 
   onMarkerClicked(marker, estate) {
+    if (this._getCachedMarker(estate)) {
+      // Bug fix: Do not add on-click listener if already added
+      return;
+    }
+    this._cacheMarker(estate, marker);
     MapKakao.daum.maps.event.addListener(marker, "click", async () => {
       // Update selected estate
       await store.dispatch("updateRealEstate", estate);

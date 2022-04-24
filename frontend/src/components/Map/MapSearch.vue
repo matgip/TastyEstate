@@ -30,8 +30,8 @@
       <div class="sub-filter-layer">
         <div class="scroll-menu-container">
           <ul>
-            <li>근처 부동산</li>
-            <li>베스트 부동산</li>
+            <li class="scroll-li" @click="onNearByClicked">근처 부동산</li>
+            <li class="scroll-li" @click="onBestClicked">베스트 부동산</li>
           </ul>
         </div>
       </div>
@@ -125,6 +125,14 @@ export default {
       }
     },
 
+    onNearByClicked() {
+      console.log("Nearby clicked");
+    },
+
+    onBestClicked() {
+      console.log("Best clicked");
+    },
+
     clear() {
       this.$store.commit("CLEAR_ESTATE");
       this.$store.commit("CLEAR_LIKES");
@@ -196,6 +204,10 @@ export default {
   font-size: 14px;
   border-radius: 4px;
   border: 1px solid #ff5722;
+}
+
+.scroll-li {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
