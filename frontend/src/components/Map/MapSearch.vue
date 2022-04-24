@@ -155,7 +155,7 @@ export default {
   position: absolute;
   top: 12px;
   left: 11px;
-  width: 354px;
+  width: 368px;
   height: 100px;
   border-radius: 3px;
   border: 1px solid #cecece;
@@ -167,7 +167,7 @@ export default {
 
 .sub-filter {
   position: relative;
-  width: 354px;
+  width: 368px;
   height: 43px;
 }
 
