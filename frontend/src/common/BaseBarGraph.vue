@@ -61,7 +61,7 @@ export default {
   display: table-cell;
   font-size: 12px;
   margin-right: 12px;
-  width: 116px;
+  width: 98px;
 }
 
 .section-list-item-graph {
