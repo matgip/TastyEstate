@@ -1,29 +1,41 @@
 <template>
-  <div data-app id="search">
-    <v-autocomplete
-      :style="searchCss"
-      v-bind="searchProps"
-      v-model="select"
-      :items="estates"
-      :loading="isLoading"
-      :search-input.sync="search"
-      @click:clear="clear"
-    >
-      <!-- Selected estate -->
-      <template #selection="{ attr, on, item, selected }">
-        <v-chip v-bind="[chipProps, attr]" :input-value="selected" v-on="on">
-          <v-icon v-bind="iconProps">{{ iconSelected }}</v-icon>
-          <span v-text="item.place_name" />
-        </v-chip>
-      </template>
-      <!-- Searched estated -->
-      <template #item="{ item }">
-        <v-list-item-content>
-          <v-list-item-title v-text="item.place_name" />
-          <v-list-item-subtitle v-text="item.address_name" />
-        </v-list-item-content>
-      </template>
-    </v-autocomplete>
+  <div data-app id="search-group">
+    <div>
+      <v-autocomplete
+        v-bind="searchProps"
+        v-model="select"
+        :items="estates"
+        :loading="isLoading"
+        :search-input.sync="search"
+        @click:clear="clear"
+      >
+        <!-- estate selected -->
+        <template #selection="{ attr, on, item, selected }">
+          <v-chip v-bind="[chipSelectedProps, attr]" :input-value="selected" v-on="on">
+            <v-icon v-bind="iconSelectedProps">{{ iconSelected }}</v-icon>
+            <span v-text="item.place_name" />
+          </v-chip>
+        </template>
+
+        <!-- estates searched -->
+        <template #item="{ item }">
+          <v-list-item-content>
+            <v-list-item-title v-text="item.place_name" />
+            <v-list-item-subtitle v-text="item.address_name" />
+          </v-list-item-content>
+        </template>
+      </v-autocomplete>
+    </div>
+    <div class="sub-filter">
+      <div class="sub-filter-layer">
+        <div class="scroll-menu-container">
+          <ul>
+            <li>근처 부동산</li>
+            <li>베스트 부동산</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -36,18 +48,18 @@ export default {
     estates: [],
     search: null,
     select: null,
-    iconSelected: "fas fa-map-marked-alt",
+
     KAKAO_API: {
       url: "https://dapi.kakao.com/v2/local/search/keyword.json",
       groupCode: "AG2",
-      radius: 20000,
+      radius: 300,
     },
 
     // Vuetify CSS Style & Props
-    searchCss: {
-      width: "386px",
-      margin: "0px 8px",
-    },
+    // searchCSS: {
+    //   width: "386px",
+    //   margin: "0px 8px",
+    // },
     searchProps: {
       clearable: true,
       color: "deep-orange",
@@ -57,11 +69,13 @@ export default {
       "append-icon": "fas fa-search",
       "item-text": "place_name",
     },
-    iconProps: {
+
+    iconSelectedProps: {
       left: true,
       small: true,
     },
-    chipProps: {
+    iconSelected: "fas fa-map-marked-alt",
+    chipSelectedProps: {
       small: true,
       class: "white--text",
       color: "deep-orange",
@@ -125,11 +139,71 @@ export default {
 </script>
 
 <style scoped>
-#search {
-  border-bottom: 1px solid #bdbdbd;
+.v-text-field {
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 10px;
+  margin-top: 0px;
+  min-height: 4px;
 }
+
+/* .v-input__slot {
+  margin-bottom: 0px;
+} */
+
+#search-group {
+  position: absolute;
+  top: 12px;
+  left: 11px;
+  width: 354px;
+  height: 100px;
+  border-radius: 3px;
+  border: 1px solid #cecece;
+  border-bottom: 1px solid #c0c0c0;
+  border-top: 1px solid #e9e9e9;
+  background-color: #fff;
+  z-index: 2;
+}
+
+.sub-filter {
+  position: relative;
+  width: 354px;
+  height: 43px;
+}
+
+.sub-filter-layer {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  text-align: left;
+  background-color: #fff;
+}
+
+.scroll-menu-container {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.scroll-menu-container ul {
+  padding: 0 8px;
+}
+
+.scroll-menu-container ul li {
+  display: inline-block;
+  padding: 0 8px;
+  margin: 0 4px;
+  height: 100%;
+  color: #ff5722;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ff5722;
+}
+
 @media screen and (max-width: 768px) {
-  #search {
+  #search-group {
     padding: 0 30px;
   }
 }

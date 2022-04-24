@@ -4,7 +4,7 @@
       <Masthead />
 
       <v-main>
-        <Search v-if="isNotInLoginPage()" />
+        <!-- <Search v-if="isNotInLoginPage()" /> -->
         <router-view :key="$route.fullPath"></router-view>
       </v-main>
     </v-app>
@@ -13,7 +13,7 @@
 
 <script>
 import Masthead from "./components/layouts/TheMasthead.vue";
-import Search from "./components/Map/MapSearch.vue";
+// import Search from "./components/Map/MapSearch.vue";
 export default {
   name: "App",
   async mounted() {
@@ -26,7 +26,7 @@ export default {
   },
   components: {
     Masthead,
-    Search,
+    // Search,
   },
 };
 </script>

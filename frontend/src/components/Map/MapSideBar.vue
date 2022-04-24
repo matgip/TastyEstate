@@ -32,9 +32,10 @@ export default {
 #sidebar {
   position: absolute;
   background-color: white;
-  width: 386px;
+  top: 120px;
+  left: 11px;
+  width: 354px;
   z-index: 2;
-  top: 67px;
 }
 
 #sidebar:hover {
@@ -45,6 +46,7 @@ export default {
   #sidebar {
     width: 100%;
     top: 422px;
+    left: 0px;
   }
 
   #sidebar:hover {
