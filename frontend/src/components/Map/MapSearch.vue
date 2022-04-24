@@ -101,7 +101,8 @@ export default {
 
     async search(keyword) {
       if (!keyword || keyword === this.select) return;
-      await this._searchEstate(keyword);
+      const requestObj = { keyword: keyword, latLng: {} };
+      await this._searchEstate(requestObj);
     },
   },
 
@@ -113,8 +114,8 @@ export default {
         console.error("no selected estate...");
         return;
       }
-      const latLng = { y: this.estate.y, x: this.estate.x };
-      await this._searchEstate("", latLng);
+      const requestObj = { keyword: "", latLng: { y: this.estate.y, x: this.estate.x } };
+      await this._searchEstate(requestObj);
       console.log(this.estates);
     },
 
@@ -122,9 +123,10 @@ export default {
       console.log("Best clicked");
     },
 
-    async _searchEstate(keyword = "", latLng = {}) {
+    async _searchEstate(requestObj) {
       try {
-        if (!keyword && !latLng.y && !latLng.x) {
+        const { keyword, latLng } = requestObj;
+        if (keyword === "" && !latLng.y && !latLng.x) {
           console.log(`There is no any searched estates... 
                       please search the estate first.`);
           return;
@@ -135,8 +137,8 @@ export default {
         let page = 1;
         let isEnd = false;
         // Kakao map APIs provides up to 45 datas per request.
-        // By increasing page count on every request rest API,
-        // get total datas until is end.
+        // By increasing page count on every request of rest API,
+        // get total datas(45) until is end.
         while (!isEnd) {
           const url = this._getUrl(keyword, page, latLng);
           const headers = {
