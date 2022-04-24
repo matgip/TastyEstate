@@ -42,6 +42,8 @@
 <script>
 import axios from "axios";
 
+import { mapGetters } from "vuex";
+
 export default {
   data: () => ({
     isLoading: false,
@@ -80,6 +82,12 @@ export default {
     },
   }),
 
+  computed: {
+    ...mapGetters({
+      estate: "GET_ESTATE",
+    }),
+  },
+
   watch: {
     async select(estate) {
       if (!estate) return;
@@ -101,8 +109,13 @@ export default {
 
   methods: {
     async onNearByClicked() {
-      console.log(this.select);
-      const latLng = { y: this.select.y, x: this.select.x };
+      if (!this.estate) {
+        // !Important: estate get flushed when MapSearch.vue file remounted
+        // Must use this.estate by using mapgetter, not this.select.
+        console.error("no selected estate...");
+        return;
+      }
+      const latLng = { y: this.estate.y, x: this.estate.x };
       await this._searchEstate("", latLng);
       console.log(this.estates);
     },
