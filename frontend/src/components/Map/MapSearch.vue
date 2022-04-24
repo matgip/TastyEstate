@@ -124,6 +124,12 @@ export default {
 
     async _searchEstate(keyword = "", latLng = {}) {
       try {
+        if (!keyword && !latLng.y && !latLng.x) {
+          console.log(`There is no any searched estates... 
+                      please search the estate first.`);
+          return;
+        }
+
         this.isLoading = true;
         this.estates = [];
         let page = 1;
