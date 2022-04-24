@@ -56,10 +56,6 @@ export default {
     },
 
     // Vuetify CSS Style & Props
-    // searchCSS: {
-    //   width: "386px",
-    //   margin: "0px 8px",
-    // },
     searchProps: {
       clearable: true,
       color: "deep-orange",
@@ -162,7 +158,7 @@ export default {
   border-bottom: 1px solid #c0c0c0;
   border-top: 1px solid #e9e9e9;
   background-color: #fff;
-  z-index: 2;
+  z-index: 20;
 }
 
 .sub-filter {

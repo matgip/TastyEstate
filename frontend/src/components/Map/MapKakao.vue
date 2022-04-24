@@ -1,6 +1,5 @@
 <template>
   <div id="mapview">
-    <map-search />
     <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
     <div class="custom_zoomcontrol radius_border">
       <span @click="zoomIn"><i class="fa-solid fa-plus"></i></span>
@@ -10,7 +9,6 @@
 </template>
 
 <script>
-import MapSearch from "./MapSearch.vue";
 import MapKakao from "@/api/map/kakao";
 
 import { mapGetters } from "vuex";
@@ -20,10 +18,6 @@ const imgMarker = require("@/assets/images/marker.png");
 const imgSize = { width: 40, height: 45 };
 
 export default {
-  components: {
-    MapSearch,
-  },
-
   data() {
     return {
       map: null,
