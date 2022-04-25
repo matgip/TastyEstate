@@ -2,11 +2,11 @@
   <div>
     <div>
       <v-icon v-bind="iconProps">{{ addrIcon }}</v-icon>
-      {{ estateInfo.address_name }}
+      {{ agencyInfo.address_name }}
     </div>
     <div>
       <v-icon v-bind="iconProps">{{ phoneIcon }}</v-icon>
-      {{ estateInfo.phone }}
+      {{ agencyInfo.phone }}
     </div>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
   }),
 
   props: {
-    estateInfo: {
+    agencyInfo: {
       type: Object,
       required: true,
       validator: function(value) {

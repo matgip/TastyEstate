@@ -2,7 +2,7 @@
   <div>
     <v-carousel v-bind="cruslProps" style="width: 140px; height: 168px;">
       <v-carousel-item v-for="i in images" :key="i" v-bind="carouselItemProps">
-        <img :src="getImgUrl(estateId, i)" style="width: 140px; height: 168px;" />
+        <img :src="getImgUrl(agencyId, i)" style="width: 140px; height: 168px;" />
       </v-carousel-item>
     </v-carousel>
   </div>
@@ -25,7 +25,7 @@ export default {
   }),
 
   props: {
-    estateId: {
+    agencyId: {
       type: String,
       required: true,
       validator: function(value) {
@@ -35,8 +35,8 @@ export default {
   },
 
   methods: {
-    getImgUrl(estateId, imgNum) {
-      return `/api/upload/${estateId}?image=${imgNum}`;
+    getImgUrl(agencyId, imgNum) {
+      return `/api/upload/${agencyId}?image=${imgNum}`;
     },
   },
 };

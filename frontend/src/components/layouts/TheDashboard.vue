@@ -7,22 +7,17 @@
     </div>
     <div id="dashboard__info-container">
       <header>
-        header item
         <v-btn id="dashboard__scroll-btn" @click="scrollTest" block>
           Click to Scroll
         </v-btn>
       </header>
       <section>
-        <div class="info">info1</div>
-        <div class="info">info2</div>
-        <div class="info">info3</div>
-        <div class="info">info4</div>
-        <div class="info">info5</div>
-        <div class="info">info6</div>
-        <div class="info">info7</div>
-        <div class="info">info8</div>
-        <div class="info">info9</div>
-        <div class="info">info10</div>
+        <template v-for="agency in items">
+          <Agency :agency="agency" :key="agency.id" />
+        </template>
+
+        
+        주변 부동산
       </section>
     </div>
   </div>
@@ -30,12 +25,14 @@
 
 <script>
 import Search from "@/components/cards/SearchBar.vue";
+import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
 
 import { mapGetters } from "vuex";
 
 export default {
   components: {
     Search,
+    Agency,
   },
   data: () => ({
     items: [],
@@ -44,13 +41,17 @@ export default {
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
+      stars: "GET_STARS",
+      likes: "GET_LIKES",
     }),
   },
   watch: {
-    estate: function() {
+    estate: function(val) {
       if (Object.keys(this.estate).length !== 0) {
-        this.estate.type = "agency";
-        this.items.unshift(this.estate);
+        val.type = "agency";
+        val.stars = this.stars;
+        val.likes = this.likes;
+        this.items.push(val);
       }
     },
   },
