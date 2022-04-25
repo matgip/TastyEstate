@@ -33,7 +33,7 @@
         <!-- check-box -->
         <div v-for="chkbox in chkBoxes" :key="chkbox.name">
           <v-divider />
-          <base-check-box :check-box-object="chkbox" :on-change="onChangeCheckbox" />
+          <base-check-box-group :check-box-object="chkbox" :on-change="onChangeCheckbox" />
         </div>
         <v-divider />
 
@@ -63,14 +63,14 @@
 </template>
 
 <script>
-import BaseCheckBox from "../../common/BaseCheckBox.vue";
+import BaseCheckBoxGroup from "../../common/BaseCheckBoxGroup.vue";
 import BaseButton from "../../common/BaseButton.vue";
 
 import { mapGetters } from "vuex";
 
 export default {
   components: {
-    BaseCheckBox,
+    BaseCheckBoxGroup,
     BaseButton,
   },
 
