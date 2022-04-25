@@ -1,6 +1,6 @@
 <template>
-  <div data-app id="search-group">
-    <div>
+  <div data-app>
+    <div class="search-group">
       <v-autocomplete
         v-bind="searchProps"
         v-model="select"
@@ -25,14 +25,15 @@
           </v-list-item-content>
         </template>
       </v-autocomplete>
-    </div>
-    <div class="sub-filter">
-      <div class="sub-filter-layer">
-        <div class="scroll-menu-container">
-          <ul>
-            <li class="scroll-li" @click="onNearByClicked">근처 부동산</li>
-            <li class="scroll-li" @click="onBestClicked">베스트 부동산</li>
-          </ul>
+
+      <div class="filter">
+        <div class="filter-layer">
+          <div class="menu-container">
+            <ul>
+              <li class="scroll-li" @click="onNearByClicked">근처 부동산</li>
+              <li class="scroll-li" @click="onBestClicked">베스트 부동산</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -116,7 +117,12 @@ export default {
       }
       const requestObj = { keyword: "", latLng: { y: this.estate.y, x: this.estate.x } };
       await this._searchEstate(requestObj);
-      console.log(this.estates);
+
+      const searchGroup = document.querySelector(".search-group");
+      searchGroup.classList.toggle("open");
+
+      const filter = document.querySelector(".filter");
+      filter.classList.toggle("close");
     },
 
     onBestClicked() {
@@ -127,7 +133,7 @@ export default {
       try {
         const { keyword, latLng } = requestObj;
         if (keyword === "" && !latLng.y && !latLng.x) {
-          console.log(`There is no any searched estates... 
+          console.log(`There is no any searched estates...
                       please search the estate first.`);
           return;
         }
@@ -194,7 +200,7 @@ export default {
   min-height: 4px;
 }
 
-#search-group {
+.search-group {
   position: absolute;
   top: 12px;
   left: 11px;
@@ -208,13 +214,26 @@ export default {
   z-index: 20;
 }
 
-.sub-filter {
+.search-group.open {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  background-color: #4d55b2;
+  padding-top: 12px;
+}
+
+.filter {
   position: relative;
   width: 368px;
   height: 43px;
 }
 
-.sub-filter-layer {
+.filter.close {
+  display: none;
+}
+
+.filter-layer {
   position: absolute;
   display: block;
   top: 0;
@@ -225,16 +244,16 @@ export default {
   background-color: #fff;
 }
 
-.scroll-menu-container {
+.menu-container {
   overflow: hidden;
   white-space: nowrap;
 }
 
-.scroll-menu-container ul {
+.menu-container ul {
   padding: 0 8px;
 }
 
-.scroll-menu-container ul li {
+.menu-container ul li {
   display: inline-block;
   padding: 0 8px;
   margin: 0 4px;
