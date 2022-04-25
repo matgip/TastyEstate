@@ -1,12 +1,9 @@
-<!-- @format -->
-
 <template>
   <div>
     <v-app>
       <Masthead />
 
       <v-main>
-        <!-- <Search v-if="isNotInLoginPage()" /> -->
         <Dashboard class="main__dashboard-container" />
         <div class="main__main-container">
           <router-view :key="$route.fullPath"></router-view>
@@ -19,7 +16,6 @@
 <script>
 import Masthead from "./components/layouts/TheMasthead.vue";
 import Dashboard from "./components/layouts/TheDashboard.vue";
-// import Search from "./components/Map/MapSearch.vue";
 export default {
   name: "App",
   async mounted() {
@@ -33,7 +29,6 @@ export default {
   components: {
     Masthead,
     Dashboard,
-    // Search,
   },
 };
 </script>

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Search from "@/components/Map/MapSearch.vue";
+import Search from "@/components/cards/SearchBar.vue";
 
 import { mapGetters } from "vuex";
 
