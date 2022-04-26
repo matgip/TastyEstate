@@ -17,10 +17,10 @@ module.exports = class extends LikeRepository {
     return { result: sortedSet.toString(result) };
   }
 
-  async get(estateId) {
-    const likesCnt = await client.SCARD("likes:" + estateId);
-    return { likes: likesCnt };
-  }
+  // async get(estateId) {
+  //   const likesCnt = await client.SCARD("likes:" + estateId);
+  //   return { likes: likesCnt };
+  // }
 
   async find(estateId, usrId) {
     const result = await client.SISMEMBER(`likes:${estateId}`, `users:${usrId}`);

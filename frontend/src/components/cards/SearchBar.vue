@@ -95,7 +95,7 @@ export default {
       if (!estate) return;
       try {
         await this.$store.dispatch("updateRealEstate", estate);
-        await this.$store.dispatch("getLikes", estate.id);
+        // await this.$store.dispatch("getLikes", estate.id);
         await this.$store.dispatch("getStars", estate.id);
       } catch (err) {
         console.error(err);

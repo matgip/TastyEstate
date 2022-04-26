@@ -8,16 +8,23 @@ module.exports = class extends EstateRepository {
   }
 
   async persist(estateEntity) {
-    const { id, placeName, phoneNumber } = estateEntity;
+    const { id, placeName, phone, addressName } = estateEntity;
     await client
       .multi()
+      .HSET(`estates:${id}`, "id", id)
+      .HSET(`estates:${id}`, "phone", phone)
       .HSET(`estates:${id}`, "place_name", placeName)
-      .HSET(`estates:${id}`, "phone_number", phoneNumber)
+      .HSET(`estates:${id}`, "address_name", addressName)
       .exec();
   }
 
   async get(estateId) {
     const estate = await client.HGETALL(`estates:${estateId}`);
+    // Refactoring: combining likes count into estate
+    if (!this.isEmpty(estate)) {
+      const estateLikes = await client.SCARD("likes:" + estateId);
+      estate.likes = estateLikes;
+    }
     return estate;
   }
 

@@ -105,7 +105,7 @@ class MapKakao {
     MapKakao.daum.maps.event.addListener(marker, "click", async () => {
       // Update selected estate
       await store.dispatch("updateRealEstate", estate);
-      await store.dispatch("getLikes", estate.id);
+      // await store.dispatch("getLikes", estate.id);
       await store.dispatch("getStars", estate.id);
       this._showInfoWindowOnMap(marker, estate.place_name);
     });

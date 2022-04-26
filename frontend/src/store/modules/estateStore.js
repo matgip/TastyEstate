@@ -26,13 +26,19 @@ const estateStore = {
         // No contents
         const post = {
           id: estate.id,
+          phone: estate.phone,
           placeName: estate.place_name,
-          phoneNumber: estate.phone,
+          addressName: estate.address_name,
         };
         await this.$api.estates.post(post);
-        console.log({ message: "Created estate", post: { ...post } });
+
+        // Fix-me: The estate getting from kakao api does not have likes count
+        estate.likes = 0;
+        commit(UPDATE_ESTATE, estate);
+        return;
       }
-      commit(UPDATE_ESTATE, estate);
+
+      commit(UPDATE_ESTATE, resp.data);
     },
   },
 };
