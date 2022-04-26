@@ -1,4 +1,11 @@
+<!-- @format -->
+
 <template>
+<<<<<<< HEAD:frontend/src/components/cards/SearchBar.vue
+  <div data-app id="search-group">
+    <div>
+      <v-autocomplete v-bind="searchProps" v-model="select" :items="estates" :loading="isLoading" :search-input.sync="search" @click:clear="clear">
+=======
   <div data-app>
     <div class="search-group">
       <v-autocomplete
@@ -9,6 +16,7 @@
         :search-input.sync="search"
         @click:clear="clear"
       >
+>>>>>>> main:frontend/src/components/Map/MapSearch.vue
         <!-- estate selected -->
         <template #selection="{ attr, on, item, selected }">
           <v-chip v-bind="[chipSelectedProps, attr]" :input-value="selected" v-on="on">
@@ -200,7 +208,11 @@ export default {
   min-height: 4px;
 }
 
+<<<<<<< HEAD:frontend/src/components/cards/SearchBar.vue
+/* #search-group {
+=======
 .search-group {
+>>>>>>> main:frontend/src/components/Map/MapSearch.vue
   position: absolute;
   top: 12px;
   left: 11px;
@@ -212,6 +224,11 @@ export default {
   border-top: 1px solid #e9e9e9;
   background-color: #fff;
   z-index: 20;
+} */
+#search-group {
+  background-color: white;
+  border-bottom: 1px solid #c0c0c0;
+  padding-top: 10px;
 }
 
 .search-group.open {
@@ -239,7 +256,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 20;
+  /* z-index: 20; */
   text-align: left;
   background-color: #fff;
 }
@@ -269,8 +286,8 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-  #search-group {
+  /* #search-group {
     padding: 0 30px;
-  }
+  } */
 }
 </style>

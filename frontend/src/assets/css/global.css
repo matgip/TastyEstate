@@ -8,6 +8,9 @@
   --size-border-radius: 4px;
   /* Animation */
   --animation-duration: 300ms;
+
+  --dashboard-width: 420px;
+  --agency-card-height: 220px;
 }
 
 /* Universal tags */

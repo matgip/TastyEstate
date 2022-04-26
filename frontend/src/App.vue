@@ -4,8 +4,10 @@
       <Masthead />
 
       <v-main>
-        <!-- <Search v-if="isNotInLoginPage()" /> -->
-        <router-view :key="$route.fullPath"></router-view>
+        <Dashboard class="main__dashboard-container" />
+        <div class="main__main-container">
+          <router-view :key="$route.fullPath"></router-view>
+        </div>
       </v-main>
     </v-app>
   </div>
@@ -13,7 +15,7 @@
 
 <script>
 import Masthead from "./components/layouts/TheMasthead.vue";
-// import Search from "./components/Map/MapSearch.vue";
+import Dashboard from "./components/layouts/TheDashboard.vue";
 export default {
   name: "App",
   async mounted() {
@@ -26,7 +28,33 @@ export default {
   },
   components: {
     Masthead,
-    // Search,
+    Dashboard,
   },
 };
 </script>
+
+<style scope>
+.main__dashboard-container {
+  position: absolute;
+  z-index: 20;
+  overflow-y: hidden;
+  background-color: green;
+  width: var(--dashboard-width);
+  height: 100%;
+}
+.main__main-container {
+  margin-left: var(--dashboard-width);
+  height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .main__dashboard-container {
+    width: 100%;
+    height: fit-content;
+  }
+
+  .main__main-container {
+    margin-left: 0;
+  }
+}
+</style>

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import RealEstate from "@/components/RealEstate/RealEstate.vue";
+import RealEstate from "@/components/cards/RealEstate/RealEstate.vue";
 
 import { mapGetters } from "vuex";
 

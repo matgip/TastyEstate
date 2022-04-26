@@ -1,21 +1,15 @@
 <template>
-  <div>
-    <map-search />
-    <map-kakao />
-    <map-side-bar />
-  </div>
+  <map-kakao />
 </template>
 
 <script>
 import MapKakao from "@/components/Map/MapKakao.vue";
-import MapSearch from "../components/Map/MapSearch.vue";
-import MapSideBar from "../components/Map/MapSideBar.vue";
+// import MapSideBar from "../components/Map/MapSideBar.vue";
 
 export default {
   components: {
     MapKakao,
-    MapSearch,
-    MapSideBar,
+    // MapSideBar,
   },
 };
 </script>

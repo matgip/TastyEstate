@@ -90,7 +90,7 @@ export default {
 <style scoped>
 #mapview {
   width: 100%;
-  height: calc(100vh - 142px);
+  height: 100%;
 }
 
 .custom_zoomcontrol {
@@ -128,9 +128,9 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-  #mapview {
+  /* #mapview {
     height: 680px;
-  }
+  } */
 
   .custom_zoomcontrol {
     top: 140px;
