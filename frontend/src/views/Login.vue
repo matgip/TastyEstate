@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <h3>로그인 및 회원가입</h3>
     <div class="seperator"></div>
     <h5>믿을 수 있는 부동산 중개업소 찾기. Tasty estate와 함께</h5>
@@ -29,7 +29,7 @@ export default {
 h3 {
   display: flex;
   justify-content: center;
-  margin: 30px 0px;
+  padding: 30px 0px;
 }
 
 h5 {

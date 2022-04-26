@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div>
     <v-app>
@@ -5,9 +7,7 @@
 
       <v-main>
         <Dashboard class="main__dashboard-container" />
-        <div class="main__main-container">
-          <router-view :key="$route.fullPath"></router-view>
-        </div>
+        <router-view :key="$route.fullPath" class="main__main-container"></router-view>
       </v-main>
     </v-app>
   </div>

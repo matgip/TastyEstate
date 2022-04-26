@@ -1,5 +1,7 @@
 <template>
-  <map-kakao />
+  <div>
+    <map-kakao />
+  </div>
 </template>
 
 <script>
