@@ -125,7 +125,7 @@ class MapKakao {
         const y = (lat + i / 100).toFixed(2);
         if (this._isScanned(y, x)) continue;
         this._cacheLatLng(y, x);
-        this.placeSrch.categorySearch("AG2", this._callback.bind(this), { x: x, y: y, radius: 300 });
+        this.placeSrch.categorySearch("AG2", this._callback.bind(this), { x: x, y: y, radius: 300 }); // redius 710 will cover all boundary
       }
     }
   }
