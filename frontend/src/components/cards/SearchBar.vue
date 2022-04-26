@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-  <div data-app id="search-group">
+  <div data-app class="search-group">
     <div>
       <v-autocomplete
         v-bind="searchProps"
@@ -215,7 +215,7 @@ export default {
   background-color: #fff;
   z-index: 20;
 } */
-#search-group {
+.search-group {
   background-color: white;
   border-bottom: 1px solid #c0c0c0;
   padding-top: 10px;
