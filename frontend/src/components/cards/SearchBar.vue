@@ -1,13 +1,8 @@
 <!-- @format -->
 
 <template>
-<<<<<<< HEAD:frontend/src/components/cards/SearchBar.vue
   <div data-app id="search-group">
     <div>
-      <v-autocomplete v-bind="searchProps" v-model="select" :items="estates" :loading="isLoading" :search-input.sync="search" @click:clear="clear">
-=======
-  <div data-app>
-    <div class="search-group">
       <v-autocomplete
         v-bind="searchProps"
         v-model="select"
@@ -16,7 +11,6 @@
         :search-input.sync="search"
         @click:clear="clear"
       >
->>>>>>> main:frontend/src/components/Map/MapSearch.vue
         <!-- estate selected -->
         <template #selection="{ attr, on, item, selected }">
           <v-chip v-bind="[chipSelectedProps, attr]" :input-value="selected" v-on="on">
@@ -208,11 +202,7 @@ export default {
   min-height: 4px;
 }
 
-<<<<<<< HEAD:frontend/src/components/cards/SearchBar.vue
 /* #search-group {
-=======
-.search-group {
->>>>>>> main:frontend/src/components/Map/MapSearch.vue
   position: absolute;
   top: 12px;
   left: 11px;
