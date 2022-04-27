@@ -47,6 +47,8 @@ import axios from "axios";
 
 import { mapGetters } from "vuex";
 
+import kakaoMap from "@/api/map/kakao2";
+
 export default {
   data: () => ({
     isLoading: false,
@@ -93,13 +95,14 @@ export default {
   watch: {
     async select(estate) {
       if (!estate) return;
-      try {
-        await this.$store.dispatch("updateRealEstate", estate);
-        await this.$store.dispatch("getLikes", estate.id);
-        await this.$store.dispatch("getStars", estate.id);
-      } catch (err) {
-        console.error(err);
-      }
+      // try {
+      //   await this.$store.dispatch("updateRealEstate", estate);
+      //   await this.$store.dispatch("getLikes", estate.id);
+      //   await this.$store.dispatch("getStars", estate.id);
+      // } catch (err) {
+      //   console.error(err);
+      // }
+      kakaoMap.PinPlace(estate);
     },
 
     async search(keyword) {
