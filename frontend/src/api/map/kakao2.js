@@ -118,45 +118,45 @@ class KakaoMap {
 
 
   addMarker = (place) => {
-    if (this.places.get(place.id) === undefined) {
-      const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(place.y, place.x),
-        image: this.normalImage,
-        clickable: true
-      });
-      this.markerCluster.addMarker(marker);
-
-      const mouseoverContent = '<div style="padding:2px;">' + place.place_name + '</div>';
-      const mouseoverInfowindow = new kakao.maps.InfoWindow({ content: mouseoverContent });
-
-      const selectedContent = '<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>";
-
-      kakao.maps.event.addListener(marker, 'mouseover', () => {
-        if (!this.selectedMarker || this.selectedMarker !== marker) {
-          mouseoverInfowindow.open(this.map, marker)
-        }
-      });
-      kakao.maps.event.addListener(marker, 'mouseout', () => {
-        mouseoverInfowindow.close()
-      });
-      kakao.maps.event.addListener(marker, 'click', () => {
-        if (!this.selectedMarker || this.selectedMarker !== marker) {
-          !!this.selectedMarker && this.selectedMarker.setImage(this.normalImage);
-          marker.setImage(this.selectedImage);
-          mouseoverInfowindow.close()
-          this.selectedInfowindow.setContent(selectedContent);
-          this.selectedInfowindow.open(this.map, marker);
-          // TODO : notify click event to store
-          store.dispatch("updateRealEstate", place);
-          this.selectedMarker = marker;
-        }
-      });
-
-      place.marker = marker;
-      this.places.set(place.id, place);
-    } else {
+    if (this.places.get(place.id) !== undefined) {
       console.log("skiped", place);
+      return
     }
+    const marker = new kakao.maps.Marker({
+      position: new kakao.maps.LatLng(place.y, place.x),
+      image: this.normalImage,
+      clickable: true
+    });
+    this.markerCluster.addMarker(marker);
+
+    const mouseoverContent = '<div style="padding:2px;">' + place.place_name + '</div>';
+    const mouseoverInfowindow = new kakao.maps.InfoWindow({ content: mouseoverContent });
+
+    const selectedContent = '<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>";
+
+    kakao.maps.event.addListener(marker, 'mouseover', () => {
+      if (!this.selectedMarker || this.selectedMarker !== marker) {
+        mouseoverInfowindow.open(this.map, marker)
+      }
+    });
+    kakao.maps.event.addListener(marker, 'mouseout', () => {
+      mouseoverInfowindow.close()
+    });
+    kakao.maps.event.addListener(marker, 'click', () => {
+      if (!this.selectedMarker || this.selectedMarker !== marker) {
+        !!this.selectedMarker && this.selectedMarker.setImage(this.normalImage);
+        marker.setImage(this.selectedImage);
+        mouseoverInfowindow.close()
+        this.selectedInfowindow.setContent(selectedContent);
+        this.selectedInfowindow.open(this.map, marker);
+        // TODO : notify click event to store
+        store.dispatch("updateRealEstate", place);
+        this.selectedMarker = marker;
+      }
+    });
+
+    place.marker = marker;
+    this.places.set(place.id, place);
   }
 }
 
