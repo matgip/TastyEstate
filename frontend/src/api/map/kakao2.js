@@ -118,8 +118,7 @@ class KakaoMap {
 
 
   addMarker = (place) => {
-    if (this.places.get(place.id) !== undefined) {
-      console.log("skiped", place);
+    if (this.places.has(place.id)) {
       return
     }
     const marker = new kakao.maps.Marker({
