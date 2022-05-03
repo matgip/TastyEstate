@@ -117,12 +117,6 @@ export default {
       }
       const requestObj = { keyword: "", latLng: { y: this.estate.y, x: this.estate.x } };
       await this._searchEstate(requestObj);
-
-      const searchGroup = document.querySelector(".search-group");
-      searchGroup.classList.toggle("open");
-
-      const filter = document.querySelector(".filter");
-      filter.classList.toggle("close");
     },
 
     onBestClicked() {
@@ -217,23 +211,10 @@ export default {
   padding-top: 10px;
 }
 
-.search-group.open {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 400px;
-  background-color: #4d55b2;
-  padding-top: 12px;
-}
-
 .filter {
   position: relative;
   width: 368px;
   height: 43px;
-}
-
-.filter.close {
-  display: none;
 }
 
 .filter-layer {
