@@ -71,13 +71,6 @@ class MapKakao {
     return this;
   }
 
-  // setMarkerImage(imgMarker, imgSelected, imgMarkerSize) {
-  //   const { width, height } = imgMarkerSize;
-  //   this.imgMarkerSize = new MapKakao.daum.maps.Size(width, height);
-  //   this.imgMarker = new MapKakao.daum.maps.MarkerImage(imgMarker, this.imgMarkerSize);
-  //   this.imgSelected = new MapKakao.daum.maps.MarkerImage(imgSelected, this.imgMarkerSize);
-  // }
-
   addMarker(markerEntity) {
     const { place, isSelected } = markerEntity;
     let marker = this._getCachedMarker(place);

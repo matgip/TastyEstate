@@ -54,7 +54,6 @@ export default {
         const map = new MapKakao();
         await map.mount("mapview", { imgMarker: imgMarker, imgSelected: imgSelected, imgSize: imgSize });
         this.map = map;
-        // this.map.setMarkerImage(imgMarker, imgSelected, imgSize);
       } catch (err) {
         console.error(err);
       }
