@@ -185,7 +185,6 @@ export default {
 
     clear() {
       this.$store.commit("CLEAR_ESTATE");
-      this.$store.commit("CLEAR_LIKES");
       this.$store.commit("CLEAR_STARS");
     },
   },

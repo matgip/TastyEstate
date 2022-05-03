@@ -41,7 +41,6 @@ export default {
     ...mapGetters({
       estate: "GET_ESTATE",
       stars: "GET_STARS",
-      likes: "GET_LIKES",
     }),
   },
   watch: {
