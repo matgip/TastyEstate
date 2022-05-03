@@ -30,11 +30,10 @@ export default {
     this.$store.subscribe((mutation) => {
       if (mutation.type == "UPDATE_ESTATE") {
         const estate = this.estate;
-        console.log(estate);
         if (Object.keys(estate).length === 0) return;
 
-        // const marker = this.addMarker({ place: estate, isSelected: true });
-        // this.addClickHandler(marker, estate);
+        const marker = this.addMarker({ place: estate, isSelected: true });
+        this.addClickHandler(marker, estate);
         this.moveTo(estate.y, estate.x);
         this.scanEstate();
       }
@@ -73,8 +72,6 @@ export default {
     },
 
     moveTo(lat, lng) {
-      console.log(lat);
-      console.log(lng);
       this.map.moveTo(lat, lng);
     },
 
