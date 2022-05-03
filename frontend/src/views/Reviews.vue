@@ -151,7 +151,6 @@ export default {
 
   methods: {
     async onLikeEstate() {
-      // const resp = await this.$api.likes.put(payLoad.estateId, { user_id: payLoad.userId });
       try {
         const resp = await this.$api.likes.put(this.estate.id, { user_id: this.user.id });
         if (resp.data.result === "already-added") {

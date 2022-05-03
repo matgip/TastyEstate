@@ -40,14 +40,13 @@ export default {
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
-      stars: "GET_STARS",
     }),
   },
   watch: {
     estate: function(val) {
       if (Object.keys(this.estate).length !== 0) {
         val.type = "agency";
-        val.stars = this.stars;
+        val.stars = this.estate.stars;
         val.likes = this.estate.likes;
         this.items.push(val);
       }

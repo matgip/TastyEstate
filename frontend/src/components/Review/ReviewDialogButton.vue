@@ -190,7 +190,6 @@ export default {
               text: this.comments,
             },
           });
-          this.$store.dispatch("getStars", this.estate.id);
         }
         await this._clear();
       } catch (err) {
