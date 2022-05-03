@@ -34,14 +34,6 @@ export default {
   },
 
   props: {
-    // stars: {
-    //   type: Number,
-    //   required: true,
-    //   validator: function(value) {
-    //     return value >= 0;
-    //   },
-    // },
-    // },
     agency: {
       type: Object,
       required: true,

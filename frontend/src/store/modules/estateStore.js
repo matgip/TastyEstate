@@ -1,16 +1,18 @@
 const GET_ESTATE = "GET_ESTATE";
-const UPDATE_ESTATE = "UPDATE_ESTATE";
 const CLEAR_ESTATE = "CLEAR_ESTATE";
+const UPDATE_ESTATE = "UPDATE_ESTATE";
 
 const estateStore = {
   state: {
     estate: {},
   },
+
   getters: {
     [GET_ESTATE](state) {
       return state.estate;
     },
   },
+
   mutations: {
     [UPDATE_ESTATE](state, estate) {
       state.estate = estate;
@@ -19,11 +21,12 @@ const estateStore = {
       state.estate = {};
     },
   },
+
   actions: {
-    async updateRealEstate({ commit }, estate) {
+    async updateEstate({ commit }, estate) {
       let resp = await this.$api.estates.get(estate.id);
       if (resp && resp.status === 204) {
-        // No contents
+        // no contents
         const post = {
           id: estate.id,
           coordinate: { y: estate.y, x: estate.x },
@@ -33,7 +36,7 @@ const estateStore = {
         };
         await this.$api.estates.post(post);
 
-        // Fix-me: The estate getting from kakao api does not have likes count
+        // estate getting from kakao api does not have likes count
         estate.likes = 0;
         commit(UPDATE_ESTATE, estate);
         return;

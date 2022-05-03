@@ -97,7 +97,7 @@ class MapKakao {
     }
     MapKakao.daum.maps.event.addListener(marker, "click", async () => {
       // Update selected estate
-      await store.dispatch("updateRealEstate", estate);
+      await store.dispatch("updateEstate", estate);
       this._showInfoWindowOnMap(marker, estate.place_name);
     });
     this._cacheMarker(estate, marker);
