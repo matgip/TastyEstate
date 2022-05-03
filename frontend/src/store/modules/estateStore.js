@@ -26,6 +26,7 @@ const estateStore = {
         // No contents
         const post = {
           id: estate.id,
+          coordinate: { y: estate.y, x: estate.x },
           phone: estate.phone,
           placeName: estate.place_name,
           addressName: estate.address_name,
