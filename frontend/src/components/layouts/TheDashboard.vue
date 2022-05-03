@@ -33,6 +33,7 @@ export default {
     Search,
     Agency,
   },
+
   data: () => ({
     items: [],
   }),
@@ -42,14 +43,15 @@ export default {
       estate: "GET_ESTATE",
     }),
   },
+
   watch: {
     estate: function(val) {
-      if (Object.keys(this.estate).length !== 0) {
-        val.type = "agency";
-        val.stars = this.estate.stars;
-        val.likes = this.estate.likes;
-        this.items.push(val);
-      }
+      if (Object.keys(this.estate).length === 0) return;
+
+      val.type = "agency";
+      val.stars = this.estate.stars;
+      val.likes = this.estate.likes;
+      this.items.push(val);
     },
   },
 

@@ -32,8 +32,8 @@
         <div class="filter-layer">
           <div class="menu-container">
             <ul>
-              <li class="scroll-li" @click="onNearByClicked">근처 부동산</li>
-              <li class="scroll-li" @click="onBestClicked">베스트 부동산</li>
+              <li class="scroll-li" @click="onSearchNear">근처 부동산</li>
+              <li class="scroll-li" @click="onSortByRating">베스트 부동산</li>
             </ul>
           </div>
         </div>
@@ -94,7 +94,7 @@ export default {
     async select(estate) {
       if (!estate) return;
       try {
-        await this.$store.dispatch("updateRealEstate", estate);
+        await this.$store.dispatch("updateEstate", estate);
       } catch (err) {
         console.error(err);
       }
@@ -108,9 +108,9 @@ export default {
   },
 
   methods: {
-    async onNearByClicked() {
+    async onSearchNear() {
       if (!this.estate) {
-        // !Important: estate get flushed when MapSearch.vue file remounted
+        // IMPORTANT: estate get flushed when SearchBar.vue file remounted
         // Must use this.estate by using mapgetter, not this.select.
         console.error("no selected estate...");
         return;
@@ -119,8 +119,8 @@ export default {
       await this._searchEstate(requestObj);
     },
 
-    onBestClicked() {
-      console.log("Best clicked");
+    onSortByRating() {
+      console.log("Sort by rating");
     },
 
     async _searchEstate(requestObj) {
@@ -136,7 +136,7 @@ export default {
         this.estates = [];
         let page = 1;
         let isEnd = false;
-        // Kakao map APIs provides up to 45 datas per request.
+        // Kakao map APIs provides up to 15 datas per request.
         // By increasing page count on every request of rest API,
         // get total datas(45) until is end.
         while (!isEnd) {
@@ -192,19 +192,6 @@ export default {
   min-height: 4px;
 }
 
-/* #search-group {
-  position: absolute;
-  top: 12px;
-  left: 11px;
-  width: 368px;
-  height: 100px;
-  border-radius: 3px;
-  border: 1px solid #cecece;
-  border-bottom: 1px solid #c0c0c0;
-  border-top: 1px solid #e9e9e9;
-  background-color: #fff;
-  z-index: 20;
-} */
 .search-group {
   background-color: white;
   border-bottom: 1px solid #c0c0c0;
