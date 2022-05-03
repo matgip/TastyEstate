@@ -16,7 +16,6 @@
           <Agency :agency="agency" :key="agency.id" />
         </template>
 
-        
         주변 부동산
       </section>
     </div>
@@ -42,7 +41,6 @@ export default {
     ...mapGetters({
       estate: "GET_ESTATE",
       stars: "GET_STARS",
-      likes: "GET_LIKES",
     }),
   },
   watch: {
@@ -50,7 +48,7 @@ export default {
       if (Object.keys(this.estate).length !== 0) {
         val.type = "agency";
         val.stars = this.stars;
-        val.likes = this.likes;
+        val.likes = this.estate.likes;
         this.items.push(val);
       }
     },

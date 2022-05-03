@@ -34,7 +34,7 @@ export default {
 
         const marker = this.addMarker({ place: estate, isSelected: true });
         this.addClickHandler(marker, estate);
-        this.moveTo(estate);
+        this.moveTo(estate.y, estate.x);
         this.scanEstate();
       }
     });
@@ -54,7 +54,6 @@ export default {
         const map = new MapKakao();
         await map.mount("mapview", { imgMarker: imgMarker, imgSelected: imgSelected, imgSize: imgSize });
         this.map = map;
-        // this.map.setMarkerImage(imgMarker, imgSelected, imgSize);
       } catch (err) {
         console.error(err);
       }
@@ -72,8 +71,8 @@ export default {
       this.map.scan();
     },
 
-    moveTo(estate) {
-      this.map.moveTo(estate);
+    moveTo(lat, lng) {
+      this.map.moveTo(lat, lng);
     },
 
     zoomIn() {

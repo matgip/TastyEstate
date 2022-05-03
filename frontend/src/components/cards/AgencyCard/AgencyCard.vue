@@ -23,8 +23,6 @@ import AgencyStars from "./components/AgencyStars.vue";
 import ReviewsBtn from "./components/AgencyReviewsBtn.vue";
 import AgencyInfo from "./components/AgencyInfo.vue";
 
-// import { mapGetters } from "vuex";
-
 export default {
   components: {
     AgencyImages,
@@ -43,27 +41,12 @@ export default {
     //     return value >= 0;
     //   },
     // },
-    // likes: {
-    //   type: Number,
-    //   required: true,
-    //   validator: function(value) {
-    //     return value >= 0;
-    //   },
     // },
     agency: {
       type: Object,
       required: true,
     },
   },
-
-  // computed: {
-  //   ...mapGetters({
-  //     agency: "GET_ESTATE",
-  //     user: "GET_USER",
-  //     stars: "GET_STARS",
-  //     likes: "GET_LIKES",
-  //   }),
-  // },
 };
 </script>
 

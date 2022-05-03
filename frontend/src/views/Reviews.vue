@@ -150,8 +150,20 @@ export default {
   },
 
   methods: {
-    onLikeEstate() {
-      this.$store.dispatch("updateLikes", { estateId: this.estate.id, userId: this.user.id });
+    async onLikeEstate() {
+      // const resp = await this.$api.likes.put(payLoad.estateId, { user_id: payLoad.userId });
+      try {
+        const resp = await this.$api.likes.put(this.estate.id, { user_id: this.user.id });
+        if (resp.data.result === "already-added") {
+          alert("이미 좋아요를 누르셨습니다.");
+          return;
+        }
+        if (resp.data.result === "success") {
+          alert("이 부동산을 좋아합니다.");
+        }
+      } catch (err) {
+        console.error(err);
+      }
     },
 
     async onLikeReview(userId) {

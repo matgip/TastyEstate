@@ -71,13 +71,6 @@ class MapKakao {
     return this;
   }
 
-  // setMarkerImage(imgMarker, imgSelected, imgMarkerSize) {
-  //   const { width, height } = imgMarkerSize;
-  //   this.imgMarkerSize = new MapKakao.daum.maps.Size(width, height);
-  //   this.imgMarker = new MapKakao.daum.maps.MarkerImage(imgMarker, this.imgMarkerSize);
-  //   this.imgSelected = new MapKakao.daum.maps.MarkerImage(imgSelected, this.imgMarkerSize);
-  // }
-
   addMarker(markerEntity) {
     const { place, isSelected } = markerEntity;
     let marker = this._getCachedMarker(place);
@@ -105,7 +98,6 @@ class MapKakao {
     MapKakao.daum.maps.event.addListener(marker, "click", async () => {
       // Update selected estate
       await store.dispatch("updateRealEstate", estate);
-      await store.dispatch("getLikes", estate.id);
       await store.dispatch("getStars", estate.id);
       this._showInfoWindowOnMap(marker, estate.place_name);
     });
@@ -130,9 +122,9 @@ class MapKakao {
     }
   }
 
-  moveTo(estate) {
+  moveTo(lat, lng) {
     const currentLvl = this.map.getLevel();
-    const latlng = new MapKakao.daum.maps.LatLng(estate.y, estate.x);
+    const latlng = new MapKakao.daum.maps.LatLng(lat, lng);
     if (currentLvl > this.CLSTR_MIN_LVL) this.map.setLevel(this.CLSTR_MIN_LVL);
     this.map.setCenter(latlng);
   }
