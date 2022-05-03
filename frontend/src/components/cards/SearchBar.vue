@@ -95,7 +95,6 @@ export default {
       if (!estate) return;
       try {
         await this.$store.dispatch("updateRealEstate", estate);
-        await this.$store.dispatch("getStars", estate.id);
       } catch (err) {
         console.error(err);
       }
@@ -185,7 +184,6 @@ export default {
 
     clear() {
       this.$store.commit("CLEAR_ESTATE");
-      this.$store.commit("CLEAR_STARS");
     },
   },
 };

@@ -22,10 +22,18 @@ module.exports = class extends EstateRepository {
 
   async get(estateId) {
     const estate = await client.HGETALL(`estates:${estateId}`);
-    // Refactoring: combining likes count into estate
+    // Refactoring: combining likes & stars into estate
+    estate.likes = 0;
+    estate.stars = 0.0;
     if (!this.isEmpty(estate)) {
-      const estateLikes = await client.SCARD("likes:" + estateId);
-      estate.likes = estateLikes;
+      const likes = await client.SCARD("likes:" + estateId);
+      const sumOfRatings = await client.GET(`reviews:${estateId}:ratings`);
+      const userCnt = await client.ZCARD(`reviews:${estateId}:likes`);
+
+      estate.likes = likes;
+      if (userCnt != 0) {
+        estate.stars = sumOfRatings / userCnt;
+      }
     }
     return estate;
   }

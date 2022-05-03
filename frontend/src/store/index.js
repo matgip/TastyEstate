@@ -13,13 +13,11 @@ Vue.config.devtools = true;
 // https://developerjournal.tistory.com/11
 import estateStore from "./modules/estateStore";
 import userStore from "./modules/userStore";
-import starsStore from "./modules/starsStore";
 
 const store = new Vuex.Store({
   modules: {
     estateStore: estateStore,
     userStore: userStore,
-    starsStore: starsStore,
   },
   plugins: [
     createPersistedState({
