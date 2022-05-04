@@ -102,8 +102,12 @@ export default {
 
     async search(keyword) {
       if (!keyword || keyword === this.select) return;
-      const requestObj = { keyword: keyword, latLng: {} };
-      await this._searchEstate(requestObj);
+      try {
+        const request = { keyword: keyword, latLng: {} };
+        await this._searchEstate(request);
+      } catch (err) {
+        console.error(err);
+      }
     },
   },
 
@@ -115,17 +119,22 @@ export default {
         console.error("no selected estate...");
         return;
       }
-      const requestObj = { keyword: "", latLng: { y: this.estate.y, x: this.estate.x } };
-      await this._searchEstate(requestObj);
+      try {
+        const request = { keyword: "", latLng: { y: this.estate.y, x: this.estate.x } };
+        await this._searchEstate(request);
+        await this.$store.dispatch("updateEstates", this.estates);
+      } catch (err) {
+        console.log(err);
+      }
     },
 
     onSortByRating() {
       console.log("Sort by rating");
     },
 
-    async _searchEstate(requestObj) {
+    async _searchEstate(request) {
       try {
-        const { keyword, latLng } = requestObj;
+        const { keyword, latLng } = request;
         if (keyword === "" && !latLng.y && !latLng.x) {
           console.log(`There is no any searched estates...
                       please search the estate first.`);

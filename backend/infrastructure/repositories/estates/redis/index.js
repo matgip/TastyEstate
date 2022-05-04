@@ -38,7 +38,7 @@ module.exports = class extends EstateRepository {
     return estate;
   }
 
-  isEmpty(result) {
-    return Object.keys(result).length === 0;
+  isEmpty(estate) {
+    return !estate.id || !estate.y || !estate.x || !estate.phone || !estate.place_name || !estate.address_name;
   }
 };
