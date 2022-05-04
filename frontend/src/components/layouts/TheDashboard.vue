@@ -13,8 +13,10 @@
         <template v-for="agency in items">
           <Agency :agency="agency" :key="agency.id" />
         </template>
-
         주변 부동산
+        <template v-for="agency in agencies">
+          <Agency :agency="agency" :key="agency.id" />
+        </template>
       </section>
     </div>
   </div>
@@ -39,6 +41,7 @@ export default {
   computed: {
     ...mapGetters({
       estate: "GET_ESTATE",
+      agencies: "GET_ESTATES",
     }),
   },
 

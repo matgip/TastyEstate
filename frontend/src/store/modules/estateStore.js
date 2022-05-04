@@ -73,18 +73,22 @@ const estateStore = {
     },
 
     async updateEstates({ commit }, estates) {
-      console.log("TEST!");
+      const result = [];
       for (let estate of estates) {
         const resp = await GET_AGENCY(estate.id);
-        if (!IS_EMPTY_REPLY(resp)) continue;
+        if (!IS_EMPTY_REPLY(resp)) {
+          result.push(resp.data);
+          continue;
+        }
 
         // Not saved on database...
         await SAVE_AGENCY(estate);
         // Agency info got from Kakao API does not have like & stars
         estate.likes = 0;
         estate.stars = 0.0;
+        result.push(estate);
       }
-      commit(UPDATE_ESTATES, estates);
+      commit(UPDATE_ESTATES, result);
     },
   },
 };
