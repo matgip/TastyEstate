@@ -25,8 +25,16 @@
               <li>키워드를 다르게 검색해보세요. (예 : 신원로 251-2 근처 부동산)</li>
             </ul>
           </div>
+          <div class="dashboard__add-agency-container">
+            <div class="dashboard__add-agency__title">
+              공인중개사무소 등록하기
+            </div>
+            <div class="dashboard__add-agency__content">
+              <div>새로운 수정된 중개업소 장소를 알고 계신가요?</div>
+              <div>장소 제보는 서비스 품질 향상에 큰 도움이 됩니다.</div>
+            </div>
+          </div>
         </div>
-
         <template>
           <Agency v-if="agency.id" :agency="agency" :key="agency.id" />
         </template>
@@ -127,14 +135,28 @@ export default {
   background-color: #e0e0e0;
   text-align: start;
   font-size: 14px;
-  margin: 0 10px 10px 10px;
   padding: 10px 10px;
+  margin: 0 10px 10px 10px;
   border-radius: 4px;
 }
 
 .dashboard__no-result__tips ul {
   list-style-type: disc;
   margin-top: 10px;
+}
+
+.dashboard__add-agency-container {
+  text-align: start;
+  margin: 50px 10px 10px 10px;
+}
+
+.dashboard__add-agency__title {
+  font-weight: bold;
+}
+
+.dashboard__add-agency__content {
+  font-size: 12px;
+  color: gray;
 }
 
 /* Scroll button */
