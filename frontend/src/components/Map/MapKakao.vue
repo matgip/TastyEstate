@@ -132,7 +132,7 @@ export default {
   } */
 
   .custom_zoomcontrol {
-    top: 140px;
+    top: 200px;
   }
 }
 </style>

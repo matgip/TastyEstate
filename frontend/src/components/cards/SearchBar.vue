@@ -241,6 +241,7 @@ export default {
   height: 100%;
   color: #ff5722;
   font-size: 14px;
+  font-weight: 580;
   border-radius: 4px;
   border: 1px solid #ff5722;
 }
