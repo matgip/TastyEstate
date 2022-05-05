@@ -14,7 +14,7 @@
       </header>
       <section>
         <template>
-          <Agency v-if="estate.id" :agency="estate" :key="estate.id" />
+          <Agency v-if="agency.id" :agency="agency" :key="agency.id" />
         </template>
 
         <v-divider />
@@ -41,25 +41,22 @@ export default {
     Agency,
   },
 
-  data: () => ({
-    items: [],
-  }),
+  data: () => ({}),
 
   computed: {
     ...mapGetters({
-      estate: "GET_ESTATE",
+      agency: "GET_ESTATE",
       agencies: "GET_ESTATES",
     }),
   },
 
   watch: {
-    estate: function(val) {
-      if (Object.keys(this.estate).length === 0) return;
+    agency: function(val) {
+      if (Object.keys(this.agency).length === 0) return;
 
       val.type = "agency";
-      val.stars = this.estate.stars;
-      val.likes = this.estate.likes;
-      this.items.push(val);
+      val.stars = this.agency.stars;
+      val.likes = this.agency.likes;
     },
   },
 
@@ -82,13 +79,13 @@ export default {
 }
 
 #dashboard__info-container {
-  background-color: orange;
+  /* background-color: orange; */
   height: 100%;
   overflow-y: hidden;
 }
 
 #dashboard__info-container section {
-  background-color: orange;
+  /* background-color: orange; */
   height: 100%;
   overflow-y: auto;
 }
