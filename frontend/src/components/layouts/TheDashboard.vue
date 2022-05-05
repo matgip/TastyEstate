@@ -10,10 +10,12 @@
         </v-btn>
       </header>
       <section>
-        <template v-for="agency in items">
-          <Agency :agency="agency" :key="agency.id" />
+        <template>
+          <Agency v-if="estate.id" :agency="estate" :key="estate.id" />
         </template>
-        주변 부동산
+
+        <v-divider />
+
         <template v-for="agency in agencies">
           <Agency :agency="agency" :key="agency.id" />
         </template>

@@ -90,17 +90,17 @@ class MapKakao {
     return marker;
   }
 
-  onMarkerClicked(marker, estate) {
-    if (this._getCachedMarker(estate)) {
+  onMarkerClicked(marker, agency) {
+    if (this._getCachedMarker(agency)) {
       // Bug fix: Do not add on-click listener if already added
       return;
     }
     MapKakao.daum.maps.event.addListener(marker, "click", async () => {
-      // Update selected estate
-      await store.dispatch("updateEstate", estate);
-      this._showInfoWindowOnMap(marker, estate.place_name);
+      // Update selected agency
+      await store.dispatch("updateAgency", agency);
+      this._showInfoWindowOnMap(marker, agency.place_name);
     });
-    this._cacheMarker(estate, marker);
+    this._cacheMarker(agency, marker);
   }
 
   // Divide the map into 9 equal squares and scan.

@@ -11,7 +11,7 @@
         :search-input.sync="search"
         @click:clear="clear"
       >
-        <!-- estate selected -->
+        <!-- agency selected -->
         <template #selection="{ attr, on, item, selected }">
           <v-chip v-bind="[chipSelectedProps, attr]" :input-value="selected" v-on="on">
             <v-icon v-bind="iconSelectedProps">{{ iconSelected }}</v-icon>
@@ -19,7 +19,7 @@
           </v-chip>
         </template>
 
-        <!-- estates searched -->
+        <!-- agencies searched -->
         <template #item="{ item }">
           <v-list-item-content>
             <v-list-item-title v-text="item.place_name" />
@@ -93,8 +93,9 @@ export default {
   watch: {
     async select(estate) {
       if (!estate) return;
+
       try {
-        await this.$store.dispatch("updateEstate", estate);
+        await this.$store.dispatch("updateAgency", estate);
       } catch (err) {
         console.error(err);
       }
@@ -102,9 +103,9 @@ export default {
 
     async search(keyword) {
       if (!keyword || keyword === this.select) return;
+
       try {
-        const request = { keyword: keyword, latLng: {} };
-        await this._searchEstate(request);
+        await this._searchEstate({ keyword, latLng: {} });
       } catch (err) {
         console.error(err);
       }
@@ -120,9 +121,8 @@ export default {
         return;
       }
       try {
-        const request = { keyword: "", latLng: { y: this.estate.y, x: this.estate.x } };
-        await this._searchEstate(request);
-        await this.$store.dispatch("updateEstates", this.estates);
+        await this._searchEstate({ keyword: "", latLng: { y: this.estate.y, x: this.estate.x } });
+        await this.$store.dispatch("updateAgencies", this.estates);
       } catch (err) {
         console.log(err);
       }
@@ -181,7 +181,6 @@ export default {
       }
 
       url += `&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}&page=${pageCnt}&size=15`;
-
       return url;
     },
 

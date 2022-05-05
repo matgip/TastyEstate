@@ -26,7 +26,7 @@ const SAVE_AGENCY = async (estate) => {
   await $api.estates.post(post);
 };
 
-const estateStore = {
+const agencyStore = {
   state: {
     estate: {},
     estates: [],
@@ -58,39 +58,39 @@ const estateStore = {
   },
 
   actions: {
-    async updateEstate({ commit }, estate) {
-      const resp = await GET_AGENCY(estate.id);
+    async updateAgency({ commit }, agency) {
+      const resp = await GET_AGENCY(agency.id);
       if (!IS_EMPTY_REPLY(resp)) {
         commit(UPDATE_ESTATE, resp.data);
         return;
       }
       // Not saved on database...
-      await SAVE_AGENCY(estate);
+      await SAVE_AGENCY(agency);
       // Agency info got from Kakao API does not have like & stars
-      estate.likes = 0;
-      estate.stars = 0.0;
-      commit(UPDATE_ESTATE, estate);
+      agency.likes = 0;
+      agency.stars = 0.0;
+      commit(UPDATE_ESTATE, agency);
     },
 
-    async updateEstates({ commit }, estates) {
+    async updateAgencies({ commit }, agencies) {
       const result = [];
-      for (let estate of estates) {
-        const resp = await GET_AGENCY(estate.id);
+      for (let agency of agencies) {
+        const resp = await GET_AGENCY(agency.id);
         if (!IS_EMPTY_REPLY(resp)) {
           result.push(resp.data);
           continue;
         }
 
         // Not saved on database...
-        await SAVE_AGENCY(estate);
+        await SAVE_AGENCY(agency);
         // Agency info got from Kakao API does not have like & stars
-        estate.likes = 0;
-        estate.stars = 0.0;
-        result.push(estate);
+        agency.likes = 0;
+        agency.stars = 0.0;
+        result.push(agency);
       }
       commit(UPDATE_ESTATES, result);
     },
   },
 };
 
-export default estateStore;
+export default agencyStore;

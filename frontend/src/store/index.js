@@ -11,12 +11,12 @@ Vue.use(Vuex);
 Vue.config.devtools = true;
 
 // https://developerjournal.tistory.com/11
-import estateStore from "./modules/estateStore";
+import agencyStore from "./modules/agencyStore";
 import userStore from "./modules/userStore";
 
 const store = new Vuex.Store({
   modules: {
-    estateStore: estateStore,
+    agencyStore: agencyStore,
     userStore: userStore,
   },
   plugins: [
