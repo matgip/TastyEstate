@@ -130,8 +130,6 @@ export default {
 
     async onSortByRating() {
       if (!this.agency) {
-        // IMPORTANT: estate get flushed when SearchBar.vue file remounted
-        // Must use this.estate by using mapgetter, not this.select.
         console.error("no selected agency...");
         return;
       }

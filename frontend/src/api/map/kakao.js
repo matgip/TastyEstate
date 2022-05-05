@@ -98,6 +98,7 @@ class MapKakao {
     MapKakao.daum.maps.event.addListener(marker, "click", async () => {
       // Update selected agency
       await store.dispatch("updateAgency", agency);
+      store.commit("CLEAR_ESTATES");
       this._showInfoWindowOnMap(marker, agency.place_name);
     });
     this._cacheMarker(agency, marker);
@@ -116,7 +117,7 @@ class MapKakao {
         const y = (lat + i / 100).toFixed(2);
         if (this._isScanned(y, x)) continue;
         this._cacheLatLng(y, x);
-        this.placeSrch.categorySearch("AG2", this._callback.bind(this), { x: x, y: y, radius: 300 }); // redius 710 will cover all boundary
+        this.placeSrch.categorySearch("AG2", this._callback.bind(this), { x, y, radius: 300 }); // redius 710 will cover all boundary
       }
     }
   }
