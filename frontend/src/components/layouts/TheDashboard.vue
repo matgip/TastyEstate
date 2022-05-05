@@ -13,6 +13,20 @@
         </v-btn>
       </header>
       <section>
+        <div v-if="!agency.id" id="dashboard__no-result-container">
+          <div class="dashboard__no-result__title">
+            앗! 검색 결과가 없어요
+          </div>
+          <img class="dashboard__no-result__img" src="@/assets/images/no_search_result.png" width="120" height="120" />
+          <div class="dashboard__no-result__tips">
+            이건 어때요?
+            <ul>
+              <li>키워드를 정확하게 입력하셨는지 확인해보세요.</li>
+              <li>키워드를 다르게 검색해보세요. (예 : 신원로 251-2 근처 부동산)</li>
+            </ul>
+          </div>
+        </div>
+
         <template>
           <Agency v-if="agency.id" :agency="agency" :key="agency.id" />
         </template>
@@ -74,10 +88,13 @@ export default {
   height: var(--agency-card-height);
   margin: 10px;
 }
+
+/* Search bar */
 #dashboard__search-container {
   background-color: yellow;
 }
 
+/* Searched agencies */
 #dashboard__info-container {
   background-color: white;
   height: 100%;
@@ -91,6 +108,36 @@ export default {
   overflow-y: auto;
 }
 
+/* No results */
+#dashboard__no-result-container {
+  text-align: center;
+}
+
+.dashboard__no-result__img {
+  margin: 10px;
+}
+
+.dashboard__no-result__title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.dashboard__no-result__tips {
+  background-color: #e0e0e0;
+  text-align: start;
+  font-size: 14px;
+  margin: 0 10px 10px 10px;
+  padding: 10px 10px;
+  border-radius: 4px;
+}
+
+.dashboard__no-result__tips ul {
+  list-style-type: disc;
+  margin-top: 10px;
+}
+
+/* Scroll button */
 #dashboard__scroll-btn {
   display: none;
 }
