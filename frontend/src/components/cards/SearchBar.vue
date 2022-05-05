@@ -1,12 +1,10 @@
-<!-- @format -->
-
 <template>
   <div data-app class="search-group">
     <div>
       <v-autocomplete
         v-bind="searchProps"
         v-model="select"
-        :items="estates"
+        :items="agencies"
         :loading="isLoading"
         :search-input.sync="search"
         @click:clear="clear"
@@ -50,7 +48,7 @@ import { mapGetters } from "vuex";
 export default {
   data: () => ({
     isLoading: false,
-    estates: [],
+    agencies: [],
     search: null,
     select: null,
 
@@ -86,16 +84,16 @@ export default {
 
   computed: {
     ...mapGetters({
-      estate: "GET_ESTATE",
+      agency: "GET_ESTATE",
     }),
   },
 
   watch: {
-    async select(estate) {
-      if (!estate) return;
+    async select(agency) {
+      if (!agency) return;
 
       try {
-        await this.$store.dispatch("updateAgency", estate);
+        await this.$store.dispatch("updateAgency", agency);
         this.$store.commit("CLEAR_ESTATES");
       } catch (err) {
         console.error(err);
@@ -115,15 +113,15 @@ export default {
 
   methods: {
     async onSearchNear() {
-      if (!this.estate) {
+      if (!this.agency) {
         // IMPORTANT: estate get flushed when SearchBar.vue file remounted
         // Must use this.estate by using mapgetter, not this.select.
-        console.error("no selected estate...");
+        console.error("no selected agency...");
         return;
       }
       try {
-        await this._searchEstate({ keyword: "", latLng: { y: this.estate.y, x: this.estate.x } });
-        await this.$store.dispatch("updateAgencies", this.estates);
+        await this._searchEstate({ keyword: "", latLng: { y: this.agency.y, x: this.agency.x } });
+        await this.$store.dispatch("updateAgencies", this.agencies);
       } catch (err) {
         console.log(err);
       }
@@ -135,36 +133,42 @@ export default {
 
     async _searchEstate(request) {
       try {
-        const { keyword, latLng } = request;
-        if (keyword === "" && !latLng.y && !latLng.x) {
-          console.log(`There is no any searched estates...
-                      please search the estate first.`);
+        if (!this._isValid(request)) {
+          console.log(`There is no any searched agencies...
+                      please search the estate agency first.`);
           return;
         }
 
         this.isLoading = true;
-        this.estates = [];
-        let page = 1;
-        let isEnd = false;
-        // Kakao map APIs provides up to 15 datas per request.
-        // By increasing page count on every request of rest API,
-        // get total datas(45) until is end.
-        while (!isEnd) {
-          const url = this._getUrl(keyword, page, latLng);
-          const headers = {
-            headers: {
-              Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
-            },
-          };
-          let resp = await axios.get(encodeURI(url), headers);
-          this.estates = this.estates.concat(resp.data.documents);
-          page += 1;
-          isEnd = resp.data.meta.is_end;
-        }
+        await this._fetchAgencies(request);
       } catch (err) {
         console.error(err);
       } finally {
         this.isLoading = false;
+      }
+    },
+
+    async _fetchAgencies(request) {
+      const { keyword, latLng } = request;
+      this.agencies = [];
+      let page = 1;
+      let isEnd = false;
+
+      // Kakao map APIs provides up to 15 datas per request.
+      // By increasing page count on every request of rest API,
+      // get total datas(45) until is end.
+      while (!isEnd) {
+        const url = this._getUrl(keyword, page, latLng);
+        const headers = {
+          headers: {
+            Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
+          },
+        };
+        let resp = await axios.get(encodeURI(url), headers);
+        this.agencies = this.agencies.concat(resp.data.documents);
+
+        page += 1;
+        isEnd = resp.data.meta.is_end;
       }
     },
 
@@ -183,6 +187,11 @@ export default {
 
       url += `&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}&page=${pageCnt}&size=15`;
       return url;
+    },
+
+    _isValid(request) {
+      const { keyword, latLng } = request;
+      return keyword !== "" || (latLng.y && latLng.x);
     },
 
     clear() {
@@ -236,11 +245,12 @@ export default {
 
 .menu-container ul li {
   display: inline-block;
-  padding: 0 8px;
+  padding: 4px 8px;
   margin: 0 4px;
   height: 100%;
   color: #ff5722;
   font-size: 14px;
+  font-weight: 580;
   border-radius: 4px;
   border: 1px solid #ff5722;
 }

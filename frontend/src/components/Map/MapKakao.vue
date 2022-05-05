@@ -127,12 +127,8 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-  /* #mapview {
-    height: 680px;
-  } */
-
   .custom_zoomcontrol {
-    top: 140px;
+    top: 200px;
   }
 }
 </style>
