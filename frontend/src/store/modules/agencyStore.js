@@ -11,6 +11,10 @@ const IS_EMPTY_REPLY = (resp) => {
   return resp && resp.status === 204;
 };
 
+const IS_DUPLICATED = (agencyToAddId, selectedId) => {
+  return agencyToAddId === selectedId;
+};
+
 const GET_AGENCY = async (estateId) => {
   return await $api.estates.get(estateId);
 };
@@ -72,10 +76,13 @@ const agencyStore = {
       commit(UPDATE_ESTATE, agency);
     },
 
-    async updateAgencies({ commit }, agencies) {
+    async updateAgencies({ commit, state }, agencies) {
       const result = [];
       for (let agency of agencies) {
         const resp = await GET_AGENCY(agency.id);
+
+        if (IS_DUPLICATED(agency.id, state.estate.id)) continue;
+
         if (!IS_EMPTY_REPLY(resp)) {
           result.push(resp.data);
           continue;
