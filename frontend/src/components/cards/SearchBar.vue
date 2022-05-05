@@ -30,8 +30,8 @@
         <div class="filter-layer">
           <div class="menu-container">
             <ul>
-              <li class="scroll-li" @click="onSearchNear">근처 부동산</li>
-              <li class="scroll-li" @click="onSortByRating">베스트 부동산</li>
+              <li @click="onSearchNear">근처 부동산</li>
+              <li @click="onSortByRating">베스트 부동산</li>
             </ul>
           </div>
         </div>
@@ -119,23 +119,39 @@ export default {
         console.error("no selected agency...");
         return;
       }
+
       try {
         await this._searchEstate({ keyword: "", latLng: { y: this.agency.y, x: this.agency.x } });
-        await this.$store.dispatch("updateAgencies", this.agencies);
+        await this.$store.dispatch("updateAgencies", { agencies: this.agencies });
       } catch (err) {
         console.log(err);
       }
     },
 
-    onSortByRating() {
-      console.log("Sort by rating");
+    async onSortByRating() {
+      if (!this.agency) {
+        // IMPORTANT: estate get flushed when SearchBar.vue file remounted
+        // Must use this.estate by using mapgetter, not this.select.
+        console.error("no selected agency...");
+        return;
+      }
+
+      try {
+        await this._searchEstate({ keyword: "", latLng: { y: this.agency.y, x: this.agency.x } });
+        await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this._comparator });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    _comparator(a, b) {
+      return a.stars < b.stars;
     },
 
     async _searchEstate(request) {
       try {
         if (!this._isValid(request)) {
-          console.log(`There is no any searched agencies...
-                      please search the estate agency first.`);
+          alert("먼저 부동산을 검색해주세요!");
           return;
         }
 
@@ -248,14 +264,12 @@ export default {
   padding: 4px 8px;
   margin: 0 4px;
   height: 100%;
-  color: #ff5722;
+  background-color: #ff5722;
+  color: white;
   font-size: 14px;
-  font-weight: 580;
+  font-weight: 500;
   border-radius: 4px;
   border: 1px solid #ff5722;
-}
-
-.scroll-li {
   cursor: pointer;
 }
 
