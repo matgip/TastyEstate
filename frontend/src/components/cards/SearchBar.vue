@@ -236,7 +236,7 @@ export default {
 
 .menu-container ul li {
   display: inline-block;
-  padding: 0 8px;
+  padding: 4px 8px;
   margin: 0 4px;
   height: 100%;
   color: #ff5722;

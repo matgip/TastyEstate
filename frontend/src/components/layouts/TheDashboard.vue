@@ -1,12 +1,15 @@
 <template>
   <div>
+    <div><Masthead /></div>
+
     <div id="dashboard__search-container">
       <Search />
     </div>
     <div id="dashboard__info-container">
       <header>
         <v-btn id="dashboard__scroll-btn" @click="scrollTest" block>
-          Click to Scroll
+          <!-- Click to Scroll -->
+          <v-icon>fa-solid fa-arrow-up</v-icon>
         </v-btn>
       </header>
       <section>
@@ -25,6 +28,7 @@
 </template>
 
 <script>
+import Masthead from "@/components/layouts/TheMasthead.vue";
 import Search from "@/components/cards/SearchBar.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
 
@@ -32,6 +36,7 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
+    Masthead,
     Search,
     Agency,
   },

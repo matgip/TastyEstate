@@ -106,8 +106,9 @@ export default {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  background-color: transparent;
-  align-items: center;
+  background-color: white;
+  align-items: flex-start;
+  flex-direction: column;
   color: var(--color-light-white);
   padding: 12px;
   border-bottom: 1px solid #e0e0e0;
@@ -115,14 +116,22 @@ export default {
 }
 
 .masthead__menu {
-  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  display: none;
+}
+
+.masthead__menu.open {
+  display: block;
 }
 
 .masthead__menu__item {
   padding: 12px 12px;
-  margin: 0px 4px;
+  margin-right: 20px;
   cursor: pointer;
-  border-radius: var(--size-border-radius);
+  border-top: 1px solid #e0e0e0;
+  border-radius: 0;
 }
 
 .masthead__toggle-btn {
@@ -130,34 +139,6 @@ export default {
   right: 32px;
   font-size: 24px;
   color: var(--color-orange);
-  display: none;
-}
-
-@media screen and (max-width: 768px) {
-  .masthead__toggle-btn {
-    display: block;
-  }
-
-  #masthead {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .masthead__menu {
-    flex-direction: column;
-    text-align: center;
-    width: 100%;
-    display: none;
-  }
-
-  .masthead__menu.open {
-    display: block;
-  }
-
-  .masthead__menu__item {
-    margin-right: 20px;
-    border-top: 1px solid #e0e0e0;
-    border-radius: 0;
-  }
+  display: block;
 }
 </style>
