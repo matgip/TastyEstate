@@ -149,12 +149,12 @@ export default {
     },
 
     async _searchEstate(request) {
-      try {
-        if (!this._isValid(request)) {
-          alert("먼저 부동산을 검색해주세요!");
-          return;
-        }
+      if (!this._isValid(request)) {
+        alert("먼저 부동산을 검색해주세요!");
+        throw Error("Invalid input");
+      }
 
+      try {
         this.isLoading = true;
         await this._fetchAgencies(request);
       } catch (err) {

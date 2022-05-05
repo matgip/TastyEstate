@@ -12,7 +12,7 @@
     <span>
       <h3 class="agency__title">{{ agency.place_name }}</h3>
 
-      <div class="divider"></div>
+      <div class="divider" />
       <!-- Agency rating -->
       <p class="agency__stars">
         <v-row v-bind="starRowProps">
@@ -26,7 +26,7 @@
       </p>
       <p class="agency__info"><v-icon v-bind="infoIconProps">fas fa-book</v-icon> {{ agency.phone }}</p>
 
-      <div class="divider"></div>
+      <div class="divider" />
       <!-- Agency review button -->
       <p class="agency__review">
         <v-btn v-bind="reviewBtnProps" @click="gotoReviews">
