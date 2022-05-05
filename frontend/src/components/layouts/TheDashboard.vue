@@ -79,13 +79,14 @@ export default {
 }
 
 #dashboard__info-container {
-  /* background-color: orange; */
+  background-color: white;
   height: 100%;
   overflow-y: hidden;
 }
 
 #dashboard__info-container section {
-  /* background-color: orange; */
+  background-color: white;
+  border: 10px solid #e0e0e0;
   height: 100%;
   overflow-y: auto;
 }
