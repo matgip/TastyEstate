@@ -77,28 +77,6 @@ const agencyStore = {
       commit(UPDATE_ESTATE, agency);
     },
 
-    // async updateNearAgencies({ commit, state }, agencies) {
-    //   const result = [];
-    //   for (let agency of agencies) {
-    //     const resp = await GET_AGENCY(agency.id);
-
-    //     if (IS_DUPLICATED(agency.id, state.estate.id)) continue;
-
-    //     if (!IS_EMPTY_REPLY(resp)) {
-    //       result.push(resp.data);
-    //       continue;
-    //     }
-
-    //     // Not saved on database...
-    //     await SAVE_AGENCY(agency);
-    //     // Agency info got from Kakao API does not have like & stars
-    //     agency.likes = 0;
-    //     agency.stars = 0.0;
-    //     result.push(agency);
-    //   }
-    //   commit(UPDATE_ESTATES, result);
-    // },
-
     async updateAgencies({ commit, state }, payload) {
       const { agencies, compareFn } = payload;
       let result = [];
