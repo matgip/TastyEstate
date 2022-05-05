@@ -1,73 +1,144 @@
-<!-- @format -->
-
 <template>
-  <div class="agency-card">
-    <span><agency-images :agencyId="agency.id" /> </span>
+  <div id="agency__card">
     <span>
-      <h3 class="agency-title"><agency-title :placeName="agency.place_name" /></h3>
-      <div class="agency-divider"></div>
-      <p class="agency-stars"><agency-stars :stars="agency.stars" :likes="agency.likes" /></p>
-      <p class="agency-info"><agency-info :agencyInfo="agency" /></p>
-      <div class="agency-divider"></div>
-      <p class="agency-review"><reviews-btn /></p>
+      <!-- Agency images -->
+      <v-carousel v-bind="cruslProps" style="width: 140px; height: 168px;">
+        <v-carousel-item v-for="i in images" :key="i" v-bind="carouselItemProps">
+          <img :src="getImgUrl(agency.id, i)" style="width: 140px; height: 168px;" />
+        </v-carousel-item>
+      </v-carousel>
+    </span>
+
+    <span>
+      <h3 class="agency__title">{{ agency.place_name }}</h3>
+
+      <div class="divider"></div>
+      <!-- Agency rating -->
+      <p class="agency__stars">
+        <v-row v-bind="starRowProps">
+          <v-rating v-bind="starProps" :value="agency.stars"></v-rating>
+          <div class="grey--text ms-4">{{ agency.stars }} ({{ agency.likes }} 좋아요)</div>
+        </v-row>
+      </p>
+      <!-- Agency infos -->
+      <p class="agency__info">
+        <v-icon v-bind="infoIconProps">fas fa-map-marker-alt</v-icon> {{ agency.address_name }}
+      </p>
+      <p class="agency__info"><v-icon v-bind="infoIconProps">fas fa-book</v-icon> {{ agency.phone }}</p>
+
+      <div class="divider"></div>
+      <!-- Agency review button -->
+      <p class="agency__review">
+        <v-btn v-bind="reviewBtnProps" @click="gotoReviews">
+          다른 사람들의 리뷰를 확인해보세요!
+        </v-btn>
+      </p>
     </span>
     <!-- <image-upload slot="agency-image-upload" :agencyId="agency.id" /> -->
   </div>
 </template>
 
 <script>
-import AgencyImages from "./components/AgencyImages.vue";
-// import ImageUpload from "@/components/RealAgency/ImageUpload.vue";
-import AgencyTitle from "./components/AgencyTitle.vue";
-import AgencyStars from "./components/AgencyStars.vue";
-import ReviewsBtn from "./components/AgencyReviewsBtn.vue";
-import AgencyInfo from "./components/AgencyInfo.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    AgencyImages,
-    // ImageUpload,
-    AgencyTitle,
-    AgencyStars,
-    AgencyInfo,
-    ReviewsBtn,
-  },
-
   props: {
     agency: {
       type: Object,
       required: true,
     },
   },
+
+  data: () => ({
+    images: [1, 2, 3, 4, 5, 6],
+    // Vuetify CSS Style & Props
+    cruslProps: {
+      "hide-delimiters": true,
+      "show-arrows-on-hover": true,
+    },
+    carouselItemProps: {
+      transition: "fade-transition",
+      "reverse-transition": "fade-transition",
+    },
+    starRowProps: {
+      align: "center",
+      class: "ma-0",
+    },
+    starProps: {
+      size: 18,
+      color: "amber",
+      dense: true,
+      readonly: true,
+      "half-increments": true,
+    },
+    infoIconProps: {
+      "x-small": true,
+    },
+    reviewBtnProps: {
+      color: "blue darken-4",
+      class: "pa-0",
+      text: true,
+      small: true,
+    },
+  }),
+
+  computed: {
+    ...mapGetters({
+      user: "GET_USER",
+    }),
+  },
+
+  methods: {
+    getImgUrl(agencyId, imgNum) {
+      return `/api/upload/${agencyId}?image=${imgNum}`;
+    },
+
+    gotoReviews() {
+      if (this.isloggedIn() === false) {
+        alert("로그인 후, 사용 가능합니다.");
+        this.gotoLogin();
+        return;
+      }
+      this.$router.push({ path: "/reviews" });
+    },
+
+    gotoLogin() {
+      this.$router.push({ path: "/login" });
+    },
+
+    isloggedIn() {
+      return this.user != null;
+    },
+  },
 };
 </script>
 
 <style>
-.agency-card {
+#agency__card {
   margin: 16px 15px;
   display: flex;
 }
 
-.agency-title {
+.agency__title {
   margin: 4px 8px;
 }
 
-.agency-stars {
+.agency__stars {
   margin: 4px 8px;
   font-size: 12px;
 }
 
-.agency-info {
+.agency__info {
   margin: 8px 8px;
   font-size: 12px;
 }
 
-.agency-review {
+.agency__review {
   margin: 4px 8px;
   font-size: 12px;
 }
 
-.agency-divider {
+.divider {
   border-top: 1px solid #e0e0e0;
   border-radius: 0;
   margin: 4px 4px;
