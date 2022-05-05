@@ -96,6 +96,7 @@ export default {
 
       try {
         await this.$store.dispatch("updateAgency", estate);
+        this.$store.commit("CLEAR_ESTATES");
       } catch (err) {
         console.error(err);
       }
@@ -186,6 +187,7 @@ export default {
 
     clear() {
       this.$store.commit("CLEAR_ESTATE");
+      this.$store.commit("CLEAR_ESTATES");
     },
   },
 };
