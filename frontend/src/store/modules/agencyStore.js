@@ -1,4 +1,5 @@
 import { $api } from "@/api/service";
+import mergesort from "mergesort";
 
 const GET_ESTATE = "GET_ESTATE";
 const GET_ESTATES = "GET_ESTATES";
@@ -76,8 +77,31 @@ const agencyStore = {
       commit(UPDATE_ESTATE, agency);
     },
 
-    async updateAgencies({ commit, state }, agencies) {
-      const result = [];
+    // async updateNearAgencies({ commit, state }, agencies) {
+    //   const result = [];
+    //   for (let agency of agencies) {
+    //     const resp = await GET_AGENCY(agency.id);
+
+    //     if (IS_DUPLICATED(agency.id, state.estate.id)) continue;
+
+    //     if (!IS_EMPTY_REPLY(resp)) {
+    //       result.push(resp.data);
+    //       continue;
+    //     }
+
+    //     // Not saved on database...
+    //     await SAVE_AGENCY(agency);
+    //     // Agency info got from Kakao API does not have like & stars
+    //     agency.likes = 0;
+    //     agency.stars = 0.0;
+    //     result.push(agency);
+    //   }
+    //   commit(UPDATE_ESTATES, result);
+    // },
+
+    async updateAgencies({ commit, state }, payload) {
+      const { agencies, compareFn } = payload;
+      let result = [];
       for (let agency of agencies) {
         const resp = await GET_AGENCY(agency.id);
 
@@ -95,6 +119,7 @@ const agencyStore = {
         agency.stars = 0.0;
         result.push(agency);
       }
+      if (compareFn !== undefined) result = mergesort(compareFn, result);
       commit(UPDATE_ESTATES, result);
     },
   },
