@@ -14,30 +14,7 @@
       </header>
       <section>
         <div v-if="!agency.id" id="dashboard__no-result-container">
-          <div class="dashboard__no-result__title">
-            앗! 검색 결과가 없어요
-          </div>
-          <img class="dashboard__no-result__img" src="@/assets/images/no_search_result.png" width="120" height="120" />
-          <div class="dashboard__no-result__tips">
-            이건 어때요?
-            <ul>
-              <li>키워드를 정확하게 입력하셨는지 확인해보세요.</li>
-              <li>키워드를 다르게 검색해보세요. (예 : 신원로 251-2 근처 부동산)</li>
-            </ul>
-          </div>
-          <div class="dashboard__add-agency-container">
-            <div class="dashboard__add-agency__title">
-              공인중개사무소 등록하기
-            </div>
-            <div class="dashboard__add-agency__content">
-              <div>새로운 수정된 중개업소 장소를 알고 계신가요?</div>
-              <div>장소 제보는 서비스 품질 향상에 큰 도움이 됩니다.</div>
-            </div>
-            <div class="dashboard__add-agency__button">
-              <base-button :btn-props="baseButtonProps" :on-click="onAddAgencyInfo" :button="'신규 부동산 등록'" />
-              <base-button :btn-props="baseButtonProps" :on-click="onChangeAgencyInfo" :button="'지도 정보 수정'" />
-            </div>
-          </div>
+          <NoContent />
         </div>
         <template>
           <Agency v-if="agency.id" :agency="agency" :key="agency.id" />
@@ -59,7 +36,7 @@
 import Masthead from "@/components/layouts/TheMasthead.vue";
 import Search from "@/components/cards/SearchBar.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
-import BaseButton from "@/common/BaseButton.vue";
+import NoContent from "@/components/cards/NoContentCard/NoContent.vue";
 
 import { mapGetters } from "vuex";
 
@@ -68,20 +45,8 @@ export default {
     Masthead,
     Search,
     Agency,
-    BaseButton,
+    NoContent,
   },
-
-  data: () => ({
-    // Vuetiffy CSS style & props
-    baseButtonProps: {
-      class: "mr-1",
-      color: "deep-orange",
-      depressed: true,
-      outlined: true,
-      plain: true,
-      "x-small": true,
-    },
-  }),
 
   computed: {
     ...mapGetters({
@@ -104,14 +69,6 @@ export default {
     scrollTest() {
       const item = document.getElementById("dashboard__info-container");
       item.classList.toggle("scrolled");
-    },
-
-    onAddAgencyInfo() {
-      console.log("On add agency info");
-    },
-
-    onChangeAgencyInfo() {
-      console.log("On change agency info");
     },
   },
 };
@@ -146,52 +103,8 @@ export default {
   margin: 14px 14px;
 }
 
-/* No results */
 #dashboard__no-result-container {
   text-align: center;
-}
-
-.dashboard__no-result__img {
-  margin: 10px;
-}
-
-.dashboard__no-result__title {
-  font-size: 20px;
-  font-weight: 500;
-  margin-top: 10px;
-}
-
-.dashboard__no-result__tips {
-  background-color: #e0e0e0;
-  text-align: start;
-  font-size: 14px;
-  padding: 10px 10px;
-  margin: 0 10px 10px 10px;
-  border-radius: 4px;
-}
-
-.dashboard__no-result__tips ul {
-  list-style-type: disc;
-  margin-top: 10px;
-}
-
-/* add agency */
-.dashboard__add-agency-container {
-  text-align: start;
-  margin: 50px 10px 10px 10px;
-}
-
-.dashboard__add-agency__title {
-  font-weight: bold;
-}
-
-.dashboard__add-agency__content {
-  font-size: 12px;
-  color: gray;
-}
-
-.dashboard__add-agency__button {
-  margin-top: 2px;
 }
 
 /* Scroll button */
