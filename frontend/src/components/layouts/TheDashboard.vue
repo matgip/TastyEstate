@@ -45,6 +45,8 @@
 
         <v-divider />
 
+        <h3 class="dashboard__agencies__title" v-if="agencies.length !== 0">검색 결과</h3>
+
         <template v-for="agency in agencies">
           <Agency :agency="agency" :key="agency.id" />
         </template>
@@ -138,6 +140,10 @@ export default {
   border: 10px solid #e0e0e0;
   height: 100%;
   overflow-y: auto;
+}
+
+.dashboard__agencies__title {
+  margin: 14px 14px;
 }
 
 /* No results */
