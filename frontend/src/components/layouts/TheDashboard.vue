@@ -33,6 +33,10 @@
               <div>새로운 수정된 중개업소 장소를 알고 계신가요?</div>
               <div>장소 제보는 서비스 품질 향상에 큰 도움이 됩니다.</div>
             </div>
+            <div class="dashboard__add-agency__button">
+              <base-button :btn-props="baseButtonProps" :on-click="onAddAgencyInfo" :button="'신규 부동산 등록'" />
+              <base-button :btn-props="baseButtonProps" :on-click="onChangeAgencyInfo" :button="'지도 정보 수정'" />
+            </div>
           </div>
         </div>
         <template>
@@ -53,6 +57,7 @@
 import Masthead from "@/components/layouts/TheMasthead.vue";
 import Search from "@/components/cards/SearchBar.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
+import BaseButton from "@/common/BaseButton.vue";
 
 import { mapGetters } from "vuex";
 
@@ -61,9 +66,20 @@ export default {
     Masthead,
     Search,
     Agency,
+    BaseButton,
   },
 
-  data: () => ({}),
+  data: () => ({
+    // Vuetiffy CSS style & props
+    baseButtonProps: {
+      class: "mr-1",
+      color: "deep-orange",
+      depressed: true,
+      outlined: true,
+      plain: true,
+      "x-small": true,
+    },
+  }),
 
   computed: {
     ...mapGetters({
@@ -86,6 +102,14 @@ export default {
     scrollTest() {
       const item = document.getElementById("dashboard__info-container");
       item.classList.toggle("scrolled");
+    },
+
+    onAddAgencyInfo() {
+      console.log("On add agency info");
+    },
+
+    onChangeAgencyInfo() {
+      console.log("On change agency info");
     },
   },
 };
@@ -145,6 +169,7 @@ export default {
   margin-top: 10px;
 }
 
+/* add agency */
 .dashboard__add-agency-container {
   text-align: start;
   margin: 50px 10px 10px 10px;
@@ -157,6 +182,10 @@ export default {
 .dashboard__add-agency__content {
   font-size: 12px;
   color: gray;
+}
+
+.dashboard__add-agency__button {
+  margin-top: 2px;
 }
 
 /* Scroll button */

@@ -55,7 +55,7 @@ export default {
 
   data() {
     return {
-      // Vuetify CSS Style & Props
+      // Vuetify CSS style & props
       btnProps: {
         color: "deep-orange",
         depressed: true,
