@@ -237,18 +237,9 @@ export default {
 </script>
 
 <style scoped>
-.v-text-field {
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 10px;
-  margin-top: 0px;
-  min-height: 4px;
-}
-
 .search-group {
   background-color: white;
   border-bottom: 1px solid #c0c0c0;
-  padding-top: 10px;
 }
 
 .filter {
