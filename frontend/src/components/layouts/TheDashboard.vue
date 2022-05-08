@@ -15,7 +15,7 @@
         </v-btn>
       </header>
       <section>
-        <div v-if="!agency.id" id="dashboard__no-result-container">
+        <div v-if="!agency.id && agencies.length === 0" id="dashboard__no-result-container">
           <NoContent />
         </div>
         <template>
