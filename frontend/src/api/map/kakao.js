@@ -22,6 +22,21 @@ class MapKakao {
     MapKakao.initialize();
   }
 
+  static initialize() {
+    return new Promise((resolve, reject) => {
+      loadScriptOnce(
+        `${process.env.VUE_APP_MAP_LIB_URL}?autoload=false&appkey=${process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY}`,
+        (err) => {
+          if (err) return reject(err);
+          MapKakao.daum = window.daum;
+          MapKakao.cachedLatLng = window.cachedLatLng;
+          MapKakao.cachedPlaces = window.cachedPlaces;
+          MapKakao.daum.maps.load(() => resolve());
+        }
+      );
+    });
+  }
+
   async mount(mapId, imgEntity) {
     await MapKakao.initialize();
 
@@ -188,21 +203,6 @@ class MapKakao {
   _getCachedMarker(place) {
     if (!MapKakao.cachedPlaces) return undefined;
     return MapKakao.cachedPlaces.get(place.id);
-  }
-
-  static initialize() {
-    return new Promise((resolve, reject) => {
-      loadScriptOnce(
-        `${process.env.VUE_APP_MAP_LIB_URL}?autoload=false&appkey=${process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY}`,
-        (err) => {
-          if (err) return reject(err);
-          MapKakao.daum = window.daum;
-          MapKakao.cachedLatLng = window.cachedLatLng;
-          MapKakao.cachedPlaces = window.cachedPlaces;
-          MapKakao.daum.maps.load(() => resolve());
-        }
-      );
-    });
   }
 }
 
