@@ -124,10 +124,10 @@ export default {
 
   methods: {
     async onSearchNear() {
-      const queryObj = this._createQueryObj();
+      const query = this._createQuery();
 
       try {
-        await this._searchEstate(queryObj);
+        await this._searchEstate(query);
         await this.$store.dispatch("updateAgencies", { agencies: this.agencies });
       } catch (err) {
         console.error(err);
@@ -135,10 +135,10 @@ export default {
     },
 
     async onSortByRating() {
-      const queryObj = this._createQueryObj();
+      const query = this._createQuery();
 
       try {
-        await this._searchEstate(queryObj);
+        await this._searchEstate(query);
         await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this._comparator });
       } catch (err) {
         console.error(err);
@@ -149,7 +149,7 @@ export default {
       return a.stars < b.stars;
     },
 
-    _createQueryObj() {
+    _createQuery() {
       let queryObj;
 
       if (this.agency.id) {
