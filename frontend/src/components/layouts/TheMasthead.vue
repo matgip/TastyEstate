@@ -107,7 +107,7 @@ export default {
 
 #masthead {
   width: 100%;
-  padding: 4px 16px;
+  padding: 16px 16px;
 
   display: flex;
   justify-content: space-between;
@@ -142,7 +142,7 @@ export default {
 .masthead__toggle-btn {
   position: absolute;
 
-  top: 12px;
+  top: 22px;
   right: 22px;
 
   font-size: 24px;
