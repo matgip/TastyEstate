@@ -1,12 +1,15 @@
 <template>
   <div>
+    <div>
+      <Masthead />
+    </div>
+
     <div id="dashboard__search-container">
       <Search />
     </div>
     <div id="dashboard__info-container">
       <header>
         <v-btn id="dashboard__scroll-btn" @click="scrollTest" block>
-          <!-- Click to Scroll -->
           <v-icon>fa-solid fa-arrow-up</v-icon>
         </v-btn>
       </header>
@@ -31,6 +34,8 @@
 </template>
 
 <script>
+import Masthead from "@/components/layouts/TheMasthead.vue";
+
 import Search from "@/components/cards/SearchBar.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
 import NoContent from "@/components/cards/NoContentCard/NoContent.vue";
@@ -39,6 +44,7 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
+    Masthead,
     Search,
     Agency,
     NoContent,
@@ -71,11 +77,6 @@ export default {
 </script>
 
 <style scope>
-.info {
-  height: var(--agency-card-height);
-  margin: 10px;
-}
-
 /* Search bar */
 #dashboard__search-container {
   background-color: yellow;
@@ -109,17 +110,13 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-  #dashboard__search-container {
-    /* position: absolute; */
-    /* width: 100%; */
-    /* top: 0; */
-  }
-
   #dashboard__info-container {
     position: fixed;
+
     width: 100%;
     height: 100%;
     top: calc(100vh - var(--agency-card-height));
+
     transform: translateY(0);
     transition: all 0.5s;
   }
@@ -131,5 +128,10 @@ export default {
   #dashboard__scroll-btn {
     display: block;
   }
+}
+
+/* SASS - remove bottom  divider */
+.theme--light.v-divider {
+  border-color: rgba(0, 0, 0, 0);
 }
 </style>

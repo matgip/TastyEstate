@@ -1,8 +1,5 @@
 <template>
   <div data-app class="search-group">
-    <div>
-      <Masthead />
-    </div>
     <v-toolbar color="deep-orange">
       <v-autocomplete
         v-bind="searchProps"
@@ -52,16 +49,9 @@
 
 <script>
 import axios from "axios";
-
-import Masthead from "@/components/layouts/TheMasthead.vue";
-
 import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    Masthead,
-  },
-
   data: () => ({
     isLoading: false,
     agencies: [],
@@ -254,7 +244,6 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  /* z-index: 20; */
   text-align: left;
   background-color: #fff;
 }
@@ -270,13 +259,17 @@ export default {
 
 .menu-container ul li {
   display: inline-block;
+
   padding: 4px 8px;
   margin: 0 4px;
   height: 100%;
+
   background-color: #ff5722;
   color: white;
+
   font-size: 14px;
   font-weight: 500;
+
   border-radius: 4px;
   border: 1px solid #ff5722;
   cursor: pointer;
