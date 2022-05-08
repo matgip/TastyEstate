@@ -231,47 +231,4 @@ export default {
   background-color: white;
   border-bottom: 1px solid #c0c0c0;
 }
-
-.filter {
-  position: relative;
-  width: 368px;
-  height: 43px;
-}
-
-.filter-layer {
-  position: absolute;
-  display: block;
-  top: 0;
-  left: 0;
-  right: 0;
-  text-align: left;
-  background-color: #fff;
-}
-
-.menu-container {
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.menu-container ul {
-  padding: 0 8px;
-}
-
-.menu-container ul li {
-  display: inline-block;
-
-  padding: 4px 8px;
-  margin: 0 4px;
-  height: 100%;
-
-  background-color: #ff5722;
-  color: white;
-
-  font-size: 14px;
-  font-weight: 500;
-
-  border-radius: 4px;
-  border: 1px solid #ff5722;
-  cursor: pointer;
-}
 </style>
