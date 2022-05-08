@@ -137,6 +137,11 @@ class MapKakao {
     this.map.setLevel(this.map.getLevel() + 1);
   }
 
+  getCenter() {
+    const latlng = this.map.getCenter();
+    return { y: latlng.getLat(), x: latlng.getLng() };
+  }
+
   _showInfoWindowOnMap(marker, placeName) {
     this.iw.setContent('<div style="padding:5px;font-size:12px;">' + placeName + "</div>");
     this.iw.open(this.map, marker);

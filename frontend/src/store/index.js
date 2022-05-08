@@ -13,11 +13,13 @@ Vue.config.devtools = true;
 // https://developerjournal.tistory.com/11
 import agencyStore from "./modules/agencyStore";
 import userStore from "./modules/userStore";
+import mapStore from "./modules/mapStore";
 
 const store = new Vuex.Store({
   modules: {
     agencyStore: agencyStore,
     userStore: userStore,
+    mapStore: mapStore,
   },
   plugins: [
     createPersistedState({

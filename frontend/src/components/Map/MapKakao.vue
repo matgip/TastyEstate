@@ -27,6 +27,8 @@ export default {
   async mounted() {
     await this.initMap();
 
+    this.$store.commit("UPDATE_MAP", this.map);
+
     this.$store.subscribe((mutation) => {
       if (mutation.type == "UPDATE_ESTATE") {
         const estate = this.estate;

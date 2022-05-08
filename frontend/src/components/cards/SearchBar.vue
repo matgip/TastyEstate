@@ -95,6 +95,7 @@ export default {
   computed: {
     ...mapGetters({
       agency: "GET_ESTATE",
+      map: "GET_MAP",
     }),
   },
 
@@ -123,32 +124,24 @@ export default {
 
   methods: {
     async onSearchNear() {
-      if (!this.agency) {
-        // IMPORTANT: estate get flushed when SearchBar.vue file remounted
-        // Must use this.estate by using mapgetter, not this.select.
-        console.error("no selected agency...");
-        return;
-      }
+      const queryObj = this._createQueryObj();
 
       try {
-        await this._searchEstate({ keyword: "", latLng: { y: this.agency.y, x: this.agency.x } });
+        await this._searchEstate(queryObj);
         await this.$store.dispatch("updateAgencies", { agencies: this.agencies });
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     },
 
     async onSortByRating() {
-      if (!this.agency) {
-        console.error("no selected agency...");
-        return;
-      }
+      const queryObj = this._createQueryObj();
 
       try {
-        await this._searchEstate({ keyword: "", latLng: { y: this.agency.y, x: this.agency.x } });
+        await this._searchEstate(queryObj);
         await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this._comparator });
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     },
 
@@ -156,15 +149,27 @@ export default {
       return a.stars < b.stars;
     },
 
-    async _searchEstate(request) {
-      if (!this._isValid(request)) {
-        alert("먼저 부동산을 검색해주세요!");
+    _createQueryObj() {
+      let queryObj;
+
+      if (this.agency.id) {
+        queryObj = { keyword: "", latLng: { y: this.agency.y, x: this.agency.x } };
+      } else {
+        const { y, x } = this.map.getCenter();
+        queryObj = { keyword: "", latLng: { y, x } };
+      }
+
+      return queryObj;
+    },
+
+    async _searchEstate(query) {
+      if (!this._isValid(query)) {
         throw Error("Invalid input");
       }
 
       try {
         this.isLoading = true;
-        await this._fetchAgencies(request);
+        await this._fetchAgencies(query);
       } catch (err) {
         console.error(err);
       } finally {
@@ -172,8 +177,8 @@ export default {
       }
     },
 
-    async _fetchAgencies(request) {
-      const { keyword, latLng } = request;
+    async _fetchAgencies(query) {
+      const { keyword, latLng } = query;
       this.agencies = [];
       let page = 1;
       let isEnd = false;
