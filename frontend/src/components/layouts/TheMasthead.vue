@@ -142,7 +142,7 @@ export default {
 .masthead__toggle-btn {
   position: absolute;
 
-  top: 22px;
+  top: 10px;
   right: 22px;
 
   font-size: 24px;

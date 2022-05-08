@@ -281,10 +281,4 @@ export default {
   border: 1px solid #ff5722;
   cursor: pointer;
 }
-
-@media screen and (max-width: 768px) {
-  /* #search-group {
-    padding: 0 30px;
-  } */
-}
 </style>
