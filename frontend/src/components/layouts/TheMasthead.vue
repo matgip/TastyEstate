@@ -107,7 +107,7 @@ export default {
 
 #masthead {
   width: 100%;
-  padding: 16px 16px;
+  padding: 16px 16px 0px 16px;
 
   display: flex;
   justify-content: space-between;
