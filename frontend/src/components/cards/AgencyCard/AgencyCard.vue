@@ -115,8 +115,9 @@ export default {
 
 <style>
 #agency__card {
-  margin: 16px 15px;
   display: flex;
+
+  margin: 16px 15px;
 }
 
 .agency__title {
@@ -125,23 +126,27 @@ export default {
 
 .agency__stars {
   margin: 4px 8px;
+
   font-size: 12px;
 }
 
 .agency__info {
   margin: 8px 8px;
+
   font-size: 12px;
 }
 
 .agency__review {
   margin: 4px 8px;
+
   font-size: 12px;
 }
 
 .divider {
+  margin: 4px 4px;
+
   border-top: 1px solid #e0e0e0;
   border-radius: 0;
-  margin: 4px 4px;
 }
 
 .v-application p {

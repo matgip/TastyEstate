@@ -41,9 +41,11 @@ export default {
       baseButtonProps: {
         class: "mr-1",
         color: "deep-orange",
+
         depressed: true,
         outlined: true,
         plain: true,
+
         "x-small": true,
       },
     };
@@ -62,33 +64,39 @@ export default {
 </script>
 
 <style scoped>
+.no-result__title {
+  margin-top: 10px;
+
+  font-size: 20px;
+  font-weight: 500;
+}
 .no-result__img {
   margin: 10px;
 }
 
-.no-result__title {
-  font-size: 20px;
-  font-weight: 500;
-  margin-top: 10px;
-}
-
 .no-result__tips {
-  background-color: #e0e0e0;
   text-align: start;
-  font-size: 14px;
+
   padding: 10px 10px;
   margin: 0 10px 10px 10px;
+
+  background-color: #e0e0e0;
+
+  font-size: 14px;
+
   border-radius: 4px;
 }
 
 .no-result__tips ul {
-  list-style-type: disc;
   margin-top: 10px;
+
+  list-style-type: disc;
 }
 
 /* add agency */
 .add-agency-container {
   text-align: start;
+
   margin: 50px 10px 10px 10px;
 }
 

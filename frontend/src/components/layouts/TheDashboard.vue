@@ -4,9 +4,10 @@
       <Masthead />
     </div>
 
-    <div id="dashboard__search-container">
+    <div>
       <Search />
     </div>
+
     <div id="dashboard__info-container">
       <header>
         <v-btn id="dashboard__scroll-btn" @click="scrollTest" block>
@@ -77,11 +78,6 @@ export default {
 </script>
 
 <style scope>
-/* Search bar */
-#dashboard__search-container {
-  background-color: yellow;
-}
-
 /* Searched agencies */
 #dashboard__info-container {
   background-color: white;

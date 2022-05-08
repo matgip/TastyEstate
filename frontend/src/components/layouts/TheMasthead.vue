@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <template>
   <nav id="masthead">
     <div id="title" @click="gotoHome">
