@@ -13,7 +13,7 @@
         <template v-slot:no-data>
           <v-list-item>
             <v-list-item-title>
-              지역 근처 부동산을 검색해 보세요!
+              부동산을 검색해 보세요! (예:영통역 근처 부동산)
             </v-list-item-title>
           </v-list-item>
         </template>

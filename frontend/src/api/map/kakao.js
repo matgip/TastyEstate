@@ -6,6 +6,11 @@ class MapKakao {
   SCAN_MIN_LVL = 4;
   CLSTR_MIN_LVL = 3;
 
+  static cachedMaps = {};
+  static daum = null;
+  static cachedLatLng = null;
+  static cachedPlaces = null;
+
   constructor() {
     this.map = null;
     this.placeSrch = null;
@@ -23,7 +28,6 @@ class MapKakao {
     // Re-use map
     if (MapKakao.cachedMaps[mapId]) {
       const { map, ps, mc, iw, isz, im, is } = MapKakao.cachedMaps[mapId];
-      // this.map = MapKakao.cachedMaps[mapId];
       this.map = map;
       this.placeSrch = ps;
       this.markerClstr = mc;
@@ -185,25 +189,21 @@ class MapKakao {
     if (!MapKakao.cachedPlaces) return undefined;
     return MapKakao.cachedPlaces.get(place.id);
   }
-}
 
-MapKakao.cachedMaps = {};
-MapKakao.daum = null;
-MapKakao.cachedLatLng = null;
-MapKakao.cachedPlaces = null;
-MapKakao.initialize = function() {
-  return new Promise((resolve, reject) => {
-    loadScriptOnce(
-      `${process.env.VUE_APP_MAP_LIB_URL}?autoload=false&appkey=${process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY}`,
-      (err) => {
-        if (err) return reject(err);
-        MapKakao.daum = window.daum;
-        MapKakao.cachedLatLng = window.cachedLatLng;
-        MapKakao.cachedPlaces = window.cachedPlaces;
-        MapKakao.daum.maps.load(() => resolve());
-      }
-    );
-  });
-};
+  static initialize() {
+    return new Promise((resolve, reject) => {
+      loadScriptOnce(
+        `${process.env.VUE_APP_MAP_LIB_URL}?autoload=false&appkey=${process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY}`,
+        (err) => {
+          if (err) return reject(err);
+          MapKakao.daum = window.daum;
+          MapKakao.cachedLatLng = window.cachedLatLng;
+          MapKakao.cachedPlaces = window.cachedPlaces;
+          MapKakao.daum.maps.load(() => resolve());
+        }
+      );
+    });
+  }
+}
 
 export default MapKakao;
