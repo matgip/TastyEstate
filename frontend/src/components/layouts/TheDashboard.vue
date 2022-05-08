@@ -1,7 +1,5 @@
 <template>
   <div>
-    <div><Masthead /></div>
-
     <div id="dashboard__search-container">
       <Search />
     </div>
@@ -33,7 +31,6 @@
 </template>
 
 <script>
-import Masthead from "@/components/layouts/TheMasthead.vue";
 import Search from "@/components/cards/SearchBar.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
 import NoContent from "@/components/cards/NoContentCard/NoContent.vue";
@@ -42,7 +39,6 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    Masthead,
     Search,
     Agency,
     NoContent,

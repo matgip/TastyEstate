@@ -1,6 +1,9 @@
 <template>
   <div data-app class="search-group">
     <div>
+      <Masthead />
+    </div>
+    <v-toolbar color="deep-orange">
       <v-autocomplete
         v-bind="searchProps"
         v-model="select"
@@ -9,43 +12,56 @@
         :search-input.sync="search"
         @click:clear="clear"
       >
+        <!-- no selected -->
+        <template v-slot:no-data>
+          <v-list-item>
+            <v-list-item-title>
+              지역 근처 부동산을 검색해 보세요!
+            </v-list-item-title>
+          </v-list-item>
+        </template>
         <!-- agency selected -->
-        <template #selection="{ attr, on, item, selected }">
+        <template v-slot:selection="{ attr, on, item, selected }">
           <v-chip v-bind="[chipSelectedProps, attr]" :input-value="selected" v-on="on">
             <v-icon v-bind="iconSelectedProps">{{ iconSelected }}</v-icon>
             <span v-text="item.place_name" />
           </v-chip>
         </template>
-
         <!-- agencies searched -->
-        <template #item="{ item }">
+        <template v-slot:item="{ item }">
           <v-list-item-content>
-            <v-list-item-title v-text="item.place_name" />
-            <v-list-item-subtitle v-text="item.address_name" />
+            <v-list-item-title v-text="item.place_name"></v-list-item-title>
+            <v-list-item-subtitle v-text="item.address_name"></v-list-item-subtitle>
           </v-list-item-content>
         </template>
       </v-autocomplete>
 
-      <div class="filter">
-        <div class="filter-layer">
-          <div class="menu-container">
-            <ul>
-              <li @click="onSearchNear">근처 부동산</li>
-              <li @click="onSortByRating">베스트 부동산</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+      <template v-slot:extension>
+        <v-tabs :hide-slider="!select" color="white" slider-color="white">
+          <v-tab @click="onSearchNear">
+            근처 부동산
+          </v-tab>
+          <v-tab @click="onSortByRating">
+            베스트 부동산
+          </v-tab>
+        </v-tabs>
+      </template>
+    </v-toolbar>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 
+import Masthead from "@/components/layouts/TheMasthead.vue";
+
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    Masthead,
+  },
+
   data: () => ({
     isLoading: false,
     agencies: [],
@@ -61,11 +77,15 @@ export default {
 
     // Vuetify CSS Style & Props
     searchProps: {
+      solo: true,
+      chips: true,
       clearable: true,
       color: "deep-orange",
       label: "지역 또는 단지명을 입력하세요.",
       "no-filter": true,
       "return-object": true,
+      "hide-details": true,
+      "hide-selected": true,
       "append-icon": "fas fa-search",
       "item-text": "place_name",
     },

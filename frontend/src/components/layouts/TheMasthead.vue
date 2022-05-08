@@ -3,7 +3,7 @@
 <template>
   <nav id="masthead">
     <div id="title" @click="gotoHome">
-      <img src="@/assets/logo.png" />
+      부동산 맛집
     </div>
 
     <ul class="masthead__menu">
@@ -57,7 +57,7 @@ export default {
     return {
       // Vuetify CSS style & props
       btnProps: {
-        color: "deep-orange",
+        color: "amber",
         depressed: true,
         plain: true,
         "x-small": true,
@@ -95,30 +95,34 @@ export default {
 
 <style scoped>
 #title {
-  color: #ff5722;
   cursor: pointer;
-  font-style: oblique;
-  font-size: 24px;
+
+  margin-bottom: 20px;
+
+  color: white;
+
+  font-size: 18px;
   font-weight: 500;
 }
 
 #masthead {
   width: 100%;
+  padding: 4px 16px;
+
   display: flex;
   justify-content: space-between;
-  background-color: white;
   align-items: flex-start;
   flex-direction: column;
+
   color: var(--color-light-white);
-  padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
-  border-radius: 0;
+  background-color: #ff5722;
 }
 
 .masthead__menu {
   flex-direction: column;
   text-align: center;
   width: 100%;
+
   display: none;
 }
 
@@ -127,18 +131,30 @@ export default {
 }
 
 .masthead__menu__item {
-  padding: 12px 12px;
-  margin-right: 20px;
   cursor: pointer;
-  border-top: 1px solid #e0e0e0;
+
+  padding: 12px 12px;
+
+  border-top: 1px solid #ffc107;
   border-radius: 0;
 }
 
 .masthead__toggle-btn {
   position: absolute;
-  right: 32px;
+
+  top: 12px;
+  right: 22px;
+
   font-size: 24px;
-  color: var(--color-orange);
+
+  color: white;
+
   display: block;
+}
+
+/* SASS */
+.v-application ul,
+.v-application ol {
+  padding-left: 0px;
 }
 </style>
