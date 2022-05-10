@@ -80,23 +80,31 @@ const agencyStore = {
     async updateAgencies({ commit, state }, payload) {
       const { agencies, compareFn } = payload;
       let result = [];
-      for (let agency of agencies) {
-        const resp = await GET_AGENCY(agency.id);
+      await Promise.all(
+        agencies.map(async (agency) => {
+          const resp = await GET_AGENCY(agency.id);
 
-        if (IS_DUPLICATED(agency.id, state.estate.id)) continue;
+          if (IS_DUPLICATED(agency.id, state.estate.id)) return;
 
-        if (!IS_EMPTY_REPLY(resp)) {
-          result.push(resp.data);
-          continue;
-        }
+          if (!IS_EMPTY_REPLY(resp)) {
+            result.push(resp.data);
+            return;
+          }
 
-        // Not saved on database...
-        await SAVE_AGENCY(agency);
-        // Agency info got from Kakao API does not have like & stars
-        agency.likes = 0;
-        agency.stars = 0.0;
-        result.push(agency);
-      }
+          // Not saved on database...
+          await SAVE_AGENCY(agency);
+          // Agency info got from Kakao API does not have like & stars
+          agency.likes = 0;
+          agency.stars = 0.0;
+          result.push(agency);
+        })
+      )
+        .then(() => {
+          console.log("update agency finished...");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
       if (compareFn !== undefined) result = mergesort(compareFn, result);
       commit(UPDATE_ESTATES, result);
     },
