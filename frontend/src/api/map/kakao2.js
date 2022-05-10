@@ -1,8 +1,6 @@
-const imgSelected = require("@/assets/images/marker_selected.png");
-const imgMarker = require("@/assets/images/marker.png");
+const normalMarkerImage = require("@/assets/images/marker_selected.png");
+const selectedMarkerImage = require("@/assets/images/marker.png");
 const imgSize = { width: 40, height: 45 };
-
-import store from "@/store"
 
 const SCAN_MIN_LEVEL = 4;
 const CLUSTER_MIN_LEVEL = 3;
@@ -49,8 +47,8 @@ class KakaoMap {
 
 
     const imgMarkerSize = new kakao.maps.Size(imgSize.width, imgSize.height);
-    this.normalImage = new kakao.maps.MarkerImage(imgMarker, imgMarkerSize);
-    this.selectedImage = new kakao.maps.MarkerImage(imgSelected, imgMarkerSize);
+    this.normalImage = new kakao.maps.MarkerImage(normalMarkerImage, imgMarkerSize);
+    this.selectedImage = new kakao.maps.MarkerImage(selectedMarkerImage, imgMarkerSize);
 
     kakao.maps.event.addListener(this.map, 'zoom_changed', this.scan);
     kakao.maps.event.addListener(this.map, 'dragend', this.scan);
@@ -112,7 +110,7 @@ class KakaoMap {
     this.map.setLevel(this.map.getLevel() - 1);
   }
 
-  zoomOut= () => {
+  zoomOut = () => {
     this.map.setLevel(this.map.getLevel() + 1);
   }
 
@@ -149,13 +147,20 @@ class KakaoMap {
         this.selectedInfowindow.setContent(selectedContent);
         this.selectedInfowindow.open(this.map, marker);
         // TODO : notify click event to store
-        store.dispatch("updateRealEstate", place);
+        this.notifyAgencyClicked(place);
         this.selectedMarker = marker;
       }
     });
 
     place.marker = marker;
     this.places.set(place.id, place);
+  }
+
+  setOnClickAgencyListener(listener) {
+    this.onClickAgency = listener;
+  }
+  notifyAgencyClicked(place) {
+    this.onClickAgency(place);
   }
 }
 

@@ -10,7 +10,6 @@
 
 <script>
 import kakaoMap from "@/api/map/kakao2";
-
 export default {
   data() {
     return {
@@ -20,9 +19,15 @@ export default {
 
   mounted() {
     kakaoMap.mount();
+    kakaoMap.setOnClickAgencyListener(this.onClickAgency);
   },
 
-  methods: {},
+  methods: {
+    onClickAgency(place) {
+      console.log("on click");
+      this.$store.dispatch("updateAgency", place);
+    },
+  },
 };
 </script>
 
