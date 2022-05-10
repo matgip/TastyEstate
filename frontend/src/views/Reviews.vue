@@ -253,21 +253,21 @@ export default {
     },
 
     _calcStats(review) {
-      for (let stat of this.stats) {
-        this._calcStatData(stat, review[stat.name]);
-        this._toPercent(stat);
-      }
+      this.stats.forEach((stat) => {
+        this._addStat(stat, review[stat.name]);
+        this._replacePercentage(stat);
+      });
     },
 
-    _calcStatData(stat, dataFromDb) {
-      if (!dataFromDb) return;
+    _addStat(stat, fieldToFind) {
+      if (!fieldToFind) return;
       stat.count += 1;
-      for (let field of stat.fields) {
-        if (dataFromDb === field) stat.data[stat.fields.indexOf(field)]++;
-      }
+
+      const matchedIndex = stat.fields.findIndex((field) => field === fieldToFind);
+      stat.data[matchedIndex]++;
     },
 
-    _toPercent(stat) {
+    _replacePercentage(stat) {
       if (stat.count === 0) return;
       for (let i = 0; i < stat.data.length; i++) {
         stat.data[i] = Math.floor((stat.data[i] / stat.count) * 100);
