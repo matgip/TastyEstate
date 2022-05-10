@@ -2,49 +2,48 @@
 
 <template>
   <div data-app class="search-group">
-    <div>
-      <v-autocomplete
-        v-bind="searchProps"
-        v-model="select"
-        :items="estates"
-        :loading="isLoading"
-        :search-input.sync="search"
-        @click:clear="clear"
-      >
-        <!-- estate selected -->
-        <template #selection="{ attr, on, item, selected }">
+    <v-toolbar color="deep-orange">
+      <v-autocomplete v-bind="searchProps" v-model="select" :items="agencies" :loading="isLoading" :search-input.sync="search" @click:clear="clear">
+        <!-- no selected -->
+        <template v-slot:no-data>
+          <v-list-item>
+            <v-list-item-title>
+              부동산을 검색해 보세요! (예:영통역 근처 부동산)
+            </v-list-item-title>
+          </v-list-item>
+        </template>
+        <!-- agency selected -->
+        <template v-slot:selection="{ attr, on, item, selected }">
           <v-chip v-bind="[chipSelectedProps, attr]" :input-value="selected" v-on="on">
             <v-icon v-bind="iconSelectedProps">{{ iconSelected }}</v-icon>
             <span v-text="item.place_name" />
           </v-chip>
         </template>
-
-        <!-- estates searched -->
-        <template #item="{ item }">
+        <!-- agencies searched -->
+        <template v-slot:item="{ item }">
           <v-list-item-content>
-            <v-list-item-title v-text="item.place_name" />
-            <v-list-item-subtitle v-text="item.address_name" />
+            <v-list-item-title v-text="item.place_name"></v-list-item-title>
+            <v-list-item-subtitle v-text="item.address_name"></v-list-item-subtitle>
           </v-list-item-content>
         </template>
       </v-autocomplete>
 
-      <div class="filter">
-        <div class="filter-layer">
-          <div class="menu-container">
-            <ul>
-              <li class="scroll-li" @click="onNearByClicked">근처 부동산</li>
-              <li class="scroll-li" @click="onBestClicked">베스트 부동산</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+      <template v-slot:extension>
+        <v-tabs :hide-slider="!select" color="white" slider-color="white">
+          <v-tab @click="onSearchNear">
+            근처 부동산
+          </v-tab>
+          <v-tab @click="onSortByRating">
+            베스트 부동산
+          </v-tab>
+        </v-tabs>
+      </template>
+    </v-toolbar>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
 import { mapGetters } from "vuex";
 
 import kakaoMap from "@/api/map/kakao2";
@@ -52,7 +51,7 @@ import kakaoMap from "@/api/map/kakao2";
 export default {
   data: () => ({
     isLoading: false,
-    estates: [],
+    agencies: [],
     search: null,
     select: null,
 
@@ -65,11 +64,15 @@ export default {
 
     // Vuetify CSS Style & Props
     searchProps: {
+      solo: true,
+      chips: true,
       clearable: true,
       color: "deep-orange",
       label: "지역 또는 단지명을 입력하세요.",
       "no-filter": true,
       "return-object": true,
+      "hide-details": true,
+      "hide-selected": true,
       "append-icon": "fas fa-search",
       "item-text": "place_name",
     },
@@ -88,84 +91,104 @@ export default {
 
   computed: {
     ...mapGetters({
-      estate: "GET_ESTATE",
+      agency: "GET_ESTATE",
+      map: "GET_MAP",
     }),
   },
 
   watch: {
     async select(estate) {
       if (!estate) return;
-      // try {
-      //   await this.$store.dispatch("updateRealEstate", estate);
-      //   await this.$store.dispatch("getLikes", estate.id);
-      //   await this.$store.dispatch("getStars", estate.id);
-      // } catch (err) {
-      //   console.error(err);
-      // }
       kakaoMap.PinPlace(estate);
     },
 
     async search(keyword) {
       if (!keyword || keyword === this.select) return;
-      const requestObj = { keyword: keyword, latLng: {} };
-      await this._searchEstate(requestObj);
+
+      try {
+        await this._searchEstate({ keyword, latLng: {} });
+      } catch (err) {
+        console.error(err);
+      }
     },
   },
 
   methods: {
-    async onNearByClicked() {
-      if (!this.estate) {
-        // !Important: estate get flushed when MapSearch.vue file remounted
-        // Must use this.estate by using mapgetter, not this.select.
-        console.error("no selected estate...");
-        return;
-      }
-      const requestObj = { keyword: "", latLng: { y: this.estate.y, x: this.estate.x } };
-      await this._searchEstate(requestObj);
+    async onSearchNear() {
+      const query = this._createQuery();
 
-      const searchGroup = document.querySelector(".search-group");
-      searchGroup.classList.toggle("open");
-
-      const filter = document.querySelector(".filter");
-      filter.classList.toggle("close");
-    },
-
-    onBestClicked() {
-      console.log("Best clicked");
-    },
-
-    async _searchEstate(requestObj) {
       try {
-        const { keyword, latLng } = requestObj;
-        if (keyword === "" && !latLng.y && !latLng.x) {
-          console.log(`There is no any searched estates...
-                      please search the estate first.`);
-          return;
-        }
+        await this._searchEstate(query);
+        await this.$store.dispatch("updateAgencies", { agencies: this.agencies });
+      } catch (err) {
+        console.error(err);
+      }
+    },
 
+    async onSortByRating() {
+      const query = this._createQuery();
+
+      try {
+        await this._searchEstate(query);
+        await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this._comparator });
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    _comparator(a, b) {
+      return a.stars < b.stars;
+    },
+
+    _createQuery() {
+      let queryObj;
+
+      if (this.agency.id) {
+        queryObj = { keyword: "", latLng: { y: this.agency.y, x: this.agency.x } };
+      } else {
+        const { y, x } = this.map.getCenter();
+        queryObj = { keyword: "", latLng: { y, x } };
+      }
+
+      return queryObj;
+    },
+
+    async _searchEstate(query) {
+      if (!this._isValid(query)) {
+        throw Error("Invalid input");
+      }
+
+      try {
         this.isLoading = true;
-        this.estates = [];
-        let page = 1;
-        let isEnd = false;
-        // Kakao map APIs provides up to 45 datas per request.
-        // By increasing page count on every request of rest API,
-        // get total datas(45) until is end.
-        while (!isEnd) {
-          const url = this._getUrl(keyword, page, latLng);
-          const headers = {
-            headers: {
-              Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
-            },
-          };
-          let resp = await axios.get(encodeURI(url), headers);
-          this.estates = this.estates.concat(resp.data.documents);
-          page += 1;
-          isEnd = resp.data.meta.is_end;
-        }
+        await this._fetchAgencies(query);
       } catch (err) {
         console.error(err);
       } finally {
         this.isLoading = false;
+      }
+    },
+
+    async _fetchAgencies(query) {
+      const { keyword, latLng } = query;
+      this.agencies = [];
+      let page = 1;
+      let isEnd = false;
+
+      // Kakao map APIs provides up to 15 datas per request.
+      // By increasing page count on every request of rest API,
+      // get total datas(45) until is end.
+      while (!isEnd) {
+        const url = this._getUrl(keyword, page, latLng);
+        const headers = {
+          headers: {
+            Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
+          },
+        };
+        let resp = await axios.get(encodeURI(url), headers);
+        this.agencies = this.agencies.concat(resp.data.documents);
+
+        page += 1;
+        isEnd = resp.data.meta.is_end;
       }
     },
 
@@ -183,104 +206,25 @@ export default {
       }
 
       url += `&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}&page=${pageCnt}&size=15`;
-
       return url;
+    },
+
+    _isValid(request) {
+      const { keyword, latLng } = request;
+      return keyword !== "" || (latLng.y && latLng.x);
     },
 
     clear() {
       this.$store.commit("CLEAR_ESTATE");
-      this.$store.commit("CLEAR_LIKES");
-      this.$store.commit("CLEAR_STARS");
+      this.$store.commit("CLEAR_ESTATES");
     },
   },
 };
 </script>
 
 <style scoped>
-.v-text-field {
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 10px;
-  margin-top: 0px;
-  min-height: 4px;
-}
-
-/* #search-group {
-  position: absolute;
-  top: 12px;
-  left: 11px;
-  width: 368px;
-  height: 100px;
-  border-radius: 3px;
-  border: 1px solid #cecece;
-  border-bottom: 1px solid #c0c0c0;
-  border-top: 1px solid #e9e9e9;
-  background-color: #fff;
-  z-index: 20;
-} */
 .search-group {
   background-color: white;
   border-bottom: 1px solid #c0c0c0;
-  padding-top: 10px;
-}
-
-.search-group.open {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 400px;
-  background-color: #4d55b2;
-  padding-top: 12px;
-}
-
-.filter {
-  position: relative;
-  width: 368px;
-  height: 43px;
-}
-
-.filter.close {
-  display: none;
-}
-
-.filter-layer {
-  position: absolute;
-  display: block;
-  top: 0;
-  left: 0;
-  right: 0;
-  /* z-index: 20; */
-  text-align: left;
-  background-color: #fff;
-}
-
-.menu-container {
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.menu-container ul {
-  padding: 0 8px;
-}
-
-.menu-container ul li {
-  display: inline-block;
-  padding: 0 8px;
-  margin: 0 4px;
-  height: 100%;
-  color: #ff5722;
-  font-size: 14px;
-  border-radius: 4px;
-  border: 1px solid #ff5722;
-}
-
-.scroll-li {
-  cursor: pointer;
-}
-
-@media screen and (max-width: 768px) {
-  /* #search-group {
-    padding: 0 30px;
-  } */
 }
 </style>

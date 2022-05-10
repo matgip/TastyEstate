@@ -11,17 +11,15 @@ Vue.use(Vuex);
 Vue.config.devtools = true;
 
 // https://developerjournal.tistory.com/11
-import estateStore from "./modules/estateStore";
+import agencyStore from "./modules/agencyStore";
 import userStore from "./modules/userStore";
-import likesStore from "./modules/likesStore";
-import starsStore from "./modules/starsStore";
+import mapStore from "./modules/mapStore";
 
 const store = new Vuex.Store({
   modules: {
-    estateStore: estateStore,
+    agencyStore: agencyStore,
     userStore: userStore,
-    likesStore: likesStore,
-    starsStore: starsStore,
+    mapStore: mapStore,
   },
   plugins: [
     createPersistedState({

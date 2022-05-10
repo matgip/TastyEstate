@@ -1,9 +1,7 @@
-<!-- @format -->
-
 <template>
   <nav id="masthead">
     <div id="title" @click="gotoHome">
-      <img src="@/assets/logo.png" />
+      부동산 맛집
     </div>
 
     <ul class="masthead__menu">
@@ -55,9 +53,9 @@ export default {
 
   data() {
     return {
-      // Vuetify CSS Style & Props
+      // Vuetify CSS style & props
       btnProps: {
-        color: "deep-orange",
+        color: "amber",
         depressed: true,
         plain: true,
         "x-small": true,
@@ -95,69 +93,66 @@ export default {
 
 <style scoped>
 #title {
-  color: #ff5722;
   cursor: pointer;
-  font-style: oblique;
-  font-size: 24px;
+
+  margin-bottom: 20px;
+
+  color: white;
+
+  font-size: 18px;
   font-weight: 500;
 }
 
 #masthead {
   width: 100%;
+  padding: 16px 16px 0px 16px;
+
   display: flex;
   justify-content: space-between;
-  background-color: transparent;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
+
   color: var(--color-light-white);
-  padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
-  border-radius: 0;
+  background-color: #ff5722;
 }
 
 .masthead__menu {
-  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+
+  display: none;
+}
+
+.masthead__menu.open {
+  display: block;
 }
 
 .masthead__menu__item {
-  padding: 12px 12px;
-  margin: 0px 4px;
   cursor: pointer;
-  border-radius: var(--size-border-radius);
+
+  padding: 12px 12px;
+
+  border-top: 1px solid #ffc107;
+  border-radius: 0;
 }
 
 .masthead__toggle-btn {
   position: absolute;
-  right: 32px;
+
+  top: 10px;
+  right: 22px;
+
   font-size: 24px;
-  color: var(--color-orange);
-  display: none;
+
+  color: white;
+
+  display: block;
 }
 
-@media screen and (max-width: 768px) {
-  .masthead__toggle-btn {
-    display: block;
-  }
-
-  #masthead {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .masthead__menu {
-    flex-direction: column;
-    text-align: center;
-    width: 100%;
-    display: none;
-  }
-
-  .masthead__menu.open {
-    display: block;
-  }
-
-  .masthead__menu__item {
-    margin-right: 20px;
-    border-top: 1px solid #e0e0e0;
-    border-radius: 0;
-  }
+/* SASS */
+.v-application ul,
+.v-application ol {
+  padding-left: 0px;
 }
 </style>

@@ -1,10 +1,6 @@
-<!-- @format -->
-
 <template>
   <div>
     <v-app>
-      <Masthead />
-
       <v-main>
         <Dashboard class="main__dashboard-container" />
         <router-view :key="$route.fullPath" class="main__main-container"></router-view>
@@ -14,7 +10,6 @@
 </template>
 
 <script>
-import Masthead from "./components/layouts/TheMasthead.vue";
 import Dashboard from "./components/layouts/TheDashboard.vue";
 export default {
   name: "App",
@@ -27,7 +22,6 @@ export default {
     },
   },
   components: {
-    Masthead,
     Dashboard,
   },
 };
@@ -38,7 +32,6 @@ export default {
   position: absolute;
   z-index: 20;
   overflow-y: hidden;
-  background-color: green;
   width: var(--dashboard-width);
   height: 100%;
 }
