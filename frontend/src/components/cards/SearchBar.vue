@@ -106,6 +106,7 @@ export default {
       try {
         await this.$store.dispatch("updateAgency", agency);
         this.$store.commit("CLEAR_ESTATES");
+        this.$emit("scroll-wide");
       } catch (err) {
         console.error(err);
       }
