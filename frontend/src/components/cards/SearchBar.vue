@@ -140,6 +140,7 @@ export default {
       try {
         await this.$_searchEstate(query);
         await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this.$_comparator });
+        this.$emit("scroll-wide");
       } catch (err) {
         console.error(err);
       }

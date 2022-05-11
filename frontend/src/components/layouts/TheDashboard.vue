@@ -5,7 +5,7 @@
     </div>
 
     <div>
-      <Search />
+      <Search @scroll-wide="wideScroll" />
     </div>
 
     <div id="dashboard__info-container">
@@ -72,6 +72,13 @@ export default {
     scrollTest() {
       const item = document.getElementById("dashboard__info-container");
       item.classList.toggle("scrolled");
+    },
+
+    wideScroll() {
+      const item = document.getElementById("dashboard__info-container");
+      if (item.classList.length === 0) {
+        item.classList.toggle("scrolled");
+      }
     },
   },
 };

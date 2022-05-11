@@ -199,7 +199,7 @@ export default {
       try {
         if (this.estate === undefined || this.estate.id === undefined) {
           // When page is refreshed...
-          this._gotoHome();
+          this.$_gotoHome();
           return;
         }
 
