@@ -135,18 +135,18 @@ export default {
   async mounted() {
     this.page = 1;
     const allRange = "0~-1";
-    await this._makeReview(allRange);
+    await this.$_constructReviews(allRange);
 
     this.$store.subscribe(async (mutation) => {
       if (mutation.type === "UPDATE_ESTATE") {
-        this._clear();
-        await this._makeReview(allRange);
+        this.$_clear();
+        await this.$_constructReviews(allRange);
       }
     });
   },
 
   destroyed() {
-    this._clear();
+    this.$_clear();
   },
 
   methods: {
@@ -195,7 +195,7 @@ export default {
       this.orderBy = event.currentTarget.id;
     },
 
-    async _makeReview(queryRange) {
+    async $_constructReviews(queryRange) {
       try {
         if (this.estate === undefined || this.estate.id === undefined) {
           // When page is refreshed...
@@ -225,7 +225,7 @@ export default {
 
           this.reviews["like"].push(review);
           // Calculate review statistics
-          this._calcStats(this.reviews["like"][i]);
+          this.$_calcStats(this.reviews["like"][i]);
         });
 
         const reviewsByTime = await this.$api.reviewsByTime.get({
@@ -252,14 +252,14 @@ export default {
       }
     },
 
-    _calcStats(review) {
+    $_calcStats(review) {
       this.stats.forEach((stat) => {
-        this._addStat(stat, review[stat.name]);
-        this._replacePercentage(stat);
+        this.$_addStat(stat, review[stat.name]);
+        this.$_replacePercentage(stat);
       });
     },
 
-    _addStat(stat, fieldToFind) {
+    $_addStat(stat, fieldToFind) {
       if (!fieldToFind) return;
       stat.count += 1;
 
@@ -267,7 +267,7 @@ export default {
       stat.data[matchedIndex]++;
     },
 
-    _replacePercentage(stat) {
+    $_replacePercentage(stat) {
       if (stat.count === 0) return;
       for (let i = 0; i < stat.data.length; i++) {
         stat.data[i] = Math.floor((stat.data[i] / stat.count) * 100);
@@ -275,11 +275,11 @@ export default {
       console.log(stat.data);
     },
 
-    _gotoHome() {
+    $_gotoHome() {
       this.$router.push({ path: "/" });
     },
 
-    _clear() {
+    $_clear() {
       this.reviews["like"] = [];
       this.reviews["time"] = [];
       this.stats.forEach((stat) => {

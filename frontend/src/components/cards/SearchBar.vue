@@ -115,7 +115,7 @@ export default {
       if (!keyword || keyword === this.select) return;
 
       try {
-        await this._searchEstate({ keyword, latLng: {} });
+        await this.$_searchEstate({ keyword, latLng: {} });
       } catch (err) {
         console.error(err);
       }
@@ -124,10 +124,10 @@ export default {
 
   methods: {
     async onSearchNear() {
-      const query = this._createQuery();
+      const query = this.$_createQuery();
 
       try {
-        await this._searchEstate(query);
+        await this.$_searchEstate(query);
         await this.$store.dispatch("updateAgencies", { agencies: this.agencies });
       } catch (err) {
         console.error(err);
@@ -135,21 +135,21 @@ export default {
     },
 
     async onSortByRating() {
-      const query = this._createQuery();
+      const query = this.$_createQuery();
 
       try {
-        await this._searchEstate(query);
-        await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this._comparator });
+        await this.$_searchEstate(query);
+        await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this.$_comparator });
       } catch (err) {
         console.error(err);
       }
     },
 
-    _comparator(a, b) {
+    $_comparator(a, b) {
       return a.stars < b.stars;
     },
 
-    _createQuery() {
+    $_createQuery() {
       let queryObj;
 
       if (this.agency.id) {
@@ -162,8 +162,8 @@ export default {
       return queryObj;
     },
 
-    async _searchEstate(query) {
-      if (!this._isValid(query)) {
+    async $_searchEstate(query) {
+      if (!this.$_isValid(query)) {
         throw Error("Invalid input");
       }
 
@@ -187,7 +187,7 @@ export default {
       // By increasing page count on every request of rest API,
       // get total datas(45) until is end.
       while (!isEnd) {
-        const url = this._getUrl(keyword, page, latLng);
+        const url = this.$_getUrl(keyword, page, latLng);
         const headers = {
           headers: {
             Authorization: `KakaoAK ${process.env.VUE_APP_KAKAO_REST_API_KEY}`,
@@ -201,7 +201,7 @@ export default {
       }
     },
 
-    _getUrl(keyword = "", pageCnt, latLng = {}) {
+    $_getUrl(keyword = "", pageCnt, latLng = {}) {
       let url = "";
       if (keyword !== "") {
         // keyword search
@@ -218,7 +218,7 @@ export default {
       return url;
     },
 
-    _isValid(request) {
+    $_isValid(request) {
       const { keyword, latLng } = request;
       return keyword !== "" || (latLng.y && latLng.x);
     },
