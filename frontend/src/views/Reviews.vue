@@ -272,6 +272,7 @@ export default {
       for (let i = 0; i < stat.data.length; i++) {
         stat.data[i] = Math.floor((stat.data[i] / stat.count) * 100);
       }
+      console.log(stat.data);
     },
 
     _gotoHome() {
@@ -281,10 +282,10 @@ export default {
     _clear() {
       this.reviews["like"] = [];
       this.reviews["time"] = [];
-      for (let stat of this.stats) {
+      this.stats.forEach((stat) => {
         stat.count = 0;
-        stat.data.fill(0, 0, stat.fields.length);
-      }
+        stat.data.fill(0, 0, stat.data.length);
+      });
     },
   },
 };
