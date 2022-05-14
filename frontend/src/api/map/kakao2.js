@@ -73,8 +73,9 @@ class KakaoMap {
 
   PinPlace(place) {
     this.addMarker(place);
-    this.map.panTo(new kakao.maps.LatLng(place.y, place.x));
-    kakao.maps.event.trigger(place.marker, "click");
+    const placeCached = this.places.get(place.id);
+    this.map.panTo(new kakao.maps.LatLng(placeCached.y, placeCached.x));
+    kakao.maps.event.trigger(placeCached.marker, "click");
   }
 
   getCenter() {
