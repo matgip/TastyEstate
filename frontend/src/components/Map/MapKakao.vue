@@ -12,7 +12,7 @@
 import MapKakao from "@/api/map/kakao";
 
 import { mapGetters } from "vuex";
-// Test
+
 const imgSelected = require("@/assets/images/marker_selected.png");
 const imgMarker = require("@/assets/images/marker.png");
 const imgSize = { width: 40, height: 45 };
