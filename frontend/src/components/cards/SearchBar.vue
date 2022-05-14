@@ -3,7 +3,14 @@
 <template>
   <div data-app class="search-group">
     <v-toolbar color="deep-orange">
-      <v-autocomplete v-bind="searchProps" v-model="select" :items="agencies" :loading="isLoading" :search-input.sync="search" @click:clear="clear">
+      <v-autocomplete
+        v-bind="searchProps"
+        v-model="select"
+        :items="agencies"
+        :loading="isLoading"
+        :search-input.sync="search"
+        @click:clear="clear"
+      >
         <!-- no selected -->
         <template v-slot:no-data>
           <v-list-item>
@@ -30,11 +37,8 @@
 
       <template v-slot:extension>
         <v-tabs :hide-slider="!select" color="white" slider-color="white">
-          <v-tab @click="onSearchNear">
-            근처 부동산
-          </v-tab>
           <v-tab @click="onSortByRating">
-            베스트 부동산
+            근처 베스트 부동산
           </v-tab>
         </v-tabs>
       </template>
@@ -114,17 +118,6 @@ export default {
   },
 
   methods: {
-    async onSearchNear() {
-      const query = this.$_createQuery();
-
-      try {
-        await this.$_searchEstate(query);
-        await this.$store.dispatch("updateAgencies", { agencies: this.agencies });
-      } catch (err) {
-        console.error(err);
-      }
-    },
-
     async onSortByRating() {
       const query = this.$_createQuery();
 
