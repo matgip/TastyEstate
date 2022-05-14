@@ -10,16 +10,19 @@
 
 <script>
 import kakaoMap from "@/api/map/kakao2";
+
 export default {
   data() {
     return {
-      // map: null,
+      map: null,
     };
   },
 
   mounted() {
-    kakaoMap.mount();
+    this.map = kakaoMap.mount();
     kakaoMap.setOnClickAgencyListener(this.onClickAgency);
+
+    this.$store.commit("UPDATE_MAP", this.map);
   },
 
   methods: {

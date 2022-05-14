@@ -12,8 +12,6 @@ class KakaoMap {
 
   selectedMarker = null; // 클릭한 마커를 담을 변수
 
-
-
   mount() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -24,6 +22,8 @@ class KakaoMap {
       script.src = `${process.env.VUE_APP_MAP_LIB_URL}?autoload=false&appkey=${process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY}&libraries=services,clusterer,drawing`;
       document.head.appendChild(script);
     }
+
+    return this;
   }
 
   initMap = () => {
@@ -37,23 +37,22 @@ class KakaoMap {
 
     this.placeSearch = new kakao.maps.services.Places(this.map);
     this.markerCluster = new kakao.maps.MarkerClusterer({
-      map: this.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-      averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-      minLevel: CLUSTER_MIN_LEVEL // 클러스터 할 최소 지도 레벨 
+      map: this.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+      averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+      minLevel: CLUSTER_MIN_LEVEL, // 클러스터 할 최소 지도 레벨
     });
 
     // selectedInfowindow 는 오직 1개만 존재해야 되므로 this에 등록
     this.selectedInfowindow = new kakao.maps.InfoWindow({});
 
-
     const imgMarkerSize = new kakao.maps.Size(imgSize.width, imgSize.height);
     this.normalImage = new kakao.maps.MarkerImage(normalMarkerImage, imgMarkerSize);
     this.selectedImage = new kakao.maps.MarkerImage(selectedMarkerImage, imgMarkerSize);
 
-    kakao.maps.event.addListener(this.map, 'zoom_changed', this.scan);
-    kakao.maps.event.addListener(this.map, 'dragend', this.scan);
-    kakao.maps.event.addListener(this.map, 'center_changed', this.scan);
-  }
+    kakao.maps.event.addListener(this.map, "zoom_changed", this.scan);
+    kakao.maps.event.addListener(this.map, "dragend", this.scan);
+    kakao.maps.event.addListener(this.map, "center_changed", this.scan);
+  };
 
   scan = () => {
     const lvl = this.map.getLevel();
@@ -70,13 +69,17 @@ class KakaoMap {
         this.placeSearch.categorySearch("AG2", this._callback, { x: x, y: y, radius: 300 }); // redius 710 will cover all boundary
       }
     }
-  }
+  };
 
   PinPlace(place) {
     this.addMarker(place);
     this.map.panTo(new kakao.maps.LatLng(place.y, place.x));
-    kakao.maps.event.trigger(place.marker, 'click');
+    kakao.maps.event.trigger(place.marker, "click");
+  }
 
+  getCenter() {
+    const latlng = this.map.getCenter();
+    return { y: latlng.getLat(), x: latlng.getLng() };
   }
 
   _getRoundedCenter() {
@@ -104,46 +107,45 @@ class KakaoMap {
       }
     }
     if (pagination.hasNextPage) pagination.nextPage();
-  }
+  };
 
   zoomIn = () => {
     this.map.setLevel(this.map.getLevel() - 1);
-  }
+  };
 
   zoomOut = () => {
     this.map.setLevel(this.map.getLevel() + 1);
-  }
-
+  };
 
   addMarker = (place) => {
     if (this.places.has(place.id)) {
-      return
+      return;
     }
     const marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(place.y, place.x),
       image: this.normalImage,
-      clickable: true
+      clickable: true,
     });
     this.markerCluster.addMarker(marker);
 
-    const mouseoverContent = '<div style="padding:2px;">' + place.place_name + '</div>';
+    const mouseoverContent = '<div style="padding:2px;">' + place.place_name + "</div>";
     const mouseoverInfowindow = new kakao.maps.InfoWindow({ content: mouseoverContent });
 
     const selectedContent = '<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>";
 
-    kakao.maps.event.addListener(marker, 'mouseover', () => {
+    kakao.maps.event.addListener(marker, "mouseover", () => {
       if (!this.selectedMarker || this.selectedMarker !== marker) {
-        mouseoverInfowindow.open(this.map, marker)
+        mouseoverInfowindow.open(this.map, marker);
       }
     });
-    kakao.maps.event.addListener(marker, 'mouseout', () => {
-      mouseoverInfowindow.close()
+    kakao.maps.event.addListener(marker, "mouseout", () => {
+      mouseoverInfowindow.close();
     });
-    kakao.maps.event.addListener(marker, 'click', () => {
+    kakao.maps.event.addListener(marker, "click", () => {
       if (!this.selectedMarker || this.selectedMarker !== marker) {
         !!this.selectedMarker && this.selectedMarker.setImage(this.normalImage);
         marker.setImage(this.selectedImage);
-        mouseoverInfowindow.close()
+        mouseoverInfowindow.close();
         this.selectedInfowindow.setContent(selectedContent);
         this.selectedInfowindow.open(this.map, marker);
         // TODO : notify click event to store
@@ -154,7 +156,7 @@ class KakaoMap {
 
     place.marker = marker;
     this.places.set(place.id, place);
-  }
+  };
 
   setOnClickAgencyListener(listener) {
     this.onClickAgency = listener;
@@ -163,6 +165,5 @@ class KakaoMap {
     this.onClickAgency(place);
   }
 }
-
 
 export default new KakaoMap();
