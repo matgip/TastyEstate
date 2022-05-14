@@ -101,21 +101,9 @@ export default {
   },
 
   watch: {
-<<<<<<< HEAD
     async select(estate) {
       if (!estate) return;
       kakaoMap.PinPlace(estate);
-=======
-    async select(agency) {
-      if (!agency) return;
-
-      try {
-        await this.$store.dispatch("updateAgency", agency);
-        this.$store.commit("CLEAR_ESTATES");
-      } catch (err) {
-        console.error(err);
-      }
->>>>>>> parent of 6d27ab1... wide scroll if agency clicked
     },
 
     async search(keyword) {
