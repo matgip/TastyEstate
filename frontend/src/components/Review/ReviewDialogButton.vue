@@ -191,7 +191,7 @@ export default {
             },
           });
         }
-        await this._clear();
+        await this.$_clear();
       } catch (err) {
         console.error(err);
       }
@@ -208,7 +208,7 @@ export default {
       this.dialog = false;
     },
 
-    _clear() {
+    $_clear() {
       this.rating = 0.0;
       this.title = "";
       this.comments = "";
