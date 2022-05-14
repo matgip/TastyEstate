@@ -1,14 +1,9 @@
+<!-- @format -->
+
 <template>
   <div data-app class="search-group">
     <v-toolbar color="deep-orange">
-      <v-autocomplete
-        v-bind="searchProps"
-        v-model="select"
-        :items="agencies"
-        :loading="isLoading"
-        :search-input.sync="search"
-        @click:clear="clear"
-      >
+      <v-autocomplete v-bind="searchProps" v-model="select" :items="agencies" :loading="isLoading" :search-input.sync="search" @click:clear="clear">
         <!-- no selected -->
         <template v-slot:no-data>
           <v-list-item>
@@ -50,6 +45,8 @@
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
+
+import kakaoMap from "@/api/map/kakao2";
 
 export default {
   data: () => ({
@@ -100,16 +97,9 @@ export default {
   },
 
   watch: {
-    async select(agency) {
-      if (!agency) return;
-
-      try {
-        await this.$store.dispatch("updateAgency", agency);
-        this.$store.commit("CLEAR_ESTATES");
-        this.$emit("scroll-wide");
-      } catch (err) {
-        console.error(err);
-      }
+    async select(estate) {
+      if (!estate) return;
+      kakaoMap.PinPlace(estate);
     },
 
     async search(keyword) {
