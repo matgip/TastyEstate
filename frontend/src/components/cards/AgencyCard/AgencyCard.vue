@@ -109,6 +109,7 @@ export default {
         return;
       }
 
+      this.$store.commit("UPDATE_ESTATE", this.agency);
       this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", true);
     },
 

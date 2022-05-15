@@ -119,7 +119,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      estate: "GET_ESTATE",
+      agency: "GET_ESTATE",
       user: "GET_USER",
     }),
 
@@ -158,7 +158,7 @@ export default {
 
     async onUpdateLikeAgency() {
       try {
-        const resp = await this.$api.likes.put(this.estate.id, { user_id: this.user.id });
+        const resp = await this.$api.likes.put(this.agency.id, { user_id: this.user.id });
         if (resp.data.result === "already-added") {
           alert("이미 좋아요를 누르셨습니다.");
           return;
@@ -174,7 +174,7 @@ export default {
     async onUpdateLikeReview(userId) {
       try {
         const resp = await this.$api.reviewUserLikes.post({
-          baseId: this.estate.id,
+          baseId: this.agency.id,
           subIds: [userId],
           data: {
             user: this.user.id,
@@ -186,7 +186,7 @@ export default {
         }
 
         await this.$api.reviewsByLike.put({
-          baseId: this.estate.id,
+          baseId: this.agency.id,
           data: { user: userId, count: 1 },
         });
         if (resp.data.result === "success") {
@@ -206,7 +206,7 @@ export default {
 
       try {
         const reviewsByLike = await this.$api.reviewsByLike.get({
-          baseId: this.estate.id,
+          baseId: this.agency.id,
           range: queryRange,
         });
 
@@ -216,7 +216,7 @@ export default {
           mapUserLikeCnt.set(`user:${userId}`, likeCnt);
 
           const resp = await this.$api.review.get({
-            baseId: this.estate.id,
+            baseId: this.agency.id,
             subIds: [userId],
           });
           const review = resp.data;
@@ -233,7 +233,7 @@ export default {
 
       try {
         const reviewsByTime = await this.$api.reviewsByTime.get({
-          baseId: this.estate.id,
+          baseId: this.agency.id,
           range: queryRange,
         });
 
@@ -241,7 +241,7 @@ export default {
           const userId = d.value.split(":")[1];
 
           const resp = await this.$api.review.get({
-            baseId: this.estate.id,
+            baseId: this.agency.id,
             subIds: [userId],
           });
           const review = resp.data;
