@@ -1,38 +1,45 @@
 <template>
-  <div id="agency__card">
+  <div id="agency_card">
     <span>
-      <!-- Agency images -->
-      <v-carousel v-bind="cruslProps" style="width: 140px; height: 168px;">
-        <v-carousel-item v-for="i in images" :key="i" v-bind="carouselItemProps">
+      <!-- 부동산 이미지 -->
+      <v-carousel v-bind="vuetifyCarousel" style="width: 140px; height: 168px;">
+        <v-carousel-item v-for="i in images" :key="i" v-bind="vuetifyCarouselItem">
           <img :src="getImgUrl(agency.id, i)" style="width: 140px; height: 168px;" />
         </v-carousel-item>
       </v-carousel>
     </span>
 
     <span>
-      <h3 class="agency__title">{{ agency.place_name }}</h3>
+      <div class="agency_title_container">
+        <h3>{{ agency.place_name }}</h3>
+      </div>
 
       <div class="divider" />
-      <!-- Agency rating -->
-      <p class="agency__stars">
-        <v-row v-bind="starRowProps">
-          <v-rating v-bind="starProps" :value="agency.stars"></v-rating>
-          <div class="grey--text ms-4">{{ agency.stars }} ({{ agency.likes }} 좋아요)</div>
-        </v-row>
-      </p>
-      <!-- Agency infos -->
-      <p class="agency__info">
-        <v-icon v-bind="infoIconProps">fas fa-map-marker-alt</v-icon> {{ agency.address_name }}
-      </p>
-      <p class="agency__info"><v-icon v-bind="infoIconProps">fas fa-book</v-icon> {{ agency.phone }}</p>
+      <!-- 부동산 평점 -->
+      <div class="agency_rating_container">
+        <p>
+          <v-row v-bind="vuetifyRow">
+            <v-rating v-bind="vuetifyStar" :value="agency.stars"></v-rating>
+            <div v-bind="vuetifyStarText">{{ agency.stars }} ({{ agency.likes }} 좋아요)</div>
+          </v-row>
+        </p>
+      </div>
+      <!-- 부동산 정보(위치, 전화번호) -->
+      <div class="agency_info_container">
+        <p><v-icon v-bind="vuetifyIcon">fas fa-map-marker-alt</v-icon> {{ agency.address_name }}</p>
+        <p><v-icon v-bind="vuetifyIcon">fas fa-book</v-icon> {{ agency.phone }}</p>
+      </div>
 
       <div class="divider" />
-      <!-- Agency review button -->
-      <p class="agency__review">
-        <v-btn v-bind="reviewBtnProps" @click="gotoReviews">
-          다른 사람들의 리뷰를 확인해보세요!
-        </v-btn>
-      </p>
+
+      <!-- 부동산 리뷰 확인 버튼 -->
+      <div class="agency_review_button_container">
+        <p>
+          <v-btn v-bind="vuetifyReviewButton" @click="launchReviewCard()">
+            다른 사람들의 리뷰를 확인해보세요!
+          </v-btn>
+        </p>
+      </div>
     </span>
     <!-- <image-upload slot="agency-image-upload" :agencyId="agency.id" /> -->
   </div>
@@ -51,30 +58,32 @@ export default {
 
   data: () => ({
     images: [1, 2, 3, 4, 5, 6],
-    // Vuetify CSS props
-    cruslProps: {
+    vuetifyCarousel: {
       "hide-delimiters": true,
       "show-arrows-on-hover": true,
     },
-    carouselItemProps: {
+    vuetifyCarouselItem: {
       transition: "fade-transition",
       "reverse-transition": "fade-transition",
     },
-    starRowProps: {
+    vuetifyRow: {
       align: "center",
       class: "ma-0",
     },
-    starProps: {
+    vuetifyStar: {
       size: 18,
       color: "amber",
       dense: true,
       readonly: true,
       "half-increments": true,
     },
-    infoIconProps: {
+    vuetifyStarText: {
+      class: "grey--text ms-4",
+    },
+    vuetifyIcon: {
       "x-small": true,
     },
-    reviewBtnProps: {
+    vuetifyReviewButton: {
       color: "blue darken-4",
       class: "pa-0",
       text: true,
@@ -93,16 +102,17 @@ export default {
       return `/api/upload/${agencyId}?image=${imgNum}`;
     },
 
-    gotoReviews() {
-      if (this.isloggedIn() === false) {
+    launchReviewCard() {
+      if (this.$_isloggedIn() === false) {
         alert("로그인 후, 사용 가능합니다.");
         this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", true);
         return;
       }
-      this.$router.push({ path: "/reviews" });
+
+      this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", true);
     },
 
-    isloggedIn() {
+    $_isloggedIn() {
       return this.user != null;
     },
   },
@@ -110,29 +120,29 @@ export default {
 </script>
 
 <style>
-#agency__card {
+#agency_card {
   display: flex;
 
   margin: 16px 15px;
 }
 
-.agency__title {
+.agency_title_container {
   margin: 4px 8px;
 }
 
-.agency__stars {
+.agency_rating_container {
   margin: 4px 8px;
 
   font-size: 12px;
 }
 
-.agency__info {
+.agency_info_container {
   margin: 8px 8px;
 
   font-size: 12px;
 }
 
-.agency__review {
+.agency_review_button_container {
   margin: 4px 8px;
 
   font-size: 12px;
@@ -145,6 +155,7 @@ export default {
   border-radius: 0;
 }
 
+/* SASS */
 .v-application p {
   margin-bottom: 0px;
 }

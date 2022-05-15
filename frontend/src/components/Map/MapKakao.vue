@@ -11,10 +11,16 @@
         <span @click="map.zoomOut()"><i class="fa-solid fa-minus"></i></span>
       </div>
     </div>
-
+    <!-- 로그인 card -->
     <div v-if="loginVisibleFlag === true" class="dimmed">
-      <div class="dimmed_layer_container radius_border">
+      <div class="dimmed_layer_login_container radius_border">
         <Login @close-login-card="closeLogin()" :on-login-success-handler="onLoginSuccess" />
+      </div>
+    </div>
+    <!-- 리뷰 card -->
+    <div v-if="reviewVisibleFlag" class="dimmed">
+      <div class="dimmed_layer_reviews_container radius_border">
+        <Reviews @close-reviews-card="closeReviews()" />
       </div>
     </div>
   </div>
@@ -22,12 +28,14 @@
 
 <script>
 import Login from "@/components/cards/LoginCard/Login.vue";
+import Reviews from "@/components/cards/ReviewsCard/Reviews.vue";
 import kakaoMap from "@/api/map/kakao2";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
     Login,
+    Reviews,
   },
 
   mounted() {
@@ -46,6 +54,7 @@ export default {
   computed: {
     ...mapGetters({
       loginVisibleFlag: "GET_LOGIN_VISIBLE_FLAG",
+      reviewVisibleFlag: "GET_REVIEW_VISIBLE_FLAG",
     }),
   },
 
@@ -66,6 +75,10 @@ export default {
 
     closeLogin() {
       this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", false);
+    },
+
+    closeReviews() {
+      this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", false);
     },
 
     $_invertUserLoginBtnColor() {
@@ -155,7 +168,7 @@ span i {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.dimmed_layer_container {
+.dimmed_layer_login_container {
   position: relative;
 
   top: 237.5px;
@@ -168,6 +181,20 @@ span i {
   background-color: white;
 }
 
+.dimmed_layer_reviews_container {
+  position: relative;
+
+  top: 2.5%;
+  width: 60%;
+
+  margin: 20px auto;
+
+  overflow: auto;
+  z-index: 100;
+
+  background-color: white;
+}
+
 @media screen and (max-width: 768px) {
   .user_login {
     top: 130px;
@@ -175,6 +202,10 @@ span i {
 
   .custom_zoomcontrol {
     top: 140px;
+  }
+
+  .dimmed_layer_reviews_container {
+    width: 100%;
   }
 }
 </style>

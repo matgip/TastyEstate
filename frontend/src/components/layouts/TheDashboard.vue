@@ -14,6 +14,7 @@
           <v-icon>fa-solid fa-arrow-up</v-icon>
         </v-btn>
       </header>
+
       <section>
         <div v-if="!agency.id && agencies.length === 0" id="dashboard__no-result-container">
           <NoContent />

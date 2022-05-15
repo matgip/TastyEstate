@@ -2,7 +2,7 @@
   <div>
     <header class="login_header_container">
       <h3>로그인 및 회원가입</h3>
-      <v-icon @click="onCloseCard" v-bind="cancelIconProps">{{ cancelIcon }}</v-icon>
+      <v-icon @click="onCloseCard()" v-bind="vuetifyCancelIcon">{{ fontAwesomeCancel }}</v-icon>
     </header>
     <div class="seperator"></div>
     <section>
@@ -12,7 +12,7 @@
         <!-- Align Login buttons to center -->
         <v-layout column align-center justify-center>
           <v-flex>
-            <login-kakao :on-login-success-handler="onLoginSuccessHandler" />
+            <LoginKakao :on-login-success-handler="onLoginSuccessHandler" />
           </v-flex>
         </v-layout>
       </v-container>
@@ -30,8 +30,8 @@ export default {
 
   data() {
     return {
-      cancelIcon: "fa-solid fa-xmark",
-      cancelIconProps: {
+      fontAwesomeCancel: "fa-solid fa-xmark",
+      vuetifyCancelIcon: {
         color: "black",
       },
     };

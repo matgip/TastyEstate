@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import BaseCheckBoxGroup from "../../common/BaseCheckBoxGroup.vue";
-import BaseButton from "../../common/BaseButton.vue";
+import BaseCheckBoxGroup from "@/common/BaseCheckBoxGroup.vue";
+import BaseButton from "@/common/BaseButton.vue";
 
 import { mapGetters } from "vuex";
 
@@ -114,7 +114,7 @@ export default {
     dialog: false,
     title: "",
     comments: "",
-    // Vuetify CSS Style & Props
+    // Vuetify
     btnStyl: {
       margin: "34px 0",
     },
