@@ -195,9 +195,11 @@ span i {
 
   top: 2.5%;
   width: 68%;
+  height: 700px;
 
   margin: 20px auto;
 
+  overflow: overlay;
   z-index: 100;
 
   background-color: white;
