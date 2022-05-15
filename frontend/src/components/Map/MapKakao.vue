@@ -1,88 +1,98 @@
 <template>
   <div id="mapview">
-    <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
-    <div class="custom_zoomcontrol radius_border">
-      <span @click="zoomIn"><i class="fa-solid fa-plus"></i></span>
-      <span @click="zoomOut"><i class="fa-solid fa-minus"></i></span>
+    <div class="map_button_container">
+      <!-- 유저 로그인 버튼 div -->
+      <div class="user_login radius_border">
+        <span @click="launchLogin()"><i class="fas fa-user"></i></span>
+      </div>
+      <!-- 지도 확대, 축소 컨트롤 div -->
+      <div class="custom_zoomcontrol radius_border">
+        <span @click="map.zoomIn()"><i class="fa-solid fa-plus"></i></span>
+        <span @click="map.zoomOut()"><i class="fa-solid fa-minus"></i></span>
+      </div>
+    </div>
+    <!-- 로그인 card -->
+    <div v-if="loginVisibleFlag === true" class="dimmed">
+      <div class="dimmed_layer_login_container radius_border">
+        <Login @close-login-card="closeLogin()" :on-login-success-handler="onLoginSuccess" />
+      </div>
+    </div>
+    <!-- 리뷰 card -->
+    <div v-if="reviewVisibleFlag" class="dimmed">
+      <div class="dimmed_layer_reviews_container radius_border">
+        <Reviews @close-reviews-card="closeReviews()" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import MapKakao from "@/api/map/kakao";
-
+import Login from "@/components/cards/LoginCard/Login.vue";
+import Reviews from "@/components/cards/ReviewsCard/Reviews.vue";
+import kakaoMap from "@/api/map/kakao2";
 import { mapGetters } from "vuex";
 
-const imgSelected = require("@/assets/images/marker_selected.png");
-const imgMarker = require("@/assets/images/marker.png");
-const imgSize = { width: 40, height: 45 };
-
 export default {
+  components: {
+    Login,
+    Reviews,
+  },
+
+  mounted() {
+    this.map = kakaoMap.mount();
+    kakaoMap.setOnClickAgencyListener(this.onClickAgency);
+
+    this.$store.commit("UPDATE_MAP", this.map);
+  },
+
   data() {
     return {
       map: null,
     };
   },
 
-  async mounted() {
-    await this.initMap();
-
-    this.$store.commit("UPDATE_MAP", this.map);
-
-    this.$store.subscribe((mutation) => {
-      if (mutation.type == "UPDATE_ESTATE") {
-        const estate = this.estate;
-        if (Object.keys(estate).length === 0) return;
-
-        const marker = this.addMarker({ place: estate, isSelected: true });
-        this.addClickHandler(marker, estate);
-        this.moveTo(estate.y, estate.x);
-        this.scanEstate();
-      }
-    });
-  },
-
   computed: {
     ...mapGetters({
-      estate: "GET_ESTATE",
+      user: "GET_USER",
+      loginVisibleFlag: "GET_LOGIN_VISIBLE_FLAG",
+      reviewVisibleFlag: "GET_REVIEW_VISIBLE_FLAG",
     }),
   },
 
   methods: {
-    async initMap() {
-      if (this.map) return;
+    onClickAgency(place) {
+      console.log("on click");
+      this.$store.dispatch("updateAgency", place);
+    },
 
-      try {
-        const map = new MapKakao();
-        await map.mount("mapview", { imgMarker, imgSelected, imgSize });
-        this.map = map;
-      } catch (err) {
-        console.error(err);
+    onLoginSuccess() {
+      this.$_invertUserLoginBtnColor();
+      this.closeLogin();
+    },
+
+    closeLogin() {
+      this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", false);
+    },
+
+    $_invertUserLoginBtnColor() {
+      const userLoginBtn = document.querySelector(".user_login");
+      userLoginBtn.classList.add("invert");
+    },
+
+    launchLogin() {
+      if (this.$_isLoggedIn() === true) {
+        alert("이미 로그인 되었습니다.");
+        return;
       }
+      this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", true);
     },
 
-    addMarker(markerEntity) {
-      return this.map.addMarker(markerEntity);
+    $_isLoggedIn() {
+      return this.user != null;
     },
 
-    addClickHandler(marker, estate) {
-      this.map.onMarkerClicked(marker, estate);
-    },
-
-    scanEstate() {
-      this.map.scan();
-    },
-
-    moveTo(lat, lng) {
-      this.map.moveTo(lat, lng);
-    },
-
-    zoomIn() {
-      this.map.zoomIn();
-    },
-
-    zoomOut() {
-      this.map.zoomOut();
+    closeReviews() {
+      this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", false);
     },
   },
 };
@@ -94,43 +104,118 @@ export default {
   height: 100%;
 }
 
-.custom_zoomcontrol {
-  position: absolute;
-  top: 50px;
-  right: 10px;
-  width: 38px;
-  height: 80px;
-  overflow: hidden;
-  z-index: 1;
-  background-color: #ff5722;
-}
-.custom_zoomcontrol span {
+span {
   display: block;
   width: 36px;
   height: 40px;
   text-align: center;
   cursor: pointer;
 }
-.custom_zoomcontrol span i {
+
+span i {
   width: 15px;
   height: 15px;
   padding: 12px 0;
-  color: white;
+  color: #ff5722;
   border: none;
 }
+
+.map_button_container {
+  position: absolute;
+  right: 20px;
+  width: 38px;
+  height: 100%;
+}
+
+.user_login {
+  position: relative;
+
+  top: 40px;
+  height: 40px;
+
+  z-index: 2;
+
+  background-color: white;
+}
+
+.user_login.invert {
+  background-color: #ff5722;
+}
+
+.user_login.invert span i {
+  color: white;
+}
+
+.custom_zoomcontrol {
+  position: relative;
+  top: 50px;
+  height: 80px;
+  z-index: 2;
+  background-color: white;
+}
+
 .custom_zoomcontrol span:first-child {
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid #d8d8d8;
 }
 
 .radius_border {
-  border: 2px solid white;
-  border-radius: 5px;
+  border: 2px solid #d8d8d8;
+  border-radius: 10px;
   z-index: 2;
 }
 
+.dimmed {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  z-index: 100;
+
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.dimmed_layer_login_container {
+  position: relative;
+
+  top: 237.5px;
+  width: 440px;
+
+  margin: 20px auto;
+
+  z-index: 100;
+
+  background-color: white;
+}
+
+.dimmed_layer_reviews_container {
+  position: relative;
+
+  top: 2.5%;
+  width: 68%;
+  height: 700px;
+
+  margin: 20px auto;
+
+  overflow: overlay;
+  z-index: 100;
+
+  background-color: white;
+}
+
 @media screen and (max-width: 768px) {
+  .user_login {
+    top: 130px;
+  }
+
   .custom_zoomcontrol {
-    top: 200px;
+    top: 140px;
+  }
+
+  .dimmed_layer_reviews_container {
+    width: 100%;
   }
 }
 </style>

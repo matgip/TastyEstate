@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div data-app class="search-group">
     <v-toolbar color="deep-orange">
@@ -35,11 +37,8 @@
 
       <template v-slot:extension>
         <v-tabs :hide-slider="!select" color="white" slider-color="white">
-          <v-tab @click="onSearchNear">
-            근처 부동산
-          </v-tab>
           <v-tab @click="onSortByRating">
-            베스트 부동산
+            근처 부동산
           </v-tab>
         </v-tabs>
       </template>
@@ -50,6 +49,8 @@
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
+
+import kakaoMap from "@/api/map/kakao2";
 
 export default {
   data: () => ({
@@ -100,16 +101,9 @@ export default {
   },
 
   watch: {
-    async select(agency) {
-      if (!agency) return;
-
-      try {
-        await this.$store.dispatch("updateAgency", agency);
-        this.$store.commit("CLEAR_ESTATES");
-        this.$emit("scroll-wide");
-      } catch (err) {
-        console.error(err);
-      }
+    async select(estate) {
+      if (!estate) return;
+      kakaoMap.PinPlace(estate);
     },
 
     async search(keyword) {
@@ -124,17 +118,6 @@ export default {
   },
 
   methods: {
-    async onSearchNear() {
-      const query = this.$_createQuery();
-
-      try {
-        await this.$_searchEstate(query);
-        await this.$store.dispatch("updateAgencies", { agencies: this.agencies });
-      } catch (err) {
-        console.error(err);
-      }
-    },
-
     async onSortByRating() {
       const query = this.$_createQuery();
 

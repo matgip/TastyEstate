@@ -5,28 +5,30 @@
 
       <v-card-text>
         <div>
-          <!-- user profile -->
+          <!-- 리뷰 user 정보 -->
           <v-avatar v-bind="avatarProps">
             <img v-if="review.avatar" :src="review.avatar" />
             <v-icon v-else v-text="avatarIcon" />
           </v-avatar>
+
           {{ review.nickname }}
-          <span class="reviewed-time">{{ review.time }}</span>
+
+          <span class="review_timestamp">{{ review.time }}</span>
         </div>
       </v-card-text>
 
       <v-card-text>
         <v-row align="center">
-          <!-- review stars -->
+          <!-- 리뷰 평점 -->
           <div>
             <v-row v-bind="rowProps">
               <v-rating v-bind="ratingProps" :value="review.rating" />
               <div v-bind="textProps">({{ review.rating }})</div>
             </v-row>
           </div>
-          <!-- review likes -->
+          <!-- 리뷰 '좋아요' 개수 -->
           <div>
-            <base-button
+            <BaseButton
               :btn-props="btnProps"
               :icon-props="iconProps"
               :on-click="sendLikeEvent"
@@ -37,12 +39,12 @@
         </v-row>
       </v-card-text>
 
-      <!-- review title -->
+      <!-- 리뷰 제목 -->
       <v-card-title>
         <div>{{ review.title }}</div>
       </v-card-title>
 
-      <!-- review contents -->
+      <!-- 리뷰 내용 -->
       <v-card-text>
         <div>{{ review.text }}</div>
       </v-card-text>
@@ -61,7 +63,7 @@ export default {
   },
 
   data: () => ({
-    // Vuetify CSS Style & Props
+    // Vuetify
     avatarProps: {
       size: "36px",
     },
@@ -113,7 +115,7 @@ export default {
 </script>
 
 <style>
-.reviewed-time {
+.review_timestamp {
   font-size: 8px;
 }
 </style>

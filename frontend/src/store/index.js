@@ -14,12 +14,16 @@ Vue.config.devtools = true;
 import agencyStore from "./modules/agencyStore";
 import userStore from "./modules/userStore";
 import mapStore from "./modules/mapStore";
+import loginVisibleFlagStore from "./modules/loginVisibleFlagStore";
+import reviewVisibleFlagStore from "./modules/reviewVisibleFlagStore";
 
 const store = new Vuex.Store({
   modules: {
     agencyStore: agencyStore,
     userStore: userStore,
     mapStore: mapStore,
+    loginVisibleFlagStore: loginVisibleFlagStore,
+    reviewVisibleFlagStore: reviewVisibleFlagStore,
   },
   plugins: [
     createPersistedState({

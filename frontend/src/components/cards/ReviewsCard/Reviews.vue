@@ -1,47 +1,51 @@
 <template>
   <div>
-    <div>
-      <v-divider />
+    <div class="reviews_cancel_button_container">
+      <v-icon @click="onCloseCard()" v-bind="vuetifyCancelIcon">{{ cancelIcon }}</v-icon>
+    </div>
 
+    <div class="reviews_statistics_container">
       <v-container>
         <v-row>
           <v-col v-for="stat in stats" :key="stat.title">
-            <base-bar-graph :key="stat.count" :stat="stat" />
+            <BaseBarGraph :key="stat.count" :stat="stat" />
           </v-col>
         </v-row>
       </v-container>
     </div>
 
-    <div class="review-btns">
-      <base-button
-        :style="btnStyl"
-        :btn-props="btnProps"
-        :icon-props="iconProps"
-        :on-click="onLikeEstate"
+    <div class="reviews_button_container">
+      <BaseButton
+        :btn-props="vuetifyButton"
+        :icon-props="vuetifyIcon"
+        :on-click="onUpdateLikeAgency"
         :icon="'fas fa-heart'"
         :button="'좋아요'"
       />
-      <review-dialog-button />
+      <ReviewDialogButton />
     </div>
 
-    <v-tabs :style="tabsStyle" v-bind="tabsProps">
-      <v-tab id="like" @click="onChangeOrder">좋아요 순</v-tab>
-      <v-tab id="time" @click="onChangeOrder">최신 순</v-tab>
-    </v-tabs>
-
-    <div v-for="(review, i) in currReviews" :key="i">
-      <review :review="review" @like-review="onLikeReview" />
+    <div class="reviews_tabs_container">
+      <v-tabs v-bind="vuetifyTabs">
+        <v-tab id="like" @click="onChangeOrder">좋아요 순</v-tab>
+        <v-tab id="time" @click="onChangeOrder">최신 순</v-tab>
+      </v-tabs>
     </div>
 
-    <v-pagination v-bind="paginationProps" v-model="page" :length="pageCount" :total-visible="7" />
+    <div v-for="(review, i) in reviewsSelected" :key="i">
+      <Review :review="review" @like-review="onUpdateLikeReview" />
+    </div>
+
+    <v-pagination v-bind="vuetifyPagination" v-model="page" :length="pageCount" :total-visible="7" />
   </div>
 </template>
 
 <script>
-import BaseBarGraph from "../common/BaseBarGraph.vue";
-import BaseButton from "../common/BaseButton.vue";
-import ReviewDialogButton from "@/components/Review/ReviewDialogButton.vue";
-import Review from "../components/Review/Review.vue";
+import BaseBarGraph from "@/common/BaseBarGraph.vue";
+import BaseButton from "@/common/BaseButton.vue";
+
+import ReviewDialogButton from "./ReviewDialogButton.vue";
+import Review from "./Review.vue";
 
 import { mapGetters } from "vuex";
 
@@ -89,26 +93,24 @@ export default {
       like: [],
       time: [],
     },
-    // Vuetify CSS Style & Props
-    btnStyl: {
-      margin: "34px 18px",
+    cancelIcon: "fa-solid fa-xmark",
+    vuetifyCancelIcon: {
+      color: "black",
     },
-    btnProps: {
+    vuetifyButton: {
       color: "deep-orange",
       outlined: true,
       rounded: true,
+      class: "mr-2",
     },
-    iconProps: {
+    vuetifyIcon: {
       left: true,
     },
-    tabsStyle: {
-      margin: "0px 18px",
-    },
-    tabsProps: {
+    vuetifyTabs: {
       left: true,
       color: "deep-orange",
     },
-    paginationProps: {
+    vuetifyPagination: {
       color: "deep-orange",
       circle: true,
       class: "mt-10",
@@ -121,7 +123,7 @@ export default {
       user: "GET_USER",
     }),
 
-    currReviews() {
+    reviewsSelected() {
       return this.reviews[this.orderBy];
     },
 
@@ -134,23 +136,27 @@ export default {
 
   async mounted() {
     this.page = 1;
-    const allRange = "0~-1";
-    await this.$_constructReviews(allRange);
+    const maxRange = "0~-1";
+    await this.$_fetchReviews(maxRange);
 
     this.$store.subscribe(async (mutation) => {
       if (mutation.type === "UPDATE_ESTATE") {
-        this.$_clear();
-        await this.$_constructReviews(allRange);
+        this.$_clearStatistics();
+        await this.$_fetchReviews(maxRange);
       }
     });
   },
 
   destroyed() {
-    this.$_clear();
+    this.$_clearStatistics();
   },
 
   methods: {
-    async onLikeEstate() {
+    onCloseCard() {
+      this.$emit("close-reviews-card");
+    },
+
+    async onUpdateLikeAgency() {
       try {
         const resp = await this.$api.likes.put(this.estate.id, { user_id: this.user.id });
         if (resp.data.result === "already-added") {
@@ -165,7 +171,7 @@ export default {
       }
     },
 
-    async onLikeReview(userId) {
+    async onUpdateLikeReview(userId) {
       try {
         const resp = await this.$api.reviewUserLikes.post({
           baseId: this.estate.id,
@@ -195,15 +201,10 @@ export default {
       this.orderBy = event.currentTarget.id;
     },
 
-    async $_constructReviews(queryRange) {
-      try {
-        if (this.estate === undefined || this.estate.id === undefined) {
-          // When page is refreshed...
-          this.$_gotoHome();
-          return;
-        }
+    async $_fetchReviews(queryRange) {
+      const mapUserLikeCnt = new Map();
 
-        const mapUserLikeCnt = new Map();
+      try {
         const reviewsByLike = await this.$api.reviewsByLike.get({
           baseId: this.estate.id,
           range: queryRange,
@@ -224,10 +225,13 @@ export default {
           review.rating = parseFloat(review.rating);
 
           this.reviews["like"].push(review);
-          // Calculate review statistics
-          this.$_calcStats(this.reviews["like"][i]);
+          this.$_calculate(this.reviews["like"][i]);
         });
+      } catch (err) {
+        console.error(err);
+      }
 
+      try {
         const reviewsByTime = await this.$api.reviewsByTime.get({
           baseId: this.estate.id,
           range: queryRange,
@@ -252,34 +256,30 @@ export default {
       }
     },
 
-    $_calcStats(review) {
+    $_calculate(review) {
       this.stats.forEach((stat) => {
-        this.$_addStat(stat, review[stat.name]);
+        this.$_addStatistics(stat, review[stat.name]);
         this.$_replacePercentage(stat);
       });
     },
 
-    $_addStat(stat, fieldToFind) {
-      if (!fieldToFind) return;
-      stat.count += 1;
+    $_addStatistics(stat, field) {
+      if (!field) return;
 
-      const matchedIndex = stat.fields.findIndex((field) => field === fieldToFind);
+      stat.count += 1;
+      const matchedIndex = stat.fields.findIndex((f) => f === field);
       stat.data[matchedIndex]++;
     },
 
     $_replacePercentage(stat) {
       if (stat.count === 0) return;
+
       for (let i = 0; i < stat.data.length; i++) {
         stat.data[i] = Math.floor((stat.data[i] / stat.count) * 100);
       }
-      console.log(stat.data);
     },
 
-    $_gotoHome() {
-      this.$router.push({ path: "/" });
-    },
-
-    $_clear() {
+    $_clearStatistics() {
       this.reviews["like"] = [];
       this.reviews["time"] = [];
       this.stats.forEach((stat) => {
@@ -292,7 +292,25 @@ export default {
 </script>
 
 <style>
-.review-btns {
+.reviews_cancel_button_container {
   display: flex;
+  justify-content: flex-end;
+
+  margin: 20px 20px;
+}
+
+.reviews_statistics_container {
+  /* width: 380px; */
+}
+
+.reviews_button_container {
+  display: flex;
+  align-items: center;
+
+  margin: 10px 18px;
+}
+
+.reviews_tabs_container {
+  margin: 0px 18px;
 }
 </style>
