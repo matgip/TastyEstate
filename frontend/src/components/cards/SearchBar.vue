@@ -42,6 +42,9 @@
           <v-tab @click="onSortByRating">
             근처 부동산
           </v-tab>
+          <v-tab>
+            뉴스
+          </v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
@@ -78,6 +81,7 @@ export default {
       "return-object": true,
       "hide-details": true,
       "hide-selected": true,
+      "prepend-icon": "fas fa-building",
       "append-icon": "fas fa-search",
       "item-text": "place_name",
     },

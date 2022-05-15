@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <Search @scroll-up="scrollUp" />
+      <Search @scroll-up="handleScrollUpEvent" />
     </div>
 
     <div id="dashboard_container">
@@ -82,7 +82,7 @@ export default {
       else this.isScrollUp = true;
     },
 
-    scrollUp() {
+    handleScrollUpEvent() {
       const item = document.getElementById("dashboard_container");
       if (item.classList.length !== 0) return;
 
