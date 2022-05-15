@@ -64,7 +64,7 @@ export default {
     search: null,
     select: null,
 
-    KAKAO_API: {
+    KAKAO_REST_API: {
       keywordUrl: "https://dapi.kakao.com/v2/local/search/keyword.json",
       categoryUrl: "https://dapi.kakao.com/v2/local/search/category.json",
       groupCode: "AG2",
@@ -194,16 +194,16 @@ export default {
       let url = "";
       if (keyword !== "") {
         // keyword search
-        url += `${this.KAKAO_API.keywordUrl}?query=${keyword}`;
+        url += `${this.KAKAO_REST_API.keywordUrl}?query=${keyword}`;
       } else if (latLng.y && latLng.x) {
         // category search
-        url += `${this.KAKAO_API.categoryUrl}?&y=${latLng.y}&x=${latLng.x}`;
+        url += `${this.KAKAO_REST_API.categoryUrl}?&y=${latLng.y}&x=${latLng.x}`;
       } else {
         console.error("Invalid url... try again");
         return "";
       }
 
-      url += `&category_group_code=${this.KAKAO_API.groupCode}&radius=${this.KAKAO_API.radius}&page=${pageCnt}&size=15`;
+      url += `&category_group_code=${this.KAKAO_REST_API.groupCode}&radius=${this.KAKAO_REST_API.radius}&page=${pageCnt}&size=15`;
       return url;
     },
 

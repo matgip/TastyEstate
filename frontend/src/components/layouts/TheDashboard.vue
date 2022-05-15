@@ -13,7 +13,7 @@
       </header>
 
       <section>
-        <div id="dashboard_no-result_container" v-if="!agency.id && agencies.length === 0">
+        <div v-if="!agency.id && agencies.length === 0">
           <NoContent />
         </div>
 
@@ -110,10 +110,6 @@ export default {
 
 .dashboard_agencies_title {
   margin: 14px 14px;
-}
-
-#dashboard_no-result_container {
-  text-align: center;
 }
 
 /* Scroll button */

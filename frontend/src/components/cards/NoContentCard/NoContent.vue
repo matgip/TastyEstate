@@ -1,27 +1,30 @@
 <template>
   <div>
-    <div class="no-result__title">
-      앗! 검색 결과가 없어요
+    <div class="no-result_container">
+      <div class="no-result_title">
+        앗! 검색 결과가 없어요
+      </div>
+      <img src="@/assets/images/no_search_result.png" width="120" height="120" />
+      <div class="no-result_tips">
+        이건 어때요?
+        <ul>
+          <li>키워드를 정확하게 입력하셨는지 확인해보세요.</li>
+          <li>키워드를 다르게 검색해보세요. (예 : 신원로 251-2 근처 부동산)</li>
+        </ul>
+      </div>
     </div>
-    <img class="no-result__img" src="@/assets/images/no_search_result.png" width="120" height="120" />
-    <div class="no-result__tips">
-      이건 어때요?
-      <ul>
-        <li>키워드를 정확하게 입력하셨는지 확인해보세요.</li>
-        <li>키워드를 다르게 검색해보세요. (예 : 신원로 251-2 근처 부동산)</li>
-      </ul>
-    </div>
-    <div class="add-agency-container">
-      <div class="add-agency__title">
+
+    <div class="add-agency_container">
+      <div class="add-agency_title">
         공인중개사무소 등록하기
       </div>
-      <div class="add-agency__content">
+      <div class="add-agency_content">
         <div>새로운 수정된 중개업소 장소를 알고 계신가요?</div>
         <div>장소 제보는 서비스 품질 향상에 큰 도움이 됩니다.</div>
       </div>
-      <div class="add-agency__button">
-        <base-button :btn-props="baseButtonProps" :on-click="onAddAgencyInfo" :button="'신규 부동산 등록'" />
-        <base-button :btn-props="baseButtonProps" :on-click="onChangeAgencyInfo" :button="'지도 정보 수정'" />
+      <div class="add-agency_button">
+        <base-button :btn-props="vuetifyBaseButton" :on-click="onAddAgencyInfo" :button="'신규 부동산 등록'" />
+        <base-button :btn-props="vuetifyBaseButton" :on-click="onChangeAgencyInfo" :button="'지도 정보 수정'" />
       </div>
     </div>
   </div>
@@ -37,8 +40,7 @@ export default {
 
   data() {
     return {
-      // Vuetiffy CSS style & props
-      baseButtonProps: {
+      vuetifyBaseButton: {
         class: "mr-1",
         color: "deep-orange",
 
@@ -64,17 +66,19 @@ export default {
 </script>
 
 <style scoped>
-.no-result__title {
+.no-result_container {
+  margin: 10px;
+  text-align: center;
+}
+
+.no-result_title {
   margin-top: 10px;
 
   font-size: 20px;
   font-weight: 500;
 }
-.no-result__img {
-  margin: 10px;
-}
 
-.no-result__tips {
+.no-result_tips {
   text-align: start;
 
   padding: 10px 10px;
@@ -87,29 +91,28 @@ export default {
   border-radius: 4px;
 }
 
-.no-result__tips ul {
+.no-result_tips ul {
   margin-top: 10px;
 
   list-style-type: disc;
 }
 
-/* add agency */
-.add-agency-container {
+.add-agency_container {
   text-align: start;
 
   margin: 50px 10px 10px 10px;
 }
 
-.add-agency__title {
+.add-agency_title {
   font-weight: bold;
 }
 
-.add-agency__content {
+.add-agency_content {
   font-size: 12px;
   color: gray;
 }
 
-.add-agency__button {
+.add-agency_button {
   margin-top: 2px;
 }
 </style>
