@@ -181,7 +181,7 @@ span i {
   position: relative;
 
   top: 237.5px;
-  width: 440px;
+  width: 90%;
 
   margin: 20px auto;
 
