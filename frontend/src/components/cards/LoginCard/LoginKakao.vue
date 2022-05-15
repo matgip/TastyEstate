@@ -1,8 +1,8 @@
 <template>
   <div>
-    <base-button
-      :btn-props="btnProps"
-      :icon-props="iconProps"
+    <BaseButton
+      :btn-props="vuetifyLoginButton"
+      :icon-props="vuetifyIcon"
       :icon="'fas fa-comment'"
       :on-click="handleKakaoLogin"
       :button="'카카오 로그인'"
@@ -19,11 +19,10 @@ export default {
   },
 
   data: () => ({
-    // Vuetify CSS props
-    btnProps: {
+    vuetifyLoginButton: {
       color: "yellow lighten-1",
     },
-    iconProps: {
+    vuetifyIcon: {
       left: true,
     },
   }),

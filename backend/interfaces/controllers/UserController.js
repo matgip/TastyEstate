@@ -11,23 +11,25 @@ const parseKakaoAccount = (data) => {
     nickname: data.properties.nickname,
     avatar: data.properties.profile_image,
     email: data.kakao_account.email,
-  }
+    ageRange: data.kakao_account.age_range,
+  };
 };
 
 const socialLogin = async (req, res) => {
   console.log("login requested", req.body);
   let userInfo;
 
-  try { // fetch social user info
+  try {
+    // fetch social user info
     if (req.body.social === "kakao") {
       const response = await axios({
-        method: 'get',
-        url: 'https://kapi.kakao.com/v2/user/me',
+        method: "get",
+        url: "https://kapi.kakao.com/v2/user/me",
         headers: {
-          "Authorization": `Bearer ${req.body.accessToken}`,
-          "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
-        }
-      })
+          Authorization: `Bearer ${req.body.accessToken}`,
+          "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+      });
       userInfo = parseKakaoAccount(response.data);
     } else {
       res.sendStatus(StatusCodes.BAD_REQUEST);
@@ -37,7 +39,8 @@ const socialLogin = async (req, res) => {
     res.sendStatus(StatusCodes.BAD_REQUEST);
   }
 
-  try { // always update user info
+  try {
+    // always update user info
     await UserRepository.persist(userInfo);
   } catch (err) {
     console.error(err);
@@ -54,13 +57,13 @@ const logout = async (req, res) => {
   try {
     if (req.body.social === "kakao") {
       const response = await axios({
-        method: 'POST',
-        url: 'https://kapi.kakao.com/v1/user/logout',
+        method: "POST",
+        url: "https://kapi.kakao.com/v1/user/logout",
         headers: {
-          "Authorization": `Bearer ${req.body.accessToken}`,
-          "Content-type": "application/x-www-form-urlencoded"
-        }
-      })
+          Authorization: `Bearer ${req.body.accessToken}`,
+          "Content-type": "application/x-www-form-urlencoded",
+        },
+      });
       res.json(response.data);
     } else {
       res.sendStatus(StatusCodes.BAD_REQUEST);
@@ -69,7 +72,7 @@ const logout = async (req, res) => {
     console.error(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
-}
+};
 
 const get = async (req, res) => {
   try {
@@ -79,7 +82,7 @@ const get = async (req, res) => {
     if (!decoded) return res.sendStatus(StatusCodes.FORBIDDEN);
 
     const user = await UserRepository.get(decoded.id);
-    console.log("user", user)
+    console.log("user", user);
     if (UserRepository.isEmpty(user) === true) {
       res.sendStatus(StatusCodes.NO_CONTENT);
       return;

@@ -1,6 +1,5 @@
-
 const kakaoLogin = {
-  scope: "profile_nickname, profile_image, account_email, gender",
+  scope: "profile_nickname, profile_image, account_email, gender, age_range",
   login() {
     return new Promise((resolve, reject) => {
       window.Kakao.Auth.login({
@@ -14,6 +13,6 @@ const kakaoLogin = {
       });
     });
   },
-}
+};
 
-export default kakaoLogin
+export default kakaoLogin;

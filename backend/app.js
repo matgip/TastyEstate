@@ -7,13 +7,11 @@ const logger = require("morgan");
 // CORS
 const cors = require("cors");
 
-const usrRtr = require("./interfaces/routes/user");
-const estateRtr = require("./interfaces/routes/estate");
-const uploadRtr = require("./interfaces/routes/upload");
-const likeRtr = require("./interfaces/routes/like");
-
-// Review Router
-const rvwRtr = require("./interfaces/routes/review");
+const userRouter = require("./interfaces/routes/user");
+const agencyRouter = require("./interfaces/routes/estate");
+const uploadRouter = require("./interfaces/routes/upload");
+const likeRouter = require("./interfaces/routes/like");
+const reviewRouter = require("./interfaces/routes/review");
 
 const app = express();
 
@@ -29,13 +27,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/api/user", usrRtr);
+app.use("/api/user", userRouter);
 
-app.use("/api/estates", estateRtr);
-app.use("/api/likes", likeRtr);
-app.use("/api/upload", uploadRtr);
+app.use("/api/estates", agencyRouter);
+app.use("/api/likes", likeRouter);
+app.use("/api/upload", uploadRouter);
 
-app.use("/api/reviews", rvwRtr);
+app.use("/api/reviews", reviewRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

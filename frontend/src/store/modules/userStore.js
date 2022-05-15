@@ -1,7 +1,7 @@
 const GET_USER = "GET_USER";
 const UPDATE_USER = "UPDATE_USER";
 
-import { socialLoginApi, logoutApi, fetchMeApi } from "../../api/login/api"
+import { socialLoginApi, logoutApi, fetchMeApi } from "../../api/login/api";
 import kakaoLogin from "../../api/login/kakao";
 
 const userStore = {
@@ -16,10 +16,8 @@ const userStore = {
   mutations: {
     [UPDATE_USER](state, user) {
       state.user = user;
-      if (user == null)
-        localStorage.removeItem("user");
-      else
-        localStorage.setItem("user", user);
+      if (user == null) localStorage.removeItem("user");
+      else localStorage.setItem("user", user);
     },
   },
   actions: {
@@ -76,7 +74,7 @@ const userStore = {
         localStorage.removeItem("social");
         commit(UPDATE_USER, null);
       }
-    }
+    },
   },
 };
 
