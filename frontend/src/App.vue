@@ -34,7 +34,7 @@ export default {
 .main__dashboard-container {
   position: absolute;
   z-index: 20;
-  overflow-y: hidden;
+  overflow-y: auto;
   width: var(--dashboard-width);
   height: 100%;
 }

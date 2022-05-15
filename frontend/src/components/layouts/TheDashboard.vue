@@ -1,22 +1,18 @@
 <template>
   <div>
-    <!-- <div>
-      <Masthead />
-    </div> -->
-
     <div>
       <Search @scroll-wide="wideScroll" />
     </div>
 
-    <div id="dashboard__info-container">
+    <div id="dashboard_container">
       <header>
-        <v-btn id="dashboard__scroll-btn" @click="scrollToggle" block>
+        <v-btn id="dashboard_scroll_button" @click="scrollToggle" block>
           <v-icon>fa-solid fa-arrow-up</v-icon>
         </v-btn>
       </header>
 
       <section>
-        <div v-if="!agency.id && agencies.length === 0" id="dashboard__no-result-container">
+        <div v-if="!agency.id && agencies.length === 0" id="dashboard_no-result_container">
           <NoContent />
         </div>
         <template>
@@ -25,11 +21,14 @@
 
         <v-divider />
 
-        <h3 class="dashboard__agencies__title" v-if="agencies.length !== 0">검색 결과</h3>
-
-        <template v-for="agency in agencies">
-          <Agency :agency="agency" :key="agency.id" />
-        </template>
+        <div v-if="agencies.length !== 0">
+          <div class="dashboard_agencies_title">
+            <h3>검색 결과</h3>
+          </div>
+          <template v-for="agency in agencies">
+            <Agency :agency="agency" :key="agency.id" />
+          </template>
+        </div>
       </section>
     </div>
   </div>
@@ -71,12 +70,12 @@ export default {
 
   methods: {
     scrollToggle() {
-      const item = document.getElementById("dashboard__info-container");
+      const item = document.getElementById("dashboard_container");
       item.classList.toggle("scrolled");
     },
 
     wideScroll() {
-      const item = document.getElementById("dashboard__info-container");
+      const item = document.getElementById("dashboard_container");
       if (item.classList.length === 0) {
         item.classList.toggle("scrolled");
       }
@@ -87,34 +86,34 @@ export default {
 
 <style scope>
 /* Searched agencies */
-#dashboard__info-container {
+#dashboard_container {
   background-color: white;
   height: 100%;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
-#dashboard__info-container section {
+#dashboard_container section {
   background-color: white;
   border: 10px solid #e0e0e0;
   height: 100%;
   overflow-y: auto;
 }
 
-.dashboard__agencies__title {
+.dashboard_agencies_title {
   margin: 14px 14px;
 }
 
-#dashboard__no-result-container {
+#dashboard_no-result_container {
   text-align: center;
 }
 
 /* Scroll button */
-#dashboard__scroll-btn {
+#dashboard_scroll_button {
   display: none;
 }
 
 @media screen and (max-width: 768px) {
-  #dashboard__info-container {
+  #dashboard_container {
     position: fixed;
 
     width: 100%;
@@ -125,11 +124,11 @@ export default {
     transition: all 0.5s;
   }
 
-  #dashboard__info-container.scrolled {
+  #dashboard_container.scrolled {
     top: 0%;
   }
 
-  #dashboard__scroll-btn {
+  #dashboard_scroll_button {
     display: block;
   }
 }
