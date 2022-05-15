@@ -89,14 +89,14 @@ export default {
 #dashboard_container {
   background-color: white;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 #dashboard_container section {
   background-color: white;
   border: 10px solid #e0e0e0;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .dashboard_agencies_title {
