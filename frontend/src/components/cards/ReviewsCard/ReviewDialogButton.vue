@@ -1,23 +1,24 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" v-bind="dialogProps">
+    <v-dialog v-model="dialog" v-bind="vuetifyDialog">
       <template #activator="{ on }">
-        <v-btn :style="btnStyl" v-bind="btnProps" v-on="on">
-          <v-icon v-bind="iconProps">
-            {{ icon }}
+        <v-btn :style="btnStyl" v-bind="vuetifyButton" v-on="on">
+          <v-icon v-bind="vuetifyButtonIcon">
+            {{ reviewButtonIcon }}
           </v-icon>
           리뷰 작성
         </v-btn>
       </template>
 
-      <!-- Only can see if dialog is true -->
+      <!-- dialog === true인 경우에만 화면 출력 -->
       <v-card>
         <v-card-title>
-          <div>🏠 {{ estate.place_name }}</div>
+          <div>🏠 {{ agency.place_name }}</div>
         </v-card-title>
 
         <v-divider />
-        <!-- Rating -->
+
+        <!-- 리뷰 평점 -->
         <div>
           <v-list-item>
             <v-list-item-content>
@@ -25,36 +26,37 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-rating v-bind="starProps" v-model="rating"></v-rating>
-            <span v-bind="textProp"> ({{ rating }}) </span>
+            <v-rating v-bind="vuetifyRating" v-model="rating"></v-rating>
+            <span v-bind="vuetifyRatingText"> ({{ rating }}) </span>
           </v-list-item>
         </div>
 
-        <!-- check-box -->
-        <div v-for="chkbox in chkBoxes" :key="chkbox.name">
+        <!-- 리뷰 체크 박스 -->
+        <div v-for="chkbox in checkBoxes" :key="chkbox.name">
           <v-divider />
-          <base-check-box-group :check-box-object="chkbox" :on-change="onChangeCheckbox" />
+          <BaseCheckBoxGroup :check-box-object="chkbox" :on-change="handleChangeCheckBoxEvent" />
         </div>
         <v-divider />
 
         <v-list-item>
           <v-container>
-            <!-- review title -->
+            <!-- 리뷰 제목 -->
             <v-row>
-              <v-textarea v-bind="titleProps" v-model="title" />
+              <v-textarea v-bind="vuetifyReviewTitle" v-model="title" />
             </v-row>
-            <!-- review comments -->
+            <!-- 리뷰 내용 -->
             <v-row>
-              <v-textarea v-bind="textAreaProps" v-model="comments" />
+              <v-textarea v-bind="vuetifyReviewContent" v-model="comments" />
             </v-row>
           </v-container>
         </v-list-item>
 
+        <!-- 리뷰 등록하기 -->
         <v-card-actions>
           <v-spacer />
           <div>
-            <base-button :btn-props="submitBtnProps" :on-click="closeDiag" :button="'닫기'" />
-            <base-button :btn-props="submitBtnProps" :on-click="onSubmit" :button="'리뷰 등록하기'" />
+            <BaseButton :btn-props="vuetifySubmitButton" :on-click="closeDialog" :button="'닫기'" />
+            <BaseButton :btn-props="vuetifySubmitButton" :on-click="onSubmit" :button="'리뷰 등록하기'" />
           </div>
         </v-card-actions>
       </v-card>
@@ -75,7 +77,7 @@ export default {
   },
 
   data: () => ({
-    chkBoxes: [
+    checkBoxes: [
       {
         name: "kindness",
         select: null,
@@ -114,45 +116,45 @@ export default {
     dialog: false,
     title: "",
     comments: "",
-    // Vuetify
+
     btnStyl: {
       margin: "34px 0",
     },
-    dialogProps: {
+    vuetifyDialog: {
       persistent: true,
       "max-width": "700px",
     },
-    btnProps: {
+    vuetifyButton: {
       color: "deep-orange",
       outlined: true,
       rounded: true,
     },
-    icon: "fas fa-edit",
-    iconProps: {
+    reviewButtonIcon: "fas fa-edit",
+    vuetifyButtonIcon: {
       left: true,
     },
-    textProp: {
+    vuetifyRatingText: {
       class: "grey--text text-caption mr-2",
     },
-    starProps: {
+    vuetifyRating: {
       size: 18,
       color: "amber",
       dense: true,
       "half-increments": true,
     },
-    titleProps: {
+    vuetifyReviewTitle: {
       filled: true,
       class: "mt-4",
       rows: "1",
       label: "한줄 요약을 남겨주세요",
       "row-height": "15",
     },
-    textAreaProps: {
+    vuetifyReviewContent: {
       filled: true,
       counter: true,
       label: "자유롭게 리뷰를 남겨주세요!",
     },
-    submitBtnProps: {
+    vuetifySubmitButton: {
       class: "ma-2",
       color: "deep-orange",
       outlined: true,
@@ -163,7 +165,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      estate: "GET_ESTATE",
+      agency: "GET_ESTATE",
       user: "GET_USER",
     }),
   },
@@ -171,21 +173,21 @@ export default {
   methods: {
     async onSubmit() {
       try {
-        const resp = await this.$api.review.get({ baseId: this.estate.id, subIds: [this.user.id] });
+        const resp = await this.$api.review.get({ baseId: this.agency.id, subIds: [this.user.id] });
         if (resp && resp.status === 204) {
           const current = new Date();
-          // Fix-me: Depeding on kakao profile, needed to decouple
+          // TODO: Depending on kakao profile, needed to decouple
           await this.$api.review.post({
-            baseId: this.estate.id,
+            baseId: this.agency.id,
             data: {
               userId: this.user.id,
               avatar: this.user.avatar,
               nickname: this.user.nickname,
               time: current.toLocaleDateString(),
               rating: this.rating,
-              kindness: this.chkBoxes[0].select,
-              price: this.chkBoxes[1].select,
-              contract: this.chkBoxes[2].select,
+              kindness: this.checkBoxes[0].select,
+              price: this.checkBoxes[1].select,
+              contract: this.checkBoxes[2].select,
               title: this.title,
               text: this.comments,
             },
@@ -197,14 +199,14 @@ export default {
       }
     },
 
-    onChangeCheckbox(name, newSelect) {
-      const index = this.chkBoxes.findIndex((chkBox) => {
+    handleChangeCheckBoxEvent(name, newSelect) {
+      const index = this.checkBoxes.findIndex((chkBox) => {
         return chkBox.name === name;
       });
-      this.chkBoxes[index].select = newSelect;
+      this.checkBoxes[index].select = newSelect;
     },
 
-    closeDiag() {
+    closeDialog() {
       this.dialog = false;
     },
 

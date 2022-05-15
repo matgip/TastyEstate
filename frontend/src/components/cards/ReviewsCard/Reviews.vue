@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="reviews_cancel_button_container">
+    <div class="reviews_header_container">
+      <h3>{{ agency.place_name }}</h3>
       <v-icon @click="onCloseCard()" v-bind="vuetifyCancelIcon">{{ cancelIcon }}</v-icon>
     </div>
 
@@ -292,9 +293,10 @@ export default {
 </script>
 
 <style>
-.reviews_cancel_button_container {
+.reviews_header_container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 
   margin: 20px 20px;
 }
