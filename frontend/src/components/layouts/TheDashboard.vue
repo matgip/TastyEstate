@@ -1,20 +1,22 @@
 <template>
   <div>
     <div>
-      <Search @scroll-wide="wideScroll" />
+      <Search @scroll-up="scrollUp" />
     </div>
 
     <div id="dashboard_container">
       <header>
         <v-btn id="dashboard_scroll_button" @click="scrollToggle" block>
-          <v-icon>fa-solid fa-arrow-up</v-icon>
+          <v-icon v-if="!isScrollUp">fa-solid fa-arrow-up</v-icon>
+          <v-icon v-else>fa-solid fa-arrow-down</v-icon>
         </v-btn>
       </header>
 
       <section>
-        <div v-if="!agency.id && agencies.length === 0" id="dashboard_no-result_container">
+        <div id="dashboard_no-result_container" v-if="!agency.id && agencies.length === 0">
           <NoContent />
         </div>
+
         <template>
           <Agency v-if="agency.id" :agency="agency" :key="agency.id" />
         </template>
@@ -35,8 +37,6 @@
 </template>
 
 <script>
-// import Masthead from "@/components/layouts/TheMasthead.vue";
-
 import Search from "@/components/cards/SearchBar.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
 import NoContent from "@/components/cards/NoContentCard/NoContent.vue";
@@ -45,10 +45,15 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    // Masthead,
     Search,
     Agency,
     NoContent,
+  },
+
+  data() {
+    return {
+      isScrollUp: false,
+    };
   },
 
   computed: {
@@ -72,13 +77,17 @@ export default {
     scrollToggle() {
       const item = document.getElementById("dashboard_container");
       item.classList.toggle("scrolled");
+
+      if (item.classList.length === 0) this.isScrollUp = false;
+      else this.isScrollUp = true;
     },
 
-    wideScroll() {
+    scrollUp() {
       const item = document.getElementById("dashboard_container");
-      if (item.classList.length === 0) {
-        item.classList.toggle("scrolled");
-      }
+      if (item.classList.length !== 0) return;
+
+      item.classList.toggle("scrolled");
+      this.isScrollUp = true;
     },
   },
 };

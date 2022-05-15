@@ -1,17 +1,17 @@
 <!-- @format -->
 
 <template>
-  <div data-app class="search-group">
+  <div data-app class="search_group">
     <v-toolbar color="deep-orange">
       <v-autocomplete
-        v-bind="searchProps"
+        v-bind="vuetifySearch"
         v-model="select"
         :items="agencies"
         :loading="isLoading"
         :search-input.sync="search"
         @click:clear="clear"
       >
-        <!-- no selected -->
+        <!-- Not selected -->
         <template v-slot:no-data>
           <v-list-item>
             <v-list-item-title>
@@ -19,14 +19,16 @@
             </v-list-item-title>
           </v-list-item>
         </template>
-        <!-- agency selected -->
+
+        <!-- 선택된 부동산 -->
         <template v-slot:selection="{ attr, on, item, selected }">
-          <v-chip v-bind="[chipSelectedProps, attr]" :input-value="selected" v-on="on">
-            <v-icon v-bind="iconSelectedProps">{{ iconSelected }}</v-icon>
+          <v-chip v-bind="[vuetifyChipSelected, attr]" :input-value="selected" v-on="on">
+            <v-icon v-bind="vuetifyIconSelected">{{ iconSelected }}</v-icon>
             <span v-text="item.place_name" />
           </v-chip>
         </template>
-        <!-- agencies searched -->
+
+        <!-- 부동산 검색 결과 -->
         <template v-slot:item="{ item }">
           <v-list-item-content>
             <v-list-item-title v-text="item.place_name"></v-list-item-title>
@@ -66,8 +68,7 @@ export default {
       radius: 300,
     },
 
-    // Vuetify CSS Style & Props
-    searchProps: {
+    vuetifySearch: {
       solo: true,
       chips: true,
       clearable: true,
@@ -80,13 +81,12 @@ export default {
       "append-icon": "fas fa-search",
       "item-text": "place_name",
     },
-
-    iconSelectedProps: {
+    vuetifyIconSelected: {
       left: true,
       small: true,
     },
     iconSelected: "fas fa-map-marked-alt",
-    chipSelectedProps: {
+    vuetifyChipSelected: {
       small: true,
       class: "white--text",
       color: "deep-orange",
@@ -124,7 +124,7 @@ export default {
       try {
         await this.$_searchEstate(query);
         await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this.$_comparator });
-        this.$emit("scroll-wide");
+        this.$emit("scroll-up");
       } catch (err) {
         console.error(err);
       }
@@ -217,7 +217,7 @@ export default {
 </script>
 
 <style scoped>
-.search-group {
+.search_group {
   background-color: white;
   border-bottom: 1px solid #c0c0c0;
 }
