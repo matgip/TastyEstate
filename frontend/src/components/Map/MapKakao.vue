@@ -53,6 +53,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      user: "GET_USER",
       loginVisibleFlag: "GET_LOGIN_VISIBLE_FLAG",
       reviewVisibleFlag: "GET_REVIEW_VISIBLE_FLAG",
     }),
@@ -69,21 +70,29 @@ export default {
       this.closeLogin();
     },
 
-    launchLogin() {
-      this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", true);
-    },
-
     closeLogin() {
       this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", false);
-    },
-
-    closeReviews() {
-      this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", false);
     },
 
     $_invertUserLoginBtnColor() {
       const userLoginBtn = document.querySelector(".user_login");
       userLoginBtn.classList.add("invert");
+    },
+
+    launchLogin() {
+      if (this.$_isLoggedIn() === true) {
+        alert("이미 로그인 되었습니다.");
+        return;
+      }
+      this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", true);
+    },
+
+    $_isLoggedIn() {
+      return this.user != null;
+    },
+
+    closeReviews() {
+      this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", false);
     },
   },
 };
