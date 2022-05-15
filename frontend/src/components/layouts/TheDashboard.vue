@@ -25,7 +25,7 @@
 
         <div v-if="agencies.length !== 0">
           <div class="dashboard_agencies_title">
-            <h3>검색 결과</h3>
+            <h3>근처 베스트 부동산</h3>
           </div>
           <template v-for="agency in agencies">
             <Agency :agency="agency" :key="agency.id" />
