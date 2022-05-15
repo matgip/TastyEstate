@@ -105,7 +105,7 @@ export default {
   background-color: white;
   border: 10px solid #e0e0e0;
   height: 100%;
-  overflow-y: hidden;
+  overflow-y: overlay;
 }
 
 .dashboard_agencies_title {
