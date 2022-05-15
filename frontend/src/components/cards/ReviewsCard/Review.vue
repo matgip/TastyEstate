@@ -5,8 +5,8 @@
 
       <v-card-text>
         <div>
-          <!-- 리뷰 user 정보 -->
-          <v-avatar v-bind="avatarProps">
+          <!-- User 정보 -->
+          <v-avatar v-bind="vuetifyAvatar">
             <img v-if="review.avatar" :src="review.avatar" />
             <v-icon v-else v-text="avatarIcon" />
           </v-avatar>
@@ -21,17 +21,18 @@
         <v-row align="center">
           <!-- 리뷰 평점 -->
           <div>
-            <v-row v-bind="rowProps">
-              <v-rating v-bind="ratingProps" :value="review.rating" />
-              <div v-bind="textProps">({{ review.rating }})</div>
+            <v-row v-bind="vuetifyRow">
+              <v-rating v-bind="vuetifyRating" :value="review.rating" />
+              <div v-bind="vuetifyRatingText">({{ review.rating }})</div>
             </v-row>
           </div>
+
           <!-- 리뷰 '좋아요' 개수 -->
           <div>
             <BaseButton
-              :btn-props="btnProps"
-              :icon-props="iconProps"
-              :on-click="sendLikeEvent"
+              :btn-props="vuetifyButton"
+              :icon-props="vuetifyButtonIcon"
+              :on-click="handleEventLike"
               :icon="'fas fa-thumbs-up'"
               :button="review.likes"
             />
@@ -63,32 +64,31 @@ export default {
   },
 
   data: () => ({
-    // Vuetify
-    avatarProps: {
+    vuetifyAvatar: {
       size: "36px",
     },
     avatarIcon: "fas fa-user-large",
-    rowProps: {
+    vuetifyRow: {
       align: "center",
       class: "ml-2",
     },
-    ratingProps: {
+    vuetifyRating: {
       size: 18,
       color: "amber",
       dense: true,
       readonly: true,
       "half-increments": true,
     },
-    textProps: {
+    vuetifyRatingText: {
       class: "grey--text mx-2",
     },
-    btnProps: {
+    vuetifyButton: {
       class: "ml-4",
       depressed: true,
       label: true,
       small: true,
     },
-    iconProps: {
+    vuetifyButtonIcon: {
       left: true,
       color: "deep-orange",
     },
@@ -107,7 +107,7 @@ export default {
   },
 
   methods: {
-    sendLikeEvent() {
+    handleEventLike() {
       this.$emit("like-review", this.review.userId);
     },
   },
