@@ -194,11 +194,10 @@ span i {
   position: relative;
 
   top: 2.5%;
-  width: 60%;
+  width: 68%;
 
   margin: 20px auto;
 
-  overflow: auto;
   z-index: 100;
 
   background-color: white;
