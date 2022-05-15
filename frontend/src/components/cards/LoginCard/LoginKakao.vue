@@ -19,7 +19,7 @@ export default {
   },
 
   data: () => ({
-    // Vuetify CSS Style & Props
+    // Vuetify CSS props
     btnProps: {
       color: "yellow lighten-1",
     },
@@ -28,12 +28,23 @@ export default {
     },
   }),
 
+  props: {
+    onLoginSuccessHandler: {
+      type: Function,
+      required: true,
+      validator: function(func) {
+        return func !== null;
+      },
+    },
+  },
+
   methods: {
     async handleKakaoLogin() {
-      localStorage.setItem("redirect_location", "/");
+      // localStorage.setItem("redirect_location", "/");
       // await loginController.login("kakao");
       await this.$store.dispatch("login", "kakao");
-      this.$router.push({ path: localStorage.getItem("redirect_location") });
+      this.onLoginSuccessHandler();
+      // this.$router.push({ path: localStorage.getItem("redirect_location") });
     },
   },
 };

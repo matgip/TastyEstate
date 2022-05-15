@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div>
+    <!-- <div>
       <Masthead />
-    </div>
+    </div> -->
 
     <div>
       <Search @scroll-wide="wideScroll" />
@@ -10,7 +10,7 @@
 
     <div id="dashboard__info-container">
       <header>
-        <v-btn id="dashboard__scroll-btn" @click="scrollTest" block>
+        <v-btn id="dashboard__scroll-btn" @click="scrollToggle" block>
           <v-icon>fa-solid fa-arrow-up</v-icon>
         </v-btn>
       </header>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Masthead from "@/components/layouts/TheMasthead.vue";
+// import Masthead from "@/components/layouts/TheMasthead.vue";
 
 import Search from "@/components/cards/SearchBar.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
@@ -45,7 +45,7 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    Masthead,
+    // Masthead,
     Search,
     Agency,
     NoContent,
@@ -69,7 +69,7 @@ export default {
   },
 
   methods: {
-    scrollTest() {
+    scrollToggle() {
       const item = document.getElementById("dashboard__info-container");
       item.classList.toggle("scrolled");
     },

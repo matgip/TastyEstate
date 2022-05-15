@@ -13,16 +13,19 @@
 import Dashboard from "./components/layouts/TheDashboard.vue";
 export default {
   name: "App",
+
+  components: {
+    Dashboard,
+  },
+
   async mounted() {
     await this.$store.dispatch("fetchUser");
   },
+
   methods: {
     isNotInLoginPage() {
       return this.$router.history.current["path"] !== "/login";
     },
-  },
-  components: {
-    Dashboard,
   },
 };
 </script>

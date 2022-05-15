@@ -51,7 +51,7 @@ export default {
 
   data: () => ({
     images: [1, 2, 3, 4, 5, 6],
-    // Vuetify CSS Style & Props
+    // Vuetify CSS props
     cruslProps: {
       "hide-delimiters": true,
       "show-arrows-on-hover": true,
@@ -96,14 +96,10 @@ export default {
     gotoReviews() {
       if (this.isloggedIn() === false) {
         alert("로그인 후, 사용 가능합니다.");
-        this.gotoLogin();
+        this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", true);
         return;
       }
       this.$router.push({ path: "/reviews" });
-    },
-
-    gotoLogin() {
-      this.$router.push({ path: "/login" });
     },
 
     isloggedIn() {

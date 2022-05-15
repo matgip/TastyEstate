@@ -38,7 +38,7 @@
       <template v-slot:extension>
         <v-tabs :hide-slider="!select" color="white" slider-color="white">
           <v-tab @click="onSortByRating">
-            근처 베스트 부동산
+            근처 부동산
           </v-tab>
         </v-tabs>
       </template>
