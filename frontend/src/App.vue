@@ -2,8 +2,8 @@
   <div>
     <v-app>
       <v-main>
-        <Dashboard class="main__dashboard-container" />
-        <router-view :key="$route.fullPath" class="main__main-container"></router-view>
+        <Dashboard class="main_dashboard_container" />
+        <router-view :key="$route.fullPath" class="main_router_container"></router-view>
       </v-main>
     </v-app>
   </div>
@@ -27,25 +27,25 @@ export default {
 </script>
 
 <style scope>
-.main__dashboard-container {
+.main_dashboard_container {
   position: absolute;
   z-index: 20;
   overflow-y: hidden;
   width: var(--dashboard-width);
   height: 100%;
 }
-.main__main-container {
+.main_router_container {
   margin-left: var(--dashboard-width);
   height: 100%;
 }
 
 @media screen and (max-width: 768px) {
-  .main__dashboard-container {
+  .main_dashboard_container {
     width: 100%;
     height: fit-content;
   }
 
-  .main__main-container {
+  .main_router_container {
     margin-left: 0;
   }
 }
