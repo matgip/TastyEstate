@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" v-bind="vuetifyDialog">
       <template #activator="{ on }">
-        <v-btn :style="btnStyl" v-bind="vuetifyButton" v-on="on">
+        <v-btn :style="buttonCSS" v-bind="vuetifyButton" v-on="on">
           <v-icon v-bind="vuetifyButtonIcon">
             {{ fontAwesomeEdit }}
           </v-icon>
@@ -117,7 +117,7 @@ export default {
     title: "",
     comments: "",
 
-    btnStyl: {
+    buttonCSS: {
       margin: "34px 0",
     },
     vuetifyDialog: {

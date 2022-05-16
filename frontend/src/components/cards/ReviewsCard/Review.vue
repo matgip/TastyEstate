@@ -1,8 +1,6 @@
 <template>
   <div>
     <v-card>
-      <v-divider />
-
       <v-card-text>
         <div>
           <!-- User 정보 -->
