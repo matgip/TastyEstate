@@ -22,11 +22,7 @@ export default {
     await this.$store.dispatch("fetchUser");
   },
 
-  methods: {
-    isNotInLoginPage() {
-      return this.$router.history.current["path"] !== "/login";
-    },
-  },
+  methods: {},
 };
 </script>
 
