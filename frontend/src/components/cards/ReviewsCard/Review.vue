@@ -8,7 +8,7 @@
           <!-- User 정보 -->
           <v-avatar v-bind="vuetifyAvatar">
             <img v-if="review.avatar" :src="review.avatar" />
-            <v-icon v-else v-text="avatarIcon" />
+            <v-icon v-else v-text="fontAwesomeAvatar" />
           </v-avatar>
 
           {{ review.nickname }}
@@ -67,7 +67,7 @@ export default {
     vuetifyAvatar: {
       size: "36px",
     },
-    avatarIcon: "fas fa-user-large",
+    fontAwesomeAvatar: "fas fa-user-large",
     vuetifyRow: {
       align: "center",
       class: "ml-2",

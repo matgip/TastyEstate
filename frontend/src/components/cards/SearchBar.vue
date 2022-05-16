@@ -23,7 +23,7 @@
         <!-- 선택된 부동산 -->
         <template v-slot:selection="{ attr, on, item, selected }">
           <v-chip v-bind="[vuetifyChipSelected, attr]" :input-value="selected" v-on="on">
-            <v-icon v-bind="vuetifyIconSelected">{{ iconSelected }}</v-icon>
+            <v-icon v-bind="vuetifyIconSelected">{{ fontAwesomeMap }}</v-icon>
             <span v-text="item.place_name" />
           </v-chip>
         </template>
@@ -89,7 +89,7 @@ export default {
       left: true,
       small: true,
     },
-    iconSelected: "fas fa-map-marked-alt",
+    fontAwesomeMap: "fas fa-map-marked-alt",
     vuetifyChipSelected: {
       small: true,
       class: "white--text",

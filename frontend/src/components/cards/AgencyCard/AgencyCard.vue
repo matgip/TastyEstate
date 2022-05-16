@@ -26,8 +26,12 @@
       </div>
       <!-- 부동산 정보(위치, 전화번호) -->
       <div class="agency_info_container">
-        <p><v-icon v-bind="vuetifyIcon">fas fa-map-marker-alt</v-icon> {{ agency.address_name }}</p>
-        <p><v-icon v-bind="vuetifyIcon">fas fa-book</v-icon> {{ agency.phone }}</p>
+        <p>
+          <v-icon v-bind="vuetifyIcon">{{ fontAwesomeMarker }}</v-icon> {{ agency.address_name }}
+        </p>
+        <p>
+          <v-icon v-bind="vuetifyIcon">{{ fontAwesomeBook }}</v-icon> {{ agency.phone }}
+        </p>
       </div>
 
       <div class="divider" />
@@ -89,6 +93,8 @@ export default {
       text: true,
       small: true,
     },
+    fontAwesomeMarker: "fas fa-map-marker-alt",
+    fontAwesomeBook: "fas fa-book",
   }),
 
   computed: {

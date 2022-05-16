@@ -4,7 +4,7 @@
       <template #activator="{ on }">
         <v-btn :style="btnStyl" v-bind="vuetifyButton" v-on="on">
           <v-icon v-bind="vuetifyButtonIcon">
-            {{ reviewButtonIcon }}
+            {{ fontAwesomeEdit }}
           </v-icon>
           리뷰 작성
         </v-btn>
@@ -129,7 +129,7 @@ export default {
       outlined: true,
       rounded: true,
     },
-    reviewButtonIcon: "fas fa-edit",
+    fontAwesomeEdit: "fas fa-edit",
     vuetifyButtonIcon: {
       left: true,
     },

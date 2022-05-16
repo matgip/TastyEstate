@@ -7,8 +7,8 @@
     <div id="dashboard_container">
       <header>
         <v-btn id="dashboard_scroll_button" @click="scrollToggle" block>
-          <v-icon v-if="!isScrollUp">fa-solid fa-arrow-up</v-icon>
-          <v-icon v-else>fa-solid fa-arrow-down</v-icon>
+          <v-icon v-if="!isScrollUp">{{ fontAwesomeArrowUp }}</v-icon>
+          <v-icon v-else>{{ fontAwesomeArrowDown }}</v-icon>
         </v-btn>
       </header>
 
@@ -53,6 +53,8 @@ export default {
   data() {
     return {
       isScrollUp: false,
+      fontAwesomeArrowUp: "fa-solid fa-arrow-up",
+      fontAwesomeArrowDown: "fa-solid fa-arrow-down",
     };
   },
 

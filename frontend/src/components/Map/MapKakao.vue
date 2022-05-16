@@ -43,6 +43,9 @@ export default {
     kakaoMap.setOnClickAgencyListener(this.onClickAgency);
 
     this.$store.commit("UPDATE_MAP", this.map);
+    if (this.$_isLoggedIn() === true) {
+      this.$_invertUserLoginBtnColor();
+    }
   },
 
   data() {
