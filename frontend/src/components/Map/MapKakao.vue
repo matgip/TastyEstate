@@ -64,7 +64,6 @@ export default {
 
   methods: {
     onClickAgency(place) {
-      console.log("on click");
       this.$store.dispatch("updateAgency", place);
       this.$store.commit("CLEAR_ESTATES");
     },
