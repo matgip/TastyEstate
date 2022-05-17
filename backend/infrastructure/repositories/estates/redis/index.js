@@ -7,17 +7,32 @@ module.exports = class extends EstateRepository {
     super();
   }
 
-  async persist(estateEntity) {
-    const { id, coordinate, placeName, phone, addressName } = estateEntity;
+  async persist(entity) {
+    const { id, y, x, place_name, phone, address_name, road_address_name } = entity;
+    console.log("estates persist : " + id + " (" + y + ", " + x + ") " + place_name + " : " + address_name)
     await client
       .multi()
       .HSET(`estates:${id}`, "id", id)
-      .HSET(`estates:${id}`, "y", coordinate.y)
-      .HSET(`estates:${id}`, "x", coordinate.x)
+      .HSET(`estates:${id}`, "y", y)
+      .HSET(`estates:${id}`, "x", x)
       .HSET(`estates:${id}`, "phone", phone)
-      .HSET(`estates:${id}`, "place_name", placeName)
-      .HSET(`estates:${id}`, "address_name", addressName)
+      .HSET(`estates:${id}`, "place_name", place_name)
+      .HSET(`estates:${id}`, "address_name", address_name)
+      .HSET(`estates:${id}`, "road_address_name", road_address_name)
+      .geoAdd(`estates`, {
+        longitude: x,
+        latitude: y,
+        member: id
+      })
       .exec();
+  }
+
+  async searchByRadius(lat, lng, radius) {
+    const ids = await client.GEOSEARCH("estates", { latitude: lat, longitude: lng }, { radius: radius, unit: "m" })
+    const estates = [];
+    for (let i = 0; i < ids.length; i++)
+      estates.push(await this.get(ids[i]));
+    return estates;
   }
 
   async get(estateId) {

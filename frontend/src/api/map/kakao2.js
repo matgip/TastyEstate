@@ -6,6 +6,8 @@ const SCAN_MIN_LEVEL = 4;
 const CLUSTER_MIN_LEVEL = 3;
 const SCANNED = 1;
 
+import agencyApi from "../agency";
+
 class KakaoMap {
   places = new Map();
   map = null;
@@ -49,12 +51,10 @@ class KakaoMap {
     this.normalImage = new kakao.maps.MarkerImage(normalMarkerImage, imgMarkerSize);
     this.selectedImage = new kakao.maps.MarkerImage(selectedMarkerImage, imgMarkerSize);
 
-    kakao.maps.event.addListener(this.map, "zoom_changed", this.scan);
-    kakao.maps.event.addListener(this.map, "dragend", this.scan);
-    kakao.maps.event.addListener(this.map, "center_changed", this.scan);
+    kakao.maps.event.addListener(this.map, "idle", this.scan);
   };
 
-  scan = () => {
+  scan = async () => {
     const lvl = this.map.getLevel();
     if (lvl >= this.SCAN_MIN_LEVEL) return;
 
@@ -66,7 +66,11 @@ class KakaoMap {
         const y = (lat + i / 100).toFixed(2);
         if (this._isScanned(y, x)) continue;
         this._cacheLatLng(y, x);
-        this.placeSearch.categorySearch("AG2", this._callback, { x: x, y: y, radius: 300 }); // redius 710 will cover all boundary
+        // this.placeSearch.categorySearch("AG2", this._callback, { x: x, y: y, radius: 300 }); // redius 710 will cover all boundary
+        const places = await agencyApi.searchByCenter(x, y);
+        for (let p of places) {
+          this.addMarker(p);
+        }
       }
     }
   };
@@ -100,15 +104,6 @@ class KakaoMap {
     this.cachedLatLng[lat] ??= new Array();
     this.cachedLatLng[lat][lng] = SCANNED;
   }
-
-  _callback = (places, status, pagination) => {
-    if (status === kakao.maps.services.Status.OK) {
-      for (let p of places) {
-        this.addMarker(p);
-      }
-    }
-    if (pagination.hasNextPage) pagination.nextPage();
-  };
 
   zoomIn = () => {
     this.map.setLevel(this.map.getLevel() - 1);
