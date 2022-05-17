@@ -20,16 +20,16 @@ const GET_AGENCY = async (estateId) => {
   return await $api.estates.get(estateId);
 };
 
-const SAVE_AGENCY = async (estate) => {
-  const post = {
-    id: estate.id,
-    coordinate: { y: estate.y, x: estate.x },
-    phone: estate.phone,
-    placeName: estate.place_name,
-    addressName: estate.address_name,
-  };
-  await $api.estates.post(post);
-};
+// const SAVE_AGENCY = async (estate) => {
+//   const post = {
+//     id: estate.id,
+//     coordinate: { y: estate.y, x: estate.x },
+//     phone: estate.phone,
+//     placeName: estate.place_name,
+//     addressName: estate.address_name,
+//   };
+//   await $api.estates.post(post);
+// };
 
 const agencyStore = {
   state: {
@@ -70,7 +70,7 @@ const agencyStore = {
         return;
       }
       // Not saved on database...
-      await SAVE_AGENCY(agency);
+      // await SAVE_AGENCY(agency);
       // Agency info got from Kakao API does not have like & stars
       agency.likes = 0;
       agency.stars = 0.0;
@@ -91,7 +91,7 @@ const agencyStore = {
             }
 
             // Not saved on database...
-            await SAVE_AGENCY(agency);
+            // await SAVE_AGENCY(agency);
             // Agency info got from Kakao API does not have like & stars
             agency.likes = 0;
             agency.stars = 0.0;
