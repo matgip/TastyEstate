@@ -183,6 +183,8 @@ div.user_info_container {
 }
 
 .list_service li {
+  cursor: pointer;
+
   font-size: 16px;
 
   margin-top: 20px;
