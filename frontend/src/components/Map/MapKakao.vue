@@ -22,7 +22,7 @@
 
 <script>
 import Login from "@/components/cards/LoginCard/Login.vue";
-import kakaoMap from "@/api/map/kakao2";
+import kakaoMap from "@/api/map/kakao";
 import { mapGetters } from "vuex";
 
 export default {

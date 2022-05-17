@@ -59,7 +59,7 @@
 import axios from "axios";
 import { mapGetters } from "vuex";
 
-import kakaoMap from "@/api/map/kakao2";
+import kakaoMap from "@/api/map/kakao";
 
 export default {
   data: () => ({

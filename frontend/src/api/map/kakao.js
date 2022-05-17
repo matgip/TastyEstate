@@ -1,134 +1,64 @@
-import loadScriptOnce from "load-script-once";
-import store from "@/store";
+const normalMarkerImage = require("@/assets/images/marker_selected.png");
+const selectedMarkerImage = require("@/assets/images/marker.png");
+const imgSize = { width: 40, height: 45 };
 
-class MapKakao {
-  SCANNED = 1;
-  SCAN_MIN_LVL = 4;
-  CLSTR_MIN_LVL = 3;
+const SCAN_MIN_LEVEL = 4;
+const CLUSTER_MIN_LEVEL = 3;
+const SCANNED = 1;
 
-  static cachedMaps = {};
-  static daum = null;
-  static cachedLatLng = null;
-  static cachedPlaces = null;
+import agencyApi from "../agency";
 
-  constructor() {
-    this.map = null;
-    this.placeSrch = null;
-    this.markerClstr = null;
-    this.iw = null;
-    this.imgSelected = null;
-    this.imgMarker = null;
-    this.imgMarkerSize = null;
-    MapKakao.initialize();
-  }
+class KakaoMap {
+  places = new Map();
+  map = null;
 
-  static initialize() {
-    return new Promise((resolve, reject) => {
-      loadScriptOnce(
-        `${process.env.VUE_APP_MAP_LIB_URL}?autoload=false&appkey=${process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY}`,
-        (err) => {
-          if (err) return reject(err);
-          MapKakao.daum = window.daum;
-          MapKakao.cachedLatLng = window.cachedLatLng;
-          MapKakao.cachedPlaces = window.cachedPlaces;
-          MapKakao.daum.maps.load(() => resolve());
-        }
-      );
-    });
-  }
+  selectedMarker = null; // 클릭한 마커를 담을 변수
 
-  async mount(mapId, imgEntity) {
-    await MapKakao.initialize();
-
-    // Re-use map
-    if (MapKakao.cachedMaps[mapId]) {
-      const { map, ps, mc, iw, isz, im, is } = MapKakao.cachedMaps[mapId];
-      this.map = map;
-      this.placeSrch = ps;
-      this.markerClstr = mc;
-      this.iw = iw;
-      this.imgMarkerSize = isz;
-      this.imgMarker = im;
-      this.imgSelected = is;
-
-      const oElem = this.map.getNode();
-      const nElem = document.getElementById(mapId);
-      nElem.parentNode.replaceChild(oElem, nElem);
+  mount() {
+    if (window.kakao && window.kakao.maps) {
+      this.initMap();
     } else {
-      // Create map
-      this.map = new MapKakao.daum.maps.Map(document.getElementById(mapId), {
-        center: new MapKakao.daum.maps.LatLng(37.2579324408187, 127.059981890576),
-        level: this.SCAN_MIN_LVL,
-      });
-      this.placeSrch = new MapKakao.daum.maps.services.Places(this.map);
-      this.markerClstr = new MapKakao.daum.maps.MarkerClusterer({
-        map: this.map,
-        averageCenter: true,
-        minLevel: this.CLSTR_MIN_LVL,
-      });
-      const { imgMarker, imgSelected, imgSize } = imgEntity;
-      const { width, height } = imgSize;
-      this.imgMarkerSize = new MapKakao.daum.maps.Size(width, height);
-      this.imgMarker = new MapKakao.daum.maps.MarkerImage(imgMarker, this.imgMarkerSize);
-      this.imgSelected = new MapKakao.daum.maps.MarkerImage(imgSelected, this.imgMarkerSize);
-
-      this.iw = new MapKakao.daum.maps.InfoWindow({ zIndex: 1 });
-
-      MapKakao.daum.maps.event.addListener(this.map, "dragend", this.scan.bind(this));
-      MapKakao.daum.maps.event.addListener(this.map, "zoom_changed", this.scan.bind(this));
-
-      MapKakao.cachedMaps[mapId] = {
-        map: this.map,
-        ps: this.placeSrch,
-        mc: this.markerClstr,
-        iw: this.iw,
-        isz: this.imgMarkerSize,
-        im: this.imgMarker,
-        is: this.imgSelected,
-      };
+      const script = document.createElement("script");
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = `${process.env.VUE_APP_MAP_LIB_URL}?autoload=false&appkey=${process.env.VUE_APP_KAKAO_JAVASCRIPT_KEY}&libraries=services,clusterer,drawing`;
+      document.head.appendChild(script);
     }
+
     return this;
   }
 
-  addMarker(markerEntity) {
-    const { place, isSelected } = markerEntity;
-    let marker = this._getCachedMarker(place);
-    if (!marker) {
-      marker = new MapKakao.daum.maps.Marker({
-        position: new MapKakao.daum.maps.LatLng(place.y, place.x),
-      });
-      this.markerClstr.addMarker(marker);
-    }
-    if (isSelected === true) {
-      marker.setImage(this.imgSelected);
-      this.selectedMarker = marker;
-      this._showInfoWindowOnMap(marker, place.place_name);
-    } else {
-      marker.setImage(this.imgMarker);
-    }
-    return marker;
-  }
+  initMap = () => {
+    const container = document.getElementById("mapview");
+    const options = {
+      center: new kakao.maps.LatLng(37.2579324408187, 127.059981890576),
+      level: SCAN_MIN_LEVEL,
+    };
 
-  onMarkerClicked(marker, agency) {
-    if (this._getCachedMarker(agency)) {
-      // Bug fix: Do not add on-click listener if already added
-      return;
-    }
-    MapKakao.daum.maps.event.addListener(marker, "click", async () => {
-      // Update selected agency
-      await store.dispatch("updateAgency", agency);
-      store.commit("CLEAR_ESTATES");
-      this._showInfoWindowOnMap(marker, agency.place_name);
+    this.map = new kakao.maps.Map(container, options);
+
+    this.placeSearch = new kakao.maps.services.Places(this.map);
+    this.markerCluster = new kakao.maps.MarkerClusterer({
+      map: this.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+      averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+      minLevel: CLUSTER_MIN_LEVEL, // 클러스터 할 최소 지도 레벨
     });
-    this._cacheMarker(agency, marker);
-  }
 
-  // Divide the map into 9 equal squares and scan.
-  scan() {
+    // selectedInfowindow 는 오직 1개만 존재해야 되므로 this에 등록
+    this.selectedInfowindow = new kakao.maps.InfoWindow({});
+
+    const imgMarkerSize = new kakao.maps.Size(imgSize.width, imgSize.height);
+    this.normalImage = new kakao.maps.MarkerImage(normalMarkerImage, imgMarkerSize);
+    this.selectedImage = new kakao.maps.MarkerImage(selectedMarkerImage, imgMarkerSize);
+
+    kakao.maps.event.addListener(this.map, "idle", this.scan);
+  };
+
+  scan = async () => {
     const lvl = this.map.getLevel();
-    if (lvl >= this.SCAN_MIN_LVL) return;
+    if (lvl >= this.SCAN_MIN_LEVEL) return;
 
-    const { lat, lng } = this._getRoundedLatLng();
+    const { lat, lng } = this._getRoundedCenter();
 
     for (let i = -1; i < 2; i++) {
       for (let j = -1; j < 2; j++) {
@@ -136,24 +66,20 @@ class MapKakao {
         const y = (lat + i / 100).toFixed(2);
         if (this._isScanned(y, x)) continue;
         this._cacheLatLng(y, x);
-        this.placeSrch.categorySearch("AG2", this._callback.bind(this), { x, y, radius: 300 }); // redius 710 will cover all boundary
+        // this.placeSearch.categorySearch("AG2", this._callback, { x: x, y: y, radius: 300 }); // redius 710 will cover all boundary
+        const places = await agencyApi.searchByCenter(x, y);
+        for (let p of places) {
+          this.addMarker(p);
+        }
       }
     }
-  }
+  };
 
-  moveTo(lat, lng) {
-    const currentLvl = this.map.getLevel();
-    const latlng = new MapKakao.daum.maps.LatLng(lat, lng);
-    if (currentLvl > this.CLSTR_MIN_LVL) this.map.setLevel(this.CLSTR_MIN_LVL);
-    this.map.setCenter(latlng);
-  }
-
-  zoomIn() {
-    this.map.setLevel(this.map.getLevel() - 1);
-  }
-
-  zoomOut() {
-    this.map.setLevel(this.map.getLevel() + 1);
+  PinPlace(place) {
+    this.addMarker(place);
+    const placeCached = this.places.get(place.id);
+    this.map.panTo(new kakao.maps.LatLng(placeCached.y, placeCached.x));
+    kakao.maps.event.trigger(placeCached.marker, "click");
   }
 
   getCenter() {
@@ -161,22 +87,7 @@ class MapKakao {
     return { y: latlng.getLat(), x: latlng.getLng() };
   }
 
-  _showInfoWindowOnMap(marker, placeName) {
-    this.iw.setContent('<div style="padding:5px;font-size:12px;">' + placeName + "</div>");
-    this.iw.open(this.map, marker);
-  }
-
-  _callback(places, status, pagination) {
-    if (status === MapKakao.daum.maps.services.Status.OK) {
-      for (let p of places) {
-        const m = this.addMarker({ place: p, image: this.imgMarker, isSelected: false });
-        this.onMarkerClicked(m, p);
-      }
-    }
-    if (pagination.hasNextPage) pagination.nextPage();
-  }
-
-  _getRoundedLatLng() {
+  _getRoundedCenter() {
     const latlng = this.map.getCenter();
     const lat = Math.round(latlng.getLat() * 100) / 100;
     const lng = Math.round(latlng.getLng() * 100) / 100;
@@ -184,26 +95,71 @@ class MapKakao {
   }
 
   _isScanned(lat, lng) {
-    if (MapKakao.cachedLatLng === undefined) return false;
-    if (MapKakao.cachedLatLng[lat] === undefined) return false;
-    return MapKakao.cachedLatLng[lat][lng] === this.SCANNED;
+    if (this.cachedLatLng === undefined) return false;
+    if (this.cachedLatLng[lat] === undefined) return false;
+    return this.cachedLatLng[lat][lng] === SCANNED;
   }
-
   _cacheLatLng(lat, lng) {
-    MapKakao.cachedLatLng ??= new Array();
-    MapKakao.cachedLatLng[lat] ??= new Array();
-    MapKakao.cachedLatLng[lat][lng] = this.SCANNED;
+    this.cachedLatLng ??= new Array();
+    this.cachedLatLng[lat] ??= new Array();
+    this.cachedLatLng[lat][lng] = SCANNED;
   }
 
-  _cacheMarker(place, marker) {
-    MapKakao.cachedPlaces ??= new Map();
-    MapKakao.cachedPlaces.set(place.id, marker);
-  }
+  zoomIn = () => {
+    this.map.setLevel(this.map.getLevel() - 1);
+  };
 
-  _getCachedMarker(place) {
-    if (!MapKakao.cachedPlaces) return undefined;
-    return MapKakao.cachedPlaces.get(place.id);
+  zoomOut = () => {
+    this.map.setLevel(this.map.getLevel() + 1);
+  };
+
+  addMarker = (place) => {
+    if (this.places.has(place.id)) {
+      return;
+    }
+    const marker = new kakao.maps.Marker({
+      position: new kakao.maps.LatLng(place.y, place.x),
+      image: this.normalImage,
+      clickable: true,
+    });
+    this.markerCluster.addMarker(marker);
+
+    const mouseoverContent = '<div style="padding:2px;">' + place.place_name + "</div>";
+    const mouseoverInfowindow = new kakao.maps.InfoWindow({ content: mouseoverContent });
+
+    const selectedContent = '<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>";
+
+    kakao.maps.event.addListener(marker, "mouseover", () => {
+      if (!this.selectedMarker || this.selectedMarker !== marker) {
+        mouseoverInfowindow.open(this.map, marker);
+      }
+    });
+    kakao.maps.event.addListener(marker, "mouseout", () => {
+      mouseoverInfowindow.close();
+    });
+    kakao.maps.event.addListener(marker, "click", () => {
+      if (!this.selectedMarker || this.selectedMarker !== marker) {
+        !!this.selectedMarker && this.selectedMarker.setImage(this.normalImage);
+        marker.setImage(this.selectedImage);
+        mouseoverInfowindow.close();
+        this.selectedInfowindow.setContent(selectedContent);
+        this.selectedInfowindow.open(this.map, marker);
+        // TODO : notify click event to store
+        this.notifyAgencyClicked(place);
+        this.selectedMarker = marker;
+      }
+    });
+
+    place.marker = marker;
+    this.places.set(place.id, place);
+  };
+
+  setOnClickAgencyListener(listener) {
+    this.onClickAgency = listener;
+  }
+  notifyAgencyClicked(place) {
+    this.onClickAgency(place);
   }
 }
 
-export default MapKakao;
+export default new KakaoMap();
