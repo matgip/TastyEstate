@@ -5,14 +5,12 @@
     </div>
 
     <div id="dashboard_container">
-      <header>
+      <section>
         <v-btn id="dashboard_scroll_button" @click="scrollToggle" block>
           <v-icon v-if="!isScrollUp">{{ fontAwesomeArrowUp }}</v-icon>
           <v-icon v-else>{{ fontAwesomeArrowDown }}</v-icon>
         </v-btn>
-      </header>
 
-      <section>
         <template v-if="!agency.id && agencies.length === 0">
           <NoContent />
         </template>
@@ -159,7 +157,7 @@ export default {
 @media screen and (max-width: 768px) {
   #dashboard_container {
     position: fixed;
-    overflow-y: auto;
+    /* overflow-y: auto; */
 
     width: 100%;
     height: 100%;
