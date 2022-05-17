@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>
-      <Menu v-if="menuVisibleFlag" @close-menu-card="closeMenu()" />
+    <div id="dashboard_menu">
+      <Menu @close-menu-card="closeMenu()" />
     </div>
     <div>
       <Search @agencies-updated="handleAgencyUpdatedEvent()" @open-menu="openMenu()" />
@@ -70,7 +70,6 @@ export default {
     return {
       agencyPage: 1,
       maxAgenciesPerPage: 4,
-      menuVisibleFlag: false,
       reviewVisibleFlag: false,
       isScrollUp: false,
 
@@ -127,15 +126,17 @@ export default {
 
     handleAgencyUpdatedEvent() {
       this.scrollUp();
-      this.reviewVisibleFlag = false;
+      this.closeReviews();
     },
 
     // Menu
     closeMenu() {
-      this.menuVisibleFlag = false;
+      const item = document.getElementById("dashboard_menu");
+      item.classList.remove("open");
     },
     openMenu() {
-      this.menuVisibleFlag = true;
+      const item = document.getElementById("dashboard_menu");
+      item.classList.add("open");
     },
 
     // Reviews
@@ -150,6 +151,15 @@ export default {
 </script>
 
 <style scope>
+#dashboard_menu {
+  display: none;
+  /* left: -300px; */
+}
+
+#dashboard_menu.open {
+  display: block;
+}
+
 /* Searched agencies */
 #dashboard_container {
   background-color: white;
