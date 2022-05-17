@@ -117,9 +117,6 @@ export default {
     title: "",
     comments: "",
 
-    // buttonCSS: {
-    //   margin: "16px 0",
-    // },
     vuetifyDialog: {
       persistent: true,
       "max-width": "700px",

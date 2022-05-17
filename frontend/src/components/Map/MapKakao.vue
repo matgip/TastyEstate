@@ -1,10 +1,6 @@
 <template>
   <div id="mapview">
     <div class="map_button_container">
-      <!-- 유저 로그인 버튼 div -->
-      <div class="user_login radius_border">
-        <span @click="launchLogin()"><i class="fas fa-user"></i></span>
-      </div>
       <!-- 지도 확대, 축소 컨트롤 div -->
       <div class="custom_zoomcontrol radius_border">
         <span @click="map.zoomIn()"><i class="fa-solid fa-plus"></i></span>
@@ -35,9 +31,6 @@ export default {
     kakaoMap.setOnClickAgencyListener(this.onClickAgency);
 
     this.$store.commit("UPDATE_MAP", this.map);
-    if (this.$_isLoggedIn() === true) {
-      this.$_invertUserLoginBtnColor();
-    }
   },
 
   data() {
@@ -60,29 +53,11 @@ export default {
     },
 
     onLoginSuccess() {
-      this.$_invertUserLoginBtnColor();
       this.closeLogin();
     },
 
     closeLogin() {
       this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", false);
-    },
-
-    $_invertUserLoginBtnColor() {
-      const userLoginBtn = document.querySelector(".user_login");
-      userLoginBtn.classList.add("invert");
-    },
-
-    launchLogin() {
-      if (this.$_isLoggedIn() === true) {
-        alert("이미 로그인 되었습니다.");
-        return;
-      }
-      this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", true);
-    },
-
-    $_isLoggedIn() {
-      return this.user != null;
     },
   },
 };
@@ -117,28 +92,9 @@ span i {
   height: 100%;
 }
 
-.user_login {
-  position: relative;
-
-  top: 40px;
-  height: 40px;
-
-  z-index: 2;
-
-  background-color: white;
-}
-
-.user_login.invert {
-  background-color: #ff5722;
-}
-
-.user_login.invert span i {
-  color: white;
-}
-
 .custom_zoomcontrol {
   position: relative;
-  top: 50px;
+  top: 40px;
   height: 80px;
   z-index: 2;
   background-color: white;
@@ -181,32 +137,9 @@ span i {
   background-color: white;
 }
 
-.dimmed_layer_reviews_container {
-  position: relative;
-
-  top: 2.5%;
-  width: 68%;
-  height: 700px;
-
-  margin: 20px auto;
-
-  overflow: overlay;
-  z-index: 100;
-
-  background-color: white;
-}
-
 @media screen and (max-width: 768px) {
-  .user_login {
-    top: 130px;
-  }
-
   .custom_zoomcontrol {
-    top: 140px;
-  }
-
-  .dimmed_layer_reviews_container {
-    width: 100%;
+    top: 130px;
   }
 }
 </style>

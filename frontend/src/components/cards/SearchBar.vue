@@ -128,7 +128,7 @@ export default {
 
   methods: {
     onMenuButtonClick() {
-      console.log("TEST");
+      this.$emit("open-menu");
     },
 
     async onSortByRating() {

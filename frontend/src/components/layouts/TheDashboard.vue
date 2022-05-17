@@ -1,7 +1,10 @@
 <template>
   <div>
     <div>
-      <Search @agencies-updated="handleAgencyUpdatedEvent()" />
+      <Menu v-if="menuVisibleFlag" @close-menu-card="closeMenu()" />
+    </div>
+    <div>
+      <Search @agencies-updated="handleAgencyUpdatedEvent()" @open-menu="openMenu()" />
     </div>
 
     <div id="dashboard_container">
@@ -47,6 +50,7 @@
 
 <script>
 import Search from "@/components/cards/SearchBar.vue";
+import Menu from "@/components/cards/MenuCard/Menu.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
 import NoContent from "@/components/cards/NoContentCard/NoContent.vue";
 import Reviews from "@/components/cards/ReviewsCard/Reviews.vue";
@@ -56,6 +60,7 @@ import { mapGetters } from "vuex";
 export default {
   components: {
     Search,
+    Menu,
     Agency,
     NoContent,
     Reviews,
@@ -65,6 +70,7 @@ export default {
     return {
       agencyPage: 1,
       maxAgenciesPerPage: 4,
+      menuVisibleFlag: false,
       reviewVisibleFlag: false,
       isScrollUp: false,
 
@@ -122,6 +128,14 @@ export default {
     handleAgencyUpdatedEvent() {
       this.scrollUp();
       this.reviewVisibleFlag = false;
+    },
+
+    // Menu
+    closeMenu() {
+      this.menuVisibleFlag = false;
+    },
+    openMenu() {
+      this.menuVisibleFlag = true;
     },
 
     // Reviews
