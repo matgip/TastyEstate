@@ -34,9 +34,13 @@
           <div class="dashboard_agencies_title">
             <h3>근처 베스트 부동산</h3>
           </div>
-          <template v-for="agency in agencies">
+          <template
+            v-for="agency in agencies.slice((agencyPage - 1) * maxAgenciesPerPage, agencyPage * maxAgenciesPerPage)"
+          >
             <Agency :agency="agency" :key="agency.id" @open-reviews-card="openReviews()" />
           </template>
+
+          <v-pagination v-bind="vuetifyPagination" v-model="agencyPage" :length="agencyPageCount" :total-visible="5" />
         </div>
       </section>
     </div>
@@ -61,8 +65,16 @@ export default {
 
   data() {
     return {
+      agencyPage: 1,
+      maxAgenciesPerPage: 4,
       reviewVisibleFlag: false,
       isScrollUp: false,
+
+      vuetifyPagination: {
+        color: "deep-orange",
+        circle: true,
+        class: "mt-10",
+      },
       fontAwesomeArrowUp: "fa-solid fa-arrow-up",
       fontAwesomeArrowDown: "fa-solid fa-arrow-down",
     };
@@ -73,6 +85,12 @@ export default {
       agency: "GET_ESTATE",
       agencies: "GET_ESTATES",
     }),
+
+    agencyPageCount() {
+      const agenciesPageCnt = this.agencies.length;
+      if (agenciesPageCnt <= this.maxAgenciesPerPage) return 1;
+      return Math.trunc(agenciesPageCnt / this.maxAgenciesPerPage + 1);
+    },
   },
 
   watch: {
@@ -109,7 +127,6 @@ export default {
     },
     closeReviews() {
       this.reviewVisibleFlag = false;
-      // this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", false);
     },
   },
 };
