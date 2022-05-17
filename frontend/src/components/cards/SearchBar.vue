@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <template>
   <div data-app class="search_group">
     <v-toolbar color="deep-orange">
@@ -11,7 +9,7 @@
         :search-input.sync="search"
         @click:clear="clear"
       >
-        <!-- Not selected -->
+        <!-- 검색 결과 없음 -->
         <template v-slot:no-data>
           <v-list-item>
             <v-list-item-title>
@@ -37,6 +35,12 @@
         </template>
       </v-autocomplete>
 
+      <!-- Menu 버튼 -->
+      <v-btn icon @click="onMenuButtonClick()">
+        <v-icon>{{ fontAwesomeBar }}</v-icon>
+      </v-btn>
+
+      <!-- autocomplete tabs -->
       <template v-slot:extension>
         <v-tabs :hide-slider="!select" color="white" slider-color="white">
           <v-tab @click="onSortByRating">
@@ -89,12 +93,13 @@ export default {
       left: true,
       small: true,
     },
-    fontAwesomeMap: "fas fa-map-marked-alt",
     vuetifyChipSelected: {
       small: true,
       class: "white--text",
       color: "deep-orange",
     },
+    fontAwesomeMap: "fas fa-map-marked-alt",
+    fontAwesomeBar: "fas fa-bars",
   }),
 
   computed: {
@@ -114,7 +119,7 @@ export default {
       if (!keyword || keyword === this.select) return;
 
       try {
-        await this.$_searchEstate({ keyword, latLng: {} });
+        await this.$_searchAgency({ keyword, latLng: {} });
       } catch (err) {
         console.error(err);
       }
@@ -122,11 +127,15 @@ export default {
   },
 
   methods: {
+    onMenuButtonClick() {
+      console.log("TEST");
+    },
+
     async onSortByRating() {
       const query = this.$_createQuery();
 
       try {
-        await this.$_searchEstate(query);
+        await this.$_searchAgency(query);
         await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this.$_comparator });
         this.$emit("scroll-up");
       } catch (err) {
@@ -151,7 +160,7 @@ export default {
       return queryObj;
     },
 
-    async $_searchEstate(query) {
+    async $_searchAgency(query) {
       if (!this.$_isValid(query)) {
         throw Error("Invalid input");
       }

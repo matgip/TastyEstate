@@ -17,18 +17,25 @@
           <NoContent />
         </div>
 
-        <template>
-          <Agency v-if="agency.id" :agency="agency" :key="agency.id" />
+        <!-- 리뷰 card -->
+        <div v-if="reviewVisibleFlag">
+          <Reviews @close-reviews-card="closeReviews()" />
+        </div>
+
+        <!-- selected -->
+        <template v-if="!reviewVisibleFlag">
+          <Agency v-if="agency.id" :agency="agency" :key="agency.id" @open-reviews-card="openReviews()" />
         </template>
 
         <v-divider />
 
-        <div v-if="agencies.length !== 0">
+        <!-- 근처 부동산 -->
+        <div v-if="agencies.length !== 0 && !reviewVisibleFlag">
           <div class="dashboard_agencies_title">
             <h3>근처 베스트 부동산</h3>
           </div>
           <template v-for="agency in agencies">
-            <Agency :agency="agency" :key="agency.id" />
+            <Agency :agency="agency" :key="agency.id" @open-reviews-card="openReviews()" />
           </template>
         </div>
       </section>
@@ -40,6 +47,7 @@
 import Search from "@/components/cards/SearchBar.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
 import NoContent from "@/components/cards/NoContentCard/NoContent.vue";
+import Reviews from "@/components/cards/ReviewsCard/Reviews.vue";
 
 import { mapGetters } from "vuex";
 
@@ -48,10 +56,12 @@ export default {
     Search,
     Agency,
     NoContent,
+    Reviews,
   },
 
   data() {
     return {
+      reviewVisibleFlag: false,
       isScrollUp: false,
       fontAwesomeArrowUp: "fa-solid fa-arrow-up",
       fontAwesomeArrowDown: "fa-solid fa-arrow-down",
@@ -76,6 +86,7 @@ export default {
   },
 
   methods: {
+    // Scroll
     scrollToggle() {
       const item = document.getElementById("dashboard_container");
       item.classList.toggle("scrolled");
@@ -90,6 +101,15 @@ export default {
 
       item.classList.toggle("scrolled");
       this.isScrollUp = true;
+    },
+
+    // Reviews
+    openReviews() {
+      this.reviewVisibleFlag = true;
+    },
+    closeReviews() {
+      this.reviewVisibleFlag = false;
+      // this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", false);
     },
   },
 };
@@ -107,7 +127,7 @@ export default {
   background-color: white;
   border: 10px solid #e0e0e0;
   height: 100%;
-  overflow-y: overlay;
+  overflow-y: auto;
 }
 
 .dashboard_agencies_title {

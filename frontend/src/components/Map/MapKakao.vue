@@ -17,25 +17,17 @@
         <Login @close-login-card="closeLogin()" :on-login-success-handler="onLoginSuccess" />
       </div>
     </div>
-    <!-- 리뷰 card -->
-    <div v-if="reviewVisibleFlag" class="dimmed">
-      <div class="dimmed_layer_reviews_container radius_border">
-        <Reviews @close-reviews-card="closeReviews()" />
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import Login from "@/components/cards/LoginCard/Login.vue";
-import Reviews from "@/components/cards/ReviewsCard/Reviews.vue";
 import kakaoMap from "@/api/map/kakao2";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
     Login,
-    Reviews,
   },
 
   mounted() {
@@ -58,7 +50,6 @@ export default {
     ...mapGetters({
       user: "GET_USER",
       loginVisibleFlag: "GET_LOGIN_VISIBLE_FLAG",
-      reviewVisibleFlag: "GET_REVIEW_VISIBLE_FLAG",
     }),
   },
 
@@ -93,10 +84,6 @@ export default {
 
     $_isLoggedIn() {
       return this.user != null;
-    },
-
-    closeReviews() {
-      this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", false);
     },
   },
 };

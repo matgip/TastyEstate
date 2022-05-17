@@ -116,7 +116,7 @@ export default {
       }
 
       this.$store.commit("UPDATE_ESTATE", this.agency);
-      this.$store.commit("UPDATE_REVIEW_VISIBLE_FLAG", true);
+      this.$emit("open-reviews-card");
     },
 
     $_isloggedIn() {

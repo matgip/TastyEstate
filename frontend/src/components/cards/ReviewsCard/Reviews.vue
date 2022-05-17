@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="reviews_header_container">
+      <v-icon @click="onCloseCard()" v-bind="vuetifyLeftIcon">{{ fontAwesomeLeftArrow }}</v-icon>
       <h3>{{ agency.place_name }}</h3>
-      <v-icon @click="onCloseCard()" v-bind="vuetifyCancelIcon">{{ cancelIcon }}</v-icon>
     </div>
 
     <div class="reviews_statistics_container">
@@ -94,14 +94,17 @@ export default {
       like: [],
       time: [],
     },
-    cancelIcon: "fa-solid fa-xmark",
-    vuetifyCancelIcon: {
+
+    fontAwesomeLeftArrow: "fa fa-arrow-left",
+    vuetifyLeftIcon: {
       color: "black",
     },
+
     vuetifyButton: {
       color: "deep-orange",
       outlined: true,
       rounded: true,
+      small: true,
       class: "mr-2",
     },
     vuetifyIcon: {
@@ -309,7 +312,7 @@ export default {
   display: flex;
   align-items: center;
 
-  margin: 10px 18px;
+  margin: 16px 18px;
 }
 
 .reviews_tabs_container {
