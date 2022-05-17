@@ -137,7 +137,7 @@ export default {
       try {
         await this.$_searchAgency(query);
         await this.$store.dispatch("updateAgencies", { agencies: this.agencies, compareFn: this.$_comparator });
-        this.$emit("scroll-up");
+        this.$emit("agencies-updated");
       } catch (err) {
         console.error(err);
       }

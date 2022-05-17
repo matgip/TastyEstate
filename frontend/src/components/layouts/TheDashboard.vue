@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <Search @scroll-up="handleScrollUpEvent" />
+      <Search @agencies-updated="handleAgencyUpdatedEvent()" />
     </div>
 
     <div id="dashboard_container">
@@ -111,12 +111,17 @@ export default {
       else this.isScrollUp = true;
     },
 
-    handleScrollUpEvent() {
+    scrollUp() {
       const item = document.getElementById("dashboard_container");
       if (item.classList.length !== 0) return;
 
       item.classList.toggle("scrolled");
       this.isScrollUp = true;
+    },
+
+    handleAgencyUpdatedEvent() {
+      this.scrollUp();
+      this.reviewVisibleFlag = false;
     },
 
     // Reviews
