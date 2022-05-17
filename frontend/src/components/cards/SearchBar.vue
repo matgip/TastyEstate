@@ -132,7 +132,7 @@ export default {
     },
 
     async onSortByRating() {
-      const query = this.$_createQuery();
+      const query = this.$_makeQuery();
 
       try {
         await this.$_searchAgency(query);
@@ -147,17 +147,9 @@ export default {
       return a.stars < b.stars;
     },
 
-    $_createQuery() {
-      let queryObj;
-
-      if (this.agency.id) {
-        queryObj = { keyword: "", latLng: { y: this.agency.y, x: this.agency.x } };
-      } else {
-        const { y, x } = this.map.getCenter();
-        queryObj = { keyword: "", latLng: { y, x } };
-      }
-
-      return queryObj;
+    $_makeQuery() {
+      const { y, x } = this.map.getCenter();
+      return { keyword: "", latLng: { y, x } };
     },
 
     async $_searchAgency(query) {
