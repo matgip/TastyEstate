@@ -13,18 +13,18 @@
       </header>
 
       <section>
-        <div v-if="!agency.id && agencies.length === 0">
+        <template v-if="!agency.id && agencies.length === 0">
           <NoContent />
-        </div>
+        </template>
 
         <!-- 리뷰 card -->
-        <div v-if="reviewVisibleFlag">
+        <template v-if="reviewVisibleFlag">
           <Reviews @close-reviews-card="closeReviews()" />
-        </div>
+        </template>
 
         <!-- selected -->
-        <template v-if="!reviewVisibleFlag">
-          <Agency v-if="agency.id" :agency="agency" :key="agency.id" @open-reviews-card="openReviews()" />
+        <template v-if="agency.id && !reviewVisibleFlag">
+          <Agency :agency="agency" :key="agency.id" @open-reviews-card="openReviews()" />
         </template>
 
         <v-divider />
