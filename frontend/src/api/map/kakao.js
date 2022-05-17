@@ -1,9 +1,9 @@
-const normalMarkerImage = require("@/assets/images/marker_selected.png");
-const selectedMarkerImage = require("@/assets/images/marker.png");
+const selectedMarkerImage = require("@/assets/images/marker_selected.png");
+const normalMarkerImage = require("@/assets/images/marker.png");
 const imgSize = { width: 40, height: 45 };
 
 const SCAN_MIN_LEVEL = 4;
-const CLUSTER_MIN_LEVEL = 3;
+const CLUSTER_MIN_LEVEL = 6;
 const SCANNED = 1;
 
 import agencyApi from "../agency";
@@ -47,9 +47,8 @@ class KakaoMap {
     // selectedInfowindow 는 오직 1개만 존재해야 되므로 this에 등록
     this.selectedInfowindow = new kakao.maps.InfoWindow({});
 
-    const imgMarkerSize = new kakao.maps.Size(imgSize.width, imgSize.height);
-    this.normalImage = new kakao.maps.MarkerImage(normalMarkerImage, imgMarkerSize);
-    this.selectedImage = new kakao.maps.MarkerImage(selectedMarkerImage, imgMarkerSize);
+    this.normalImage = new kakao.maps.MarkerImage(normalMarkerImage, new kakao.maps.Size(20, 20));
+    this.selectedImage = new kakao.maps.MarkerImage(selectedMarkerImage, new kakao.maps.Size(imgSize.width, imgSize.height));
 
     kakao.maps.event.addListener(this.map, "idle", this.scan);
   };
