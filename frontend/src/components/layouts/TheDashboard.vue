@@ -159,6 +159,7 @@ export default {
 @media screen and (max-width: 768px) {
   #dashboard_container {
     position: fixed;
+    overflow-y: auto;
 
     width: 100%;
     height: 100%;
