@@ -7,25 +7,14 @@
         <span @click="map.zoomOut()"><i class="fa-solid fa-minus"></i></span>
       </div>
     </div>
-    <!-- 로그인 card -->
-    <div v-if="loginVisibleFlag === true" class="dimmed">
-      <div class="dimmed_layer_login_container radius_border">
-        <Login @close-login-card="closeLogin()" :on-login-success-handler="onLoginSuccess" />
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import Login from "@/components/cards/LoginCard/Login.vue";
 import kakaoMap from "@/api/map/kakao";
 import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    Login,
-  },
-
   mounted() {
     this.map = kakaoMap.mount();
     kakaoMap.setOnClickAgencyListener(this.onClickAgency);
@@ -42,7 +31,6 @@ export default {
   computed: {
     ...mapGetters({
       user: "GET_USER",
-      loginVisibleFlag: "GET_LOGIN_VISIBLE_FLAG",
     }),
   },
 
@@ -50,14 +38,6 @@ export default {
     onClickAgency(place) {
       this.$store.dispatch("updateAgency", place);
       this.$store.commit("CLEAR_ESTATES");
-    },
-
-    onLoginSuccess() {
-      this.closeLogin();
-    },
-
-    closeLogin() {
-      this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", false);
     },
   },
 };
@@ -108,33 +88,6 @@ span i {
   border: 2px solid #d8d8d8;
   border-radius: 10px;
   z-index: 2;
-}
-
-.dimmed {
-  position: fixed;
-
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
-  z-index: 100;
-
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.dimmed_layer_login_container {
-  position: relative;
-
-  top: 237.5px;
-  max-width: 440px;
-  width: 90%;
-
-  margin: 20px auto;
-
-  z-index: 100;
-
-  background-color: white;
 }
 
 @media screen and (max-width: 768px) {

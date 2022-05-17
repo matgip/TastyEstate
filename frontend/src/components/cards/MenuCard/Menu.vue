@@ -21,20 +21,37 @@
         </div>
 
         <ul class="list_service">
-          <li @click="launchLogin()"><i class="fa-solid fa-user"></i>로그인</li>
+          <li v-if="!user" @click="launchLogin()"><i class="fa-solid fa-user"></i>로그인</li>
+          <li v-else @click="onLogout()"><i class="fas fa-sign-out-alt"></i>로그아웃</li>
           <li><i class="fas fa-newspaper"></i>공지 사항</li>
         </ul>
+      </section>
+      <section>
+        <!-- 로그인 card -->
+        <div v-if="loginVisibleFlag === true" class="dimmed">
+          <div class="dimmed_layer_login_container radius_border">
+            <Login @close-login-card="closeLogin()" :on-login-success-handler="onLoginSuccess" />
+          </div>
+        </div>
       </section>
     </div>
   </div>
 </template>
 
 <script>
+import Login from "@/components/cards/LoginCard/Login.vue";
+
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    Login,
+  },
+
   data() {
     return {
+      loginVisibleFlag: false,
+
       fontAwesomeLeftArrow: "fa fa-arrow-left",
       fontAwesomeGear: "fa-light fa-gear",
       vuetifyIcon: {
@@ -66,7 +83,20 @@ export default {
         alert("이미 로그인 되었습니다.");
         return;
       }
-      this.$store.commit("UPDATE_LOGIN_VISIBLE_FLAG", true);
+
+      this.loginVisibleFlag = true;
+    },
+
+    async onLogout() {
+      await this.$store.dispatch("logout", "kakao");
+    },
+
+    onLoginSuccess() {
+      this.closeLogin();
+    },
+
+    closeLogin() {
+      this.loginVisibleFlag = false;
     },
 
     $_isLoggedIn() {
@@ -88,6 +118,27 @@ export default {
   z-index: 100;
 
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+.dimmed_layer_login_container {
+  position: fixed;
+
+  top: 237.5px;
+  left: 40%;
+  max-width: 440px;
+  width: 90%;
+
+  margin: 20px auto;
+
+  z-index: 100;
+
+  background-color: white;
+}
+
+.radius_border {
+  border: 2px solid #d8d8d8;
+  border-radius: 10px;
+  z-index: 2;
 }
 
 .menu_container {
@@ -144,6 +195,10 @@ div.user_info_container {
 @media screen and (max-width: 768px) {
   .menu_container {
     width: 380px;
+  }
+
+  .dimmed_layer_login_container {
+    left: 5%;
   }
 }
 </style>
