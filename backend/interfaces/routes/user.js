@@ -8,7 +8,7 @@ const UserController = require("../controllers/UserController");
 
 
 router.post("/login", UserController.socialLogin);
-router.post("/logout", UserController.logout);
+router.post("/logout", jwtMiddleware, UserController.logout);
 router.get("/me", jwtMiddleware, UserController.get);
 
 module.exports = router;

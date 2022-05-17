@@ -1,18 +1,18 @@
 const { StatusCodes } = require("http-status-codes");
 const axios = require("axios");
 
-const EstateRepository = require("../../infrastructure/repositories/estates");
+const AgencyRepository = require("../../infrastructure/repositories/agency");
 
 const SCANNED = 1;
 
 const get = async (req, res) => {
   try {
-    const estate = await EstateRepository.get(req.params.id);
-    if (EstateRepository.isEmpty(estate) === true) {
+    const agency = await AgencyRepository.get(req.params.id);
+    if (AgencyRepository.isEmpty(agency) === true) {
       res.sendStatus(StatusCodes.NO_CONTENT);
       return;
     }
-    res.json(estate);
+    res.json(agency);
   } catch (err) {
     console.error(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -21,7 +21,7 @@ const get = async (req, res) => {
 
 const add = async (req, res) => {
   try {
-    await EstateRepository.persist(req.body);
+    await AgencyRepository.persist(req.body);
     res.sendStatus(StatusCodes.OK);
   } catch (err) {
     console.error(err);
@@ -42,7 +42,7 @@ const kakaoSearch = async (x, y, radius, page = 1) => {
   return response.data;
 }
 
-
+// TODO : 영구적으로 저장하는 방식으로 고쳐야 됨.
 function _isScanned(lat, lng) {
   if (this.cachedLatLng === undefined) return false;
   if (this.cachedLatLng[lat] === undefined) return false;
@@ -67,7 +67,7 @@ const search = async (req, res) => {
 
         for (let i = 0; i < data.documents.length; i++) {
           try {
-            await EstateRepository.persist(data.documents[i]);
+            await AgencyRepository.persist(data.documents[i]);
           } catch (err) {
             console.error(err);
             res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
@@ -83,8 +83,8 @@ const search = async (req, res) => {
     }
   }
   try {
-    const estates = await EstateRepository.searchByRadius(y, x, radius);
-    res.json(estates);
+    const agencies = await AgencyRepository.searchByRadius(y, x, radius);
+    res.json(agencies);
   } catch (err) {
     console.error(err);
     res.sendStatus(StatusCodes.BAD_REQUEST);

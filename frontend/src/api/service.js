@@ -140,8 +140,6 @@ class NestedAPI extends ModeAPI {
 }
 
 export const $api = {
-  // login: new ModeAPI("login"),
-  estates: new ModeAPI("estates"),
   likes: new ModeAPI("likes"),
   review: new NestedAPI("reviews", ["users"]),
   // reviewCount: new NestedAPI("reviews", ["count"]),

@@ -1,4 +1,4 @@
-import { $api } from "@/api/service";
+import agencyApi from "@/api/agency";
 import mergesort from "mergesort";
 
 const GET_ESTATE = "GET_ESTATE";
@@ -17,7 +17,7 @@ const IS_DUPLICATED = (agencyToAddId, selectedId) => {
 };
 
 const GET_AGENCY = async (estateId) => {
-  return await $api.estates.get(estateId);
+  return await agencyApi.get(estateId);
 };
 
 // const SAVE_AGENCY = async (estate) => {

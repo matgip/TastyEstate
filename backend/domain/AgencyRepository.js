@@ -1,9 +1,9 @@
 module.exports = class {
-  persist(estate) {
+  persist(agency) {
     throw new Error("ERR_METHOD_NOT_IMPLEMENTED");
   }
 
-  get(estateId) {
+  get(agencyId) {
     throw new Error("ERR_METHOD_NOT_IMPLEMENTED");
   }
 };
