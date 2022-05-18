@@ -1,13 +1,13 @@
 <template>
   <div>
     <div id="dashboard_menu">
-      <Menu @close-menu-card="handleCloseMenuEvent()" />
+      <Menu @close-menu-card="$eventHandler.handle('close-menu-card')" />
     </div>
     <div>
       <Search
-        @agencies-updated="handleAgencyUpdatedEvent()"
-        @open-menu="handleOpenMenuEvent()"
-        @open-news="handleOpenNewsEvent()"
+        @agencies-updated="$eventHandler.handle('agencies-updated')"
+        @open-menu="$eventHandler.handle('open-menu')"
+        @open-news="$eventHandler.handle('open-news')"
       />
     </div>
 
@@ -28,14 +28,14 @@
         <!-- 리뷰 card -->
         <div id="dashboard_reviews">
           <div v-if="agency.id">
-            <Reviews @close-reviews-card="handleCloseReviewsEvent()" />
+            <Reviews @close-reviews-card="$eventHandler.handle('close-reviews-card')" />
           </div>
         </div>
 
         <!-- 선택된 부동산 -->
         <div id="dashboard_agency">
           <div v-if="agency.id">
-            <Agency :agency="agency" :key="agency.id" @open-reviews-card="handleOpenReviewsEvent()" />
+            <Agency :agency="agency" :key="agency.id" @open-reviews-card="$eventHandler.handle('open-reviews-card')" />
           </div>
         </div>
 
@@ -51,7 +51,11 @@
             <template
               v-for="agency in agencies.slice((agencyPage - 1) * maxAgenciesPerPage, agencyPage * maxAgenciesPerPage)"
             >
-              <Agency :agency="agency" :key="agency.id" @open-reviews-card="handleOpenReviewsEvent()" />
+              <Agency
+                :agency="agency"
+                :key="agency.id"
+                @open-reviews-card="$eventHandler.handle('open-reviews-card')"
+              />
             </template>
 
             <v-pagination
@@ -83,6 +87,16 @@ export default {
     Agency,
     NoContent,
     Reviews,
+  },
+
+  mounted() {
+    this.$eventHandler.addHandler("close-menu-card", this.$_closeMenu);
+    this.$eventHandler.addHandler("open-menu", this.$_openMenu);
+    this.$eventHandler.addHandler("agencies-updated", this.scrollUp, this.$_closeReviews, this.$_openAgencies);
+    this.$eventHandler.addHandler("open-news", this.scrollUp);
+
+    this.$eventHandler.addHandler("close-reviews-card", this.$_closeReviews, this.$_openAgencies);
+    this.$eventHandler.addHandler("open-reviews-card", this.$_openReviews, this.$_closeAgencies);
   },
 
   data() {
@@ -140,34 +154,6 @@ export default {
 
       item.classList.toggle("scrolled");
       this.isScrollUp = true;
-    },
-
-    handleAgencyUpdatedEvent() {
-      this.scrollUp();
-      this.handleCloseReviewsEvent();
-    },
-
-    // Menu
-    handleOpenMenuEvent() {
-      this.$_openMenu();
-    },
-    handleCloseMenuEvent() {
-      this.$_closeMenu();
-    },
-
-    // News
-    handleOpenNewsEvent() {
-      this.scrollUp();
-    },
-
-    // Reviews
-    handleOpenReviewsEvent() {
-      this.$_openReviews();
-      this.$_closeAgencies();
-    },
-    handleCloseReviewsEvent() {
-      this.$_closeReviews();
-      this.$_openAgencies();
     },
 
     $_openMenu() {
