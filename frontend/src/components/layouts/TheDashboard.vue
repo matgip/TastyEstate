@@ -1,10 +1,14 @@
 <template>
   <div>
     <div id="dashboard_menu">
-      <Menu @close-menu-card="closeMenu()" />
+      <Menu @close-menu-card="handleCloseMenuEvent()" />
     </div>
     <div>
-      <Search @agencies-updated="handleAgencyUpdatedEvent()" @open-menu="openMenu()" @open-news="openNews()" />
+      <Search
+        @agencies-updated="handleAgencyUpdatedEvent()"
+        @open-menu="handleOpenMenuEvent()"
+        @open-news="handleOpenNewsEvent()"
+      />
     </div>
 
     <div id="dashboard_container">
@@ -14,34 +18,49 @@
           <v-icon v-else>{{ fontAwesomeArrowDown }}</v-icon>
         </v-btn>
 
-        <template v-if="!agency.id && agencies.length === 0">
+        <!-- 검색 결과 없음 -->
+        <div v-if="!agency.id && agencies.length === 0">
           <NoContent />
-        </template>
+        </div>
+
+        <!-- News -->
 
         <!-- 리뷰 card -->
-        <template v-if="reviewVisibleFlag">
-          <Reviews @close-reviews-card="closeReviews()" />
-        </template>
+        <div id="dashboard_reviews">
+          <div v-if="agency.id">
+            <Reviews @close-reviews-card="handleCloseReviewsEvent()" />
+          </div>
+        </div>
 
-        <!-- selected -->
-        <template v-if="agency.id && !reviewVisibleFlag">
-          <Agency :agency="agency" :key="agency.id" @open-reviews-card="openReviews()" />
-        </template>
+        <!-- 선택된 부동산 -->
+        <div id="dashboard_agency">
+          <div v-if="agency.id">
+            <Agency :agency="agency" :key="agency.id" @open-reviews-card="handleOpenReviewsEvent()" />
+          </div>
+        </div>
 
         <v-divider />
 
         <!-- 근처 부동산 -->
-        <div v-if="agencies.length !== 0 && !reviewVisibleFlag">
-          <div class="dashboard_agencies_title">
-            <h3>근처 베스트 부동산</h3>
-          </div>
-          <template
-            v-for="agency in agencies.slice((agencyPage - 1) * maxAgenciesPerPage, agencyPage * maxAgenciesPerPage)"
-          >
-            <Agency :agency="agency" :key="agency.id" @open-reviews-card="openReviews()" />
-          </template>
+        <div id="dashboard_agencies">
+          <div v-if="agencies.length !== 0">
+            <div class="dashboard_agencies_title">
+              <h3>근처 베스트 부동산</h3>
+            </div>
 
-          <v-pagination v-bind="vuetifyPagination" v-model="agencyPage" :length="agencyPageCount" :total-visible="5" />
+            <template
+              v-for="agency in agencies.slice((agencyPage - 1) * maxAgenciesPerPage, agencyPage * maxAgenciesPerPage)"
+            >
+              <Agency :agency="agency" :key="agency.id" @open-reviews-card="handleOpenReviewsEvent()" />
+            </template>
+
+            <v-pagination
+              v-bind="vuetifyPagination"
+              v-model="agencyPage"
+              :length="agencyPageCount"
+              :total-visible="5"
+            />
+          </div>
         </div>
       </section>
     </div>
@@ -70,7 +89,6 @@ export default {
     return {
       agencyPage: 1,
       maxAgenciesPerPage: 4,
-      reviewVisibleFlag: false,
       isScrollUp: false,
 
       vuetifyPagination: {
@@ -126,30 +144,66 @@ export default {
 
     handleAgencyUpdatedEvent() {
       this.scrollUp();
-      this.closeReviews();
+      this.handleCloseReviewsEvent();
     },
 
     // Menu
-    closeMenu() {
-      const item = document.getElementById("dashboard_menu");
-      item.classList.remove("open");
+    handleOpenMenuEvent() {
+      this.$_openMenu();
     },
-    openMenu() {
-      const item = document.getElementById("dashboard_menu");
-      item.classList.add("open");
+    handleCloseMenuEvent() {
+      this.$_closeMenu();
     },
 
     // News
-    openNews() {
-      console.log("TEST");
+    handleOpenNewsEvent() {
+      this.scrollUp();
     },
 
     // Reviews
-    openReviews() {
-      this.reviewVisibleFlag = true;
+    handleOpenReviewsEvent() {
+      this.$_openReviews();
+      this.$_closeAgencies();
     },
-    closeReviews() {
-      this.reviewVisibleFlag = false;
+    handleCloseReviewsEvent() {
+      this.$_closeReviews();
+      this.$_openAgencies();
+    },
+
+    $_openMenu() {
+      const item = document.getElementById("dashboard_menu");
+      if (!item.classList.contains("open")) item.classList.add("open");
+    },
+
+    $_closeMenu() {
+      const item = document.getElementById("dashboard_menu");
+      if (item.classList.contains("open")) item.classList.remove("open");
+    },
+
+    $_openReviews() {
+      const reviewsItem = document.getElementById("dashboard_reviews");
+      if (!reviewsItem.classList.contains("open")) reviewsItem.classList.add("open");
+    },
+
+    $_closeReviews() {
+      const reviewsItem = document.getElementById("dashboard_reviews");
+      if (reviewsItem.classList.contains("open")) reviewsItem.classList.remove("open");
+    },
+
+    $_openAgencies() {
+      const agencyItem = document.getElementById("dashboard_agency");
+      const agenciesItem = document.getElementById("dashboard_agencies");
+
+      if (agencyItem.classList.contains("close")) agencyItem.classList.remove("close");
+      if (agenciesItem.classList.contains("close")) agenciesItem.classList.remove("close");
+    },
+
+    $_closeAgencies() {
+      const agencyItem = document.getElementById("dashboard_agency");
+      const agenciesItem = document.getElementById("dashboard_agencies");
+
+      if (!agencyItem.classList.contains("close")) agencyItem.classList.add("close");
+      if (!agenciesItem.classList.contains("close")) agenciesItem.classList.add("close");
     },
   },
 };
@@ -158,11 +212,26 @@ export default {
 <style scope>
 #dashboard_menu {
   display: none;
-  /* left: -300px; */
 }
 
 #dashboard_menu.open {
   display: block;
+}
+
+#dashboard_reviews {
+  display: none;
+}
+
+#dashboard_reviews.open {
+  display: block;
+}
+
+#dashboard_agency.close {
+  display: none;
+}
+
+#dashboard_agencies.close {
+  display: none;
 }
 
 /* Searched agencies */
