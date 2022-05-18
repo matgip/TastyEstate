@@ -97,10 +97,13 @@ export default {
       this.$_openAgency,
       this.$_openAgencies
     );
+
     this.$eventHandler.addHandler("open-menu-card", this.$_openMenu);
-    this.$eventHandler.addHandler("open-news", this.scrollUp);
-    this.$eventHandler.addHandler("open-reviews-card", this.$_openReviews, this.$_closeAgency, this.$_closeAgencies);
     this.$eventHandler.addHandler("close-menu-card", this.$_closeMenu);
+
+    this.$eventHandler.addHandler("open-news", this.scrollUp);
+
+    this.$eventHandler.addHandler("open-reviews-card", this.$_openReviews, this.$_closeAgency, this.$_closeAgencies);
     this.$eventHandler.addHandler("close-reviews-card", this.$_closeReviews, this.$_openAgency, this.$_openAgencies);
   },
 
@@ -175,32 +178,32 @@ export default {
       this.$_addClass("dashboard_menu", "open");
     },
 
-    $_closeMenu() {
-      this.$_removeClass("dashboard_menu", "open");
-    },
-
     $_openReviews() {
       this.$_addClass("dashboard_reviews", "open");
+    },
+
+    $_openAgency() {
+      this.$_addClass("dashboard_agency", "open");
+    },
+
+    $_openAgencies() {
+      this.$_addClass("dashboard_agencies", "open");
+    },
+
+    $_closeMenu() {
+      this.$_removeClass("dashboard_menu", "open");
     },
 
     $_closeReviews() {
       this.$_removeClass("dashboard_reviews", "open");
     },
 
-    $_openAgency() {
-      this.$_removeClass("dashboard_agency", "close");
-    },
-
-    $_openAgencies() {
-      this.$_removeClass("dashboard_agencies", "close");
-    },
-
     $_closeAgency() {
-      this.$_addClass("dashboard_agency", "close");
+      this.$_removeClass("dashboard_agency", "open");
     },
 
     $_closeAgencies() {
-      this.$_addClass("dashboard_agencies", "close");
+      this.$_removeClass("dashboard_agencies", "open");
     },
   },
 };
@@ -223,12 +226,20 @@ export default {
   display: block;
 }
 
-#dashboard_agency.close {
+#dashboard_agency {
   display: none;
 }
 
-#dashboard_agencies.close {
+#dashboard_agency.open {
+  display: block;
+}
+
+#dashboard_agencies {
   display: none;
+}
+
+#dashboard_agencies.open {
+  display: block;
 }
 
 /* Searched agencies */
