@@ -4,7 +4,7 @@
       <Menu @close-menu-card="closeMenu()" />
     </div>
     <div>
-      <Search @agencies-updated="handleAgencyUpdatedEvent()" @open-menu="openMenu()" />
+      <Search @agencies-updated="handleAgencyUpdatedEvent()" @open-menu="openMenu()" @open-news="openNews()" />
     </div>
 
     <div id="dashboard_container">
@@ -137,6 +137,11 @@ export default {
     openMenu() {
       const item = document.getElementById("dashboard_menu");
       item.classList.add("open");
+    },
+
+    // News
+    openNews() {
+      console.log("TEST");
     },
 
     // Reviews

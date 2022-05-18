@@ -46,7 +46,7 @@
           <v-tab @click="onSortByRating">
             근처 부동산
           </v-tab>
-          <v-tab>
+          <v-tab @click="onNewsButtonClick()">
             뉴스
           </v-tab>
         </v-tabs>
@@ -129,6 +129,10 @@ export default {
   methods: {
     onMenuButtonClick() {
       this.$emit("open-menu");
+    },
+
+    onNewsButtonClick() {
+      this.$emit("open-news");
     },
 
     async onSortByRating() {
