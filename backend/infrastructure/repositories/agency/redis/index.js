@@ -9,7 +9,7 @@ module.exports = class extends AgencyRepository {
 
   async persist(entity) {
     const { id, y, x, place_name, phone, address_name, road_address_name } = entity;
-    console.log("agencies persist : " + id + " (" + y + ", " + x + ") " + place_name + " : " + address_name)
+    console.log("agencies persist : " + id + " (" + y + ", " + x + ") " + place_name + " : " + address_name);
     await client
       .multi()
       .HSET(`agencies:${id}`, "id", id)
@@ -22,16 +22,21 @@ module.exports = class extends AgencyRepository {
       .geoAdd(`agencies`, {
         longitude: x,
         latitude: y,
-        member: id
+        member: id,
       })
       .exec();
   }
 
   async searchByRadius(lat, lng, radius) {
-    const ids = await client.GEOSEARCH("agencies", { latitude: lat, longitude: lng }, { radius: radius, unit: "m" })
+    const ids = await client.GEOSEARCH("agencies", { latitude: lat, longitude: lng }, { radius: radius, unit: "m" });
     const agencies = [];
-    for (let i = 0; i < ids.length; i++)
-      agencies.push(await this.get(ids[i]));
+    // for (let i = 0; i < ids.length; i++)
+    //   agencies.push(await this.get(ids[i]));
+    await Promise.all(
+      ids.map(async (id) => {
+        agencies.push(await this.get(id));
+      })
+    );
     return agencies;
   }
 
