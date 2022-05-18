@@ -6,7 +6,7 @@
     <div>
       <Search
         @agencies-updated="$eventHandler.handle('agencies-updated')"
-        @open-menu="$eventHandler.handle('open-menu')"
+        @open-menu-card="$eventHandler.handle('open-menu-card')"
         @open-news="$eventHandler.handle('open-news')"
       />
     </div>
@@ -90,13 +90,18 @@ export default {
   },
 
   mounted() {
-    this.$eventHandler.addHandler("close-menu-card", this.$_closeMenu);
-    this.$eventHandler.addHandler("open-menu", this.$_openMenu);
-    this.$eventHandler.addHandler("agencies-updated", this.scrollUp, this.$_closeReviews, this.$_openAgencies);
+    this.$eventHandler.addHandler(
+      "agencies-updated",
+      this.scrollUp,
+      this.$_closeReviews,
+      this.$_openAgency,
+      this.$_openAgencies
+    );
+    this.$eventHandler.addHandler("open-menu-card", this.$_openMenu);
     this.$eventHandler.addHandler("open-news", this.scrollUp);
-
-    this.$eventHandler.addHandler("close-reviews-card", this.$_closeReviews, this.$_openAgencies);
-    this.$eventHandler.addHandler("open-reviews-card", this.$_openReviews, this.$_closeAgencies);
+    this.$eventHandler.addHandler("open-reviews-card", this.$_openReviews, this.$_closeAgency, this.$_closeAgencies);
+    this.$eventHandler.addHandler("close-menu-card", this.$_closeMenu);
+    this.$eventHandler.addHandler("close-reviews-card", this.$_closeReviews, this.$_openAgency, this.$_openAgencies);
   },
 
   data() {
@@ -156,40 +161,46 @@ export default {
       this.isScrollUp = true;
     },
 
+    $_addClass(domId, className) {
+      const elem = document.getElementById(domId);
+      if (!elem.classList.contains(className)) elem.classList.add(className);
+    },
+
+    $_removeClass(domId, className) {
+      const elem = document.getElementById(domId);
+      if (elem.classList.contains(className)) elem.classList.remove(className);
+    },
+
     $_openMenu() {
-      const item = document.getElementById("dashboard_menu");
-      if (!item.classList.contains("open")) item.classList.add("open");
+      this.$_addClass("dashboard_menu", "open");
     },
 
     $_closeMenu() {
-      const item = document.getElementById("dashboard_menu");
-      if (item.classList.contains("open")) item.classList.remove("open");
+      this.$_removeClass("dashboard_menu", "open");
     },
 
     $_openReviews() {
-      const reviewsItem = document.getElementById("dashboard_reviews");
-      if (!reviewsItem.classList.contains("open")) reviewsItem.classList.add("open");
+      this.$_addClass("dashboard_reviews", "open");
     },
 
     $_closeReviews() {
-      const reviewsItem = document.getElementById("dashboard_reviews");
-      if (reviewsItem.classList.contains("open")) reviewsItem.classList.remove("open");
+      this.$_removeClass("dashboard_reviews", "open");
+    },
+
+    $_openAgency() {
+      this.$_removeClass("dashboard_agency", "close");
     },
 
     $_openAgencies() {
-      const agencyItem = document.getElementById("dashboard_agency");
-      const agenciesItem = document.getElementById("dashboard_agencies");
+      this.$_removeClass("dashboard_agencies", "close");
+    },
 
-      if (agencyItem.classList.contains("close")) agencyItem.classList.remove("close");
-      if (agenciesItem.classList.contains("close")) agenciesItem.classList.remove("close");
+    $_closeAgency() {
+      this.$_addClass("dashboard_agency", "close");
     },
 
     $_closeAgencies() {
-      const agencyItem = document.getElementById("dashboard_agency");
-      const agenciesItem = document.getElementById("dashboard_agencies");
-
-      if (!agencyItem.classList.contains("close")) agencyItem.classList.add("close");
-      if (!agenciesItem.classList.contains("close")) agenciesItem.classList.add("close");
+      this.$_addClass("dashboard_agencies", "close");
     },
   },
 };

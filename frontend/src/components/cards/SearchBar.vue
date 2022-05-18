@@ -128,7 +128,7 @@ export default {
 
   methods: {
     onMenuButtonClick() {
-      this.$emit("open-menu");
+      this.$emit("open-menu-card");
     },
 
     onNewsButtonClick() {
