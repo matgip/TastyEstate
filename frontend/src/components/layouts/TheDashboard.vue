@@ -7,7 +7,7 @@
       <Search
         @agencies-updated="$eventHandler.handle('agencies-updated')"
         @open-menu-card="$eventHandler.handle('open-menu-card')"
-        @open-news="$eventHandler.handle('open-news')"
+        @open-news-card="$eventHandler.handle('open-news-card')"
       />
     </div>
 
@@ -101,7 +101,7 @@ export default {
     this.$eventHandler.addHandler("open-menu-card", this.$_openMenu);
     this.$eventHandler.addHandler("close-menu-card", this.$_closeMenu);
 
-    this.$eventHandler.addHandler("open-news", this.scrollUp);
+    this.$eventHandler.addHandler("open-news-card", this.scrollUp);
 
     this.$eventHandler.addHandler("open-reviews-card", this.$_openReviews, this.$_closeAgency, this.$_closeAgencies);
     this.$eventHandler.addHandler("close-reviews-card", this.$_closeReviews, this.$_openAgency, this.$_openAgencies);

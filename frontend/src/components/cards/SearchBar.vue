@@ -132,7 +132,7 @@ export default {
     },
 
     onNewsButtonClick() {
-      this.$emit("open-news");
+      this.$emit("open-news-card");
     },
 
     async onSortByRating() {
