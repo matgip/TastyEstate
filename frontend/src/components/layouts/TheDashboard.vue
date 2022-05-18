@@ -27,14 +27,14 @@
 
         <!-- 리뷰 card -->
         <div id="dashboard_reviews">
-          <div v-show="agency.id">
+          <div v-if="agency.id">
             <Reviews @close-reviews-card="$eventHandler.handle('close-reviews-card')" />
           </div>
         </div>
 
         <!-- 선택된 부동산 -->
         <div id="dashboard_agency">
-          <div v-show="agency.id">
+          <div v-if="agency.id">
             <Agency :agency="agency" :key="agency.id" @open-reviews-card="$eventHandler.handle('open-reviews-card')" />
           </div>
         </div>
@@ -43,7 +43,7 @@
 
         <!-- 근처 부동산 -->
         <div id="dashboard_agencies">
-          <div v-show="agencies.length !== 0">
+          <div v-if="agencies.length !== 0">
             <div class="dashboard_agencies_title">
               <h3>근처 베스트 부동산</h3>
             </div>
