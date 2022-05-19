@@ -4,6 +4,7 @@ const axios = require("axios");
 const AgencyRepository = require("../../infrastructure/repositories/agency");
 
 const SCANNED = 1;
+const SEARCHED = 2;
 
 const get = async (req, res) => {
   try {
@@ -53,6 +54,16 @@ const kakaoSearch = async (keyword, x, y, radius, page = 1) => {
 };
 
 // TODO : 영구적으로 저장하는 방식으로 고쳐야 됨.
+function _isSearched(keyword) {
+  if (this.cachedKeyword === undefined) return false;
+  if (this.cachedKeyword[keyword] === undefined) return false;
+  return this.cachedKeyword[keyword] === SEARCHED;
+}
+function _cacheKeyword(keyword) {
+  this.cachedKeyword ??= new Array();
+  this.cachedKeyword[keyword] = SEARCHED;
+}
+
 function _isScanned(lat, lng) {
   if (this.cachedLatLng === undefined) return false;
   if (this.cachedLatLng[lat] === undefined) return false;
@@ -73,32 +84,55 @@ const search = async (req, res) => {
 
   const radius = 710;
 
-  if (y > 0 && x > 0 && !_isScanned(y, x)) _cacheLatLng(y, x);
+  if (y > 0 && x > 0 && !_isScanned(y, x)) {
+    _cacheLatLng(y, x);
+    try {
+      let nextPage = 1;
+      while (true) {
+        const data = await kakaoSearch(keyword, x, y, radius, nextPage++);
 
-  try {
-    let nextPage = 1;
-    while (true) {
-      const data = await kakaoSearch(keyword, x, y, radius, nextPage++);
-
-      for (let i = 0; i < data.documents.length; i++) {
-        try {
-          if (keyword.length !== 0) {
-            await AgencyRepository.persistAgencyByKeyword(keyword, data.documents[i].id);
+        for (let i = 0; i < data.documents.length; i++) {
+          try {
+            await AgencyRepository.persist(data.documents[i]);
+          } catch (err) {
+            console.error(err);
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+            return;
           }
-          await AgencyRepository.persist(data.documents[i]);
-        } catch (err) {
-          console.error(err);
-          res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-          return;
         }
-      }
 
-      if (data.meta.is_end) break;
+        if (data.meta.is_end) break;
+      }
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     }
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  } else if (keyword && !_isSearched(keyword)) {
+    _cacheKeyword(keyword);
+    try {
+      let nextPage = 1;
+      while (true) {
+        const data = await kakaoSearch(keyword, x, y, radius, nextPage++);
+
+        for (let i = 0; i < data.documents.length; i++) {
+          try {
+            await AgencyRepository.persistAgencyByKeyword(keyword, data.documents[i].id);
+            await AgencyRepository.persist(data.documents[i]);
+          } catch (err) {
+            console.error(err);
+            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+            return;
+          }
+        }
+
+        if (data.meta.is_end) break;
+      }
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
   }
+
   try {
     let agencies;
     if (keyword.length !== 0) {
