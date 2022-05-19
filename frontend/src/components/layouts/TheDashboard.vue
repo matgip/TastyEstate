@@ -129,6 +129,11 @@ export default {
       val.type = "agency";
       val.stars = this.agency.stars;
       val.likes = this.agency.likes;
+      this.scrollUp();
+    },
+
+    agencies: function() {
+      this.scrollUp();
     },
   },
 
@@ -151,16 +156,16 @@ export default {
       const item = document.getElementById("dashboard_container");
       item.classList.toggle("scrolled");
 
-      if (item.classList.length === 0) this.isScrollUp = false;
+      if (!item.classList.contains("scrolled")) this.isScrollUp = false;
       else this.isScrollUp = true;
     },
 
     scrollUp() {
       const item = document.getElementById("dashboard_container");
-      if (item.classList.length !== 0) return;
-
-      item.classList.toggle("scrolled");
-      this.isScrollUp = true;
+      if (!item.classList.contains("scrolled")) {
+        item.classList.toggle("scrolled");
+        this.isScrollUp = true;
+      }
     },
 
     onOpenMenu() {
@@ -183,7 +188,6 @@ export default {
 </script>
 
 <style scope>
-/* Searched agencies */
 #dashboard_container {
   background-color: white;
   height: 100%;
