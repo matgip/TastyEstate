@@ -75,7 +75,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      agency: "GET_ESTATE",
+      agency: "GET_AGENCY",
     }),
   },
 

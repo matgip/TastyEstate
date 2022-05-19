@@ -2,7 +2,7 @@
   <div>
     <section>
       <v-toolbar class="deep-orange">
-        <!-- 서치 바 -->
+        <!-- 서치바 -->
         <Search />
 
         <!-- Menu 버튼 -->
@@ -10,7 +10,7 @@
           <v-icon>{{ fontAwesomeBar }}</v-icon>
         </v-btn>
 
-        <!-- 서치바 테이블 -->
+        <!-- 하단 서치바 테이블 -->
         <template v-slot:extension>
           <v-tabs color="white" slider-color="white">
             <v-tab @click="onSearchByCenter()">
@@ -40,14 +40,13 @@
           <NoContent />
         </div>
 
-        <!-- 리뷰 card -->
+        <!-- 리뷰 -->
         <div v-if="reviewVisibieFlag">
           <Reviews @close-reviews-card="onCloseReviews()" />
         </div>
+        <!-- 부동산 -->
         <div v-else>
-          <!-- 선택된 부동산 -->
           <Agency v-if="agency.id" :agency="agency" :key="agency.id" @open-reviews-card="onOpenReviews()" />
-          <!-- 근처 부동산 -->
           <div v-if="agencies.length !== 0">
             <v-divider />
             <h3 class="dashboard_agencies_title">근처 베스트 부동산</h3>
@@ -112,7 +111,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      agency: "GET_ESTATE",
+      agency: "GET_AGENCY",
       map: "GET_MAP",
     }),
 
@@ -129,7 +128,6 @@ export default {
       val.type = "agency";
       val.stars = this.agency.stars;
       val.likes = this.agency.likes;
-      this.scrollUp();
     },
 
     agencies: function() {
