@@ -91,15 +91,11 @@ const search = async (req, res) => {
       while (true) {
         const data = await kakaoSearch(keyword, x, y, radius, nextPage++);
 
-        for (let i = 0; i < data.documents.length; i++) {
-          try {
-            await AgencyRepository.persist(data.documents[i]);
-          } catch (err) {
-            console.error(err);
-            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-            return;
-          }
-        }
+        await Promise.all(
+          data.documents.map(async (doc) => {
+            await AgencyRepository.persist(doc);
+          })
+        );
 
         if (data.meta.is_end) break;
       }
@@ -114,16 +110,12 @@ const search = async (req, res) => {
       while (true) {
         const data = await kakaoSearch(keyword, x, y, radius, nextPage++);
 
-        for (let i = 0; i < data.documents.length; i++) {
-          try {
-            await AgencyRepository.persistAgencyByKeyword(keyword, data.documents[i].id);
-            await AgencyRepository.persist(data.documents[i]);
-          } catch (err) {
-            console.error(err);
-            res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-            return;
-          }
-        }
+        await Promise.all(
+          data.documents.map(async (doc) => {
+            await AgencyRepository.persistAgencyByKeyword(keyword, doc.id);
+            await AgencyRepository.persist(doc);
+          })
+        );
 
         if (data.meta.is_end) break;
       }
