@@ -10,7 +10,7 @@
           <v-icon>{{ fontAwesomeBar }}</v-icon>
         </v-btn>
 
-        <!-- 하단 서치바 테이블 -->
+        <!-- 하단 서치바 table -->
         <template v-slot:extension>
           <v-tabs color="white" slider-color="white">
             <v-tab @click="onSearchByCenter()">
@@ -126,12 +126,12 @@ export default {
     agency: function(val) {
       if (Object.keys(this.agency).length === 0) return;
       val.type = "agency";
-      val.stars = this.agency.stars;
-      val.likes = this.agency.likes;
+      // clear searched agencies
+      this.agencies = [];
     },
 
     agencies: function() {
-      this.scrollUp();
+      if (this.agencies.length !== 0) this.scrollUp();
     },
   },
 
@@ -211,7 +211,6 @@ export default {
 @media screen and (max-width: 768px) {
   #dashboard_container {
     position: fixed;
-    /* overflow-y: auto; */
 
     width: 100%;
     height: 100%;
