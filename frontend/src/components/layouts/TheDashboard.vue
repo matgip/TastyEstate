@@ -1,15 +1,32 @@
 <template>
   <div>
-    <div id="dashboard_menu">
-      <Menu @close-menu-card="$eventHandler.handle('close-menu-card')" />
-    </div>
-    <div>
-      <Search
-        @agencies-updated="$eventHandler.handle('agencies-updated')"
-        @open-menu-card="$eventHandler.handle('open-menu-card')"
-        @open-news-card="$eventHandler.handle('open-news-card')"
-      />
-    </div>
+    <section>
+      <v-toolbar class="deep-orange">
+        <!-- 서치 바 -->
+        <Search />
+
+        <!-- Menu 버튼 -->
+        <v-btn icon @click="onOpenMenu()">
+          <v-icon>{{ fontAwesomeBar }}</v-icon>
+        </v-btn>
+
+        <!-- 서치바 테이블 -->
+        <template v-slot:extension>
+          <v-tabs color="white" slider-color="white">
+            <v-tab @click="onSearchByCenter()">
+              근처 부동산
+            </v-tab>
+            <v-tab>
+              뉴스
+            </v-tab>
+          </v-tabs>
+        </template>
+      </v-toolbar>
+    </section>
+
+    <section v-if="menuVisibleFlag">
+      <Menu @close-menu-card="onCloseMenu()" />
+    </section>
 
     <div id="dashboard_container">
       <section>
@@ -23,41 +40,22 @@
           <NoContent />
         </div>
 
-        <!-- News -->
-
         <!-- 리뷰 card -->
-        <div id="dashboard_reviews">
-          <div v-if="agency.id">
-            <Reviews @close-reviews-card="$eventHandler.handle('close-reviews-card')" />
-          </div>
+        <div v-if="reviewVisibieFlag">
+          <Reviews @close-reviews-card="onCloseReviews()" />
         </div>
-
-        <!-- 선택된 부동산 -->
-        <div id="dashboard_agency">
-          <div v-if="agency.id">
-            <Agency :agency="agency" :key="agency.id" @open-reviews-card="$eventHandler.handle('open-reviews-card')" />
-          </div>
-        </div>
-
-        <v-divider />
-
-        <!-- 근처 부동산 -->
-        <div id="dashboard_agencies">
+        <div v-else>
+          <!-- 선택된 부동산 -->
+          <Agency v-if="agency.id" :agency="agency" :key="agency.id" @open-reviews-card="onOpenReviews()" />
+          <!-- 근처 부동산 -->
           <div v-if="agencies.length !== 0">
-            <div class="dashboard_agencies_title">
-              <h3>근처 베스트 부동산</h3>
-            </div>
-
+            <v-divider />
+            <h3 class="dashboard_agencies_title">근처 베스트 부동산</h3>
             <template
               v-for="agency in agencies.slice((agencyPage - 1) * maxAgenciesPerPage, agencyPage * maxAgenciesPerPage)"
             >
-              <Agency
-                :agency="agency"
-                :key="agency.id"
-                @open-reviews-card="$eventHandler.handle('open-reviews-card')"
-              />
+              <Agency :agency="agency" :key="agency.id" @open-reviews-card="onOpenReviews()" />
             </template>
-
             <v-pagination
               v-bind="vuetifyPagination"
               v-model="agencyPage"
@@ -72,6 +70,9 @@
 </template>
 
 <script>
+import mergesort from "mergesort";
+import agencyApi from "@/api/agency";
+
 import Search from "@/components/cards/SearchBar.vue";
 import Menu from "@/components/cards/MenuCard/Menu.vue";
 import Agency from "@/components/cards/AgencyCard/AgencyCard.vue";
@@ -89,29 +90,14 @@ export default {
     Reviews,
   },
 
-  mounted() {
-    this.$eventHandler.addHandler(
-      "agencies-updated",
-      this.scrollUp,
-      this.$_closeReviews,
-      this.$_openAgency,
-      this.$_openAgencies
-    );
-
-    this.$eventHandler.addHandler("open-menu-card", this.$_openMenu);
-    this.$eventHandler.addHandler("close-menu-card", this.$_closeMenu);
-
-    this.$eventHandler.addHandler("open-news-card", this.scrollUp);
-
-    this.$eventHandler.addHandler("open-reviews-card", this.$_openReviews, this.$_closeAgency, this.$_closeAgencies);
-    this.$eventHandler.addHandler("close-reviews-card", this.$_closeReviews, this.$_openAgency, this.$_openAgencies);
-  },
-
   data() {
     return {
       agencyPage: 1,
+      agencies: [],
       maxAgenciesPerPage: 4,
       isScrollUp: false,
+      menuVisibleFlag: false,
+      reviewVisibieFlag: false,
 
       vuetifyPagination: {
         color: "deep-orange",
@@ -120,13 +106,14 @@ export default {
       },
       fontAwesomeArrowUp: "fa-solid fa-arrow-up",
       fontAwesomeArrowDown: "fa-solid fa-arrow-down",
+      fontAwesomeBar: "fas fa-bars",
     };
   },
 
   computed: {
     ...mapGetters({
       agency: "GET_ESTATE",
-      agencies: "GET_ESTATES",
+      map: "GET_MAP",
     }),
 
     agencyPageCount() {
@@ -139,7 +126,6 @@ export default {
   watch: {
     agency: function(val) {
       if (Object.keys(this.agency).length === 0) return;
-
       val.type = "agency";
       val.stars = this.agency.stars;
       val.likes = this.agency.likes;
@@ -147,6 +133,19 @@ export default {
   },
 
   methods: {
+    $_comparator(a, b) {
+      return a.stars < b.stars;
+    },
+    async onSearchByCenter() {
+      try {
+        const { y, x } = this.map.getCenter();
+        const agencies = mergesort(this.$_comparator, await agencyApi.searchByCenter(x, y));
+        this.agencies = agencies;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     // Scroll
     scrollToggle() {
       const item = document.getElementById("dashboard_container");
@@ -164,84 +163,26 @@ export default {
       this.isScrollUp = true;
     },
 
-    $_addClass(domId, className) {
-      const elem = document.getElementById(domId);
-      if (!elem.classList.contains(className)) elem.classList.add(className);
+    onOpenMenu() {
+      this.menuVisibleFlag = true;
     },
 
-    $_removeClass(domId, className) {
-      const elem = document.getElementById(domId);
-      if (elem.classList.contains(className)) elem.classList.remove(className);
+    onCloseMenu() {
+      this.menuVisibleFlag = false;
     },
 
-    $_openMenu() {
-      this.$_addClass("dashboard_menu", "open");
+    onOpenReviews() {
+      this.reviewVisibieFlag = true;
     },
 
-    $_openReviews() {
-      this.$_addClass("dashboard_reviews", "open");
-    },
-
-    $_openAgency() {
-      this.$_addClass("dashboard_agency", "open");
-    },
-
-    $_openAgencies() {
-      this.$_addClass("dashboard_agencies", "open");
-    },
-
-    $_closeMenu() {
-      this.$_removeClass("dashboard_menu", "open");
-    },
-
-    $_closeReviews() {
-      this.$_removeClass("dashboard_reviews", "open");
-    },
-
-    $_closeAgency() {
-      this.$_removeClass("dashboard_agency", "open");
-    },
-
-    $_closeAgencies() {
-      this.$_removeClass("dashboard_agencies", "open");
+    onCloseReviews() {
+      this.reviewVisibieFlag = false;
     },
   },
 };
 </script>
 
 <style scope>
-#dashboard_menu {
-  display: none;
-}
-
-#dashboard_menu.open {
-  display: block;
-}
-
-#dashboard_reviews {
-  display: none;
-}
-
-#dashboard_reviews.open {
-  display: block;
-}
-
-#dashboard_agency {
-  display: none;
-}
-
-#dashboard_agency.open {
-  display: block;
-}
-
-#dashboard_agencies {
-  display: none;
-}
-
-#dashboard_agencies.open {
-  display: block;
-}
-
 /* Searched agencies */
 #dashboard_container {
   background-color: white;
@@ -290,5 +231,10 @@ export default {
 /* SASS - remove bottom  divider */
 .theme--light.v-divider {
   border-color: rgba(0, 0, 0, 0);
+}
+
+.v-toolbar__content {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

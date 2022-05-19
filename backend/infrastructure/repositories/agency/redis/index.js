@@ -27,11 +27,24 @@ module.exports = class extends AgencyRepository {
       .exec();
   }
 
+  async persistAgencyByKeyword(keyword, agencyId) {
+    await client.SADD(`agencies_keyword:${keyword}`, agencyId);
+  }
+
+  async searchByKeyword(keyword) {
+    const ids = await client.SMEMBERS(`agencies_keyword:${keyword}`);
+    const agencies = [];
+    await Promise.all(
+      ids.map(async (id) => {
+        agencies.push(await this.get(id));
+      })
+    );
+    return agencies;
+  }
+
   async searchByRadius(lat, lng, radius) {
     const ids = await client.GEOSEARCH("agencies", { latitude: lat, longitude: lng }, { radius: radius, unit: "m" });
     const agencies = [];
-    // for (let i = 0; i < ids.length; i++)
-    //   agencies.push(await this.get(ids[i]));
     await Promise.all(
       ids.map(async (id) => {
         agencies.push(await this.get(id));
@@ -42,6 +55,7 @@ module.exports = class extends AgencyRepository {
 
   async get(agencyId) {
     const agency = await client.HGETALL(`agencies:${agencyId}`);
+    if (agencyId === "1013765439") console.log("AGENCY: ", agency);
     // Refactoring: combining likes & stars into agency
     agency.likes = 0;
     agency.stars = 0.0;
@@ -59,6 +73,6 @@ module.exports = class extends AgencyRepository {
   }
 
   isEmpty(agency) {
-    return !agency.id || !agency.y || !agency.x || !agency.phone || !agency.place_name || !agency.address_name;
+    return !agency.id || !agency.y || !agency.x || !agency.place_name || !agency.address_name;
   }
 };

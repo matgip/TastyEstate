@@ -37,7 +37,6 @@ export default {
   methods: {
     onClickAgency(place) {
       this.$store.dispatch("updateAgency", place);
-      this.$store.commit("CLEAR_ESTATES");
     },
   },
 };

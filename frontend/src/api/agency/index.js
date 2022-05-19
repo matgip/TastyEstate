@@ -1,19 +1,34 @@
 import { ModeAPI } from "../service";
 
 class AgencyAPI extends ModeAPI {
+  async searchByKeyword(keyword) {
+    try {
+      const resp = await this.api.get(this.getUrl("search"), {
+        params: {
+          keyword: keyword,
+        },
+      });
+      return resp.data;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
+
   async searchByCenter(lng, lat) {
     try {
       const resp = await this.api.get(this.getUrl("search"), {
         params: {
           x: lng,
           y: lat,
-        }
+        },
       });
       return resp.data;
     } catch (err) {
       this.handleError(err);
     }
-  }async searchByRect(swLat, swLng, neLat, neLng) {
+  }
+
+  async searchByRect(swLat, swLng, neLat, neLng) {
     try {
       const resp = await this.api.get(this.getUrl("search"), {
         params: {
@@ -21,7 +36,7 @@ class AgencyAPI extends ModeAPI {
           swLng: swLng,
           neLat: neLat,
           neLng: neLng,
-        }
+        },
       });
       return resp.data;
     } catch (err) {
@@ -30,4 +45,4 @@ class AgencyAPI extends ModeAPI {
   }
 }
 
-export default new AgencyAPI("agency")
+export default new AgencyAPI("agency");
