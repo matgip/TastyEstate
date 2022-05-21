@@ -29,6 +29,10 @@
       <v-list-item-content>
         <v-list-item-title v-text="item.place_name"></v-list-item-title>
         <v-list-item-subtitle v-text="item.address_name"></v-list-item-subtitle>
+        <v-row v-bind="vuetifyRow">
+          <v-rating v-bind="vuetifyStar" :value="item.stars"></v-rating>
+          <div v-bind="vuetifyStarText">({{ item.stars }})</div>
+        </v-row>
       </v-list-item-content>
     </template>
   </v-autocomplete>
@@ -70,6 +74,20 @@ export default {
       class: "white--text",
       color: "deep-orange",
     },
+    vuetifyRow: {
+      align: "center",
+      class: "ma-0",
+    },
+    vuetifyStar: {
+      size: 18,
+      color: "amber",
+      dense: true,
+      readonly: true,
+      "half-increments": true,
+    },
+    vuetifyStarText: {
+      class: "grey--text pt-1",
+    },
     fontAwesomeMap: "fas fa-map-marked-alt",
   }),
 
@@ -91,6 +109,7 @@ export default {
       try {
         const agencies = await agencyApi.searchByKeyword(keyword);
         this.agencies = agencies;
+        console.log(this.agencies);
       } catch (err) {
         console.error(err);
       }
